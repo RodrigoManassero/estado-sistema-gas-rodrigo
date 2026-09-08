@@ -82,7 +82,7 @@ jobs:
           else
             git commit -m "TGN auto-update $(date -u +%Y-%m-%dT%H:%MZ)"
             # Keep up with the main workflow's commits to data files.
-            git pull --rebase origin master || git rebase --abort
+            git pull --rebase origin main || git rebase --abort
             git push
           fi
 
