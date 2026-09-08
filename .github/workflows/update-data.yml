@@ -1,0 +1,84 @@
+name: Update data and deploy
+
+on:
+  schedule:
+    - cron: '0 13 * * *'  # 10:00 Argentina (UTC-3) — tras las 09:45 ya llegó el correo ETGS
+  workflow_dispatch:  # Manual trigger
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  update-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Run data pipeline
+        # 13 min: el archivo de Open-Meteo (weather_history) y los CSV anuales
+        # de Cap IV (~100-330 MB c/u en días de cache-miss) empujan el pipeline
+        # por encima de los 8 min originales en algunas corridas.
+        timeout-minutes: 13
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: python scripts/build_data.py
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build dashboard
+        run: npm run build
+
+      - name: Install course dependencies
+        working-directory: ./curso
+        run: npm ci
+
+      - name: Build course site
+        working-directory: ./curso
+        run: npm run build
+
+      - name: Place course under dist/curso
+        run: |
+          mkdir -p dist/curso
+          cp -r curso/dist/. dist/curso/
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/
+          if git diff --staged --quiet; then
+            echo "No data changes to commit"
+          else
+            git commit -m "Auto-update data $(date -u +%Y-%m-%d)"
+            # The tgn-update workflow can push to master concurrently (its
+            # 12:45 UTC run overlaps this 13:00 one), so rebase before pushing.
+            git pull --rebase origin master || git rebase --abort
+            git push
+          fi
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist

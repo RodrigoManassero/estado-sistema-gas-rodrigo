@@ -1,0 +1,23 @@
+﻿tipo,texto
+daily,* Temperatura máxima en Buenos Aires aumentando a 30°C hacia el fin de semana y lunes 16/03.
+daily,* Demanda Total del sistema ubicándose en 125 MMm3/día.
+daily,* Consumo de Cammesa en 53 MMm3 para hoy y mañana. Proyecta disminuir consumo hacia el domingo. A rever si ajustan.
+daily,* Linepacks de Transportistas con buen stock. TGS alcanzado el limite superior.
+daily,"* La Calera: continuan trabajos de matenimiento en compresores. Iny. máxima de 13,5/13,7 MMm3."
+daily,"* TGN: informa restricción de capacidad de transporte en el Centro Oeste, limitando el flujo de gas hacia el Norte, impactando en la Exportación Int."
+daily,Lim. Sup: 235; Lim. Inf: 215
+daily,Lim. Sup: 142; Lim. Inf: 110
+daily,Afectación de Transporte (corte en MMm3)
+weekly,COMENTARIOS DE LA SEMANA
+weekly,"* Inicio de semana con Temp. Máxima de 34° C., bajando hacia el fin de semana con promedios de 24 °C."
+weekly,* Demanda Total del sistema inicia la semana con 130 MMm3/día y disminuye con el correr de los dias ante un menor consumo de generación.
+weekly,* Consumo de gas de Cammesa inicia en 60 MMm3 y disminuye a los 45 MMm3 para el fin de semana largo.
+weekly,"* Linepacks de Transportistas con buen stock, incrementando hacia el fin de semana."
+weekly,"* Mantenimiento TGN: 17 al 20 y 23/3 trabajos en PC Chajan, scrapper en tramo Villa Mercedes-Bulnes con afectación promedio de 4MMm3/d  en tramos finales."
+weekly,* La Calera: inyectando un promedio de 14 MMm3 por día.
+weekly,* Loma Negra: miércoles 18/03 se cumplen los 10 días de parada programada.
+weekly,Lim. Sup: 235; Lim. Inf: 215
+weekly,Lim. Sup: 142; Lim. Inf: 110
+weekly,Afectación de Transporte (corte en MMm3)
+weekly,* Comparación Diaria. Incluye datos desde Junio 2025.
+weekly,"* ΔT/ΔDem Prioritaria promedio de -0,4."

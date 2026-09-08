@@ -1,0 +1,80 @@
+---
+title: Bienvenida
+description: Curso introductorio para analistas que quieren aportar al tablero, sin haber programado antes.
+template: splash
+hero:
+  tagline: De Excel a aportar al tablero — sin haber programado antes.
+  actions:
+    - text: Empezar por el principio
+      link: /estado-red-gas/curso/01-de-excel-a-app/
+      icon: right-arrow
+      variant: primary
+    - text: Ir al módulo "Diseño y paradigmas"
+      link: /estado-red-gas/curso/03-diseno-paradigmas/
+      icon: right-arrow
+      variant: secondary
+    - text: Ver el código en GitHub
+      link: https://github.com/mpodeley/estado-red-gas
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid, Aside } from '@astrojs/starlight/components'
+
+## ¿Esto es para mí?
+
+Probablemente sí, si:
+
+- Trabajás todo el día en Excel y conocés bien el flujo "bajar archivos → procesar → sacar un reporte".
+- Mirás [el tablero **Estado del Sistema**](https://mpodeley.github.io/estado-red-gas/) y querés entender qué pasa "abajo" — qué genera los gráficos, de dónde salen los datos, cómo se actualiza solo cada noche.
+- Te gustaría poder pedir o proponer cambios sin depender de que otra persona los haga.
+
+**No hace falta** que hayas escrito código antes. Tampoco que sepas inglés técnico. Lo único que asumimos es que te movés bien con la PC: archivos, carpetas, Excel, navegador, ese tipo de cosas.
+
+## Un acuerdo sobre cómo está escrito
+
+<Aside type="tip" title="Pasá el mouse por encima">
+Las palabras que aparecen subrayadas con <abbr title="línea de puntitos abajo del texto, como esta">puntitos</abbr> tienen una definición corta que aparece al pasar el cursor por encima. No hace falta que las hovereés todas — están para cuando aparece un término que no te suena.
+</Aside>
+
+- Lenguaje llano. Cuando aparece una palabra técnica por primera vez, la explicamos.
+- Si una palabra suele decirse en inglés (porque la vas a ver así en las herramientas), la usamos en inglés y te decimos qué quiere decir.
+- Los <abbr title="cajas grises con texto en otra tipografía, como un bloque de cita técnica">bloques de código</abbr> los podés saltear si te abruman al principio. Lo importante es el texto que los rodea.
+
+## Qué vas a poder hacer al final
+
+<CardGrid>
+  <Card title="Entender qué hace cada parte" icon="puzzle">
+    Saber qué pasa dentro del tablero: de dónde salen los datos, cómo se procesan, cómo terminan en un gráfico.
+  </Card>
+  <Card title="Pedir cambios con precisión" icon="pencil">
+    Aprender a describir lo que querés cambiar de forma que un asistente de código pueda hacerlo bien — y vos puedas revisar el resultado.
+  </Card>
+  <Card title="Usar bien un asistente de código" icon="rocket">
+    Conocer los atajos, los modos, la memoria y las buenas prácticas para que el asistente sea una ayuda y no una fuente de frustración.
+  </Card>
+  <Card title="Hacer tu primer aporte" icon="approve-check">
+    Llegar a abrir tu primera <abbr title="del inglés 'pull request' — pedido para incorporar tus cambios al proyecto, con revisión por el medio">propuesta de cambio</abbr> con una mejora chica y reversible.
+  </Card>
+</CardGrid>
+
+## Cómo está organizado
+
+Hay **11 módulos numerados** en la barra de la izquierda. No hace falta leerlos en orden estricto, pero el orden numérico es la curva más suave si arrancás desde cero.
+
+Los que tienen la insignia **Completo** ya están escritos a fondo. El resto son borradores con el índice y los objetivos del módulo — sirven para que veas el temario completo mientras se van completando.
+
+---
+
+## Un camino recomendado
+
+Si querés cubrir el curso en orden óptimo para llegar a tu primer aporte:
+
+1. **[Módulo 2 — Vocabulario](/estado-red-gas/curso/02-vocabulario/)** — glosario para tener a mano.
+2. **[Módulo 3 — Diseño y paradigmas](/estado-red-gas/curso/03-diseno-paradigmas/)** — cómo se piensa una app por dentro.
+3. **[Módulo 6 — Coding agents](/estado-red-gas/curso/06-coding-agents/)** — instalar Claude Code y tu primera conversación.
+4. **[Módulo 7 — Skills y mejores prácticas](/estado-red-gas/curso/07-skills-mejores-practicas/)** — cómo hablarle bien al asistente.
+5. **[Módulo 8 — Git, GitHub y deploy](/estado-red-gas/curso/08-git-github-deploy/)** — qué pasa cuando subís un cambio.
+6. **[Módulo 9 — Tu primer aporte](/estado-red-gas/curso/09-primer-aporte/)** — ponerlo todo en práctica.
+
+Los módulos 1, 4, 5 y 10 son complementarios (contexto e ideas para seguir aprendiendo) y todavía están en borrador. No te frenan para llegar al primer aporte.

@@ -1,0 +1,41 @@
+/* Match la paleta del tablero (slate oscura). */
+:root {
+  --sl-font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+:root[data-theme='dark'] {
+  --sl-color-bg: #0f172a;
+  --sl-color-bg-nav: #0f172a;
+  --sl-color-bg-sidebar: #0f172a;
+  --sl-color-accent: #3b82f6;
+  --sl-color-accent-high: #60a5fa;
+  --sl-color-text-accent: #60a5fa;
+}
+
+/* Sidebar "Volver al tablero" — destacarlo un poco */
+.sidebar-content nav > ul > li:first-child a {
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+/*
+  Tooltips de definición.
+  En cualquier .md o .mdx, escribí <abbr title="explicación corta">término</abbr>
+  y queda subrayado punteado; al pasar el mouse aparece la definición.
+*/
+abbr[title] {
+  text-decoration: none;
+  border-bottom: 1.5px dotted var(--sl-color-text-accent, #60a5fa);
+  cursor: help;
+  text-decoration-skip-ink: auto;
+}
+
+/*
+  Cajita inline "qué quiere decir esto" — para definiciones que no entran en un hover.
+  Uso: <span class="qq">término</span> (definición en línea).
+  Más pensada para impresión / mobile donde el hover no rinde.
+*/
+.qq {
+  font-weight: 600;
+  color: var(--sl-color-text-accent, #60a5fa);
+}
