@@ -1,0 +1,938 @@
+{
+  "generated_at": "2026-09-07T17:58:24+00:00",
+  "source": "Open-Meteo API (multi-ciudad)",
+  "source_date": "2026-09-07",
+  "data": [
+    {
+      "id": "ba",
+      "label": "Buenos Aires",
+      "lat": -34.6037,
+      "lon": -58.3816,
+      "region": "pampa",
+      "forecast": [
+        {
+          "fecha": "2026-09-07",
+          "temp_max": 11.1,
+          "temp_min": 5.0,
+          "temp_prom": 8.1
+        },
+        {
+          "fecha": "2026-09-08",
+          "temp_max": 14.7,
+          "temp_min": 7.2,
+          "temp_prom": 10.9
+        },
+        {
+          "fecha": "2026-09-09",
+          "temp_max": 16.1,
+          "temp_min": 9.5,
+          "temp_prom": 12.8
+        },
+        {
+          "fecha": "2026-09-10",
+          "temp_max": 16.4,
+          "temp_min": 10.5,
+          "temp_prom": 13.4
+        },
+        {
+          "fecha": "2026-09-11",
+          "temp_max": 15.7,
+          "temp_min": 10.6,
+          "temp_prom": 13.1
+        },
+        {
+          "fecha": "2026-09-12",
+          "temp_max": 12.0,
+          "temp_min": 8.3,
+          "temp_prom": 10.2
+        },
+        {
+          "fecha": "2026-09-13",
+          "temp_max": 9.3,
+          "temp_min": 5.5,
+          "temp_prom": 7.4
+        },
+        {
+          "fecha": "2026-09-14",
+          "temp_max": 12.8,
+          "temp_min": 6.3,
+          "temp_prom": 9.6
+        },
+        {
+          "fecha": "2026-09-15",
+          "temp_max": 15.5,
+          "temp_min": 9.3,
+          "temp_prom": 12.4
+        },
+        {
+          "fecha": "2026-09-16",
+          "temp_max": 13.6,
+          "temp_min": 6.4,
+          "temp_prom": 10.0
+        },
+        {
+          "fecha": "2026-09-17",
+          "temp_max": 20.8,
+          "temp_min": 10.8,
+          "temp_prom": 15.8
+        },
+        {
+          "fecha": "2026-09-18",
+          "temp_max": 20.7,
+          "temp_min": 13.6,
+          "temp_prom": 17.1
+        },
+        {
+          "fecha": "2026-09-19",
+          "temp_max": 20.4,
+          "temp_min": 13.2,
+          "temp_prom": 16.8
+        },
+        {
+          "fecha": "2026-09-20",
+          "temp_max": 16.7,
+          "temp_min": 9.7,
+          "temp_prom": 13.2
+        }
+      ]
+    },
+    {
+      "id": "rosario",
+      "label": "Rosario",
+      "lat": -32.9468,
+      "lon": -60.6393,
+      "region": "pampa",
+      "forecast": [
+        {
+          "fecha": "2026-09-07",
+          "temp_max": 13.0,
+          "temp_min": 4.3,
+          "temp_prom": 8.7
+        },
+        {
+          "fecha": "2026-09-08",
+          "temp_max": 17.7,
+          "temp_min": 6.5,
+          "temp_prom": 12.1
+        },
+        {
+          "fecha": "2026-09-09",
+          "temp_max": 19.7,
+          "temp_min": 9.3,
+          "temp_prom": 14.5
+        },
+        {
+          "fecha": "2026-09-10",
+          "temp_max": 20.0,
+          "temp_min": 9.4,
+          "temp_prom": 14.7
+        },
+        {
+          "fecha": "2026-09-11",
+          "temp_max": 16.1,
+          "temp_min": 11.4,
+          "temp_prom": 13.8
+        },
+        {
+          "fecha": "2026-09-12",
+          "temp_max": 13.9,
+          "temp_min": 9.4,
+          "temp_prom": 11.7
+        },
+        {
+          "fecha": "2026-09-13",
+          "temp_max": 12.7,
+          "temp_min": 6.4,
+          "temp_prom": 9.6
+        },
+        {
+          "fecha": "2026-09-14",
+          "temp_max": 15.4,
+          "temp_min": 6.6,
+          "temp_prom": 11.0
+        },
+        {
+          "fecha": "2026-09-15",
+          "temp_max": 19.4,
+          "temp_min": 8.3,
+          "temp_prom": 13.8
+        },
+        {
+          "fecha": "2026-09-16",
+          "temp_max": 19.6,
+          "temp_min": 8.8,
+          "temp_prom": 14.2
+        },
+        {
+          "fecha": "2026-09-17",
+          "temp_max": 22.3,
+          "temp_min": 12.3,
+          "temp_prom": 17.3
+        },
+        {
+          "fecha": "2026-09-18",
+          "temp_max": 24.2,
+          "temp_min": 13.9,
+          "temp_prom": 19.1
+        },
+        {
+          "fecha": "2026-09-19",
+          "temp_max": 21.5,
+          "temp_min": 13.1,
+          "temp_prom": 17.3
+        },
+        {
+          "fecha": "2026-09-20",
+          "temp_max": 18.2,
+          "temp_min": 10.1,
+          "temp_prom": 14.1
+        }
+      ]
+    },
+    {
+      "id": "cordoba",
+      "label": "Córdoba",
+      "lat": -31.4201,
+      "lon": -64.1888,
+      "region": "centro",
+      "forecast": [
+        {
+          "fecha": "2026-09-07",
+          "temp_max": 15.1,
+          "temp_min": 4.3,
+          "temp_prom": 9.7
+        },
+        {
+          "fecha": "2026-09-08",
+          "temp_max": 20.4,
+          "temp_min": 6.9,
+          "temp_prom": 13.6
+        },
+        {
+          "fecha": "2026-09-09",
+          "temp_max": 22.6,
+          "temp_min": 8.8,
+          "temp_prom": 15.7
+        },
+        {
+          "fecha": "2026-09-10",
+          "temp_max": 21.1,
+          "temp_min": 8.8,
+          "temp_prom": 15.0
+        },
+        {
+          "fecha": "2026-09-11",
+          "temp_max": 16.0,
+          "temp_min": 10.4,
+          "temp_prom": 13.2
+        },
+        {
+          "fecha": "2026-09-12",
+          "temp_max": 13.5,
+          "temp_min": 9.5,
+          "temp_prom": 11.5
+        },
+        {
+          "fecha": "2026-09-13",
+          "temp_max": 11.9,
+          "temp_min": 6.4,
+          "temp_prom": 9.2
+        },
+        {
+          "fecha": "2026-09-14",
+          "temp_max": 16.4,
+          "temp_min": 5.6,
+          "temp_prom": 11.0
+        },
+        {
+          "fecha": "2026-09-15",
+          "temp_max": 20.5,
+          "temp_min": 6.0,
+          "temp_prom": 13.2
+        },
+        {
+          "fecha": "2026-09-16",
+          "temp_max": 20.2,
+          "temp_min": 7.6,
+          "temp_prom": 13.9
+        },
+        {
+          "fecha": "2026-09-17",
+          "temp_max": 23.7,
+          "temp_min": 12.9,
+          "temp_prom": 18.3
+        },
+        {
+          "fecha": "2026-09-18",
+          "temp_max": 26.1,
+          "temp_min": 15.0,
+          "temp_prom": 20.6
+        },
+        {
+          "fecha": "2026-09-19",
+          "temp_max": 19.4,
+          "temp_min": 10.9,
+          "temp_prom": 15.1
+        },
+        {
+          "fecha": "2026-09-20",
+          "temp_max": 18.9,
+          "temp_min": 6.8,
+          "temp_prom": 12.8
+        }
+      ]
+    },
+    {
+      "id": "santafe",
+      "label": "Santa Fe",
+      "lat": -31.6333,
+      "lon": -60.7,
+      "region": "pampa",
+      "forecast": [
+        {
+          "fecha": "2026-09-07",
+          "temp_max": 14.1,
+          "temp_min": 5.4,
+          "temp_prom": 9.8
+        },
+        {
+          "fecha": "2026-09-08",
+          "temp_max": 18.2,
+          "temp_min": 7.7,
+          "temp_prom": 12.9
+        },
+        {
+          "fecha": "2026-09-09",
+          "temp_max": 20.2,
+          "temp_min": 11.1,
+          "temp_prom": 15.6
+        },
+        {
+          "fecha": "2026-09-10",
+          "temp_max": 20.6,
+          "temp_min": 10.1,
+          "temp_prom": 15.4
+        },
+        {
+          "fecha": "2026-09-11",
+          "temp_max": 16.5,
+          "temp_min": 11.5,
+          "temp_prom": 14.0
+        },
+        {
+          "fecha": "2026-09-12",
+          "temp_max": 16.4,
+          "temp_min": 9.6,
+          "temp_prom": 13.0
+        },
+        {
+          "fecha": "2026-09-13",
+          "temp_max": 13.1,
+          "temp_min": 7.0,
+          "temp_prom": 10.1
+        },
+        {
+          "fecha": "2026-09-14",
+          "temp_max": 15.9,
+          "temp_min": 7.2,
+          "temp_prom": 11.6
+        },
+        {
+          "fecha": "2026-09-15",
+          "temp_max": 20.5,
+          "temp_min": 7.7,
+          "temp_prom": 14.1
+        },
+        {
+          "fecha": "2026-09-16",
+          "temp_max": 20.7,
+          "temp_min": 10.3,
+          "temp_prom": 15.5
+        },
+        {
+          "fecha": "2026-09-17",
+          "temp_max": 22.5,
+          "temp_min": 12.3,
+          "temp_prom": 17.4
+        },
+        {
+          "fecha": "2026-09-18",
+          "temp_max": 25.1,
+          "temp_min": 13.7,
+          "temp_prom": 19.4
+        },
+        {
+          "fecha": "2026-09-19",
+          "temp_max": 20.1,
+          "temp_min": 14.2,
+          "temp_prom": 17.1
+        },
+        {
+          "fecha": "2026-09-20",
+          "temp_max": 18.5,
+          "temp_min": 11.3,
+          "temp_prom": 14.9
+        }
+      ]
+    },
+    {
+      "id": "mendoza",
+      "label": "Mendoza",
+      "lat": -32.8895,
+      "lon": -68.8458,
+      "region": "cuyo",
+      "forecast": [
+        {
+          "fecha": "2026-09-07",
+          "temp_max": 13.4,
+          "temp_min": 0.7,
+          "temp_prom": 7.0
+        },
+        {
+          "fecha": "2026-09-08",
+          "temp_max": 19.8,
+          "temp_min": 5.5,
+          "temp_prom": 12.7
+        },
+        {
+          "fecha": "2026-09-09",
+          "temp_max": 19.9,
+          "temp_min": 10.2,
+          "temp_prom": 15.0
+        },
+        {
+          "fecha": "2026-09-10",
+          "temp_max": 18.8,
+          "temp_min": 8.6,
+          "temp_prom": 13.7
+        },
+        {
+          "fecha": "2026-09-11",
+          "temp_max": 12.1,
+          "temp_min": 7.1,
+          "temp_prom": 9.6
+        },
+        {
+          "fecha": "2026-09-12",
+          "temp_max": 6.8,
+          "temp_min": 2.3,
+          "temp_prom": 4.5
+        },
+        {
+          "fecha": "2026-09-13",
+          "temp_max": 7.4,
+          "temp_min": -0.1,
+          "temp_prom": 3.7
+        },
+        {
+          "fecha": "2026-09-14",
+          "temp_max": 13.4,
+          "temp_min": 3.6,
+          "temp_prom": 8.5
+        },
+        {
+          "fecha": "2026-09-15",
+          "temp_max": 15.6,
+          "temp_min": 7.2,
+          "temp_prom": 11.4
+        },
+        {
+          "fecha": "2026-09-16",
+          "temp_max": 16.6,
+          "temp_min": 7.2,
+          "temp_prom": 11.9
+        },
+        {
+          "fecha": "2026-09-17",
+          "temp_max": 21.2,
+          "temp_min": 11.0,
+          "temp_prom": 16.1
+        },
+        {
+          "fecha": "2026-09-18",
+          "temp_max": 22.2,
+          "temp_min": 13.8,
+          "temp_prom": 18.0
+        },
+        {
+          "fecha": "2026-09-19",
+          "temp_max": 15.3,
+          "temp_min": 9.7,
+          "temp_prom": 12.5
+        },
+        {
+          "fecha": "2026-09-20",
+          "temp_max": 17.4,
+          "temp_min": 8.6,
+          "temp_prom": 13.0
+        }
+      ]
+    },
+    {
+      "id": "neuquen",
+      "label": "Neuquén",
+      "lat": -38.9517,
+      "lon": -68.0591,
+      "region": "patagonia",
+      "forecast": [
+        {
+          "fecha": "2026-09-07",
+          "temp_max": 14.3,
+          "temp_min": 2.4,
+          "temp_prom": 8.3
+        },
+        {
+          "fecha": "2026-09-08",
+          "temp_max": 18.8,
+          "temp_min": 4.2,
+          "temp_prom": 11.5
+        },
+        {
+          "fecha": "2026-09-09",
+          "temp_max": 17.2,
+          "temp_min": 4.9,
+          "temp_prom": 11.1
+        },
+        {
+          "fecha": "2026-09-10",
+          "temp_max": 17.2,
+          "temp_min": 7.4,
+          "temp_prom": 12.3
+        },
+        {
+          "fecha": "2026-09-11",
+          "temp_max": 11.0,
+          "temp_min": 4.1,
+          "temp_prom": 7.5
+        },
+        {
+          "fecha": "2026-09-12",
+          "temp_max": 8.3,
+          "temp_min": 1.7,
+          "temp_prom": 5.0
+        },
+        {
+          "fecha": "2026-09-13",
+          "temp_max": 14.5,
+          "temp_min": 2.0,
+          "temp_prom": 8.2
+        },
+        {
+          "fecha": "2026-09-14",
+          "temp_max": 17.2,
+          "temp_min": 4.2,
+          "temp_prom": 10.7
+        },
+        {
+          "fecha": "2026-09-15",
+          "temp_max": 13.0,
+          "temp_min": 4.9,
+          "temp_prom": 8.9
+        },
+        {
+          "fecha": "2026-09-16",
+          "temp_max": 20.7,
+          "temp_min": 7.5,
+          "temp_prom": 14.1
+        },
+        {
+          "fecha": "2026-09-17",
+          "temp_max": 19.8,
+          "temp_min": 7.8,
+          "temp_prom": 13.8
+        },
+        {
+          "fecha": "2026-09-18",
+          "temp_max": 16.8,
+          "temp_min": 10.8,
+          "temp_prom": 13.8
+        },
+        {
+          "fecha": "2026-09-19",
+          "temp_max": 15.5,
+          "temp_min": 7.2,
+          "temp_prom": 11.3
+        },
+        {
+          "fecha": "2026-09-20",
+          "temp_max": 19.4,
+          "temp_min": 7.1,
+          "temp_prom": 13.2
+        }
+      ]
+    },
+    {
+      "id": "bahiablanca",
+      "label": "Bahía Blanca",
+      "lat": -38.7196,
+      "lon": -62.2724,
+      "region": "pampa",
+      "forecast": [
+        {
+          "fecha": "2026-09-07",
+          "temp_max": 13.6,
+          "temp_min": 1.5,
+          "temp_prom": 7.5
+        },
+        {
+          "fecha": "2026-09-08",
+          "temp_max": 19.7,
+          "temp_min": 7.0,
+          "temp_prom": 13.3
+        },
+        {
+          "fecha": "2026-09-09",
+          "temp_max": 18.8,
+          "temp_min": 8.7,
+          "temp_prom": 13.8
+        },
+        {
+          "fecha": "2026-09-10",
+          "temp_max": 20.3,
+          "temp_min": 5.7,
+          "temp_prom": 13.0
+        },
+        {
+          "fecha": "2026-09-11",
+          "temp_max": 10.3,
+          "temp_min": 6.1,
+          "temp_prom": 8.2
+        },
+        {
+          "fecha": "2026-09-12",
+          "temp_max": 9.0,
+          "temp_min": 2.4,
+          "temp_prom": 5.7
+        },
+        {
+          "fecha": "2026-09-13",
+          "temp_max": 12.5,
+          "temp_min": 0.7,
+          "temp_prom": 6.6
+        },
+        {
+          "fecha": "2026-09-14",
+          "temp_max": 17.5,
+          "temp_min": 5.8,
+          "temp_prom": 11.7
+        },
+        {
+          "fecha": "2026-09-15",
+          "temp_max": 10.5,
+          "temp_min": 4.2,
+          "temp_prom": 7.3
+        },
+        {
+          "fecha": "2026-09-16",
+          "temp_max": 16.9,
+          "temp_min": 2.7,
+          "temp_prom": 9.8
+        },
+        {
+          "fecha": "2026-09-17",
+          "temp_max": 18.0,
+          "temp_min": 10.3,
+          "temp_prom": 14.2
+        },
+        {
+          "fecha": "2026-09-18",
+          "temp_max": 21.1,
+          "temp_min": 10.2,
+          "temp_prom": 15.7
+        },
+        {
+          "fecha": "2026-09-19",
+          "temp_max": 15.5,
+          "temp_min": 7.0,
+          "temp_prom": 11.2
+        },
+        {
+          "fecha": "2026-09-20",
+          "temp_max": 19.2,
+          "temp_min": 5.7,
+          "temp_prom": 12.4
+        }
+      ]
+    },
+    {
+      "id": "esquel",
+      "label": "Esquel",
+      "lat": -42.9077,
+      "lon": -71.3229,
+      "region": "patagonia",
+      "forecast": [
+        {
+          "fecha": "2026-09-07",
+          "temp_max": 11.5,
+          "temp_min": -2.9,
+          "temp_prom": 4.3
+        },
+        {
+          "fecha": "2026-09-08",
+          "temp_max": 6.3,
+          "temp_min": 0.6,
+          "temp_prom": 3.4
+        },
+        {
+          "fecha": "2026-09-09",
+          "temp_max": 9.8,
+          "temp_min": 3.3,
+          "temp_prom": 6.6
+        },
+        {
+          "fecha": "2026-09-10",
+          "temp_max": 4.4,
+          "temp_min": -2.1,
+          "temp_prom": 1.2
+        },
+        {
+          "fecha": "2026-09-11",
+          "temp_max": 1.6,
+          "temp_min": -6.5,
+          "temp_prom": -2.5
+        },
+        {
+          "fecha": "2026-09-12",
+          "temp_max": 6.0,
+          "temp_min": -8.3,
+          "temp_prom": -1.2
+        },
+        {
+          "fecha": "2026-09-13",
+          "temp_max": 10.4,
+          "temp_min": -2.2,
+          "temp_prom": 4.1
+        },
+        {
+          "fecha": "2026-09-14",
+          "temp_max": 14.5,
+          "temp_min": 4.7,
+          "temp_prom": 9.6
+        },
+        {
+          "fecha": "2026-09-15",
+          "temp_max": 12.8,
+          "temp_min": 2.3,
+          "temp_prom": 7.6
+        },
+        {
+          "fecha": "2026-09-16",
+          "temp_max": 9.6,
+          "temp_min": 3.4,
+          "temp_prom": 6.5
+        },
+        {
+          "fecha": "2026-09-17",
+          "temp_max": 10.8,
+          "temp_min": 2.6,
+          "temp_prom": 6.7
+        },
+        {
+          "fecha": "2026-09-18",
+          "temp_max": 7.6,
+          "temp_min": 1.6,
+          "temp_prom": 4.6
+        },
+        {
+          "fecha": "2026-09-19",
+          "temp_max": 8.0,
+          "temp_min": 1.2,
+          "temp_prom": 4.6
+        },
+        {
+          "fecha": "2026-09-20",
+          "temp_max": 13.0,
+          "temp_min": -0.2,
+          "temp_prom": 6.4
+        }
+      ]
+    },
+    {
+      "id": "salta",
+      "label": "Salta",
+      "lat": -24.7859,
+      "lon": -65.4117,
+      "region": "noa",
+      "forecast": [
+        {
+          "fecha": "2026-09-07",
+          "temp_max": 13.2,
+          "temp_min": 2.3,
+          "temp_prom": 7.8
+        },
+        {
+          "fecha": "2026-09-08",
+          "temp_max": 19.3,
+          "temp_min": 2.1,
+          "temp_prom": 10.7
+        },
+        {
+          "fecha": "2026-09-09",
+          "temp_max": 23.5,
+          "temp_min": 4.3,
+          "temp_prom": 13.9
+        },
+        {
+          "fecha": "2026-09-10",
+          "temp_max": 20.6,
+          "temp_min": 7.8,
+          "temp_prom": 14.2
+        },
+        {
+          "fecha": "2026-09-11",
+          "temp_max": 19.0,
+          "temp_min": 8.4,
+          "temp_prom": 13.7
+        },
+        {
+          "fecha": "2026-09-12",
+          "temp_max": 10.1,
+          "temp_min": 8.0,
+          "temp_prom": 9.1
+        },
+        {
+          "fecha": "2026-09-13",
+          "temp_max": 9.1,
+          "temp_min": 4.8,
+          "temp_prom": 6.9
+        },
+        {
+          "fecha": "2026-09-14",
+          "temp_max": 13.1,
+          "temp_min": 5.3,
+          "temp_prom": 9.2
+        },
+        {
+          "fecha": "2026-09-15",
+          "temp_max": 20.4,
+          "temp_min": 3.9,
+          "temp_prom": 12.1
+        },
+        {
+          "fecha": "2026-09-16",
+          "temp_max": 19.8,
+          "temp_min": 8.0,
+          "temp_prom": 13.9
+        },
+        {
+          "fecha": "2026-09-17",
+          "temp_max": 24.7,
+          "temp_min": 6.3,
+          "temp_prom": 15.5
+        },
+        {
+          "fecha": "2026-09-18",
+          "temp_max": 27.2,
+          "temp_min": 10.6,
+          "temp_prom": 18.9
+        },
+        {
+          "fecha": "2026-09-19",
+          "temp_max": 19.7,
+          "temp_min": 12.6,
+          "temp_prom": 16.1
+        },
+        {
+          "fecha": "2026-09-20",
+          "temp_max": 17.4,
+          "temp_min": 9.6,
+          "temp_prom": 13.5
+        }
+      ]
+    },
+    {
+      "id": "tucuman",
+      "label": "Tucumán",
+      "lat": -26.8083,
+      "lon": -65.2176,
+      "region": "noa",
+      "forecast": [
+        {
+          "fecha": "2026-09-07",
+          "temp_max": 19.5,
+          "temp_min": 6.7,
+          "temp_prom": 13.1
+        },
+        {
+          "fecha": "2026-09-08",
+          "temp_max": 21.2,
+          "temp_min": 6.1,
+          "temp_prom": 13.6
+        },
+        {
+          "fecha": "2026-09-09",
+          "temp_max": 23.0,
+          "temp_min": 9.9,
+          "temp_prom": 16.4
+        },
+        {
+          "fecha": "2026-09-10",
+          "temp_max": 22.3,
+          "temp_min": 12.7,
+          "temp_prom": 17.5
+        },
+        {
+          "fecha": "2026-09-11",
+          "temp_max": 21.8,
+          "temp_min": 13.1,
+          "temp_prom": 17.4
+        },
+        {
+          "fecha": "2026-09-12",
+          "temp_max": 15.2,
+          "temp_min": 10.7,
+          "temp_prom": 12.9
+        },
+        {
+          "fecha": "2026-09-13",
+          "temp_max": 10.7,
+          "temp_min": 7.8,
+          "temp_prom": 9.2
+        },
+        {
+          "fecha": "2026-09-14",
+          "temp_max": 16.5,
+          "temp_min": 8.9,
+          "temp_prom": 12.7
+        },
+        {
+          "fecha": "2026-09-15",
+          "temp_max": 20.7,
+          "temp_min": 9.0,
+          "temp_prom": 14.8
+        },
+        {
+          "fecha": "2026-09-16",
+          "temp_max": 23.1,
+          "temp_min": 11.3,
+          "temp_prom": 17.2
+        },
+        {
+          "fecha": "2026-09-17",
+          "temp_max": 24.4,
+          "temp_min": 12.9,
+          "temp_prom": 18.6
+        },
+        {
+          "fecha": "2026-09-18",
+          "temp_max": 26.3,
+          "temp_min": 13.5,
+          "temp_prom": 19.9
+        },
+        {
+          "fecha": "2026-09-19",
+          "temp_max": 18.6,
+          "temp_min": 14.7,
+          "temp_prom": 16.6
+        },
+        {
+          "fecha": "2026-09-20",
+          "temp_max": 19.7,
+          "temp_min": 13.6,
+          "temp_prom": 16.6
+        }
+      ]
+    }
+  ],
+  "failures": []
+}

@@ -1,0 +1,1215 @@
+{
+  "generated_at": "2026-06-03T13:15:25+00:00",
+  "source": "Base Reporte Estado de Sistema.xlsx",
+  "source_date": "2026-03-31",
+  "data": [
+    {
+      "fecha": "2025-11-01",
+      "gas_andes_autorizacion": 8.0,
+      "cco_capacidad": 30.0,
+      "cco_corte": -3.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-02",
+      "gas_andes_autorizacion": 8.0,
+      "cco_capacidad": 30.0,
+      "cco_corte": -3.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-03",
+      "gas_andes_autorizacion": 6.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.5,
+      "tgs_nqn_corte": -0.7
+    },
+    {
+      "fecha": "2025-11-04",
+      "gas_andes_autorizacion": 6.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.5,
+      "tgs_nqn_corte": -0.7
+    },
+    {
+      "fecha": "2025-11-05",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.5,
+      "tgs_nqn_corte": -0.7
+    },
+    {
+      "fecha": "2025-11-06",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.5,
+      "tgs_nqn_corte": -0.7
+    },
+    {
+      "fecha": "2025-11-07",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.5,
+      "tgs_nqn_corte": -0.7
+    },
+    {
+      "fecha": "2025-11-08",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-09",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-10",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-11",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-12",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-13",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-14",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-15",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-16",
+      "gas_andes_autorizacion": 8.0,
+      "cco_capacidad": 20.0,
+      "cco_corte": -14.0,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-17",
+      "gas_andes_autorizacion": 2.0,
+      "cco_capacidad": 27.0,
+      "cco_corte": -6.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-18",
+      "gas_andes_autorizacion": 2.0,
+      "cco_capacidad": 27.0,
+      "cco_corte": -6.7,
+      "tgs_nqn_capacidad": 33.2,
+      "tgs_nqn_corte": -4.0
+    },
+    {
+      "fecha": "2025-11-19",
+      "gas_andes_autorizacion": 2.0,
+      "cco_capacidad": 27.0,
+      "cco_corte": -6.7,
+      "tgs_nqn_capacidad": 33.2,
+      "tgs_nqn_corte": -4.0
+    },
+    {
+      "fecha": "2025-11-20",
+      "gas_andes_autorizacion": 2.0,
+      "cco_capacidad": 27.0,
+      "cco_corte": -6.7,
+      "tgs_nqn_capacidad": 30.2,
+      "tgs_nqn_corte": -7.0
+    },
+    {
+      "fecha": "2025-11-21",
+      "gas_andes_autorizacion": 2.0,
+      "cco_capacidad": 27.0,
+      "cco_corte": -6.7,
+      "tgs_nqn_capacidad": 30.2,
+      "tgs_nqn_corte": -7.0
+    },
+    {
+      "fecha": "2025-11-22",
+      "gas_andes_autorizacion": 8.0,
+      "cco_capacidad": 20.0,
+      "cco_corte": -14.0,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-23",
+      "gas_andes_autorizacion": 2.0,
+      "cco_capacidad": 27.0,
+      "cco_corte": -6.7,
+      "tgs_nqn_capacidad": 34.2,
+      "tgs_nqn_corte": -3.0
+    },
+    {
+      "fecha": "2025-11-24",
+      "gas_andes_autorizacion": 2.0,
+      "cco_capacidad": 27.0,
+      "cco_corte": -6.7,
+      "tgs_nqn_capacidad": 34.2,
+      "tgs_nqn_corte": -3.0
+    },
+    {
+      "fecha": "2025-11-25",
+      "gas_andes_autorizacion": 2.0,
+      "cco_capacidad": 27.0,
+      "cco_corte": -6.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-26",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 27.0,
+      "cco_corte": -6.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-27",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-11-28",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 30.2,
+      "tgs_nqn_corte": -7.0
+    },
+    {
+      "fecha": "2025-11-29",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 30.2,
+      "tgs_nqn_corte": -7.0
+    },
+    {
+      "fecha": "2025-11-30",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 30.2,
+      "tgs_nqn_corte": -7.0
+    },
+    {
+      "fecha": "2025-12-01",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-02",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-03",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-04",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-05",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-06",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-07",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-08",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-09",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 20.0,
+      "cco_corte": -14.0,
+      "tgs_nqn_capacidad": 34.7,
+      "tgs_nqn_corte": -2.5
+    },
+    {
+      "fecha": "2025-12-10",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 34.7,
+      "tgs_nqn_corte": -2.5
+    },
+    {
+      "fecha": "2025-12-11",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 34.7,
+      "tgs_nqn_corte": -2.5
+    },
+    {
+      "fecha": "2025-12-12",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-13",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-14",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-15",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-16",
+      "gas_andes_autorizacion": 4.0,
+      "cco_capacidad": 29.0,
+      "cco_corte": -4.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-17",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-18",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-19",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-20",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-21",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-22",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-23",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-24",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-25",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-26",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-27",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-28",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-29",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-30",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2025-12-31",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-01",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-02",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-03",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-04",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-05",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-06",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-07",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-08",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-09",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-10",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-11",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-12",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-13",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-14",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-15",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-16",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": null
+    },
+    {
+      "fecha": "2026-01-17",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-18",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-19",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-20",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-21",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-22",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-23",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-24",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-25",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": null,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-26",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-27",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-28",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-29",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-30",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-01-31",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-01",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-02",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-03",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-04",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-05",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-06",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-07",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-08",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-09",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-10",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-11",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-12",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-13",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-14",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-15",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-16",
+      "gas_andes_autorizacion": 8.5,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-17",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-18",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-19",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-20",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-21",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-22",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-23",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-24",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-25",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-26",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-27",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-02-28",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-01",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-02",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-03",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-04",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-05",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-06",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-07",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-08",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-09",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-10",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-11",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-12",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-13",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-14",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-15",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-16",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-17",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-18",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-19",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-20",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-21",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-22",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-23",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-24",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-25",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-26",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-27",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-28",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-29",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-30",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    },
+    {
+      "fecha": "2026-03-31",
+      "gas_andes_autorizacion": 7.0,
+      "cco_capacidad": 33.7,
+      "cco_corte": -1.7,
+      "tgs_nqn_capacidad": 36.7,
+      "tgs_nqn_corte": -0.5
+    }
+  ]
+}

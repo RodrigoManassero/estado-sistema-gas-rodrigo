@@ -1,0 +1,139 @@
+{
+  "generated_at": "2026-05-29T12:00:00+00:00",
+  "source": "Curación manual de anuncios públicos (prensa, earnings calls, comunicados oficiales)",
+  "source_date": "2026-05-29",
+  "data": [
+    {
+      "id": "ypf-plan-4x4",
+      "operador": "YPF",
+      "titulo": "Plan 4x4 — multiplicar 4x producción, EBITDA, dividendos y valor",
+      "fecha_anuncio": "2024-08",
+      "horizonte": "2024-2028",
+      "monto_usd_millones": null,
+      "categoria": "estrategia",
+      "comentario": "Plan estratégico de Horacio Marín al asumir como CEO en diciembre 2023. Centra inversiones en Vaca Muerta y desprende campos maduros (Plan Andes). El objetivo de 4x producción aplica al crudo shale; pivote estructural hacia el no convencional.",
+      "fuente_url": "https://www.ypf.com/inversoresaccionistas/Paginas/index.aspx"
+    },
+    {
+      "id": "ypf-plan-andes",
+      "operador": "YPF",
+      "titulo": "Plan Andes — desinversión de ~55 áreas maduras",
+      "fecha_anuncio": "2024-05",
+      "horizonte": "2024-2026",
+      "monto_usd_millones": null,
+      "categoria": "desinversión",
+      "comentario": "Salida programada de YPF de bloques convencionales para reasignar capital a Vaca Muerta. Compradores incluyen Aconcagua, Bentia, Pecom y otras juniors. La oferta de capital y la operación se ejecutaron en tramos durante 2024-2025.",
+      "fuente_url": "https://www.ypf.com/english/Investors/Pages/index.aspx"
+    },
+    {
+      "id": "pluspetrol-exxon-shale",
+      "operador": "Pluspetrol",
+      "titulo": "Adquisición de activos shale de ExxonMobil",
+      "fecha_anuncio": "2024-04",
+      "horizonte": "2024",
+      "monto_usd_millones": 1700,
+      "categoria": "M&A",
+      "comentario": "Compra de la participación de ExxonMobil en Bajo del Choique-La Invernada, La Calera (con QPI), Los Toldos Sur, Pampa de las Yeguas y otros. Convierte a Pluspetrol en uno de los principales operadores de shale en Vaca Muerta. Cierre formal del deal a mediados de 2024.",
+      "fuente_url": "https://www.pluspetrol.net/en/news"
+    },
+    {
+      "id": "vista-plan-2026-2028",
+      "operador": "Vista Energy",
+      "titulo": "Plan 2026-2028: ~100 kboe/d con foco shale",
+      "fecha_anuncio": "2024-Q4",
+      "horizonte": "2026-2028",
+      "monto_usd_millones": null,
+      "categoria": "upstream",
+      "comentario": "Guidance pública en earnings calls trimestrales: producción objetivo en torno a 100 mil boe/d hacia 2026 con capex anual cercano a US$1B. Activos clave: Bajada del Palo Oeste, Águila Mora, Aguada Federal.",
+      "fuente_url": "https://investors.vistaenergy.com/"
+    },
+    {
+      "id": "tecpetrol-fortin-piedra-fase2",
+      "operador": "Tecpetrol",
+      "titulo": "Expansión Fortín de Piedra Fase 2",
+      "fecha_anuncio": "2023",
+      "horizonte": "2023-2026",
+      "monto_usd_millones": null,
+      "categoria": "upstream",
+      "comentario": "Tecpetrol ejecuta una segunda fase de desarrollo en Fortín de Piedra (shale gas) que extiende su pad development y sostiene producción cerca del techo de capacidad de evacuación. Actualmente es el bloque de mayor producción de gas no convencional del país.",
+      "fuente_url": "https://www.tecpetrol.com/"
+    },
+    {
+      "id": "vmos-oleoducto",
+      "operador": "Consorcio VMOS",
+      "titulo": "Vaca Muerta Sur — oleoducto y terminal Punta Colorada",
+      "fecha_anuncio": "2024-09",
+      "horizonte": "2024-2027",
+      "monto_usd_millones": 3000,
+      "categoria": "infraestructura",
+      "comentario": "Oleoducto de ~440 km que conecta Vaca Muerta con la terminal de exportación en Punta Colorada (Río Negro). Capacidad final ~700 kbbl/d. Consorcio compuesto por YPF, Pluspetrol, Vista, Pampa, Pan American Energy, Chevron, Shell y otros. Habilita la duplicación de evacuación de crudo del país.",
+      "fuente_url": "https://www.ypf.com/inversoresaccionistas/Paginas/index.aspx"
+    },
+    {
+      "id": "gnl-ypf-eni-petronas",
+      "operador": "YPF + Eni / YPF + Petronas",
+      "titulo": "Proyecto GNL Argentina (Argentina LNG)",
+      "fecha_anuncio": "2022-08",
+      "horizonte": "2027-2030+",
+      "monto_usd_millones": 30000,
+      "categoria": "midstream",
+      "comentario": "Iniciativa de licuefacción para monetizar gas de Vaca Muerta vía exportación marítima. Pasó por varios partners (inicialmente Petronas; después Eni para una segunda fase). FID y ubicación en Bahía Blanca o Punta Colorada todavía no cerrados (a 2026). Magnitud full-scale del orden de US$30B en CAPEX acumulado.",
+      "fuente_url": "https://www.ypf.com/inversoresaccionistas/Paginas/index.aspx"
+    },
+    {
+      "id": "gpnk-fase2",
+      "operador": "Energía Argentina (ENARSA)",
+      "titulo": "Gasoducto Néstor Kirchner — Reversión Norte (Fase 2)",
+      "fecha_anuncio": "2023",
+      "horizonte": "2023-2025",
+      "monto_usd_millones": 700,
+      "categoria": "midstream",
+      "comentario": "Reversión del gasoducto norte para que pueda transportar gas neuquino hacia el norte argentino (NOA) y eventualmente exportar a Bolivia/Brasil. Ya en operación parcial.",
+      "fuente_url": "https://www.energia.gob.ar/"
+    },
+    {
+      "id": "shell-bajada-anelo",
+      "operador": "Shell Argentina",
+      "titulo": "Desarrollo de Bajada de Añelo (shale oil)",
+      "fecha_anuncio": "2023",
+      "horizonte": "2023-2027",
+      "monto_usd_millones": null,
+      "categoria": "upstream",
+      "comentario": "Shell sostiene un ramp-up gradual en sus áreas operadas de Vaca Muerta (Bajada de Añelo, Sierras Blancas, Cruz de Lorena). Capex anual del orden de US$500M-700M sin guidance público detallado.",
+      "fuente_url": "https://www.shell.com.ar/"
+    },
+    {
+      "id": "pae-aguada-pichana",
+      "operador": "Pan American Energy",
+      "titulo": "Desarrollo Aguada Pichana Este (shale gas)",
+      "fecha_anuncio": "2022",
+      "horizonte": "2022-2026",
+      "monto_usd_millones": null,
+      "categoria": "upstream",
+      "comentario": "PAE asumió la operación tras la salida de YPF en 2021. Desarrollo gradual del shale gas con foco en sostener producción y exportaciones a Chile vía Gas Andes en ventanas estacionales.",
+      "fuente_url": "https://www.pan-energy.com/"
+    },
+    {
+      "id": "tgs-tratayen-saliquelo",
+      "operador": "TGS",
+      "titulo": "Loop Tratayén-Salliqueló — ampliación de evacuación de gas",
+      "fecha_anuncio": "2024",
+      "horizonte": "2024-2026",
+      "monto_usd_millones": 700,
+      "categoria": "midstream",
+      "comentario": "Construcción de un tramo paralelo (loop) entre Tratayén (cabecera Vaca Muerta) y Salliqueló (interconexión con red existente) para sumar capacidad de evacuación de gas natural. Habilita aumento de producción en Neuquina post-GPNK.",
+      "fuente_url": "https://www.tgs.com.ar/"
+    },
+    {
+      "id": "pampa-rincon-mangrullo",
+      "operador": "Pampa Energía",
+      "titulo": "Desarrollo Rincón de Aranda y Sierra Chata",
+      "fecha_anuncio": "2024",
+      "horizonte": "2024-2027",
+      "monto_usd_millones": null,
+      "categoria": "upstream",
+      "comentario": "Pampa expande su footprint shale: Rincón de Aranda (shale oil, contrato 35 años con Provincia de Neuquén) y continuidad de Sierra Chata (shale gas). Guidance de capex incremental anual.",
+      "fuente_url": "https://ri.pampaenergia.com/"
+    }
+  ]
+}

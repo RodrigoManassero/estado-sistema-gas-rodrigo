@@ -1,0 +1,57 @@
+{
+  "generated_at": "2026-09-07T18:00:31+00:00",
+  "source": "CAMMESA — Previsión Despacho Energético",
+  "source_date": null,
+  "data": {
+    "report_date": "2026-08-28",
+    "report_filename": "PrevisionDespachoEnergetico_20260907.pdf",
+    "weeks": [
+      {
+        "week_num": "35",
+        "start_date": "2026-08-24",
+        "end_date": "2026-08-30",
+        "demanda_gwh": 2923.0,
+        "demanda_mwmed": 17399.0,
+        "exportacion_gwh": 2.0,
+        "exportacion_mwmed": 13.0,
+        "termico_gwh": 1142.0,
+        "termico_mwmed": 6796.0,
+        "hidraulico_gwh": 781.0,
+        "hidraulico_mwmed": 4651.0,
+        "nuclear_gwh": 237.0,
+        "nuclear_mwmed": 1409.0,
+        "renovable_gwh": 505.0,
+        "renovable_mwmed": 3005.0,
+        "importacion_gwh": 266.0,
+        "importacion_mwmed": 1583.0,
+        "gas_mm3_dia": 30.8,
+        "fo_miles_ton": 1.0,
+        "go_miles_m3": 1.0,
+        "carbon_miles_ton": 15.0
+      },
+      {
+        "week_num": "36",
+        "start_date": "2026-08-31",
+        "end_date": "2026-09-06",
+        "demanda_gwh": 2848.0,
+        "demanda_mwmed": 16950.0,
+        "exportacion_gwh": 0.0,
+        "exportacion_mwmed": 0.0,
+        "termico_gwh": 1144.0,
+        "termico_mwmed": 6808.0,
+        "hidraulico_gwh": 708.0,
+        "hidraulico_mwmed": 4214.0,
+        "nuclear_gwh": 236.0,
+        "nuclear_mwmed": 1404.0,
+        "renovable_gwh": 491.0,
+        "renovable_mwmed": 2921.0,
+        "importacion_gwh": 270.0,
+        "importacion_mwmed": 1604.0,
+        "gas_mm3_dia": 32.0,
+        "fo_miles_ton": 1.0,
+        "go_miles_m3": 3.0,
+        "carbon_miles_ton": 11.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "generated_at": "2026-09-07T17:58:24+00:00",
+  "source": "Open-Meteo API (Buenos Aires)",
+  "source_date": "2026-09-07",
+  "data": {
+    "forecast": [
+      {
+        "fecha": "2026-09-07",
+        "temp_max": 11.1,
+        "temp_min": 5.0,
+        "temp_prom": 8.1
+      },
+      {
+        "fecha": "2026-09-08",
+        "temp_max": 14.7,
+        "temp_min": 7.2,
+        "temp_prom": 10.9
+      },
+      {
+        "fecha": "2026-09-09",
+        "temp_max": 16.1,
+        "temp_min": 9.5,
+        "temp_prom": 12.8
+      },
+      {
+        "fecha": "2026-09-10",
+        "temp_max": 16.4,
+        "temp_min": 10.5,
+        "temp_prom": 13.4
+      },
+      {
+        "fecha": "2026-09-11",
+        "temp_max": 15.7,
+        "temp_min": 10.6,
+        "temp_prom": 13.1
+      },
+      {
+        "fecha": "2026-09-12",
+        "temp_max": 12.0,
+        "temp_min": 8.3,
+        "temp_prom": 10.2
+      },
+      {
+        "fecha": "2026-09-13",
+        "temp_max": 9.3,
+        "temp_min": 5.5,
+        "temp_prom": 7.4
+      },
+      {
+        "fecha": "2026-09-14",
+        "temp_max": 12.8,
+        "temp_min": 6.3,
+        "temp_prom": 9.6
+      },
+      {
+        "fecha": "2026-09-15",
+        "temp_max": 15.5,
+        "temp_min": 9.3,
+        "temp_prom": 12.4
+      },
+      {
+        "fecha": "2026-09-16",
+        "temp_max": 13.6,
+        "temp_min": 6.4,
+        "temp_prom": 10.0
+      },
+      {
+        "fecha": "2026-09-17",
+        "temp_max": 20.8,
+        "temp_min": 10.8,
+        "temp_prom": 15.8
+      },
+      {
+        "fecha": "2026-09-18",
+        "temp_max": 20.7,
+        "temp_min": 13.6,
+        "temp_prom": 17.1
+      },
+      {
+        "fecha": "2026-09-19",
+        "temp_max": 20.4,
+        "temp_min": 13.2,
+        "temp_prom": 16.8
+      },
+      {
+        "fecha": "2026-09-20",
+        "temp_max": 16.7,
+        "temp_min": 9.7,
+        "temp_prom": 13.2
+      }
+    ]
+  }
+}
