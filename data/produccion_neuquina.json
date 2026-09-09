@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-07T17:59:51+00:00",
+  "generated_at": "2026-09-09T19:23:00+00:00",
   "source": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
   "source_date": "2026-08",
   "data": [
@@ -31738,7 +31738,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Mendoza",
       "prod_gas_mm3": 1.76,
-      "prod_pet_m3": 39723.49,
+      "prod_pet_m3": 39723.48,
       "prod_agua_m3": 586440.0,
       "pozos_activos": 310,
       "pozos_no_conv": 85
@@ -37834,7 +37834,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "La Pampa",
       "prod_gas_mm3": 0.0,
-      "prod_pet_m3": 111.34,
+      "prod_pet_m3": 111.33,
       "prod_agua_m3": 221.35,
       "pozos_activos": 4,
       "pozos_no_conv": 0
@@ -43187,7 +43187,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 2.86,
       "prod_pet_m3": 5467.33,
-      "prod_agua_m3": 22572.24,
+      "prod_agua_m3": 22572.23,
       "pozos_activos": 49,
       "pozos_no_conv": 0
     },
@@ -44705,6 +44705,66 @@
     },
     {
       "mes": "2026-08",
+      "area": "AL NORTE DE LA DORSAL",
+      "empresa": "BENTIA ENERGY S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 7.01,
+      "prod_pet_m3": 1663.02,
+      "prod_agua_m3": 8739.59,
+      "pozos_activos": 166,
+      "pozos_no_conv": 40
+    },
+    {
+      "mes": "2026-08",
+      "area": "OCTOGONO",
+      "empresa": "BENTIA ENERGY S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 4.17,
+      "prod_pet_m3": 2848.44,
+      "prod_agua_m3": 2695.77,
+      "pozos_activos": 75,
+      "pozos_no_conv": 13
+    },
+    {
+      "mes": "2026-08",
+      "area": "VOLCAN AUCA MAHUIDA",
+      "empresa": "BENTIA ENERGY S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 2.98,
+      "prod_pet_m3": 5272.13,
+      "prod_agua_m3": 23249.41,
+      "pozos_activos": 49,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-08",
+      "area": "SEÑAL CERRO BAYO",
+      "empresa": "BENTIA ENERGY S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 1.51,
+      "prod_pet_m3": 4345.14,
+      "prod_agua_m3": 153928.92,
+      "pozos_activos": 52,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-08",
+      "area": "DADIN",
+      "empresa": "BENTIA ENERGY S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 1.15,
+      "prod_pet_m3": 512.5,
+      "prod_agua_m3": 912.6,
+      "pozos_activos": 31,
+      "pozos_no_conv": 2
+    },
+    {
+      "mes": "2026-08",
       "area": "RINCONADA PUESTO MORALES RN",
       "empresa": "GEOPETROL DRILLING S.A.",
       "cuenca": "NEUQUINA",
@@ -44726,6 +44786,18 @@
       "prod_agua_m3": 20721.67,
       "pozos_activos": 8,
       "pozos_no_conv": 14
+    },
+    {
+      "mes": "2026-08",
+      "area": "LAS MANADAS",
+      "empresa": "BENTIA ENERGY S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 0.06,
+      "prod_pet_m3": 843.03,
+      "prod_agua_m3": 504.15,
+      "pozos_activos": 11,
+      "pozos_no_conv": 3
     },
     {
       "mes": "2026-08",
@@ -44755,6 +44827,18 @@
       "mes": "2026-08",
       "area": "CENTENARIO",
       "empresa": "FLXS OGE S.A",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 0,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-08",
+      "area": "DON RUIZ",
+      "empresa": "BENTIA ENERGY S.A.",
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 0.0,
