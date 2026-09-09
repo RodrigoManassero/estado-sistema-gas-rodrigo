@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-07T18:00:31+00:00",
+  "generated_at": "2026-09-09T13:52:08+00:00",
   "source": "TGS — Síntesis del Estado Operativo (ETGS)",
-  "source_date": "2026-09-06",
+  "source_date": "2026-09-08",
   "data": [
     {
       "generado_at": "2026-04-03T08:17:23",
@@ -2171,7 +2171,22 @@
       "pcs_neuba_2": 10464,
       "pcs_troncal": 9827,
       "pcs_paralelo": 9940,
-      "source": "ETGS1786849200000.pdf"
+      "source": "ETGS_20260815.pdf"
+    },
+    {
+      "generado_at": "2026-08-17T08:02:45",
+      "fecha": "2026-08-16",
+      "linepack_tgs_dia_anterior": 225.14,
+      "linepack_tgs_dia_actual": 229.98,
+      "linepack_tgs_variacion": 4.84,
+      "alerta_estado": "TGS -",
+      "alerta_motivo": "Normal",
+      "pcs_san_martin": 9607,
+      "pcs_neuba_1": 10049,
+      "pcs_neuba_2": 10504,
+      "pcs_troncal": 9873,
+      "pcs_paralelo": 9999,
+      "source": "ETGS_20260816.pdf"
     },
     {
       "generado_at": "2026-08-18T07:59:01",
@@ -2186,7 +2201,7 @@
       "pcs_neuba_2": 10479,
       "pcs_troncal": 9876,
       "pcs_paralelo": 9994,
-      "source": "ETGS1787022000000.pdf"
+      "source": "ETGS_20260817.pdf"
     },
     {
       "generado_at": "2026-08-19T07:59:34",
@@ -2201,7 +2216,7 @@
       "pcs_neuba_2": 10402,
       "pcs_troncal": 9854,
       "pcs_paralelo": 9962,
-      "source": "ETGS1787108400000.pdf"
+      "source": "ETGS_20260818.pdf"
     },
     {
       "generado_at": "2026-08-20T07:40:42",
@@ -2216,7 +2231,7 @@
       "pcs_neuba_2": 10496,
       "pcs_troncal": 9834,
       "pcs_paralelo": 9964,
-      "source": "ETGS1787194800000.pdf"
+      "source": "ETGS_20260819.pdf"
     },
     {
       "generado_at": "2026-08-21T07:05:13",
@@ -2231,7 +2246,7 @@
       "pcs_neuba_2": 10422,
       "pcs_troncal": 9793,
       "pcs_paralelo": 9911,
-      "source": "ETGS1787281200000.pdf"
+      "source": "ETGS_20260820.pdf"
     },
     {
       "generado_at": "2026-08-22T08:42:52",
@@ -2246,7 +2261,7 @@
       "pcs_neuba_2": 10367,
       "pcs_troncal": 9688,
       "pcs_paralelo": 9693,
-      "source": "ETGS1787367600000.pdf"
+      "source": "ETGS_20260821.pdf"
     },
     {
       "generado_at": "2026-08-23T08:36:56",
@@ -2261,7 +2276,7 @@
       "pcs_neuba_2": 10391,
       "pcs_troncal": 9750,
       "pcs_paralelo": 9886,
-      "source": "ETGS1787454000000.pdf"
+      "source": "ETGS_20260822.pdf"
     },
     {
       "generado_at": "2026-08-24T08:24:13",
@@ -2276,7 +2291,7 @@
       "pcs_neuba_2": 10366,
       "pcs_troncal": 9644,
       "pcs_paralelo": 9787,
-      "source": "ETGS1787540400000.pdf"
+      "source": "ETGS_20260823.pdf"
     },
     {
       "generado_at": "2026-08-25T08:45:24",
@@ -2291,7 +2306,7 @@
       "pcs_neuba_2": 10365,
       "pcs_troncal": 9697,
       "pcs_paralelo": 9676,
-      "source": "ETGS1787626800000.pdf"
+      "source": "ETGS_20260824.pdf"
     },
     {
       "generado_at": "2026-08-26T08:02:47",
@@ -2306,7 +2321,7 @@
       "pcs_neuba_2": 10410,
       "pcs_troncal": 9596,
       "pcs_paralelo": 9598,
-      "source": "ETGS1787713200000.pdf"
+      "source": "ETGS_20260825.pdf"
     },
     {
       "generado_at": "2026-08-27T08:21:02",
@@ -2321,7 +2336,7 @@
       "pcs_neuba_2": 10415,
       "pcs_troncal": 9602,
       "pcs_paralelo": 9610,
-      "source": "ETGS1787799600000.pdf"
+      "source": "ETGS_20260826.pdf"
     },
     {
       "generado_at": "2026-08-28T07:28:05",
@@ -2335,7 +2350,22 @@
       "pcs_neuba_2": 10358,
       "pcs_troncal": 9599,
       "pcs_paralelo": 9606,
-      "source": "ETGS1787886000000.pdf"
+      "source": "ETGS_20260827.pdf"
+    },
+    {
+      "generado_at": "2026-08-29T07:24:12",
+      "fecha": "2026-08-28",
+      "linepack_tgs_dia_anterior": 220.58,
+      "linepack_tgs_dia_actual": 223.43,
+      "linepack_tgs_variacion": 2.85,
+      "alerta_estado": "TGSA - Alerta",
+      "alerta_motivo": "Por bajo linepack en tramos finales",
+      "pcs_san_martin": 9611,
+      "pcs_neuba_1": 9989,
+      "pcs_neuba_2": 10422,
+      "pcs_troncal": 9513,
+      "pcs_paralelo": 9577,
+      "source": "ETGS_20260828.pdf"
     },
     {
       "generado_at": "2026-08-30T07:03:53",
@@ -2350,7 +2380,22 @@
       "pcs_neuba_2": 10357,
       "pcs_troncal": 9473,
       "pcs_paralelo": 9547,
-      "source": "ETGS1788058800000.pdf"
+      "source": "ETGS_20260829.pdf"
+    },
+    {
+      "generado_at": "2026-08-31T07:38:46",
+      "fecha": "2026-08-30",
+      "linepack_tgs_dia_anterior": 229.48,
+      "linepack_tgs_dia_actual": 241.48,
+      "linepack_tgs_variacion": 12.0,
+      "alerta_estado": "TGS -",
+      "alerta_motivo": "Normal",
+      "pcs_san_martin": 9626,
+      "pcs_neuba_1": 10007,
+      "pcs_neuba_2": 10409,
+      "pcs_troncal": 9400,
+      "pcs_paralelo": 9485,
+      "source": "ETGS_20260830.pdf"
     },
     {
       "generado_at": "2026-09-01T08:29:59",
@@ -2365,7 +2410,7 @@
       "pcs_neuba_2": 10417,
       "pcs_troncal": 9455,
       "pcs_paralelo": 9543,
-      "source": "ETGS1788231600000.pdf"
+      "source": "ETGS_20260831.pdf"
     },
     {
       "generado_at": "2026-09-02T08:11:48",
@@ -2380,7 +2425,7 @@
       "pcs_neuba_2": 10375,
       "pcs_troncal": 9412,
       "pcs_paralelo": 9502,
-      "source": "ETGS1788318000000.pdf"
+      "source": "ETGS_20260901.pdf"
     },
     {
       "generado_at": "2026-09-03T09:52:27",
@@ -2395,7 +2440,7 @@
       "pcs_neuba_2": 10373,
       "pcs_troncal": 9426,
       "pcs_paralelo": 9511,
-      "source": "ETGS1788404400000.pdf"
+      "source": "ETGS_20260902.pdf"
     },
     {
       "generado_at": "2026-09-04T08:32:22",
@@ -2410,7 +2455,7 @@
       "pcs_neuba_2": 10359,
       "pcs_troncal": 9482,
       "pcs_paralelo": 9544,
-      "source": "ETGS1788490800000.pdf"
+      "source": "ETGS_20260903.pdf"
     },
     {
       "generado_at": "2026-09-05T08:40:24",
@@ -2425,7 +2470,7 @@
       "pcs_neuba_2": 10327,
       "pcs_troncal": 9449,
       "pcs_paralelo": 9519,
-      "source": "ETGS1788577200000.pdf"
+      "source": "ETGS_20260904.pdf"
     },
     {
       "generado_at": "2026-09-06T07:34:12",
@@ -2440,7 +2485,7 @@
       "pcs_neuba_2": 10326,
       "pcs_troncal": 9525,
       "pcs_paralelo": 9583,
-      "source": "ETGS1788663600000.pdf"
+      "source": "ETGS_20260905.pdf"
     },
     {
       "generado_at": "2026-09-07T08:11:12",
@@ -2455,7 +2500,37 @@
       "pcs_neuba_2": 10357,
       "pcs_troncal": 9504,
       "pcs_paralelo": 9552,
-      "source": "ETGS1788750000000.pdf"
+      "source": "ETGS_20260906.pdf"
+    },
+    {
+      "generado_at": "2026-09-08T09:31:06",
+      "fecha": "2026-09-07",
+      "linepack_tgs_dia_anterior": 222.86,
+      "linepack_tgs_dia_actual": 218.37,
+      "linepack_tgs_variacion": -4.49,
+      "alerta_estado": "TGSA - Alerta",
+      "alerta_motivo": "Por bajo line pack en tramos finales",
+      "pcs_san_martin": 9743,
+      "pcs_neuba_1": 10054,
+      "pcs_neuba_2": 10410,
+      "pcs_troncal": 9494,
+      "pcs_paralelo": 9797,
+      "source": "ETGS_20260907.pdf"
+    },
+    {
+      "generado_at": "2026-09-09T08:21:27",
+      "fecha": "2026-09-08",
+      "linepack_tgs_dia_anterior": 218.37,
+      "linepack_tgs_dia_actual": 220.85,
+      "linepack_tgs_variacion": 2.48,
+      "alerta_estado": "TGSA - Alerta",
+      "alerta_motivo": "Por bajo line pack en tramos",
+      "pcs_san_martin": 9664,
+      "pcs_neuba_1": 9964,
+      "pcs_neuba_2": 10556,
+      "pcs_troncal": 9686,
+      "pcs_paralelo": 9788,
+      "source": "ETGS_20260908.pdf"
     }
   ],
   "issues": []
