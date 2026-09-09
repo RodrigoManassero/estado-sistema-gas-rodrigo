@@ -107,7 +107,9 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
       cammesa_fueloil: null as number | null,
       cammesa_carbon: null as number | null,
       ppo_gas: null as number | null,
-      cammesa_gas_est: u != null ? u + gasBias : d?.cammesa_gas_est ?? null,
+      cammesa_gas_est:
+      d?.cammesa_gas_est ??
+      (u != null ? u + gasBias : null),
       cammesa_gasoil_est: d?.cammesa_gasoil_est ?? null,
       cammesa_fueloil_est: d?.cammesa_fueloil_est ?? null,
       cammesa_carbon_est: d?.cammesa_carbon_est ?? null,
@@ -141,11 +143,11 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
         <Bar dataKey="cammesa_gasoil" stackId="1" fill={GASOIL} name="Gas Oil" isAnimationActive={false} />
         <Bar dataKey="cammesa_fueloil" stackId="1" fill={FUELOIL} name="Fuel Oil" isAnimationActive={false} />
         <Bar dataKey="cammesa_carbon" stackId="1" fill={CARBON} name="Carbón" isAnimationActive={false} />
-        {/* Proyectado (Previsión semanal): mismos colores, translúcido, sin leyenda. */}
-        <Bar dataKey="cammesa_gas_est" stackId="est" fill={GAS} fillOpacity={0.3} name="Gas est." legendType="none" isAnimationActive={false} />
-        <Bar dataKey="cammesa_gasoil_est" stackId="est" fill={GASOIL} fillOpacity={0.3} name="Gas Oil est." legendType="none" isAnimationActive={false} />
-        <Bar dataKey="cammesa_fueloil_est" stackId="est" fill={FUELOIL} fillOpacity={0.3} name="Fuel Oil est." legendType="none" isAnimationActive={false} />
-        <Bar dataKey="cammesa_carbon_est" stackId="est" fill={CARBON} fillOpacity={0.3} name="Carbón est." legendType="none" isAnimationActive={false} />
+        {/* Programación semanal CAMMESA: mismos colores que el cierre. */}
+        <Bar dataKey="cammesa_gas_est" stackId="est" fill={GAS} fillOpacity={1} name="Gas est." legendType="none" isAnimationActive={false} />
+        <Bar dataKey="cammesa_gasoil_est" stackId="est" fill={GASOIL} fillOpacity={1} name="Gas Oil est." legendType="none" isAnimationActive={false} />
+        <Bar dataKey="cammesa_fueloil_est" stackId="est" fill={FUELOIL} fillOpacity={1} name="Fuel Oil est." legendType="none" isAnimationActive={false} />
+        <Bar dataKey="cammesa_carbon_est" stackId="est" fill={CARBON} fillOpacity={1} name="Carbón est." legendType="none" isAnimationActive={false} />
         {/* PPO overlay: authoritative closing data for gas consumption. */}
         <Line type="monotone" dataKey="ppo_gas" stroke={PPO_LINE} strokeWidth={1.5} dot={{ r: 2 }} name="PPO gas (dato cerrado)" connectNulls={false} isAnimationActive={false} />
       </ComposedChart>
