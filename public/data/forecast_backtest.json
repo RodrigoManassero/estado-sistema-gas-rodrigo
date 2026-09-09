@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-07T18:00:32+00:00",
+  "generated_at": "2026-09-09T19:24:10+00:00",
   "source": "rolling train/predict on ENARGAS RDS",
   "source_date": null,
   "data": {
@@ -8,26 +8,11 @@
     "segments": {
       "prioritaria": {
         "metrics": {
-          "mae": 6.53,
-          "mape": 8.85,
-          "n": 4
+          "mae": 3.64,
+          "mape": 5.0,
+          "n": 1
         },
         "series": [
-          {
-            "fecha": "2026-07-09",
-            "actual": 73.8,
-            "predicted": 57.84
-          },
-          {
-            "fecha": "2026-07-10",
-            "actual": 76.4,
-            "predicted": 72.1
-          },
-          {
-            "fecha": "2026-07-11",
-            "actual": 70.5,
-            "predicted": 68.29
-          },
           {
             "fecha": "2026-07-12",
             "actual": 72.8,
@@ -286,12 +271,12 @@
           {
             "fecha": "2026-09-01",
             "actual": null,
-            "predicted": 46.85
+            "predicted": 44.15
           },
           {
             "fecha": "2026-09-02",
             "actual": null,
-            "predicted": 28.01
+            "predicted": 35.29
           },
           {
             "fecha": "2026-09-03",
@@ -312,31 +297,31 @@
             "fecha": "2026-09-06",
             "actual": null,
             "predicted": 82.47
+          },
+          {
+            "fecha": "2026-09-07",
+            "actual": null,
+            "predicted": 69.09
+          },
+          {
+            "fecha": "2026-09-08",
+            "actual": null,
+            "predicted": 46.9
+          },
+          {
+            "fecha": "2026-09-09",
+            "actual": null,
+            "predicted": 42.71
           }
         ]
       },
       "usinas": {
         "metrics": {
-          "mae": 7.4,
-          "mape": 21.78,
-          "n": 4
+          "mae": 9.17,
+          "mape": 29.2,
+          "n": 1
         },
         "series": [
-          {
-            "fecha": "2026-07-09",
-            "actual": 33.9,
-            "predicted": 30.43
-          },
-          {
-            "fecha": "2026-07-10",
-            "actual": 36.9,
-            "predicted": 28.54
-          },
-          {
-            "fecha": "2026-07-11",
-            "actual": 34.3,
-            "predicted": 25.71
-          },
           {
             "fecha": "2026-07-12",
             "actual": 31.4,
@@ -621,31 +606,31 @@
             "fecha": "2026-09-06",
             "actual": null,
             "predicted": 15.77
+          },
+          {
+            "fecha": "2026-09-07",
+            "actual": null,
+            "predicted": 24.19
+          },
+          {
+            "fecha": "2026-09-08",
+            "actual": null,
+            "predicted": 30.35
+          },
+          {
+            "fecha": "2026-09-09",
+            "actual": null,
+            "predicted": 31.77
           }
         ]
       },
       "demanda_total": {
         "metrics": {
-          "mae": 10.13,
-          "mape": 6.79,
+          "mae": 9.66,
+          "mape": 6.48,
           "n": 60
         },
         "series": [
-          {
-            "fecha": "2026-07-09",
-            "actual": 151.6,
-            "predicted": 140.38
-          },
-          {
-            "fecha": "2026-07-10",
-            "actual": 157.5,
-            "predicted": 141.13
-          },
-          {
-            "fecha": "2026-07-11",
-            "actual": 148.5,
-            "predicted": 135.47
-          },
           {
             "fecha": "2026-07-12",
             "actual": 147.5,
@@ -930,6 +915,21 @@
             "fecha": "2026-09-06",
             "actual": 140.4,
             "predicted": 135.31
+          },
+          {
+            "fecha": "2026-09-07",
+            "actual": 152.4,
+            "predicted": 142.02
+          },
+          {
+            "fecha": "2026-09-08",
+            "actual": 135.8,
+            "predicted": 137.13
+          },
+          {
+            "fecha": "2026-09-09",
+            "actual": 135.8,
+            "predicted": 136.65
           }
         ]
       }
