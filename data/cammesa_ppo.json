@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-10T13:11:52+00:00",
+  "generated_at": "2026-09-10T14:28:20+00:00",
   "source": "CAMMESA PPO — Consumo Combustibles (aggregated per day)",
-  "source_date": "2026-06-25",
+  "source_date": "2026-09-09",
   "data": [
     {
       "fecha": "2026-01-20",
@@ -2043,37 +2043,277 @@
       "gen_gasoil_mwh": 71059.8,
       "plants_counted": 239,
       "source": "Parte_250626.xls"
+    },
+    {
+      "fecha": "2026-08-11",
+      "gas_mmm3": 40.717,
+      "carbon_tn": 3016.3,
+      "fueloil_tn": 2021.1,
+      "gasoil_m3": 4649.3,
+      "plants_counted": 1,
+      "source": "Parte_110826.xlsx"
+    },
+    {
+      "fecha": "2026-08-12",
+      "gas_mmm3": 40.397,
+      "carbon_tn": 3192.8,
+      "fueloil_tn": 2380.8,
+      "gasoil_m3": 6995.8,
+      "plants_counted": 1,
+      "source": "Parte_120826.xlsx"
+    },
+    {
+      "fecha": "2026-08-13",
+      "gas_mmm3": 39.645,
+      "carbon_tn": 3152.1,
+      "fueloil_tn": 2051.2,
+      "gasoil_m3": 2827.2,
+      "plants_counted": 1,
+      "source": "Parte_130826.xlsx"
+    },
+    {
+      "fecha": "2026-08-14",
+      "gas_mmm3": 34.79,
+      "carbon_tn": 3077.1,
+      "fueloil_tn": 1161.2,
+      "gasoil_m3": 3609.5,
+      "plants_counted": 1,
+      "source": "Parte_140826.xlsx"
+    },
+    {
+      "fecha": "2026-08-15",
+      "gas_mmm3": 31.218,
+      "carbon_tn": 2636.2,
+      "fueloil_tn": 785.2,
+      "gasoil_m3": 1884.4,
+      "plants_counted": 1,
+      "source": "Parte_150826.xlsx"
+    },
+    {
+      "fecha": "2026-08-16",
+      "gas_mmm3": 26.41,
+      "carbon_tn": 0.0,
+      "fueloil_tn": 223.6,
+      "gasoil_m3": 1894.8,
+      "plants_counted": 1,
+      "source": "Parte_160826.xlsx"
+    },
+    {
+      "fecha": "2026-08-17",
+      "gas_mmm3": 29.826,
+      "carbon_tn": 0.0,
+      "fueloil_tn": 271.1,
+      "gasoil_m3": 2723.2,
+      "plants_counted": 1,
+      "source": "Parte_170826.xlsx"
+    },
+    {
+      "fecha": "2026-08-18",
+      "gas_mmm3": 33.616,
+      "carbon_tn": 408.0,
+      "fueloil_tn": 1412.3,
+      "gasoil_m3": 6652.6,
+      "plants_counted": 1,
+      "source": "Parte_180826.xlsx"
+    },
+    {
+      "fecha": "2026-08-19",
+      "gas_mmm3": 32.381,
+      "carbon_tn": 2899.8,
+      "fueloil_tn": 958.6,
+      "gasoil_m3": 4993.3,
+      "plants_counted": 1,
+      "source": "Parte_190826.xlsx"
+    },
+    {
+      "fecha": "2026-08-20",
+      "gas_mmm3": 33.012,
+      "carbon_tn": 2923.4,
+      "fueloil_tn": 799.7,
+      "gasoil_m3": 1514.9,
+      "plants_counted": 1,
+      "source": "Parte_200826.xlsx"
+    },
+    {
+      "fecha": "2026-08-21",
+      "gas_mmm3": 35.624,
+      "carbon_tn": 2928.4,
+      "fueloil_tn": 957.4,
+      "gasoil_m3": 1526.5,
+      "plants_counted": 1,
+      "source": "Parte_210826.xlsx"
+    },
+    {
+      "fecha": "2026-08-22",
+      "gas_mmm3": 34.557,
+      "carbon_tn": 2825.6,
+      "fueloil_tn": 130.4,
+      "gasoil_m3": 170.6,
+      "plants_counted": 1,
+      "source": "Parte_220826.xlsx"
+    },
+    {
+      "fecha": "2026-08-23",
+      "gas_mmm3": 34.784,
+      "carbon_tn": 2769.3,
+      "fueloil_tn": 0.0,
+      "gasoil_m3": 69.6,
+      "plants_counted": 1,
+      "source": "Parte_230826.xlsx"
+    },
+    {
+      "fecha": "2026-08-24",
+      "gas_mmm3": 36.783,
+      "carbon_tn": 2982.8,
+      "fueloil_tn": 204.3,
+      "gasoil_m3": 108.8,
+      "plants_counted": 1,
+      "source": "Parte_240826.xlsx"
+    },
+    {
+      "fecha": "2026-08-25",
+      "gas_mmm3": 32.637,
+      "carbon_tn": 3194.6,
+      "fueloil_tn": 95.4,
+      "gasoil_m3": 42.3,
+      "plants_counted": 1,
+      "source": "Parte_250826.xlsx"
+    },
+    {
+      "fecha": "2026-08-26",
+      "gas_mmm3": 29.613,
+      "carbon_tn": 2717.1,
+      "fueloil_tn": 0.0,
+      "gasoil_m3": 60.1,
+      "plants_counted": 1,
+      "source": "Parte_260826.xlsx"
+    },
+    {
+      "fecha": "2026-08-27",
+      "gas_mmm3": 31.107,
+      "carbon_tn": 3028.8,
+      "fueloil_tn": 96.4,
+      "gasoil_m3": 87.9,
+      "plants_counted": 1,
+      "source": "Parte_270826.xlsx"
+    },
+    {
+      "fecha": "2026-08-28",
+      "gas_mmm3": 30.595,
+      "carbon_tn": 2959.2,
+      "fueloil_tn": 0.0,
+      "gasoil_m3": 40.8,
+      "plants_counted": 1,
+      "source": "Parte_280826.xlsx"
+    },
+    {
+      "fecha": "2026-08-29",
+      "gas_mmm3": 30.05,
+      "carbon_tn": 0.0,
+      "fueloil_tn": 0.0,
+      "gasoil_m3": 34.0,
+      "plants_counted": 1,
+      "source": "Parte_290826.xlsx"
+    },
+    {
+      "fecha": "2026-08-30",
+      "gas_mmm3": 24.859,
+      "carbon_tn": 0.0,
+      "fueloil_tn": 0.0,
+      "gasoil_m3": 80.2,
+      "plants_counted": 1,
+      "source": "Parte_300826.xlsx"
+    },
+    {
+      "fecha": "2026-08-31",
+      "gas_mmm3": 29.802,
+      "carbon_tn": 0.0,
+      "fueloil_tn": 0.0,
+      "gasoil_m3": 61.9,
+      "plants_counted": 1,
+      "source": "Parte_310826.xlsx"
+    },
+    {
+      "fecha": "2026-09-01",
+      "gas_mmm3": 36.033,
+      "carbon_tn": 0.0,
+      "fueloil_tn": 0.0,
+      "gasoil_m3": 76.5,
+      "plants_counted": 1,
+      "source": "Parte_010926.xlsx"
+    },
+    {
+      "fecha": "2026-09-02",
+      "gas_mmm3": 32.002,
+      "carbon_tn": 0.0,
+      "fueloil_tn": 0.0,
+      "gasoil_m3": 29.5,
+      "plants_counted": 1,
+      "source": "Parte_020926.xlsx"
+    },
+    {
+      "fecha": "2026-09-03",
+      "gas_mmm3": 32.571,
+      "carbon_tn": 0.0,
+      "fueloil_tn": 0.0,
+      "gasoil_m3": 23.4,
+      "plants_counted": 1,
+      "source": "Parte_030926.xlsx"
+    },
+    {
+      "fecha": "2026-09-04",
+      "gas_mmm3": 29.638,
+      "carbon_tn": 0.0,
+      "fueloil_tn": 0.0,
+      "gasoil_m3": 36.4,
+      "plants_counted": 1,
+      "source": "Parte_040926.xlsx"
+    },
+    {
+      "fecha": "2026-09-05",
+      "gas_mmm3": 31.455,
+      "carbon_tn": 0.0,
+      "fueloil_tn": 0.0,
+      "gasoil_m3": 35.9,
+      "plants_counted": 1,
+      "source": "Parte_050926.xlsx"
+    },
+    {
+      "fecha": "2026-09-06",
+      "gas_mmm3": 34.464,
+      "carbon_tn": 249.4,
+      "fueloil_tn": 373.6,
+      "gasoil_m3": 80.4,
+      "plants_counted": 1,
+      "source": "Parte_060926.xlsx"
+    },
+    {
+      "fecha": "2026-09-07",
+      "gas_mmm3": 35.395,
+      "carbon_tn": 2758.6,
+      "fueloil_tn": 227.0,
+      "gasoil_m3": 294.2,
+      "plants_counted": 1,
+      "source": "Parte_070926.xlsx"
+    },
+    {
+      "fecha": "2026-09-08",
+      "gas_mmm3": 32.309,
+      "carbon_tn": 2654.5,
+      "fueloil_tn": 85.0,
+      "gasoil_m3": 547.0,
+      "plants_counted": 1,
+      "source": "Parte_080926.xlsx"
+    },
+    {
+      "fecha": "2026-09-09",
+      "gas_mmm3": 31.507,
+      "carbon_tn": 2635.8,
+      "fueloil_tn": 164.4,
+      "gasoil_m3": 124.0,
+      "plants_counted": 1,
+      "source": "Parte_090926.xlsx"
     }
   ],
-  "failures": [
-    "2026-08-11: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-12: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-13: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-14: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-15: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-16: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-17: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-18: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-19: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-20: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-21: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-22: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-23: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-24: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-25: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-26: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-27: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-28: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-29: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-30: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-08-31: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-09-01: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-09-02: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-09-03: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-09-04: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-09-05: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-09-06: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-09-07: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')",
-    "2026-09-08: not an OLE2 file (first bytes b'PK\\x03\\x04\\x14\\x00\\x06\\x00')"
-  ]
+  "failures": []
 }
