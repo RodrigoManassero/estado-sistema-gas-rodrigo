@@ -65,6 +65,8 @@ def list_documents(date_from: date, date_to: date, session: requests.Session):
     }
     r = session.get(API_BASE + 'findDocumentosByNemoRango', params=params, headers=HDRS, timeout=60)
     r.raise_for_status()
+    print("SIZE:", len(r.content))
+    print("FIRST BYTES:", r.content[:16])
     return r.json()
 
 
@@ -75,26 +77,89 @@ def download_and_decrypt(doc_id: str, attachment_id: str, session: requests.Sess
         'nemo': NEMO,
     }, headers=HDRS, timeout=120)
     r.raise_for_status()
-    if not r.content or r.content[:4] != b'\xd0\xcf\x11\xe0':
-        raise ValueError(f'not an OLE2 file (first bytes {r.content[:8]!r})')
-    office = msoffcrypto.OfficeFile(io.BytesIO(r.content))
-    try:
-        office.load_key(password=DEFAULT_PW)
-    except Exception as e:
-        raise ValueError(f'decrypt failed: {e}')
-    out = io.BytesIO()
-    office.decrypt(out)
-    out.seek(0)
-    return out.read()
+    print("CONTENT TYPE:", r.headers.get("content-type"))
+    print("SIZE:", len(r.content))
+    print("FIRST BYTES:", r.content[:16])
+    # XLSX moderno (OpenXML)
+    if r.content[:4] == b'PK\x03\x04':
 
+        with open(
+            os.path.join(
+                os.path.dirname(__file__),
+                '..',
+                'raw',
+                'cammesa_test.xlsx'
+            ),
+            'wb'
+        ) as f:
+            f.write(r.content)
+
+        print("CAMMESA XLSX guardado en raw/cammesa_test.xlsx")
+
+        return r.content
+
+    # XLS clásico protegido
+    if r.content[:4] == b'\xd0\xcf\x11\xe0':
+
+        office = msoffcrypto.OfficeFile(io.BytesIO(r.content))
+
+        try:
+            office.load_key(password=DEFAULT_PW)
+        except Exception as e:
+            raise ValueError(f'decrypt failed: {e}')
+
+        out = io.BytesIO()
+        office.decrypt(out)
+        out.seek(0)
+
+        return out.read()
+
+    raise ValueError(
+        f'unsupported file type (first bytes {r.content[:8]!r})'
+    )
 
 def aggregate_fuel_sheet(xls_bytes: bytes):
     """Sum every plant row in Consumo Combustibles, return totals + metadata."""
-    wb = xlrd.open_workbook(file_contents=xls_bytes, on_demand=True)
+
+    # XLSX moderno
+    if xls_bytes[:4] == b'PK\x03\x04':
+
+        from openpyxl import load_workbook
+
+        wb = load_workbook(
+            io.BytesIO(xls_bytes),
+            data_only=True
+        )
+
+        print("XLSX detectado")
+        print("HOJAS:", wb.sheetnames)
+
+        ws = wb["Consumo Combustibles"]
+
+        for row in ws.iter_rows(values_only=True):
+            if len(row) > 1 and str(row[1]).strip() == "Total":
+
+                print("FILA TOTAL:")
+                print(row)
+
+                return {
+                    "fecha": None,
+                    "gas_mmm3": round(float(row[2]) / 1000, 3),
+                    "carbon_tn": round(float(row[5]), 1),
+                    "fueloil_tn": round(float(row[8]), 1),
+                    "gasoil_m3": round(float(row[11]), 1),
+                    "plants_counted": 1,
+                }
+
+    wb = xlrd.open_workbook(
+        file_contents=xls_bytes,
+        on_demand=True
+    )
+
     if 'Consumo Combustibles' not in wb.sheet_names():
         return None
-    s = wb.sheet_by_name('Consumo Combustibles')
 
+    s = wb.sheet_by_name('Consumo Combustibles')
     # Parse "Día: 01/04/2026" from row 1 (col 5 in the samples we inspected).
     fecha_iso = None
     for r in range(3):
@@ -224,7 +289,8 @@ def main():
         existing[aggregated['fecha']] = aggregated
         added += 1
         if added % 5 == 0:
-            print(f"  +{added} gas={aggregated['gas_mmm3']} MMm³ gen_gas={aggregated['gen_gas_mwh']} MWh")
+            print(f"  +{added} gas={aggregated['gas_mmm3']} MMm³"
+            )
         if args.sleep_ms:
             import time as _t
             _t.sleep(args.sleep_ms / 1000)
