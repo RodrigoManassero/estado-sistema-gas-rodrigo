@@ -147,7 +147,7 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
         <Bar dataKey="cammesa_gas_est" stackId="est" fill={GAS} fillOpacity={1} name="Gas est." legendType="none" isAnimationActive={false} />
         <Bar dataKey="cammesa_gasoil_est" stackId="est" fill={GASOIL} fillOpacity={1} name="Gas Oil est." legendType="none" isAnimationActive={false} />
         <Bar dataKey="cammesa_fueloil_est" stackId="est" fill={FUELOIL} fillOpacity={1} name="Fuel Oil est." legendType="none" isAnimationActive={false} />
-        <Bar dataKey="cammesa_carbon_est" stackId="est" fill={CARBON} fillOpacity={0.3} name="Carbón est." legendType="none" isAnimationActive={false} />
+        <Bar dataKey="cammesa_carbon_est" stackId="est" fill={CARBON} fillOpacity={1} name="Carbón est." legendType="none" isAnimationActive={false} />
         {/* PPO overlay: authoritative closing data for gas consumption. */}
         <Line type="monotone" dataKey="ppo_gas" stroke={PPO_LINE} strokeWidth={1.5} dot={{ r: 2 }} name="PPO gas (dato cerrado)" connectNulls={false} isAnimationActive={false} />
       </ComposedChart>
