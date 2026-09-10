@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-10T00:15:08+00:00",
+  "generated_at": "2026-09-10T13:16:26+00:00",
   "source": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
   "source_date": "2026-08",
   "data": [
@@ -28571,7 +28571,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 283.63,
       "prod_pet_m3": 119816.86,
-      "prod_agua_m3": 135272.64,
+      "prod_agua_m3": 135272.63,
       "pozos_activos": 95,
       "pozos_no_conv": 128
     },
@@ -31078,7 +31078,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 43.47,
-      "prod_pet_m3": 97761.85,
+      "prod_pet_m3": 97761.86,
       "prod_agua_m3": 195360.74,
       "pozos_activos": 103,
       "pozos_no_conv": 46
@@ -31738,7 +31738,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Mendoza",
       "prod_gas_mm3": 1.76,
-      "prod_pet_m3": 39723.48,
+      "prod_pet_m3": 39723.49,
       "prod_agua_m3": 586440.0,
       "pozos_activos": 310,
       "pozos_no_conv": 85
@@ -37834,7 +37834,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "La Pampa",
       "prod_gas_mm3": 0.0,
-      "prod_pet_m3": 111.33,
+      "prod_pet_m3": 111.34,
       "prod_agua_m3": 221.35,
       "pozos_activos": 4,
       "pozos_no_conv": 0
@@ -44506,7 +44506,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 0.0,
-      "prod_pet_m3": 316.09,
+      "prod_pet_m3": 316.1,
       "prod_agua_m3": 16576.5,
       "pozos_activos": 6,
       "pozos_no_conv": 0
@@ -44789,6 +44789,18 @@
     },
     {
       "mes": "2026-08",
+      "area": "PUESTO FLORES - ESTANCIA VIEJA",
+      "empresa": "EDHIPSA",
+      "cuenca": "NEUQUINA",
+      "provincia": "Rio Negro",
+      "prod_gas_mm3": 0.12,
+      "prod_pet_m3": 2576.11,
+      "prod_agua_m3": 64480.74,
+      "pozos_activos": 24,
+      "pozos_no_conv": 2
+    },
+    {
+      "mes": "2026-08",
       "area": "LAS MANADAS",
       "empresa": "BENTIA ENERGY S.A.",
       "cuenca": "NEUQUINA",
@@ -44821,6 +44833,18 @@
       "prod_pet_m3": 84.93,
       "prod_agua_m3": 0.4,
       "pozos_activos": 1,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-08",
+      "area": "PUESTO PRADO",
+      "empresa": "EDHIPSA",
+      "cuenca": "NEUQUINA",
+      "provincia": "Rio Negro",
+      "prod_gas_mm3": 0.01,
+      "prod_pet_m3": 253.94,
+      "prod_agua_m3": 427.05,
+      "pozos_activos": 9,
       "pozos_no_conv": 0
     },
     {
