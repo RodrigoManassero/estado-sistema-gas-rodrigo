@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-10T21:34:31+00:00",
+  "generated_at": "2026-09-11T13:11:11+00:00",
   "source": "MEGSA public API (megsa.ar/api)",
   "source_date": null,
   "data": {
@@ -10,13 +10,13 @@
         "series": "NATURAL_GAS_USD",
         "seriesDescription": "spot_price",
         "units": "USD/MMbtu",
-        "currentPrice": 2.84,
-        "currentPeriod": "2026-09-10T00:00:00",
-        "previousPrice": 2.81,
+        "currentPrice": 2.79,
+        "currentPeriod": "2026-09-11T00:00:00",
+        "previousPrice": 2.78,
         "previousPeriod": null,
-        "nominalDifference": 0.03,
-        "percentageDifference": 1.07,
-        "lastUpdated": "2026-09-10T18:30:06.2573747",
+        "nominalDifference": 0.01,
+        "percentageDifference": 0.36,
+        "lastUpdated": "2026-09-11T10:10:02.3759751",
         "marketType": "Gas",
         "displayName": "NAT GAS"
       },
@@ -26,13 +26,13 @@
         "series": "DUTCH_TTF_EUR",
         "seriesDescription": "spot_price",
         "units": "€/MWh",
-        "currentPrice": 81.96,
-        "currentPeriod": "2026-09-10T00:00:00",
-        "previousPrice": 78.96,
+        "currentPrice": 81.26,
+        "currentPeriod": "2026-09-11T00:00:00",
+        "previousPrice": 79.67,
         "previousPeriod": null,
-        "nominalDifference": 3.0,
-        "percentageDifference": 3.8,
-        "lastUpdated": "2026-09-10T18:30:06.7159874",
+        "nominalDifference": 1.59,
+        "percentageDifference": 2.0,
+        "lastUpdated": "2026-09-11T10:10:02.9859989",
         "marketType": "Gas",
         "displayName": "TTF GAS Fut"
       },
@@ -42,13 +42,13 @@
         "series": "BRENT_CRUDE_USD",
         "seriesDescription": "spot_price",
         "units": "USD/bbl",
-        "currentPrice": 108.63,
-        "currentPeriod": "2026-09-10T00:00:00",
-        "previousPrice": 101.66,
+        "currentPrice": 104.56,
+        "currentPeriod": "2026-09-11T00:00:00",
+        "previousPrice": 105.08,
         "previousPeriod": null,
-        "nominalDifference": 6.97,
-        "percentageDifference": 6.86,
-        "lastUpdated": "2026-09-10T18:30:05.762137",
+        "nominalDifference": -0.52,
+        "percentageDifference": -0.49,
+        "lastUpdated": "2026-09-11T10:10:01.9278292",
         "marketType": "Oil",
         "displayName": "BRENT"
       },
@@ -58,13 +58,13 @@
         "series": "WTI_USD",
         "seriesDescription": "spot_price",
         "units": "USD/bbl",
-        "currentPrice": 103.98,
-        "currentPeriod": "2026-09-10T00:00:00",
-        "previousPrice": 96.66,
+        "currentPrice": 99.43,
+        "currentPeriod": "2026-09-11T00:00:00",
+        "previousPrice": 99.69,
         "previousPeriod": null,
-        "nominalDifference": 7.32,
-        "percentageDifference": 7.57,
-        "lastUpdated": "2026-09-10T18:30:05.209552",
+        "nominalDifference": -0.26,
+        "percentageDifference": -0.26,
+        "lastUpdated": "2026-09-11T10:10:01.2864989",
         "marketType": "Oil",
         "displayName": "WTI"
       }
@@ -73,24 +73,24 @@
       "currency": "USD",
       "currencyName": "Dolar U.S.A",
       "currentPrice": 1535.0,
-      "currentPeriod": "2026-09-10T17:01:00",
+      "currentPeriod": "2026-09-11T09:54:00",
       "previousPrice": 1535.0,
-      "previousPeriod": "2026-09-10T15:03:00",
+      "previousPeriod": "2026-09-10T17:01:00",
       "nominalDifference": 0.0,
       "percentageDifference": 0.0,
-      "lastUpdated": "2026-09-10T17:30:03.5081134",
+      "lastUpdated": "2026-09-11T10:00:01.924375",
       "marketType": "Dollar",
       "displayName": "DOLAR"
     },
     "rondas": [
       {
-        "id": 422.0,
+        "id": 424.0,
         "descripcion": "SUBASTA - PRODUCTORES EN GENERAL Y COMERCIALIZADORAS\r\nPERIODO DE ABASTECIMIENTO: 01/10/2026 al 11/10/2026\r\nFecha de Negociación: 17/09 de 10:00 a 10:30",
-        "publicaDesde": "2026-09-10T00:00:00",
-        "fechaUltimaModificacion": "2026-09-10T17:44:54"
+        "publicaDesde": "2026-09-11T00:00:00",
+        "fechaUltimaModificacion": "2026-09-11T10:04:21"
       }
     ],
-    "fetched_at": "2026-09-10T21:34:31+00:00"
+    "fetched_at": "2026-09-11T13:11:11+00:00"
   },
   "errors": null
 }
