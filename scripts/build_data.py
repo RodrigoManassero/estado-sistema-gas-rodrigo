@@ -114,7 +114,6 @@ def main():
     errors += run('fetch_enargas.py')
     errors += run('fetch_enargas_ing.py')
     errors += run('fetch_enargas_ps.py')
-    errors += run('fetch_cammesa.py')
     errors += run('fetch_cammesa_ppo.py')
     errors += run('fetch_cammesa_redespacho.py')
     errors += run('fetch_cammesa_weekly.py')
