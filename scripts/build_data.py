@@ -148,7 +148,6 @@ def main():
     errors += run('parse_enargas_ing.py')
     errors += run('parse_enargas_ps.py')
     errors += run('parse_etgs.py')
-    errors += run('parse_cammesa.py')
     # Merge the automatic feeds (+ frozen history) into daily.json. Must run
     # after the parsers above since it consumes their JSON outputs.
     errors += run('build_daily.py')
