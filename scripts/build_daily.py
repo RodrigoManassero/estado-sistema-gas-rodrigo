@@ -150,6 +150,7 @@ def main():
     etgs, _ = _load('etgs.json')
     ppo, _ = _load('cammesa_ppo.json')
     redespacho, _ = _load('cammesa_redespacho.json')
+    weekly, _ = _load('cammesa_weekly.json')
     ps, _ = _load('enargas_ps.json')
 
     # PS — authority for linepack TGN/TGS/total + límites + tramos finales +
@@ -294,6 +295,45 @@ def main():
             )
         )
 
+    # CAMMESA PSEM (semana siguiente)
+    for r in weekly:
+
+        f = r.get('fecha')
+
+        if not f:
+            continue
+
+        row = row_for(f)
+
+        row['cammesa_gas_est'] = fill(
+            row.get('cammesa_gas_est'),
+            round(float(r.get('gas_dam3', 0)) / 1000, 3)
+        )
+
+        row['cammesa_gasoil_est'] = fill(
+            row.get('cammesa_gasoil_est'),
+            _gas_equiv_mmm3(
+                r.get('go'),
+                FUEL_KCAL['gasoil_m3']
+            )
+        )
+
+        row['cammesa_fueloil_est'] = fill(
+            row.get('cammesa_fueloil_est'),
+            _gas_equiv_mmm3(
+                r.get('fo'),
+                FUEL_KCAL['fueloil_tn']
+            )
+        )
+
+        row['cammesa_carbon_est'] = fill(
+            row.get('cammesa_carbon_est'),
+            _gas_equiv_mmm3(
+                r.get('cm'),
+                FUEL_KCAL['carbon_tn']
+            )
+        )
+
     # TGN ABII — 'Actual' (m³) es el linepack TGN real del día. Igual que ETGS,
     # el cierre real PISA la proyección de PS (sino el día queda "pegado", bug
     # del Dom 21/6). Además derivamos el estado del sistema desde el desbalance
@@ -319,39 +359,10 @@ def main():
         if desb is not None:
             row['estado_tgn'] = 'ALERTA' if abs(desb) > TGN_TOLERANCIA_PCT else 'NORMAL'
 
-    # --- Mezcla de combustibles PROYECTADA (CAMMESA Previsión semanal) --------
-    # cammesa_weekly trae 2 semanas: el gas en MMm³/día y FO/GO/carbón como
-    # TOTAL semanal en miles (verificado: carbón 24 mil t/sem ÷7 ≈ 3.4 kt/día ≈
-    # PPO cerrado). Se reparte el total entre los días de la semana y se pasa a
-    # MMm³ gas-equivalente para dibujar las barras proyectadas del despacho.
-    # Cubre los días sin cierre (hoy/ayer, 7b) y los futuros (7c).
-    cw, _ = _load('cammesa_weekly.json')
-    weeks = cw.get('weeks') if isinstance(cw, dict) else None
-    for w in (weeks or []):
-        sd, ed = w.get('start_date'), w.get('end_date')
-        if not sd or not ed:
-            continue
-        try:
-            d0, d1 = date.fromisoformat(sd), date.fromisoformat(ed)
-        except (TypeError, ValueError):
-            continue
-        ndays = (d1 - d0).days + 1
-        if ndays <= 0:
-            continue
-        gas_dia = w.get('gas_mm3_dia')                          # ya MMm³/día
-        go_equiv = _gas_equiv_mmm3(_spread_miles(w.get('go_miles_m3'), ndays), FUEL_KCAL['gasoil_m3'])
-        fo_equiv = _gas_equiv_mmm3(_spread_miles(w.get('fo_miles_ton'), ndays), FUEL_KCAL['fueloil_tn'])
-        cb_equiv = _gas_equiv_mmm3(_spread_miles(w.get('carbon_miles_ton'), ndays), FUEL_KCAL['carbon_tn'])
-        for n in range(ndays):
-            f = (d0 + timedelta(days=n)).isoformat()
-            row = row_for(f)
-            row['cammesa_gas_est'] = fill(row.get('cammesa_gas_est'),
-                                          round(gas_dia, 3) if gas_dia is not None else None)
-            row['cammesa_gasoil_est'] = fill(row.get('cammesa_gasoil_est'), go_equiv)
-            row['cammesa_fueloil_est'] = fill(row.get('cammesa_fueloil_est'), fo_equiv)
-            row['cammesa_carbon_est'] = fill(row.get('cammesa_carbon_est'), cb_equiv)
-
-    rows = sorted(by_date.values(), key=lambda r: r.get('fecha') or '')
+    rows = sorted(
+        by_date.values(),
+        key=lambda r: r.get('fecha') or ''
+    )
 
     # VAR TGN día-a-día: PS/ETGS traen la variación de TGS pero no la de TGN, así
     # que la tabla mostraba "-". Se calcula sobre el linepack TGN ya consolidado
