@@ -95,7 +95,15 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
       : 0
   const dailyByDate = new Map(data.map((d) => [d.fecha, d]))
   const fcDates = new Set<string>()
-  for (const d of data) if (d.fecha > lastHistorical && d.cammesa_gas_est != null) fcDates.add(d.fecha)
+  for (const d of data)
+    if (
+      d.fecha > lastHistorical &&
+      (
+        d.cammesa_gas_weekly != null ||
+        d.cammesa_gas_est != null
+      )
+  )
+    fcDates.add(d.fecha)
   for (const f of usinasByDate.keys()) fcDates.add(f)
   const forecastRows = [...fcDates].sort().map((fecha) => {
     const d = dailyByDate.get(fecha)
@@ -108,11 +116,21 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
       cammesa_carbon: null as number | null,
       ppo_gas: null as number | null,
       cammesa_gas_est:
+      d?.cammesa_gas_weekly ??
       d?.cammesa_gas_est ??
       (u != null ? u + gasBias : null),
-      cammesa_gasoil_est: d?.cammesa_gasoil_est ?? null,
-      cammesa_fueloil_est: d?.cammesa_fueloil_est ?? null,
-      cammesa_carbon_est: d?.cammesa_carbon_est ?? null,
+      cammesa_gasoil_est:
+      d?.cammesa_gasoil_weekly ??
+      d?.cammesa_gasoil_est ??
+      null,
+      cammesa_fueloil_est:
+      d?.cammesa_fueloil_weekly ??
+      d?.cammesa_fueloil_est ?? 
+      null,
+      cammesa_carbon_est: 
+      d?.cammesa_carbon_weekly ??
+      d?.cammesa_carbon_est ??
+      null,
     }
   })
 
