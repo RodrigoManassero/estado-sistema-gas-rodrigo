@@ -120,8 +120,19 @@ def main():
     fields = list(history[0].keys())
     # Campos que no estaban en el Excel-era congelado pero que este script
     # produce: estado del sistema TGN y la mezcla de combustibles proyectada.
-    for extra in ('estado_tgn', 'cammesa_gas_est', 'cammesa_gasoil_est',
-                  'cammesa_fueloil_est', 'cammesa_carbon_est'):
+    for extra in (
+        'estado_tgn',
+
+        'cammesa_gas_est',
+        'cammesa_gasoil_est',
+        'cammesa_fueloil_est',
+        'cammesa_carbon_est',
+
+        'cammesa_gas_weekly',
+        'cammesa_gasoil_weekly',
+        'cammesa_fueloil_weekly',
+        'cammesa_carbon_weekly',
+    ):
         if extra not in fields:
             fields.append(extra)
 
@@ -253,7 +264,7 @@ def main():
             row['cammesa_carbon'], _gas_equiv_mmm3(r.get('carbon_tn'), FUEL_KCAL['carbon_tn']))
         row['cammesa_total'] = fillz(row['cammesa_total'], r.get('gas_mmm3'))
 
-    # CAMMESA PSEM (semana siguiente)
+    # CAMMESA WEEKLY
     for r in weekly:
 
         f = r.get('fecha')
@@ -263,29 +274,29 @@ def main():
 
         row = row_for(f)
 
-        row['cammesa_gas_est'] = fill(
-            row.get('cammesa_gas_est'),
+        row['cammesa_gas_weekly'] = fill(
+            row.get('cammesa_gas_weekly'),
             round(float(r.get('gas_dam3', 0)) / 1000, 3)
         )
 
-        row['cammesa_gasoil_est'] = fill(
-            row.get('cammesa_gasoil_est'),
+        row['cammesa_gasoil_weekly'] = fill(
+            row.get('cammesa_gasoil_weekly'),
             _gas_equiv_mmm3(
                 r.get('go'),
                 FUEL_KCAL['gasoil_m3']
             )
         )
 
-        row['cammesa_fueloil_est'] = fill(
-            row.get('cammesa_fueloil_est'),
+        row['cammesa_fueloil_weekly'] = fill(
+            row.get('cammesa_fueloil_weekly'),
             _gas_equiv_mmm3(
                 r.get('fo'),
                 FUEL_KCAL['fueloil_tn']
             )
         )
 
-        row['cammesa_carbon_est'] = fill(
-            row.get('cammesa_carbon_est'),
+        row['cammesa_carbon_weekly'] = fill(
+            row.get('cammesa_carbon_weekly'),
             _gas_equiv_mmm3(
                 r.get('cm'),
                 FUEL_KCAL['carbon_tn']
