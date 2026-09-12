@@ -23,10 +23,7 @@ const clean = (f: string | undefined | null) => {
 
 interface Props {
   data: DailyRow[]
-  /** CAMMESA PPO (dato cerrado); overlaid as a ground-truth line. */
   ppoRows?: CammesaPPORow[]
-  /** Forecast de demanda: usinas_est es el gas de usinas proyectado (14d) que
-   *  usamos como gas estimado del despacho, más allá de la Previsión semanal. */
   demandForecast?: DemandForecastDay[]
   allDates?: string[]
 }
@@ -54,6 +51,7 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
       cammesa_fueloil: d.cammesa_fueloil,
       cammesa_carbon: d.cammesa_carbon,
       ppo_gas: ppoByDate.get(d.fecha) ?? null,
+      cammesa_gas_weekly: null as number | null,
       cammesa_gas_est: null as number | null,
       cammesa_gasoil_est: null as number | null,
       cammesa_fueloil_est: null as number | null,
@@ -61,7 +59,6 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
     }))
   const lastHistorical = historical[historical.length - 1]?.fecha ?? ''
 
-  // PPO rows para fechas faltantes en histórico
   const excelFechas = new Set(historical.map((h) => h.fecha))
   const ppoExtraRows = ppoRows
     .map((r) => ({ ...r, fecha: clean(r.fecha) }))
@@ -73,13 +70,13 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
       cammesa_fueloil: null as number | null,
       cammesa_carbon: null as number | null,
       ppo_gas: r.gas_mmm3 ?? null,
+      cammesa_gas_weekly: null as number | null,
       cammesa_gas_est: null as number | null,
       cammesa_gasoil_est: null as number | null,
       cammesa_fueloil_est: null as number | null,
       cammesa_carbon_est: null as number | null,
     }))
 
-  // PROYECTADO: días posteriores al último cierre real
   const usinasByDate = new Map<string, number>()
   for (const f of demandForecast) {
     const fClean = clean(f.fecha)
@@ -99,7 +96,7 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
   }
   for (const f of usinasByDate.keys()) fcDates.add(f)
 
-  // 1. Ubicar la última fecha con dato disponible del Weekly de CAMMESA
+  // 1. Ultima fecha con Weekly de CAMMESA
   const lastWeeklyRow = [...data]
     .map((d) => ({ ...d, fecha: clean(d.fecha) }))
     .filter((d) => d.fecha > lastHistorical && d.cammesa_gas_est != null)
@@ -108,26 +105,27 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
   const lastWeeklyDate = lastWeeklyRow?.fecha ?? ''
   const lastWeeklyVal = lastWeeklyRow?.cammesa_gas_est ?? null
 
-  // 2. Calcular el bias del modelo enganchando con la cota del final del Weekly de CAMMESA
+  // 2. Bias del modelo respecto al final del Weekly
   const modelValAtWeeklyEnd = lastWeeklyDate ? usinasByDate.get(lastWeeklyDate) : null
   const localGasBias =
     lastWeeklyVal != null && modelValAtWeeklyEnd != null
       ? lastWeeklyVal - modelValAtWeeklyEnd
       : 0
 
-  // 3. Generación del forecast
+  // 3. Generacion de filas separando Weekly (Sólido) y Modelo (Translúcido)
   const forecastRows = [...fcDates].sort().map((fecha) => {
     const d = dailyByDate.get(fecha)
     const u = usinasByDate.get(fecha)
 
-    let finalGasEst: number | null = null
+    let gasWeekly: number | null = null
+    let gasEstModel: number | null = null
 
     if (d?.cammesa_gas_est != null) {
-      // Dato intocable del Weekly de CAMMESA
-      finalGasEst = d.cammesa_gas_est
+      // Dato Oficial CAMMESA Weekly -> Sólido
+      gasWeekly = d.cammesa_gas_est
     } else if (u != null) {
-      // Estimación del modelo enganchada al nivel donde dejó el Weekly
-      finalGasEst = Math.round((u + localGasBias) * 10) / 10
+      // Estimación Modelo por Clima -> Translúcido
+      gasEstModel = Math.round((u + localGasBias) * 10) / 10
     }
 
     return {
@@ -137,7 +135,8 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
       cammesa_fueloil: null as number | null,
       cammesa_carbon: null as number | null,
       ppo_gas: null as number | null,
-      cammesa_gas_est: finalGasEst,
+      cammesa_gas_weekly: gasWeekly,
+      cammesa_gas_est: gasEstModel,
       cammesa_gasoil_est: d?.cammesa_gasoil_est ?? null,
       cammesa_fueloil_est: d?.cammesa_fueloil_est ?? null,
       cammesa_carbon_est: d?.cammesa_carbon_est ?? null,
@@ -187,17 +186,20 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
             label={{ value: 'Hoy', fill: '#64748b', fontSize: 10 }}
           />
         )}
-        {/* Cerrado: mezcla real apilada */}
+        {/* Cerrado: mezcla real apilada (Sólido) */}
         <Bar dataKey="cammesa_gas" stackId="1" fill={GAS} name="Gas" isAnimationActive={false} />
         <Bar dataKey="cammesa_gasoil" stackId="1" fill={GASOIL} name="Gas Oil" isAnimationActive={false} />
         <Bar dataKey="cammesa_fueloil" stackId="1" fill={FUELOIL} name="Fuel Oil" isAnimationActive={false} />
         <Bar dataKey="cammesa_carbon" stackId="1" fill={CARBON} name="Carbón" isAnimationActive={false} />
 
-        {/* Programación estimada (barras translúcidas para diferenciar del cierre) */}
-        <Bar dataKey="cammesa_gas_est" stackId="est" fill={GAS} fillOpacity={0.45} name="Gas est." legendType="none" isAnimationActive={false} />
-        <Bar dataKey="cammesa_gasoil_est" stackId="est" fill={GASOIL} fillOpacity={0.45} name="Gas Oil est." legendType="none" isAnimationActive={false} />
-        <Bar dataKey="cammesa_fueloil_est" stackId="est" fill={FUELOIL} fillOpacity={0.45} name="Fuel Oil est." legendType="none" isAnimationActive={false} />
-        <Bar dataKey="cammesa_carbon_est" stackId="est" fill={CARBON} fillOpacity={0.45} name="Carbón est." legendType="none" isAnimationActive={false} />
+        {/* CAMMESA Weekly (Sólido) */}
+        <Bar dataKey="cammesa_gas_weekly" stackId="1" fill={GAS} legendType="none" isAnimationActive={false} />
+
+        {/* Estimación modelo (Translúcido) */}
+        <Bar dataKey="cammesa_gas_est" stackId="1" fill={GAS} fillOpacity={0.45} name="Gas est." legendType="none" isAnimationActive={false} />
+        <Bar dataKey="cammesa_gasoil_est" stackId="1" fill={GASOIL} fillOpacity={0.45} name="Gas Oil est." legendType="none" isAnimationActive={false} />
+        <Bar dataKey="cammesa_fueloil_est" stackId="1" fill={FUELOIL} fillOpacity={0.45} name="Fuel Oil est." legendType="none" isAnimationActive={false} />
+        <Bar dataKey="cammesa_carbon_est" stackId="1" fill={CARBON} fillOpacity={0.45} name="Carbón est." legendType="none" isAnimationActive={false} />
 
         {/* PPO overlay */}
         <Line
