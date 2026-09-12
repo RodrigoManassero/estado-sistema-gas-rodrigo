@@ -14,7 +14,12 @@ import type { DailyRow, DemandForecastDay } from '../types'
 import type { CammesaPPORow } from '../hooks/useData'
 import { padToDates, formatTooltipDate, weekendSpans } from '../utils/charts'
 
-const fmt = (d: string) => d.slice(5)
+const fmt = (d: string) => (d && d.length >= 10 ? d.slice(5, 10) : d)
+
+const clean = (f: string | undefined | null) => {
+  if (!f) return ''
+  return f.trim().split(' ')[0].split('T')[0]
+}
 
 interface Props {
   data: DailyRow[]
@@ -33,85 +38,99 @@ const CARBON = '#6b7280'
 const PPO_LINE = '#e2e8f0'
 
 export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], allDates }: Props) {
-  // Mapa de gas cerrado PPO por fecha
   const ppoByDate = new Map<string, number>()
   for (const r of ppoRows) {
-    if (r.fecha && typeof r.gas_mmm3 === 'number') ppoByDate.set(r.fecha, r.gas_mmm3)
+    const fClean = clean(r.fecha)
+    if (fClean && typeof r.gas_mmm3 === 'number') ppoByDate.set(fClean, r.gas_mmm3)
   }
 
-  // Identificar la última fecha histórica con dato cerrado
-  const historicalOnly = data.filter((d) => d.cammesa_gas != null)
-  const lastHistorical = historicalOnly[historicalOnly.length - 1]?.fecha ?? ''
+  const historical = data
+    .map((d) => ({ ...d, fecha: clean(d.fecha) }))
+    .filter((d) => d.cammesa_gas != null)
+    .map((d) => ({
+      fecha: d.fecha,
+      cammesa_gas: d.cammesa_gas,
+      cammesa_gasoil: d.cammesa_gasoil,
+      cammesa_fueloil: d.cammesa_fueloil,
+      cammesa_carbon: d.cammesa_carbon,
+      ppo_gas: ppoByDate.get(d.fecha) ?? null,
+      cammesa_gas_est: null as number | null,
+      cammesa_gasoil_est: null as number | null,
+      cammesa_fueloil_est: null as number | null,
+      cammesa_carbon_est: null as number | null,
+    }))
+  const lastHistorical = historical[historical.length - 1]?.fecha ?? ''
 
-  // Forecast de demanda (usinas_est) posterior al cierre real
+  // PPO rows para fechas faltantes en histórico
+  const excelFechas = new Set(historical.map((h) => h.fecha))
+  const ppoExtraRows = ppoRows
+    .map((r) => ({ ...r, fecha: clean(r.fecha) }))
+    .filter((r) => r.fecha && !excelFechas.has(r.fecha) && r.fecha <= lastHistorical)
+    .map((r) => ({
+      fecha: r.fecha,
+      cammesa_gas: null as number | null,
+      cammesa_gasoil: null as number | null,
+      cammesa_fueloil: null as number | null,
+      cammesa_carbon: null as number | null,
+      ppo_gas: r.gas_mmm3 ?? null,
+      cammesa_gas_est: null as number | null,
+      cammesa_gasoil_est: null as number | null,
+      cammesa_fueloil_est: null as number | null,
+      cammesa_carbon_est: null as number | null,
+    }))
+
+  // PROYECTADO: días posteriores al último cierre real
   const usinasByDate = new Map<string, number>()
   for (const f of demandForecast) {
-    if (f.fecha > lastHistorical && f.usinas_est != null) {
-      usinasByDate.set(f.fecha, f.usinas_est)
+    const fClean = clean(f.fecha)
+    if (fClean > lastHistorical && f.usinas_est != null) {
+      usinasByDate.set(fClean, f.usinas_est)
     }
   }
 
-  // Re-nivelación del forecast de usinas según el desvío reciente vs CAMMESA
   const gasBiasSamples = data
     .filter((d) => d.usinas != null && d.cammesa_gas != null)
     .slice(-14)
     .map((d) => (d.cammesa_gas as number) - (d.usinas as number))
+
   const gasBias =
     gasBiasSamples.length >= 5
       ? gasBiasSamples.reduce((a, b) => a + b, 0) / gasBiasSamples.length
       : 0
 
-  const dailyByDate = new Map(data.map((d) => [d.fecha, d]))
+  const dailyByDate = new Map(data.map((d) => [clean(d.fecha), d]))
+  const fcDates = new Set<string>()
 
-  // Consolidación de todas las fechas sin duplicaciones
-  const allDatesSet = new Set<string>([
-    ...data.map((d) => d.fecha),
-    ...ppoRows.map((r) => r.fecha).filter(Boolean),
-    ...usinasByDate.keys(),
-  ])
+  for (const d of data) {
+    const fClean = clean(d.fecha)
+    if (fClean > lastHistorical && d.cammesa_gas_est != null) {
+      fcDates.add(fClean)
+    }
+  }
+  for (const f of usinasByDate.keys()) fcDates.add(f)
 
-  const merged = Array.from(allDatesSet)
-    .sort((a, b) => a.localeCompare(b))
-    .map((fecha) => {
-      const d = dailyByDate.get(fecha)
-      const u = usinasByDate.get(fecha)
-      const ppoVal = ppoByDate.get(fecha) ?? null
+  const forecastRows = [...fcDates].sort().map((fecha) => {
+    const d = dailyByDate.get(fecha)
+    const u = usinasByDate.get(fecha)
+    return {
+      fecha,
+      cammesa_gas: null as number | null,
+      cammesa_gasoil: null as number | null,
+      cammesa_fueloil: null as number | null,
+      cammesa_carbon: null as number | null,
+      ppo_gas: null as number | null,
+      cammesa_gas_est: d?.cammesa_gas_est ?? (u != null ? u + gasBias : null),
+      cammesa_gasoil_est: d?.cammesa_gasoil_est ?? null,
+      cammesa_fueloil_est: d?.cammesa_fueloil_est ?? null,
+      cammesa_carbon_est: d?.cammesa_carbon_est ?? null,
+    }
+  })
 
-      // Evaluamos si la fecha pertenece al período cerrado
-      const isClosed = fecha <= lastHistorical && (d?.cammesa_gas != null || ppoVal != null)
+  const merged = new Map<string, any>()
+  ;[...ppoExtraRows, ...historical, ...forecastRows].forEach((r) => merged.set(r.fecha, r))
 
-      if (isClosed) {
-        return {
-          fecha,
-          cammesa_gas: d?.cammesa_gas ?? null,
-          cammesa_gasoil: d?.cammesa_gasoil ?? null,
-          cammesa_fueloil: d?.cammesa_fueloil ?? null,
-          cammesa_carbon: d?.cammesa_carbon ?? null,
-          ppo_gas: ppoVal,
-          // Nulos explícitos para no superponer proyectado sobre real
-          cammesa_gas_est: null,
-          cammesa_gasoil_est: null,
-          cammesa_fueloil_est: null,
-          cammesa_carbon_est: null,
-        }
-      } else {
-        return {
-          fecha,
-          // Nulos explícitos para no pintar barras reales en la ventana futura
-          cammesa_gas: null,
-          cammesa_gasoil: null,
-          cammesa_fueloil: null,
-          cammesa_carbon: null,
-          ppo_gas: null,
-          cammesa_gas_est: d?.cammesa_gas_est ?? (u != null ? u + gasBias : null),
-          cammesa_gasoil_est: d?.cammesa_gasoil_est ?? null,
-          cammesa_fueloil_est: d?.cammesa_fueloil_est ?? null,
-          cammesa_carbon_est: d?.cammesa_carbon_est ?? null,
-        }
-      }
-    })
-
-  const rows = allDates ? padToDates(merged, allDates) : merged
+  const base = [...merged.values()].sort((a, b) => a.fecha.localeCompare(b.fecha))
+  const rows = allDates ? padToDates(base, allDates) : base
   const weekends = weekendSpans(rows.map((r) => r.fecha))
 
   return (
@@ -142,7 +161,7 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
             ifOverflow="extendDomain"
           />
         ))}
-        {lastHistorical && (
+        {forecastRows.length > 0 && lastHistorical && (
           <ReferenceLine
             x={lastHistorical}
             stroke="#64748b"
@@ -150,19 +169,19 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
             label={{ value: 'Hoy', fill: '#64748b', fontSize: 10 }}
           />
         )}
-        {/* Cerrado: mezcla real apilada en MMm³ gas-equivalente. */}
-        <Bar dataKey="cammesa_gas" stackId="real" fill={GAS} name="Gas" isAnimationActive={false} />
-        <Bar dataKey="cammesa_gasoil" stackId="real" fill={GASOIL} name="Gas Oil" isAnimationActive={false} />
-        <Bar dataKey="cammesa_fueloil" stackId="real" fill={FUELOIL} name="Fuel Oil" isAnimationActive={false} />
-        <Bar dataKey="cammesa_carbon" stackId="real" fill={CARBON} name="Carbón" isAnimationActive={false} />
+        {/* Cerrado: mezcla real apilada */}
+        <Bar dataKey="cammesa_gas" stackId="1" fill={GAS} name="Gas" isAnimationActive={false} />
+        <Bar dataKey="cammesa_gasoil" stackId="1" fill={GASOIL} name="Gas Oil" isAnimationActive={false} />
+        <Bar dataKey="cammesa_fueloil" stackId="1" fill={FUELOIL} name="Fuel Oil" isAnimationActive={false} />
+        <Bar dataKey="cammesa_carbon" stackId="1" fill={CARBON} name="Carbón" isAnimationActive={false} />
 
-        {/* Programación semanal / proyectado: apilado en stack independiente para no colisionar */}
-        <Bar dataKey="cammesa_gas_est" stackId="est" fill={GAS} fillOpacity={0.6} name="Gas est." legendType="none" isAnimationActive={false} />
-        <Bar dataKey="cammesa_gasoil_est" stackId="est" fill={GASOIL} fillOpacity={0.6} name="Gas Oil est." legendType="none" isAnimationActive={false} />
-        <Bar dataKey="cammesa_fueloil_est" stackId="est" fill={FUELOIL} fillOpacity={0.6} name="Fuel Oil est." legendType="none" isAnimationActive={false} />
-        <Bar dataKey="cammesa_carbon_est" stackId="est" fill={CARBON} fillOpacity={0.6} name="Carbón est." legendType="none" isAnimationActive={false} />
+        {/* Programación estimada (barras translúcidas para diferenciar del cierre) */}
+        <Bar dataKey="cammesa_gas_est" stackId="est" fill={GAS} fillOpacity={0.45} name="Gas est." legendType="none" isAnimationActive={false} />
+        <Bar dataKey="cammesa_gasoil_est" stackId="est" fill={GASOIL} fillOpacity={0.45} name="Gas Oil est." legendType="none" isAnimationActive={false} />
+        <Bar dataKey="cammesa_fueloil_est" stackId="est" fill={FUELOIL} fillOpacity={0.45} name="Fuel Oil est." legendType="none" isAnimationActive={false} />
+        <Bar dataKey="cammesa_carbon_est" stackId="est" fill={CARBON} fillOpacity={0.45} name="Carbón est." legendType="none" isAnimationActive={false} />
 
-        {/* PPO overlay: línea de dato cerrado */}
+        {/* PPO overlay */}
         <Line
           type="monotone"
           dataKey="ppo_gas"
