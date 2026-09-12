@@ -227,7 +227,7 @@ def aggregate_fuel_sheet(xls_bytes: bytes):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--days', type=int, default=30, help='days back from today')
+    parser.add_argument('--days', type=int, default=10, help='days back from today')
     parser.add_argument('--force', action='store_true', help='re-fetch dates we already have')
     parser.add_argument('--sleep-ms', type=int, default=150)
     args = parser.parse_args()
