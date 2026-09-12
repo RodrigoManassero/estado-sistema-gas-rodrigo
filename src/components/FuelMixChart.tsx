@@ -88,16 +88,6 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
     }
   }
 
-  const gasBiasSamples = data
-    .filter((d) => d.usinas != null && d.cammesa_gas != null)
-    .slice(-14)
-    .map((d) => (d.cammesa_gas as number) - (d.usinas as number))
-
-  const gasBias =
-    gasBiasSamples.length >= 5
-      ? gasBiasSamples.reduce((a, b) => a + b, 0) / gasBiasSamples.length
-      : 0
-
   const dailyByDate = new Map(data.map((d) => [clean(d.fecha), d]))
   const fcDates = new Set<string>()
 
@@ -109,9 +99,37 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
   }
   for (const f of usinasByDate.keys()) fcDates.add(f)
 
+  // 1. Ubicar la última fecha con dato disponible del Weekly de CAMMESA
+  const lastWeeklyRow = [...data]
+    .map((d) => ({ ...d, fecha: clean(d.fecha) }))
+    .filter((d) => d.fecha > lastHistorical && d.cammesa_gas_est != null)
+    .pop()
+
+  const lastWeeklyDate = lastWeeklyRow?.fecha ?? ''
+  const lastWeeklyVal = lastWeeklyRow?.cammesa_gas_est ?? null
+
+  // 2. Calcular el bias del modelo enganchando con la cota del final del Weekly de CAMMESA
+  const modelValAtWeeklyEnd = lastWeeklyDate ? usinasByDate.get(lastWeeklyDate) : null
+  const localGasBias =
+    lastWeeklyVal != null && modelValAtWeeklyEnd != null
+      ? lastWeeklyVal - modelValAtWeeklyEnd
+      : 0
+
+  // 3. Generación del forecast
   const forecastRows = [...fcDates].sort().map((fecha) => {
     const d = dailyByDate.get(fecha)
     const u = usinasByDate.get(fecha)
+
+    let finalGasEst: number | null = null
+
+    if (d?.cammesa_gas_est != null) {
+      // Dato intocable del Weekly de CAMMESA
+      finalGasEst = d.cammesa_gas_est
+    } else if (u != null) {
+      // Estimación del modelo enganchada al nivel donde dejó el Weekly
+      finalGasEst = Math.round((u + localGasBias) * 10) / 10
+    }
+
     return {
       fecha,
       cammesa_gas: null as number | null,
@@ -119,7 +137,7 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
       cammesa_fueloil: null as number | null,
       cammesa_carbon: null as number | null,
       ppo_gas: null as number | null,
-      cammesa_gas_est: d?.cammesa_gas_est ?? (u != null ? u + gasBias : null),
+      cammesa_gas_est: finalGasEst,
       cammesa_gasoil_est: d?.cammesa_gasoil_est ?? null,
       cammesa_fueloil_est: d?.cammesa_fueloil_est ?? null,
       cammesa_carbon_est: d?.cammesa_carbon_est ?? null,
