@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-11T22:44:03+00:00",
+  "generated_at": "2026-09-12T00:54:52+00:00",
   "source": "MEGSA public API (megsa.ar/api)",
   "source_date": null,
   "data": {
@@ -16,7 +16,7 @@
         "previousPeriod": null,
         "nominalDifference": -0.01,
         "percentageDifference": -0.35,
-        "lastUpdated": "2026-09-11T19:40:06.8819445",
+        "lastUpdated": "2026-09-11T19:50:07.5862997",
         "marketType": "Gas",
         "displayName": "NAT GAS"
       },
@@ -32,7 +32,7 @@
         "previousPeriod": null,
         "nominalDifference": -2.2,
         "percentageDifference": -2.68,
-        "lastUpdated": "2026-09-11T19:40:07.2879482",
+        "lastUpdated": "2026-09-11T19:50:08.0079602",
         "marketType": "Gas",
         "displayName": "TTF GAS Fut"
       },
@@ -48,7 +48,7 @@
         "previousPeriod": null,
         "nominalDifference": -4.68,
         "percentageDifference": -4.29,
-        "lastUpdated": "2026-09-11T19:40:06.4571549",
+        "lastUpdated": "2026-09-11T19:50:07.1008494",
         "marketType": "Oil",
         "displayName": "BRENT"
       },
@@ -64,7 +64,7 @@
         "previousPeriod": null,
         "nominalDifference": -3.92,
         "percentageDifference": -3.77,
-        "lastUpdated": "2026-09-11T19:40:05.6736588",
+        "lastUpdated": "2026-09-11T19:50:06.1936273",
         "marketType": "Oil",
         "displayName": "WTI"
       }
@@ -90,7 +90,7 @@
         "fechaUltimaModificacion": "2026-09-11T10:04:21"
       }
     ],
-    "fetched_at": "2026-09-11T22:44:03+00:00"
+    "fetched_at": "2026-09-12T00:54:52+00:00"
   },
   "errors": null
 }
