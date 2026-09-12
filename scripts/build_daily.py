@@ -24,7 +24,7 @@ Fill priority (first source to fill a hole wins):
 import json
 import os
 import sys
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _meta import write_json, write_csv, json_to_csv_path  # noqa: E402
@@ -32,6 +32,18 @@ from _meta import write_json, write_csv, json_to_csv_path  # noqa: E402
 OUT_DIR = os.path.join(os.path.dirname(__file__), '..', 'public', 'data')
 DAILY_JSON = os.path.join(OUT_DIR, 'daily.json')
 HISTORY_JSON = os.path.join(OUT_DIR, 'daily_history.json')
+
+
+def clean_fecha(f):
+    """Normaliza cualquier string de fecha a formato estricto YYYY-MM-DD sin hora."""
+    if not f:
+        return None
+    f_str = str(f).strip()
+    if ' ' in f_str:
+        f_str = f_str.split(' ')[0]
+    if 'T' in f_str:
+        f_str = f_str.split('T')[0]
+    return f_str[:10] if len(f_str) >= 10 else f_str
 
 
 def _load(name):
@@ -65,15 +77,6 @@ def _get(d, *path):
 
 
 # --- Combustibles: a MMm³ de gas equivalente ------------------------------
-# CAMMESA reporta cada combustible en su unidad nativa (gas en MMm³, fueloil y
-# carbón en Tn, gasoil en m³). Para apilarlos con el gas en el mismo eje los
-# pasamos a MMm³ de gas natural equivalente por poder calorífico. Gas natural
-# argentino: m³ de 9300 kcal. Factores documentados (parsimonia); calibrar
-# contra el "Consumo ponderado por Poder Calorífico" que publica CAMMESA si el
-# apilado no coincide con su referencia.
-# NOTA: el gasoil del PPO (Parte) aparece en una escala mucho menor que el
-# reporte "Estimación de Consumos Totales" del analista — validar contra dato
-# fresco antes de confiar en la barra de gasoil cerrado.
 GAS_KCAL_M3 = 9300
 FUEL_KCAL = {
     'gasoil_m3': 9.08e6,    # ~0.845 t/m³ · 10750 kcal/kg
@@ -81,7 +84,6 @@ FUEL_KCAL = {
     'carbon_tn': 6.0e6,     # 6000 kcal/kg · 1000 kg/t
 }
 
-# Tolerancia ABII del desbalance TGN: ±7% → fuera de banda = sistema en ALERTA.
 TGN_TOLERANCIA_PCT = 7.0
 
 
@@ -103,14 +105,6 @@ def _to_float(s):
         return None
 
 
-def _spread_miles(value, ndays):
-    """Reparte un total semanal expresado en 'miles' (de t o de m³) entre los
-    días de la semana → cantidad en unidad nativa por día."""
-    if value is None or not ndays:
-        return None
-    return value * 1000.0 / ndays
-
-
 def main():
     history, hist_env = _load('daily_history.json')
     if not history:
@@ -118,11 +112,8 @@ def main():
               file=sys.stderr)
         return 1
     fields = list(history[0].keys())
-    # Campos que no estaban en el Excel-era congelado pero que este script
-    # produce: estado del sistema TGN y la mezcla de combustibles proyectada.
     for extra in (
         'estado_tgn',
-
         'cammesa_gas_est',
         'cammesa_gasoil_est',
         'cammesa_fueloil_est',
@@ -138,17 +129,22 @@ def main():
 
     by_date = {}
     for d in history:
-        if d.get('fecha'):
-            by_date[d['fecha']] = dict(d)
-    # Fechas del histórico manual congelado — el cierre real (ETGS/ABII) pisa la
-    # proyección de PS salvo en estas fechas, donde manda el valor a mano.
-    hist_dates = {d.get('fecha') for d in history if d.get('fecha')}
+        f_clean = clean_fecha(d.get('fecha'))
+        if f_clean:
+            row_dict = dict(d)
+            row_dict['fecha'] = f_clean
+            by_date[f_clean] = row_dict
+
+    hist_dates = {clean_fecha(d.get('fecha')) for d in history if d.get('fecha')}
 
     def row_for(fecha):
-        r = by_date.get(fecha)
+        f_clean = clean_fecha(fecha)
+        if not f_clean:
+            return None
+        r = by_date.get(f_clean)
         if r is None:
-            r = blank(fecha)
-            by_date[fecha] = r
+            r = blank(f_clean)
+            by_date[f_clean] = r
         return r
 
     rds, _ = _load('enargas.json')
@@ -158,13 +154,11 @@ def main():
     weekly, _ = _load('cammesa_weekly.json')
     ps, _ = _load('enargas_ps.json')
 
-    # PS — authority for linepack TGN/TGS/total + límites + tramos finales +
-    # ENARSA/GPFM/Escobar/Bolivia, also demand & injection.
+    # PS
     for r in ps:
-        f = r.get('fecha')
-        if not f:
+        row = row_for(r.get('fecha'))
+        if not row:
             continue
-        row = row_for(f)
         row['demanda_total'] = fill(row['demanda_total'], r.get('demanda_total'))
         row['prioritaria'] = fill(row['prioritaria'], r.get('prioritaria'))
         row['usinas'] = fillz(row['usinas'], r.get('usinas'))
@@ -194,12 +188,11 @@ def main():
         row['tramo_final_tgs'] = fill(row['tramo_final_tgs'], r.get('tramo_final_tgs'))
         row['tramo_final_tgn'] = fill(row['tramo_final_tgn'], r.get('tramo_final_tgn'))
 
-    # RDS — demand by sector + linepack_total + temperature.
+    # RDS
     for r in rds:
-        f = r.get('fecha')
-        if not f:
+        row = row_for(r.get('fecha'))
+        if not row:
             continue
-        row = row_for(f)
         exps = r.get('exportaciones') or {}
         exp_total = None
         tgn, tgs = _get(exps, 'tgn', 'vol_exportar'), _get(exps, 'tgs', 'vol_exportar')
@@ -215,41 +208,35 @@ def main():
         row['temp_max_ba'] = fill(row['temp_max_ba'], _get(r, 'temperatura_ba', 'max'))
         row['linepack_total'] = fill(row['linepack_total'], r.get('linepack_total'))
 
-    # ING — per-gasoducto injection; only "R" (real) rows for historical fill.
+    # ING
     for r in ing:
-        f = r.get('fecha')
-        if not f or r.get('tipo') != 'R':
+        if r.get('tipo') != 'R':
             continue
-        row = row_for(f)
+        row = row_for(r.get('fecha'))
+        if not row:
+            continue
         row['iny_tgs'] = fillz(row['iny_tgs'], r.get('tgs'))
         row['iny_tgn'] = fillz(row['iny_tgn'], r.get('tgn'))
         row['iny_total'] = fillz(row['iny_total'], r.get('total'))
 
-    # ETGS — real TGS linepack stock (the only daily source that carries it).
-    # El cierre real PISA la proyección de PS (que llenó antes con fill): si no,
-    # el día queda "pegado" al valor proyectado y muestra un linepack viejo
-    # (bug del Dom 21/6 marcado por el analista). El histórico congelado a mano
-    # se respeta (no está en el rango que cubre ETGS, pero por las dudas).
+    # ETGS
     for r in etgs:
-        f = r.get('fecha')
-        if not f:
+        f_clean = clean_fecha(r.get('fecha'))
+        row = row_for(f_clean)
+        if not row:
             continue
-        row = row_for(f)
         lp = r.get('linepack_tgs_dia_actual')
-        if lp is not None and f not in hist_dates:
+        if lp is not None and f_clean not in hist_dates:
             row['linepack_tgs'] = lp
         else:
             row['linepack_tgs'] = fill(row['linepack_tgs'], lp)
         row['var_linepack_tgs'] = fill(row['var_linepack_tgs'], r.get('linepack_tgs_variacion'))
 
-    # CAMMESA PPO — mezcla de combustibles real (dato cerrado). Gas ya viene en
-    # MMm³; gasoil/fueloil/carbón se pasan a MMm³ gas-equivalente para poder
-    # apilarlos con el gas. cammesa_total sigue siendo sólo gas (KPIs lo usan).
+    # CAMMESA PPO (Dato cerrado real)
     for r in ppo:
-        f = r.get('fecha')
-        if not f:
+        row = row_for(r.get('fecha'))
+        if not row:
             continue
-        row = row_for(f)
         row['cammesa_gas'] = fillz(row['cammesa_gas'], r.get('gas_mmm3'))
         row['cammesa_gasoil'] = fillz(
             row['cammesa_gasoil'], _gas_equiv_mmm3(r.get('gasoil_m3'), FUEL_KCAL['gasoil_m3']))
@@ -259,63 +246,43 @@ def main():
             row['cammesa_carbon'], _gas_equiv_mmm3(r.get('carbon_tn'), FUEL_KCAL['carbon_tn']))
         row['cammesa_total'] = fillz(row['cammesa_total'], r.get('gas_mmm3'))
 
-    # CAMMESA WEEKLY
+    # CAMMESA WEEKLY (Datos proyectados)
     for r in weekly:
-
-        f = r.get('fecha')
-
-        if not f:
+        row = row_for(r.get('fecha'))
+        if not row:
             continue
-
-        row = row_for(f)
 
         row['cammesa_gas_est'] = fill(
             row.get('cammesa_gas_est'),
             round(float(r.get('gas_dam3', 0)) / 1000, 3)
         )
-
         row['cammesa_gasoil_est'] = fill(
             row.get('cammesa_gasoil_est'),
-            _gas_equiv_mmm3(
-                r.get('go'),
-                FUEL_KCAL['gasoil_m3']
-            )
+            _gas_equiv_mmm3(r.get('go'), FUEL_KCAL['gasoil_m3'])
         )
-
         row['cammesa_fueloil_est'] = fill(
             row.get('cammesa_fueloil_est'),
-            _gas_equiv_mmm3(
-                r.get('fo'),
-                FUEL_KCAL['fueloil_tn']
-            )
+            _gas_equiv_mmm3(r.get('fo'), FUEL_KCAL['fueloil_tn'])
         )
-
         row['cammesa_carbon_est'] = fill(
             row.get('cammesa_carbon_est'),
-            _gas_equiv_mmm3(
-                r.get('cm'),
-                FUEL_KCAL['carbon_tn']
-            )
+            _gas_equiv_mmm3(r.get('cm'), FUEL_KCAL['carbon_tn'])
         )
 
-    # TGN ABII — 'Actual' (m³) es el linepack TGN real del día. Igual que ETGS,
-    # el cierre real PISA la proyección de PS (sino el día queda "pegado", bug
-    # del Dom 21/6). Además derivamos el estado del sistema desde el desbalance
-    # %: ABII marca ALERTA cuando |desb%| > 7 (tolerancia ±7 del reporte —
-    # verificado: 20/6 = 7.19 → ALERTA, 21/6 = 2.16 y 22/6 = 1.9 → NORMAL).
+    # TGN ABII
     tgn_state, _ = _load('tgn_system_state.json')
     for r in tgn_state:
-        f = r.get('fecha')
-        if not f:
+        f_clean = clean_fecha(r.get('fecha'))
+        row = row_for(f_clean)
+        if not row:
             continue
         actual = r.get('Actual')
         try:
             mmm3 = round(float(actual) / 1_000_000, 2) if actual not in (None, '') else None
         except (TypeError, ValueError):
             mmm3 = None
-        row = row_for(f)
         if mmm3 is not None:
-            if f not in hist_dates:
+            if f_clean not in hist_dates:
                 row['linepack_tgn'] = mmm3
             else:
                 row['linepack_tgn'] = fill(row['linepack_tgn'], mmm3)
@@ -328,9 +295,7 @@ def main():
         key=lambda r: r.get('fecha') or ''
     )
 
-    # VAR TGN día-a-día: PS/ETGS traen la variación de TGS pero no la de TGN, así
-    # que la tabla mostraba "-". Se calcula sobre el linepack TGN ya consolidado
-    # contra el día con dato anterior (rellena sólo si no vino de otra fuente).
+    # VAR TGN
     prev_tgn = None
     for row in rows:
         lp = row.get('linepack_tgn')
@@ -339,11 +304,7 @@ def main():
                 row['var_linepack_tgn'] = round(lp - prev_tgn, 2)
             prev_tgn = lp
 
-    # Forward-fill the operating bands. The Min/Max limits only arrive on PS
-    # report days; on weekends/holidays and on "today" (before that day's PS
-    # publishes) they'd be null, which drops the TGN/TGS % KPI and the chart band
-    # on the most recent row. Limits are slow-moving setpoints, so carrying the
-    # last known value forward is the right behaviour.
+    # Limits
     LIMIT_FIELDS = [
         'lim_inf_tgs', 'lim_sup_tgs', 'lim_inf_tgn', 'lim_sup_tgn',
         'lim_inf_total', 'lim_sup_total',
@@ -356,13 +317,12 @@ def main():
             elif k in last:
                 row[k] = last[k]
 
-    # source_date = último día con dato cerrado real (no las filas que sólo
-    # llevan la proyección de combustibles, que se extienden al futuro).
     real_dates = [r['fecha'] for r in rows if r.get('fecha') and (
         r.get('demanda_total') is not None or r.get('linepack_total') is not None
         or r.get('linepack_tgn') is not None or r.get('linepack_tgs') is not None
         or r.get('cammesa_gas') is not None)]
     latest = max(real_dates) if real_dates else (rows[-1]['fecha'] if rows else None)
+
     write_json(
         DAILY_JSON, rows,
         source='Construido de RDS + PS + ING + ETGS + PPO (histórico manual congelado en daily_history.json)',
@@ -371,8 +331,7 @@ def main():
     write_csv(json_to_csv_path(DAILY_JSON),
               ({k: r.get(k) for k in fields} for r in rows),
               fieldnames=fields)
-    print(f"daily.json: {len(rows)} rows, {rows[0]['fecha']} -> {latest} "
-          f"(último cierre real)")
+    print(f"daily.json: {len(rows)} rows, {rows[0]['fecha']} -> {latest} (último cierre real)")
     return 0
 
 
