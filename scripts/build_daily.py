@@ -149,7 +149,6 @@ def main():
     ing, _ = _load('enargas_ing.json')
     etgs, _ = _load('etgs.json')
     ppo, _ = _load('cammesa_ppo.json')
-    redespacho, _ = _load('cammesa_redespacho.json')
     weekly, _ = _load('cammesa_weekly.json')
     ps, _ = _load('enargas_ps.json')
 
@@ -253,47 +252,6 @@ def main():
         row['cammesa_carbon'] = fillz(
             row['cammesa_carbon'], _gas_equiv_mmm3(r.get('carbon_tn'), FUEL_KCAL['carbon_tn']))
         row['cammesa_total'] = fillz(row['cammesa_total'], r.get('gas_mmm3'))
-
-    # CAMMESA REDESPACHO
-    for r in redespacho:
-
-        f = r.get('fecha')
-
-        if not f:
-            continue
-
-        row = row_for(f)
-
-        # Solo completa si PPO no llenó ya esos valores
-
-        row['cammesa_gas_est'] = fill(
-            row.get('cammesa_gas_est'),
-            round(float(r.get('gas_dam3', 0)) / 1000, 3)
-        )
-
-        row['cammesa_gasoil_est'] = fill(
-            row.get('cammesa_gasoil_est'),
-            _gas_equiv_mmm3(
-                r.get('go'),
-                FUEL_KCAL['gasoil_m3']
-            )
-        )
-
-        row['cammesa_fueloil_est'] = fill(
-            row.get('cammesa_fueloil_est'),
-            _gas_equiv_mmm3(
-                r.get('fo'),
-                FUEL_KCAL['fueloil_tn']
-            )
-        )
-
-        row['cammesa_carbon_est'] = fill(
-            row.get('cammesa_carbon_est'),
-            _gas_equiv_mmm3(
-                r.get('cm'),
-                FUEL_KCAL['carbon_tn']
-            )
-        )
 
     # CAMMESA PSEM (semana siguiente)
     for r in weekly:
