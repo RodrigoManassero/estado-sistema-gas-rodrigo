@@ -127,11 +127,6 @@ def main():
         'cammesa_gasoil_est',
         'cammesa_fueloil_est',
         'cammesa_carbon_est',
-
-        'cammesa_gas_weekly',
-        'cammesa_gasoil_weekly',
-        'cammesa_fueloil_weekly',
-        'cammesa_carbon_weekly',
     ):
         if extra not in fields:
             fields.append(extra)
@@ -274,29 +269,29 @@ def main():
 
         row = row_for(f)
 
-        row['cammesa_gas_weekly'] = fill(
-            row.get('cammesa_gas_weekly'),
+        row['cammesa_gas_est'] = fill(
+            row.get('cammesa_gas_est'),
             round(float(r.get('gas_dam3', 0)) / 1000, 3)
         )
 
-        row['cammesa_gasoil_weekly'] = fill(
-            row.get('cammesa_gasoil_weekly'),
+        row['cammesa_gasoil_est'] = fill(
+            row.get('cammesa_gasoil_est'),
             _gas_equiv_mmm3(
                 r.get('go'),
                 FUEL_KCAL['gasoil_m3']
             )
         )
 
-        row['cammesa_fueloil_weekly'] = fill(
-            row.get('cammesa_fueloil_weekly'),
+        row['cammesa_fueloil_est'] = fill(
+            row.get('cammesa_fueloil_est'),
             _gas_equiv_mmm3(
                 r.get('fo'),
                 FUEL_KCAL['fueloil_tn']
             )
         )
 
-        row['cammesa_carbon_weekly'] = fill(
-            row.get('cammesa_carbon_weekly'),
+        row['cammesa_carbon_est'] = fill(
+            row.get('cammesa_carbon_est'),
             _gas_equiv_mmm3(
                 r.get('cm'),
                 FUEL_KCAL['carbon_tn']
