@@ -44,11 +44,6 @@ export interface DailyRow {
   cammesa_gasoil_est?: number | null
   cammesa_fueloil_est?: number | null
   cammesa_carbon_est?: number | null
-  // Programación semanal CAMMESA (Excel weekly)
-  cammesa_gas_weekly?: number | null
-  cammesa_gasoil_weekly?: number | null
-  cammesa_fueloil_weekly?: number | null
-  cammesa_carbon_weekly?: number | null
 }
 
 // One row of the parsed ENARGAS RDS. Historical rows are "slim" (only a
