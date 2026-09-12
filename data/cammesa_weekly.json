@@ -1,57 +1,114 @@
-{
-  "generated_at": "2026-09-11T22:26:11+00:00",
-  "source": "CAMMESA — Previsión Despacho Energético",
-  "source_date": null,
-  "data": {
-    "report_date": "2026-08-28",
-    "report_filename": "PrevisionDespachoEnergetico_20260911.pdf",
-    "weeks": [
-      {
-        "week_num": "35",
-        "start_date": "2026-08-24",
-        "end_date": "2026-08-30",
-        "demanda_gwh": 2923.0,
-        "demanda_mwmed": 17399.0,
-        "exportacion_gwh": 2.0,
-        "exportacion_mwmed": 13.0,
-        "termico_gwh": 1142.0,
-        "termico_mwmed": 6796.0,
-        "hidraulico_gwh": 781.0,
-        "hidraulico_mwmed": 4651.0,
-        "nuclear_gwh": 237.0,
-        "nuclear_mwmed": 1409.0,
-        "renovable_gwh": 505.0,
-        "renovable_mwmed": 3005.0,
-        "importacion_gwh": 266.0,
-        "importacion_mwmed": 1583.0,
-        "gas_mm3_dia": 30.8,
-        "fo_miles_ton": 1.0,
-        "go_miles_m3": 1.0,
-        "carbon_miles_ton": 15.0
-      },
-      {
-        "week_num": "36",
-        "start_date": "2026-08-31",
-        "end_date": "2026-09-06",
-        "demanda_gwh": 2848.0,
-        "demanda_mwmed": 16950.0,
-        "exportacion_gwh": 0.0,
-        "exportacion_mwmed": 0.0,
-        "termico_gwh": 1144.0,
-        "termico_mwmed": 6808.0,
-        "hidraulico_gwh": 708.0,
-        "hidraulico_mwmed": 4214.0,
-        "nuclear_gwh": 236.0,
-        "nuclear_mwmed": 1404.0,
-        "renovable_gwh": 491.0,
-        "renovable_mwmed": 2921.0,
-        "importacion_gwh": 270.0,
-        "importacion_mwmed": 1604.0,
-        "gas_mm3_dia": 32.0,
-        "fo_miles_ton": 1.0,
-        "go_miles_m3": 3.0,
-        "carbon_miles_ton": 11.0
-      }
-    ]
+[
+  {
+    "fecha": "2026-09-07 00:00:00",
+    "gas_dam3": 32000.0,
+    "go": 107.0,
+    "fo": 229.0,
+    "cm": 2734.0,
+    "source": "weekly"
+  },
+  {
+    "fecha": "2026-09-08 00:00:00",
+    "gas_dam3": 32000.0,
+    "go": 231.0,
+    "fo": 229.0,
+    "cm": 2734.0,
+    "source": "weekly"
+  },
+  {
+    "fecha": "2026-09-09 00:00:00",
+    "gas_dam3": 33000.0,
+    "go": 105.0,
+    "fo": 0.0,
+    "cm": 0.0,
+    "source": "weekly"
+  },
+  {
+    "fecha": "2026-09-10 00:00:00",
+    "gas_dam3": 32172.0,
+    "go": 107.0,
+    "fo": 0.0,
+    "cm": 0.0,
+    "source": "weekly"
+  },
+  {
+    "fecha": "2026-09-11 00:00:00",
+    "gas_dam3": 30848.0,
+    "go": 118.0,
+    "fo": 0.0,
+    "cm": 0.0,
+    "source": "weekly"
+  },
+  {
+    "fecha": "2026-09-12 00:00:00",
+    "gas_dam3": 28436.0,
+    "go": 54.0,
+    "fo": 0.0,
+    "cm": 0.0,
+    "source": "weekly"
+  },
+  {
+    "fecha": "2026-09-13 00:00:00",
+    "gas_dam3": 26321.0,
+    "go": 11.0,
+    "fo": 0.0,
+    "cm": 0.0,
+    "source": "weekly"
+  },
+  {
+    "fecha": "2026-09-14 00:00:00",
+    "gas_dam3": 31000.0,
+    "go": 559.0,
+    "fo": 229.0,
+    "cm": 2734.0,
+    "source": "weekly"
+  },
+  {
+    "fecha": "2026-09-15 00:00:00",
+    "gas_dam3": 31000.0,
+    "go": 403.0,
+    "fo": 229.0,
+    "cm": 2734.0,
+    "source": "weekly"
+  },
+  {
+    "fecha": "2026-09-16 00:00:00",
+    "gas_dam3": 33000.0,
+    "go": 137.0,
+    "fo": 0.0,
+    "cm": 0.0,
+    "source": "weekly"
+  },
+  {
+    "fecha": "2026-09-17 00:00:00",
+    "gas_dam3": 34827.0,
+    "go": 139.0,
+    "fo": 0.0,
+    "cm": 0.0,
+    "source": "weekly"
+  },
+  {
+    "fecha": "2026-09-18 00:00:00",
+    "gas_dam3": 34733.0,
+    "go": 150.0,
+    "fo": 0.0,
+    "cm": 0.0,
+    "source": "weekly"
+  },
+  {
+    "fecha": "2026-09-19 00:00:00",
+    "gas_dam3": 26468.0,
+    "go": 86.0,
+    "fo": 0.0,
+    "cm": 0.0,
+    "source": "weekly"
+  },
+  {
+    "fecha": "2026-09-20 00:00:00",
+    "gas_dam3": 25474.0,
+    "go": 35.0,
+    "fo": 0.0,
+    "cm": 0.0,
+    "source": "weekly"
   }
-}
+]
