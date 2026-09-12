@@ -116,7 +116,14 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
     }
   })
 
-  const base = [...ppoExtraRows, ...historical, ...forecastRows].sort((a, b) => a.fecha.localeCompare(b.fecha))
+  const merged = new Map<string, any>()
+
+  ;[...ppoExtraRows, ...historical, ...forecastRows]
+    .forEach(r => merged.set(r.fecha, r))
+
+  const base = [...merged.values()]
+    .sort((a, b) => a.fecha.localeCompare(b.fecha))
+
   const rows = allDates ? padToDates(base, allDates) : base
   const weekends = weekendSpans(rows.map((r) => r.fecha))
 
