@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-12T00:57:19+00:00",
+  "generated_at": "2026-09-12T13:12:18+00:00",
   "source": "rolling train/predict on ENARGAS RDS",
   "source_date": null,
   "data": {
@@ -13,11 +13,6 @@
           "n": 0
         },
         "series": [
-          {
-            "fecha": "2026-07-14",
-            "actual": null,
-            "predicted": 60.8
-          },
           {
             "fecha": "2026-07-15",
             "actual": null,
@@ -312,6 +307,11 @@
             "fecha": "2026-09-11",
             "actual": null,
             "predicted": 39.24
+          },
+          {
+            "fecha": "2026-09-12",
+            "actual": null,
+            "predicted": 61.75
           }
         ]
       },
@@ -322,11 +322,6 @@
           "n": 0
         },
         "series": [
-          {
-            "fecha": "2026-07-14",
-            "actual": null,
-            "predicted": 30.14
-          },
           {
             "fecha": "2026-07-15",
             "actual": null,
@@ -621,21 +616,21 @@
             "fecha": "2026-09-11",
             "actual": null,
             "predicted": 31.61
+          },
+          {
+            "fecha": "2026-09-12",
+            "actual": null,
+            "predicted": 22.94
           }
         ]
       },
       "demanda_total": {
         "metrics": {
-          "mae": 9.22,
-          "mape": 6.2,
+          "mae": 8.95,
+          "mape": 6.04,
           "n": 60
         },
         "series": [
-          {
-            "fecha": "2026-07-14",
-            "actual": 159.8,
-            "predicted": 141.43
-          },
           {
             "fecha": "2026-07-15",
             "actual": 155.0,
@@ -930,6 +925,11 @@
             "fecha": "2026-09-11",
             "actual": 133.9,
             "predicted": 133.26
+          },
+          {
+            "fecha": "2026-09-12",
+            "actual": 137.5,
+            "predicted": 134.77
           }
         ]
       }
