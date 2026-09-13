@@ -12,13 +12,12 @@ interface Props {
   yDomain?: [number, number]
 }
 
-// Shared palette across historical (solid) and forecast (stroke-only) layers.
 const COLORS = {
   prioritaria: '#3b82f6',
   industria: '#10b981',
   usinas: '#f59e0b',
   exportaciones: '#8b5cf6',
-  otros: '#94a3b8', // GNC + combustible — smaller, gray for "everything else"
+  otros: '#94a3b8',
 }
 
 function sumNotNull(...vals: (number | null | undefined)[]): number | null {
@@ -40,21 +39,43 @@ export default function DemandChart({
   allDates,
   yDomain,
 }: Props) {
-  // HISTORICAL: "otros" = demanda_total minus the 4 known sectors.
-  // Bridges the gap (GNC + combustible) so the stack height equals the
-  // reported total, matching the forecast stack which shows them explicitly.
+  // Estado para arrastrar la última observación válida hacia adelante (forward fill)
+  let lastKnown = {
+    prioritaria: null as number | null,
+    industria: null as number | null,
+    usinas: null as number | null,
+    exportaciones: null as number | null,
+  }
+
   const historical = data.map((d) => {
-    const explicit = (d.prioritaria ?? 0) + (d.industria ?? 0) + (d.usinas ?? 0) + (d.exportaciones ?? 0)
-    
-    // Si tenemos demanda_total, calculamos la brecha restando las series disponibles
-    const otros = d.demanda_total != null ? Math.max(0, d.demanda_total - explicit) : null
+    // Si la serie existe la usamos y actualizamos el último valor conocido;
+    // si viene null/undefined, tomamos la última disponible hacia atrás.
+    const prio = d.prioritaria ?? lastKnown.prioritaria
+    const ind = d.industria ?? lastKnown.industria
+    const usi = d.usinas ?? lastKnown.usinas
+    const exp = d.exportaciones ?? lastKnown.exportaciones
+
+    if (d.prioritaria != null) lastKnown.prioritaria = d.prioritaria
+    if (d.industria != null) lastKnown.industria = d.industria
+    if (d.usinas != null) lastKnown.usinas = d.usinas
+    if (d.exportaciones != null) lastKnown.exportaciones = d.exportaciones
+
+    // Si no tenemos ningún dato histórico cerrado previo, las subseries quedan en null
+    const hasAnySector = prio != null || ind != null || usi != null || exp != null
+
+    const explicit = (prio ?? 0) + (ind ?? 0) + (usi ?? 0) + (exp ?? 0)
+
+    // Solo se calcula 'otros' si tenemos demanda_total y al menos una subserie histórica válida
+    const otros = d.demanda_total != null && hasAnySector
+      ? Math.max(0, d.demanda_total - explicit)
+      : null
 
     return {
       fecha: d.fecha,
-      prioritaria: d.prioritaria,
-      industria: d.industria,
-      usinas: d.usinas,
-      exportaciones: d.exportaciones,
+      prioritaria: hasAnySector ? prio : null,
+      industria: hasAnySector ? ind : null,
+      usinas: hasAnySector ? usi : null,
+      exportaciones: hasAnySector ? exp : null,
       otros,
       prioritaria_est: null as number | null,
       industria_est: null as number | null,
@@ -63,6 +84,7 @@ export default function DemandChart({
       otros_est: null as number | null,
     }
   })
+
   const lastHistorical = historical[historical.length - 1]?.fecha ?? ''
 
   const forecastRows = forecast
@@ -104,14 +126,14 @@ export default function DemandChart({
           <ReferenceLine x={lastHistorical} stroke="#64748b" strokeDasharray="3 3" label={{ value: 'Hoy', fill: '#64748b', fontSize: 10 }} />
         )}
 
-        {/* Historical stack: solid fills. */}
+        {/* Capa Histórica (relleno sólido) */}
         <Area type="monotone" dataKey="prioritaria" stackId="real" fill={COLORS.prioritaria} stroke={COLORS.prioritaria} name="Prioritaria" isAnimationActive={false} />
         <Area type="monotone" dataKey="industria" stackId="real" fill={COLORS.industria} stroke={COLORS.industria} name="Industria" isAnimationActive={false} />
         <Area type="monotone" dataKey="usinas" stackId="real" fill={COLORS.usinas} stroke={COLORS.usinas} name="Usinas" isAnimationActive={false} />
         <Area type="monotone" dataKey="otros" stackId="real" fill={COLORS.otros} stroke={COLORS.otros} name="GNC + combustible" isAnimationActive={false} />
         <Area type="monotone" dataKey="exportaciones" stackId="real" fill={COLORS.exportaciones} stroke={COLORS.exportaciones} name="Exportaciones" isAnimationActive={false} />
 
-        {/* Forecast stack: light fill + dashed stroke, no legend entries — same colors convey the mapping. */}
+        {/* Capa Forecast (trazo punteado) */}
         <Area type="monotone" dataKey="prioritaria_est" stackId="est" fill={COLORS.prioritaria} fillOpacity={0.15} stroke={COLORS.prioritaria} strokeWidth={1} strokeDasharray="4 3" name="Prioritaria est." legendType="none" isAnimationActive={false} />
         <Area type="monotone" dataKey="industria_est" stackId="est" fill={COLORS.industria} fillOpacity={0.15} stroke={COLORS.industria} strokeWidth={1} strokeDasharray="4 3" name="Industria est." legendType="none" isAnimationActive={false} />
         <Area type="monotone" dataKey="usinas_est" stackId="est" fill={COLORS.usinas} fillOpacity={0.15} stroke={COLORS.usinas} strokeWidth={1} strokeDasharray="4 3" name="Usinas est." legendType="none" isAnimationActive={false} />
