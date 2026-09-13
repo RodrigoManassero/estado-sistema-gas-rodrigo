@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-13T13:14:21+00:00",
+  "generated_at": "2026-09-13T13:35:41+00:00",
   "source": "ENARGAS Reporte Diario del Sistema (RDS)",
   "source_date": "2026-09-13",
   "data": [
@@ -35548,7 +35548,7 @@
         "prioritaria": {
           "programa": 23.8
         },
-        "cammesa": {
+        "usinas": {
           "programa": 37.1
         },
         "industria": {
@@ -35599,7 +35599,7 @@
         "prioritaria": {
           "programa": 25.4
         },
-        "cammesa": {
+        "usinas": {
           "programa": 39.3
         },
         "industria": {
@@ -35650,7 +35650,7 @@
         "prioritaria": {
           "programa": 24.2
         },
-        "cammesa": {
+        "usinas": {
           "programa": 35.0
         },
         "industria": {
@@ -35701,7 +35701,7 @@
         "prioritaria": {
           "programa": 25.9
         },
-        "cammesa": {
+        "usinas": {
           "programa": 35.4
         },
         "industria": {
@@ -35752,7 +35752,7 @@
         "prioritaria": {
           "programa": 28.3
         },
-        "cammesa": {
+        "usinas": {
           "programa": 38.8
         },
         "industria": {
@@ -42698,6 +42698,12 @@
         }
       },
       "consumos": {
+        "prioritaria": {
+          "programa": 62.9
+        },
+        "usinas": {
+          "programa": 25.7
+        },
         "industria": {
           "programa": 34.2
         },
@@ -42743,6 +42749,12 @@
         }
       },
       "consumos": {
+        "prioritaria": {
+          "programa": 58.4
+        },
+        "usinas": {
+          "programa": 27.0
+        },
         "industria": {
           "programa": 33.2
         },
@@ -42788,6 +42800,12 @@
         }
       },
       "consumos": {
+        "prioritaria": {
+          "programa": 59.3
+        },
+        "usinas": {
+          "programa": 26.4
+        },
         "industria": {
           "programa": 34.7
         },
@@ -42833,6 +42851,12 @@
         }
       },
       "consumos": {
+        "prioritaria": {
+          "programa": 66.9
+        },
+        "usinas": {
+          "programa": 25.7
+        },
         "industria": {
           "programa": 32.8
         },
@@ -42895,6 +42919,16 @@
         }
       },
       "consumos": {
+        "prioritaria": {
+          "programa": 71.6,
+          "prom_mes_2025": 46.3,
+          "misma_semana_2025": 36.9
+        },
+        "usinas": {
+          "programa": 25.9,
+          "prom_mes_2025": 26.1,
+          "misma_semana_2025": 27.9
+        },
         "industria": {
           "programa": 31.9,
           "prom_mes_2025": 33.1,
