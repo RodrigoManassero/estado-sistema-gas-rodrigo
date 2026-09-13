@@ -40,18 +40,15 @@ export default function DemandChart({
   allDates,
   yDomain,
 }: Props) {
-  // HISTORICAL: "otros" = Excel demanda_total minus the 4 known sectors.
+  // HISTORICAL: "otros" = demanda_total minus the 4 known sectors.
   // Bridges the gap (GNC + combustible) so the stack height equals the
   // reported total, matching the forecast stack which shows them explicitly.
   const historical = data.map((d) => {
     const explicit = (d.prioritaria ?? 0) + (d.industria ?? 0) + (d.usinas ?? 0) + (d.exportaciones ?? 0)
-    const haveAll =
-      d.prioritaria != null &&
-      d.industria != null &&
-      d.usinas != null &&
-      d.exportaciones != null &&
-      d.demanda_total != null
-    const otros = haveAll ? Math.max(0, (d.demanda_total as number) - explicit) : null
+    
+    // Si tenemos demanda_total, calculamos la brecha restando las series disponibles
+    const otros = d.demanda_total != null ? Math.max(0, d.demanda_total - explicit) : null
+
     return {
       fecha: d.fecha,
       prioritaria: d.prioritaria,
