@@ -7,7 +7,7 @@ Excel:
  - Line pack total del sistema + delta
  - Importaciones (Bolivia / Chile / Escobar / Bahía Blanca)
  - Exportaciones TGN / TGS
- - Consumo estimado por segmento (prioritaria, CAMMESA, industria, GNC, combustible)
+ - Consumo estimado por segmento (prioritaria, CAMMESA/usinas, industria, GNC, combustible)
  - Temperatura Buenos Aires del día + forecast 6 días
 
 Parser is tolerant: if a field is missing from a given PDF it's just omitted
@@ -86,9 +86,6 @@ def extract_rds(text):
 
     # Importaciones rows, 4 cols:
     #   Programa (MMm³/d) | Próximo barco (fecha "DD-MMM" or "-") | Prom Mes prev-year | Misma Sem prev-year
-    # The second column is NOT a volume; it's the date of the next LNG cargo
-    # (e.g. "18-jul" for Escobar). We parse it as text and keep it only when
-    # it's meaningful (skip the "-" placeholder).
     importaciones = {}
     for key, label in [
         ('bolivia', 'Bolivia'),
@@ -128,13 +125,13 @@ def extract_rds(text):
     # Consumos estimados
     consumos = {}
     for key, label in [
-        ('prioritaria', 'Demanda Prioritaria'),
-        ('cammesa', r'CAMMESA\s*\(\*\)'),
-        ('industria', r'Industria\s*\(P3\+GU\)'),
-        ('gnc', 'GNC'),
-        ('combustible', 'Combustible'),
+        ('prioritaria', r'Demanda\s+Prioritaria'),
+        ('usinas',      r'(?:CAMMESA|Usinas)'),                 # Acepta CAMMESA o Usinas y guarda como 'usinas'
+        ('industria',   r'Industria\s*\(\s*P3\s*\+\s*GU\s*\)'), # Permisivo con espacios
+        ('gnc',         r'GNC'),
+        ('combustible', r'Combustible'),
     ]:
-        m = re.search(rf'{label}\s+([\d.,]+)\s+([\d.,]+)\s+([\d.,]+)', text)
+        m = re.search(rf'{label}\s*[\(\*\)]*\s+([\d.,]+)\s+([\d.,]+)\s+([\d.,]+)', text, re.IGNORECASE)
         if m:
             consumos[key] = {
                 'programa': num(m.group(1)),
@@ -144,18 +141,13 @@ def extract_rds(text):
     if consumos:
         d['consumos'] = consumos
 
-    # Total consumo — the PDF splits "TOTAL ... 122,9 MM m3/día ... Transporte"
-    # across two lines, so use DOTALL and a reasonable ceiling on the gap.
+    # Total consumo
     m = re.search(r'TOTAL[\s\S]{0,120}?([\d.,]+)\s*MM\s*m', text)
     if m:
         d['consumo_total_estimado'] = num(m.group(1))
 
-    # Temperature for día operativo: "lunes, 20 de abril de 2026 19 23 21,0 18,1 19,0"
-    # Followed by: "Mayormente nublado..."
-    # Pattern: date_line + 5 numbers (min, max, tm, tm_2025, tm_misma_semana)
+    # Temperature for día operativo
     if d.get('fecha'):
-        pattern = rf'{re.escape("")}(\d+)\s+(\d+)\s+([\d.,]+)\s+([\d.,]+)\s+([\d.,]+)'
-        # Simpler approach: locate a line with the fecha word "abril" then 5 numbers.
         m = re.search(r'de\s+\w+\s+de\s+\d{4}\s+(\d+)\s+(\d+)\s+([\d.,]+)\s+([\d.,]+)\s+([\d.,]+)', text)
         if m:
             d['temperatura_ba'] = {
@@ -166,8 +158,7 @@ def extract_rds(text):
                 'tm_misma_semana': num(m.group(5)),
             }
 
-    # 6-day forecast table. Lines look like:
-    #   "martes, 21 de abril de 2026 19 23 21"
+    # 6-day forecast table
     forecast = []
     for m in re.finditer(
         r'(\w+),\s+(\d{1,2})\s+de\s+(\w+)\s+de\s+(\d{4})\s+(\d+)\s+(\d+)\s+([\d.,]+)',
@@ -183,7 +174,6 @@ def extract_rds(text):
             'max': num(m.group(6)),
             'tm': num(m.group(7)),
         })
-    # Drop duplicates (same fecha may appear for the current day).
     seen = set()
     dedup = []
     for item in forecast:
@@ -192,7 +182,6 @@ def extract_rds(text):
         seen.add(item['fecha'])
         dedup.append(item)
     if dedup and d.get('fecha'):
-        # Keep only future days relative to fecha.
         dedup = [f for f in dedup if f['fecha'] > d['fecha']]
     if dedup:
         d['forecast_temp_ba'] = dedup
@@ -230,10 +219,7 @@ ENARGAS_CSV_COLS = [
 
 
 def flatten_for_csv(row):
-    """Flatten one RDS row (possibly slim) to a CSV-friendly flat dict.
-
-    Columns defined in ENARGAS_CSV_COLS. Missing nested fields render empty.
-    """
+    """Flatten one RDS row to a CSV-friendly flat dict."""
     t = row.get('temperatura_ba') or {}
     imps = row.get('importaciones') or {}
     cons = row.get('consumos') or {}
@@ -269,9 +255,9 @@ def flatten_for_csv(row):
         'imp_escobar_proximo_barco': imp('escobar', 'proximo_barco'),
         'imp_bahia_blanca_proximo_barco': imp('bahia_blanca', 'proximo_barco'),
         'cons_prioritaria': cn('prioritaria'),
-        'cons_cammesa': cn('cammesa'),
-        'cons_industria': cn('industria'),
-        'cons_gnc': cn('gnc'),
+        'cons_cammesa':     cn('usinas'),  # Mapea la clave 'usinas' a la columna 'cons_cammesa' en CSV
+        'cons_industria':   cn('industria'),
+        'cons_gnc':         cn('gnc'),
         'cons_combustible': cn('combustible'),
         'exp_tgn': ex('tgn'),
         'exp_tgs': ex('tgs'),
@@ -279,12 +265,7 @@ def flatten_for_csv(row):
 
 
 def slim_row(row):
-    """Drop fields the dashboard doesn't need on historical rows.
-
-    Current day keeps the full row (PulseCard/SystemFlowPanel use the prev-year
-    comparisons and forecast_temp_ba); every prior day is slimmed to the fields
-    used by the historical / YoY / pulse charts. Cuts ~75% off the per-row size.
-    """
+    """Drop fields the dashboard doesn't need on historical rows."""
     slim = {
         'fecha': row.get('fecha'),
         'source': row.get('source'),
@@ -330,7 +311,6 @@ def main():
     rds_pdfs = sorted(glob.glob(os.path.join(RAW_DIR, 'RDS_*.pdf')))
     legacy = sorted(glob.glob(os.path.join(RAW_DIR, 'ETGS*.pdf')))
 
-    # Start from whatever is already in enargas.json (preserves backfilled rows).
     by_date = load_existing()
     print(f"Loaded {len(by_date)} existing rows; processing {len(rds_pdfs)} RDS PDFs from raw/")
 
@@ -346,7 +326,6 @@ def main():
             missing = REQUIRED_FIELDS - row.keys()
             if missing:
                 issues.append(f"{os.path.basename(p)}: missing {sorted(missing)}")
-            # Upsert by fecha; PDF from raw/ always wins over stored row for that date
             if row.get('fecha'):
                 by_date[row['fecha']] = row
             print(
@@ -360,8 +339,6 @@ def main():
 
     rows = sorted(by_date.values(), key=lambda r: r.get('fecha') or '')
 
-    # Slim all but the latest row — historical rows only need what the
-    # dashboard charts actually plot.
     if rows:
         rows = [slim_row(r) for r in rows[:-1]] + [rows[-1]]
 
