@@ -200,7 +200,7 @@ def main():
             exp_total = (tgn or 0) + (tgs or 0)
         row['demanda_total'] = fill(row['demanda_total'], r.get('consumo_total_estimado'))
         row['prioritaria'] = fill(row['prioritaria'], _get(r, 'consumos', 'prioritaria', 'programa'))
-        row['usinas'] = fillz(row['usinas'], _get(r, 'consumos', 'cammesa', 'programa'))
+        row['usinas'] = fillz(row['usinas'], _get(r, 'consumos', 'usinas', 'programa'))
         row['industria'] = fillz(row['industria'], _get(r, 'consumos', 'industria', 'programa'))
         row['exportaciones'] = fillz(row['exportaciones'], exp_total)
         row['temp_prom_ba'] = fill(row['temp_prom_ba'], _get(r, 'temperatura_ba', 'tm'))
