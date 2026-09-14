@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-14T18:26:23+00:00",
+  "generated_at": "2026-09-14T18:38:22+00:00",
   "source": "MEGSA public API (megsa.ar/api)",
   "source_date": null,
   "data": {
@@ -16,7 +16,7 @@
         "previousPeriod": null,
         "nominalDifference": 0.07,
         "percentageDifference": 2.47,
-        "lastUpdated": "2026-09-14T15:20:02.3818401",
+        "lastUpdated": "2026-09-14T15:30:04.2039209",
         "marketType": "Gas",
         "displayName": "NAT GAS"
       },
@@ -32,7 +32,7 @@
         "previousPeriod": null,
         "nominalDifference": 2.55,
         "percentageDifference": 3.21,
-        "lastUpdated": "2026-09-14T15:20:03.1167678",
+        "lastUpdated": "2026-09-14T15:30:04.9704978",
         "marketType": "Gas",
         "displayName": "TTF GAS Fut"
       },
@@ -42,13 +42,13 @@
         "series": "BRENT_CRUDE_USD",
         "seriesDescription": "spot_price",
         "units": "USD/bbl",
-        "currentPrice": 105.79,
+        "currentPrice": 105.88,
         "currentPeriod": "2026-09-14T00:00:00",
         "previousPrice": 104.32,
         "previousPeriod": null,
-        "nominalDifference": 1.47,
-        "percentageDifference": 1.41,
-        "lastUpdated": "2026-09-14T15:20:01.6761175",
+        "nominalDifference": 1.56,
+        "percentageDifference": 1.5,
+        "lastUpdated": "2026-09-14T15:30:03.1613303",
         "marketType": "Oil",
         "displayName": "BRENT"
       },
@@ -64,7 +64,7 @@
         "previousPeriod": null,
         "nominalDifference": 1.63,
         "percentageDifference": 1.63,
-        "lastUpdated": "2026-09-14T15:20:01.0009976",
+        "lastUpdated": "2026-09-14T15:30:01.7856145",
         "marketType": "Oil",
         "displayName": "WTI"
       }
@@ -73,12 +73,12 @@
       "currency": "USD",
       "currencyName": "Dolar U.S.A",
       "currentPrice": 1530.0,
-      "currentPeriod": "2026-09-14T10:03:00",
+      "currentPeriod": "2026-09-14T15:02:00",
       "previousPrice": 1530.0,
-      "previousPeriod": "2026-09-11T17:00:00",
+      "previousPeriod": "2026-09-14T10:03:00",
       "nominalDifference": 0.0,
       "percentageDifference": 0.0,
-      "lastUpdated": "2026-09-14T10:30:02.5261884",
+      "lastUpdated": "2026-09-14T15:30:02.8490008",
       "marketType": "Dollar",
       "displayName": "DOLAR"
     },
@@ -90,7 +90,7 @@
         "fechaUltimaModificacion": "2026-09-11T10:04:21"
       }
     ],
-    "fetched_at": "2026-09-14T18:26:23+00:00"
+    "fetched_at": "2026-09-14T18:38:22+00:00"
   },
   "errors": null
 }
