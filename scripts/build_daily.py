@@ -135,10 +135,12 @@ def main():
         with open(FORECAST_JSON, encoding='utf-8') as f:
             raw_fc = json.load(f)
             fc_list = raw_fc.get('forecast', []) if isinstance(raw_fc, dict) else raw_fc
-            forecast_map = {
-                clean_fecha(r.get('fecha')): r.get('demanda_total')
-                for r in fc_list if r.get('fecha') and r.get('demanda_total') is not None
-            }
+            for r in fc_list:
+                f_raw = r.get('fecha') or r.get('Fecha')
+                f_clean = clean_fecha(f_raw)
+                dem = r.get('demanda_total') if r.get('demanda_total') is not None else r.get('demanda')
+                if f_clean and dem is not None:
+                    forecast_map[f_clean] = float(dem)
 
     rds, _ = _load('enargas.json')
     ing, _ = _load('enargas_ing.json')
@@ -303,7 +305,7 @@ def main():
             if desb is not None:
                 row['estado_tgn'] = 'ALERTA' if abs(desb) > TGN_TOLERANCIA_PCT else 'NORMAL'
 
-    # Asegurar que existan filas para las fechas del forecast de demanda
+    # Forzar la creación de filas vacías para todas las fechas del forecast (15/9 al 27/9)
     for f_fc in forecast_map.keys():
         row_for(f_fc)
 
