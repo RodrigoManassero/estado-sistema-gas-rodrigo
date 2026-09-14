@@ -68,7 +68,7 @@ LIMIT_KEYS = {
 PS_FIELDS = [
     'fecha', 'tipo', 'source',
     'temp_prom_ba', 'demanda_total',
-    'prioritaria', 'combustible', 'gnc', 'industria', 'usinas',
+    'prioritaria', 'combustible', 'gnc', 'industria', 'usinas', 'ajuste',
     'exp_tgn', 'exp_tgs',
     'iny_total', 'iny_tgs', 'iny_sur', 'iny_neuba1', 'iny_neuba2', 'iny_patagonico',
     'iny_tgn', 'iny_norte', 'iny_neuquen',
@@ -126,19 +126,7 @@ def _cluster_rows(words, tol=5.0):
 
 
 def _parse_header(rows):
-    """Find the header row(s) and resolve the column layout.
-
-    The template comes in two shapes: the daily one ([día1 proj][REAL][día report]
-    [día+1]...) and a Monday one that back-fills the weekend with three
-    (proj, REAL) pairs before the forecast. Both label every dated column
-    "<dayname> <dd> - <mon>" and every actuals column "REAL", so we read those
-    rather than assume positions.
-
-    Returns a dict {real_date, real_x, real_daycol_x, forecast, value_min_x} or
-    None. `real_date` is the most recent REAL (the report's D-1); `forecast` is a
-    list of (x, date_iso) for the days after it.
-    """
-    # The header is the cluster that holds the 'REAL' token(s).
+    """Find the header row(s) and resolve the column layout."""
     header_words = None
     for r in rows:
         if any(_ascii(w['text']).upper() == 'REAL' for w in r['words']):
@@ -150,7 +138,6 @@ def _parse_header(rows):
     toks = header_words
     real_xs = sorted(w['x0'] for w in toks if _ascii(w['text']).upper() == 'REAL')
 
-    # year: a token like jun'26 / may'26
     year = None
     for w in toks:
         m = re.search(r"'(\d{2})", w['text'])
@@ -159,10 +146,7 @@ def _parse_header(rows):
             break
     yr0 = year or date.today().year
 
-    # Dated columns are strictly "<dd> - <mon>": a 1-2 digit day, then a dash,
-    # then a month token. Requiring the dash excludes the week range on the
-    # "PROYECCION SEMANA: 01 de jun al 07 jun'26" line ("01 de jun", "07 jun'26").
-    daycols = []  # (x, date_iso)
+    daycols = []
     for i, w in enumerate(toks):
         if not re.fullmatch(r'\d{1,2}', w['text']):
             continue
@@ -178,7 +162,6 @@ def _parse_header(rows):
     if not daycols:
         return None
 
-    # resolve a week straddling a month/year boundary off the first column
     base_mon = daycols[0][1]
     cols = []
     for x, mon, day in daycols:
@@ -186,15 +169,14 @@ def _parse_header(rows):
         cols.append((x, f'{yr:04d}-{mon:02d}-{day:02d}'))
     cols.sort()
 
-    # Each REAL column belongs to the dated column immediately to its left.
     real_date = real_x = real_daycol_x = None
     if real_xs:
-        rx = real_xs[-1]  # the most recent REAL = the report's D-1
+        rx = real_xs[-1]
         left = [(x, d) for x, d in cols if x < rx]
         if left:
             real_daycol_x, real_date = max(left, key=lambda c: c[0])
             real_x = rx
-    if real_date is None:  # no REAL label — fall back to the first dated column
+    if real_date is None:
         real_daycol_x, real_date = cols[0]
 
     forecast = sorted((x, d) for x, d in cols if d > real_date)
@@ -218,9 +200,10 @@ def _field_for(label, section):
 
     if L.startswith('temperatura'):
         return 'temp_prom_ba'
-    if L.startswith('demanda total'):
+    # Tomamos la demanda DENTRO DE SISTEMAS para mantener balance físico real (129.4 MMm3)
+    if 'dentro de sistemas de transporte' in L or L.startswith('a- dentro'):
         return 'demanda_total'
-    if has('demanda', 'prioritaria'):
+    if has('demanda', 'prioritaria') or L.startswith('demanda prioritaria'):
         return 'prioritaria'
     if L.startswith('gas combustible'):
         return 'combustible'
@@ -228,8 +211,10 @@ def _field_for(label, section):
         return 'gnc'
     if L.startswith('industria'):
         return 'industria'
-    if has('usinas', 'dentro'):
+    if has('usinas', 'dentro') or L.startswith('usinas en el sistema'):
         return 'usinas'
+    if has('ajuste', 'demanda') or L.startswith('ajuste de demanda'):
+        return 'ajuste'
     if has('exportaciones', 'tgn'):
         return 'exp_tgn'
     if has('exportaciones', 'tgs'):
@@ -275,18 +260,12 @@ def _field_for(label, section):
     return None
 
 
-# section a field belongs to, when it acts as a section header
 SECTION_OF = {'iny_total': 'iny', 'linepack_total': 'stock',
               'tramo_inicial': 'tini', 'tramo_final': 'tfin'}
 
 
 def extract_ps(source, report_date=None):
-    """Parse a PS PDF (path or bytes). Returns (real_row, forecast_rows, issues).
-
-    real_row is the D-1 actuals dict (tipo 'R'); forecast_rows is a list of the
-    per-day projection dicts (tipo 'P'). report_date (a datetime.date) is used
-    only as a fallback for the REAL date when the header can't be parsed.
-    """
+    """Parse a PS PDF (path or bytes). Returns (real_row, forecast_rows, issues)."""
     issues = []
     opener = pdfplumber.open(source if not isinstance(source, (bytes, bytearray))
                              else io.BytesIO(source))
@@ -298,10 +277,6 @@ def extract_ps(source, report_date=None):
     if not h:
         return None, [], ['header: could not parse column anchors']
 
-    # anchors for nearest-column assignment: the D-1 dated column + its REAL
-    # column + the forecast columns. Older history columns (the Monday variant's
-    # weekend back-fill) are intentionally left out — their values fall onto the
-    # nearest kept anchor, where the most-recent one wins because it sits closest.
     real_date = h['real_date']
     real_x = h['real_x']
     forecast_dates = [d for _, d in h['forecast']]
@@ -323,7 +298,7 @@ def extract_ps(source, report_date=None):
         label_text = ' '.join(w['text'] for w in ws if w['x0'] < value_min_x)
         if not label_text.strip():
             continue
-        label_text = label_text.split('MMm')[0]   # drop the unit token tail
+        label_text = label_text.split('MMm')[0]
         values = [w for w in ws if w['x0'] >= value_min_x and NUM_RE.fullmatch(w['text'])]
         if not values:
             continue
@@ -334,16 +309,11 @@ def extract_ps(source, report_date=None):
         if field is None:
             continue
 
-        # assign each value token to its nearest column anchor
         by_anchor = {}
         for w in values:
             ax, adate = min(anchors, key=lambda a: abs(a[0] - w['x0']))
             by_anchor[adate] = _num(w['text'])
 
-        # REAL/current value: the REAL column, else the día1 column. Tramos
-        # iniciales/finales publish no D-1 actual, only the projection from the
-        # report day onward — fall back to the report-day column so the field
-        # carries a current estimate instead of nothing.
         cur = by_anchor.get('REAL')
         if cur is None:
             cur = by_anchor.get(real_date)
@@ -355,7 +325,6 @@ def extract_ps(source, report_date=None):
             if d in by_anchor:
                 fc[d][field] = by_anchor[d]
 
-        # Min/Max band, if any
         lk = LIMIT_KEYS.get(field)
         if lk:
             m = LIM_RE.search(label_text)
@@ -399,7 +368,7 @@ def main():
         rdate = _report_date_from_name(fname)
         try:
             real_row, _fc, iss = extract_ps(path, report_date=rdate)
-        except Exception as e:  # noqa: BLE001 — tolerate one bad PDF
+        except Exception as e:
             issues.append(f'{fname}: parse error: {e}')
             continue
         issues += [f'{fname}: {x}' for x in iss]
