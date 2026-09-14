@@ -113,6 +113,9 @@ def main():
         return 1
     fields = list(history[0].keys())
     for extra in (
+        'gnc',
+        'combustible',
+        'ajuste',
         'estado_tgn',
         'cammesa_gas_est',
         'cammesa_gasoil_est',
@@ -163,6 +166,9 @@ def main():
         row['prioritaria'] = fill(row['prioritaria'], r.get('prioritaria'))
         row['usinas'] = fillz(row['usinas'], r.get('usinas'))
         row['industria'] = fillz(row['industria'], r.get('industria'))
+        row['gnc'] = fillz(row['gnc'], r.get('gnc'))
+        row['combustible'] = fillz(row['combustible'], r.get('combustible'))
+        row['ajuste'] = fillz(row['ajuste'], r.get('ajuste'))
         exp = None
         if r.get('exp_tgn') is not None or r.get('exp_tgs') is not None:
             exp = (r.get('exp_tgn') or 0) + (r.get('exp_tgs') or 0)
