@@ -171,6 +171,16 @@ def main():
             row['industria'] = fillz(row['industria'], r.get('industria'))
             row['gnc'] = fillz(row['gnc'], r.get('gnc'))
             row['combustible'] = fillz(row['combustible'], r.get('combustible'))
+            
+            # Mantenemos las inyecciones proyectadas por el PS para los días hoy+1..+3
+            row['iny_tgs'] = fillz(row['iny_tgs'], r.get('iny_tgs'))
+            row['iny_tgn'] = fillz(row['iny_tgn'], r.get('iny_tgn'))
+            row['iny_total'] = fillz(row['iny_total'], r.get('iny_total'))
+            row['iny_enarsa'] = fill(row['iny_enarsa'], r.get('iny_enarsa'))
+            row['iny_gpm'] = fill(row['iny_gpm'], r.get('iny_gpm'))
+            row['iny_bolivia'] = fill(row['iny_bolivia'], r.get('iny_bolivia'))
+            row['iny_escobar'] = fill(row['iny_escobar'], r.get('iny_escobar'))
+            
             row['origen_dato'] = 'PS_PROYECCION'
 
     # PRIORIDAD 1: PS REAL (Máxima autoridad - Cierre dentro de sistema)
@@ -286,8 +296,41 @@ def main():
     # PRIORIDAD 4: MODELO / FÓRMULA DE PROYECCIÓN (Para días sin dato oficial)
     for row in rows:
         if row.get('demanda_total') is None and row.get('temp_prom_ba') is not None:
-            # Si el frontend o backend calcula la regresión cuando falta dato oficial:
             row['origen_dato'] = 'MODELO_PROYECCION'
+
+    # --- PROYECCIÓN PROPÍA Y COMPLETADO DE INYECCIONES PARA EL GRÁFICO DE OFERTA ---
+    recent_ps = [r for r in rows if r.get('iny_tgs') is not None and r.get('iny_tgn') is not None][-7:]
+    
+    if recent_ps:
+        avg_tgs = sum(r['iny_tgs'] for r in recent_ps) / len(recent_ps)
+        avg_tgn = sum(r['iny_tgn'] for r in recent_ps) / len(recent_ps)
+        avg_bolivia = sum(r.get('iny_bolivia') or 0 for r in recent_ps) / len(recent_ps)
+        avg_escobar = sum(r.get('iny_escobar') or 0 for r in recent_ps) / len(recent_ps)
+        avg_enarsa = sum(r.get('iny_enarsa') or 0 for r in recent_ps) / len(recent_ps)
+        
+        tot_nac = avg_tgs + avg_tgn
+        share_tgs = avg_tgs / tot_nac if tot_nac > 0 else 0.65
+        share_tgn = avg_tgn / tot_nac if tot_nac > 0 else 0.35
+
+        for row in rows:
+            # Rellenar inyecciones solo en días que tienen proyección de demanda pero carecen de desglose
+            if row.get('demanda_total') is not None and row.get('iny_tgs') is None:
+                dem = row['demanda_total']
+                
+                # Proyección basal de importaciones
+                row['iny_bolivia'] = fill(row.get('iny_bolivia'), round(avg_bolivia, 1))
+                row['iny_escobar'] = fill(row.get('iny_escobar'), round(avg_escobar, 1))
+                row['iny_enarsa'] = fill(row.get('iny_enarsa'), round(avg_enarsa, 1))
+                
+                imp = (row['iny_bolivia'] or 0) + (row['iny_escobar'] or 0) + (row['iny_enarsa'] or 0)
+                req_nac = max(dem - imp, 0)
+                
+                row['iny_tgs'] = round(req_nac * share_tgs, 1)
+                row['iny_tgn'] = round(req_nac * share_tgn, 1)
+                row['iny_total'] = round(dem, 1)
+                
+                if row.get('origen_dato') is None:
+                    row['origen_dato'] = 'PROYECCION_INYECCION'
 
     # Variación de Linepack TGN
     prev_tgn = None
