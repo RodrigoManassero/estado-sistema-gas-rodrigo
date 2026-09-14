@@ -3,7 +3,7 @@
 1. PS REAL (columna REAL de Proyección Semanal - cierre oficial dentro de sistema)
 2. RDS (Reporte Diario ENARGAS - programa diario provisorio)
 3. PS Proyección (días hoy+1 en adelante publicados por ENARGAS)
-4. Modelo / Fórmula (proyección calculada para días sin dato oficial)
+4. Modelo / Fórmula (proyección calculada para días sin dato oficial vía demand_forecast.json)
 """
 
 import json
@@ -17,6 +17,7 @@ from _meta import write_json, write_csv, json_to_csv_path  # noqa: E402
 OUT_DIR = os.path.join(os.path.dirname(__file__), '..', 'public', 'data')
 DAILY_JSON = os.path.join(OUT_DIR, 'daily.json')
 HISTORY_JSON = os.path.join(OUT_DIR, 'daily_history.json')
+FORECAST_JSON = os.path.join(OUT_DIR, 'demand_forecast.json')
 
 
 def clean_fecha(f):
@@ -127,6 +128,17 @@ def main():
             r = blank(f_clean)
             by_date[f_clean] = r
         return r
+
+    # Cargar Forecast de Demanda por Clima (Modelado)
+    forecast_map = {}
+    if os.path.exists(FORECAST_JSON):
+        with open(FORECAST_JSON, encoding='utf-8') as f:
+            raw_fc = json.load(f)
+            fc_list = raw_fc.get('forecast', []) if isinstance(raw_fc, dict) else raw_fc
+            forecast_map = {
+                clean_fecha(r.get('fecha')): r.get('demanda_total')
+                for r in fc_list if r.get('fecha') and r.get('demanda_total') is not None
+            }
 
     rds, _ = _load('enargas.json')
     ing, _ = _load('enargas_ing.json')
@@ -291,11 +303,17 @@ def main():
             if desb is not None:
                 row['estado_tgn'] = 'ALERTA' if abs(desb) > TGN_TOLERANCIA_PCT else 'NORMAL'
 
+    # Asegurar que existan filas para las fechas del forecast de demanda
+    for f_fc in forecast_map.keys():
+        row_for(f_fc)
+
     rows = sorted(by_date.values(), key=lambda r: r.get('fecha') or '')
 
     # PRIORIDAD 4: MODELO / FÓRMULA DE PROYECCIÓN (Para días sin dato oficial)
     for row in rows:
-        if row.get('demanda_total') is None and row.get('temp_prom_ba') is not None:
+        f = row['fecha']
+        if row.get('demanda_total') is None and f in forecast_map:
+            row['demanda_total'] = round(forecast_map[f], 1)
             row['origen_dato'] = 'MODELO_PROYECCION'
 
     # --- PROYECCIÓN PROPÍA Y COMPLETADO DE INYECCIONES PARA EL GRÁFICO DE OFERTA ---
