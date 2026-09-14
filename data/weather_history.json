@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-09-14T13:14:31+00:00",
+  "generated_at": "2026-09-14T14:40:03+00:00",
   "source": "Open-Meteo Archive API (2024-09-07 to 2026-09-07)",
   "source_date": "2026-09-07",
   "data": [],
   "failures": [
-    "ba: Expecting value: line 1 column 1 (char 0)",
-    "rosario: Expecting value: line 1 column 1 (char 0)",
-    "cordoba: Expecting value: line 1 column 1 (char 0)",
-    "santafe: Expecting value: line 1 column 1 (char 0)",
-    "mendoza: Expecting value: line 1 column 1 (char 0)",
-    "neuquen: Expecting value: line 1 column 1 (char 0)",
-    "bahiablanca: Expecting value: line 1 column 1 (char 0)",
-    "esquel: Expecting value: line 1 column 1 (char 0)",
-    "salta: Expecting value: line 1 column 1 (char 0)",
-    "tucuman: Expecting value: line 1 column 1 (char 0)"
+    "ba: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
+    "rosario: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
+    "cordoba: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
+    "santafe: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
+    "mendoza: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
+    "neuquen: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
+    "bahiablanca: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
+    "esquel: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
+    "salta: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
+    "tucuman: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)"
   ]
 }
