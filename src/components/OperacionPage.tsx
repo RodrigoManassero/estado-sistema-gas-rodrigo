@@ -24,7 +24,6 @@ import LinepackChart from './LinepackChart'
 import TemperatureChart from './TemperatureChart'
 import FuelMixChart from './FuelMixChart'
 import InjectionsChart from './InjectionsChart'
-import InjectionsTable from './InjectionsTable'
 import WeeklyComparison from './WeeklyComparison'
 import CommentsSection from './CommentsSection'
 import ColdRanking from './ColdRanking'
@@ -341,11 +340,6 @@ export default function OperacionPage() {
           </div>
         )}
       </ChartGroup>
-
-      <div style={{ ...card, marginTop: space.xl }}>
-        <h3 style={sectionTitle}>Tabla de inyecciones — últimos días</h3>
-        <InjectionsTable data={valid} />
-      </div>
     </>
   )
 }
