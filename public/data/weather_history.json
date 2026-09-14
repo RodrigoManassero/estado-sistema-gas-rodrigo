@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-09-14T14:40:03+00:00",
+  "generated_at": "2026-09-14T15:10:53+00:00",
   "source": "Open-Meteo Archive API (2024-09-07 to 2026-09-07)",
   "source_date": "2026-09-07",
   "data": [],
   "failures": [
-    "ba: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
-    "rosario: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
-    "cordoba: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
-    "santafe: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
-    "mendoza: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
-    "neuquen: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
-    "bahiablanca: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
-    "esquel: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
-    "salta: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)",
-    "tucuman: HTTPSConnectionPool(host='archive-api.open-meteo.com', port=443): Read timed out. (read timeout=30)"
+    "ba: 503 Server Error: Service Unavailable for url: https://archive-api.open-meteo.com/v1/archive?latitude=-34.6037&longitude=-58.3816&start_date=2024-09-07&end_date=2026-09-07&daily=temperature_2m_max%2Ctemperature_2m_min&timezone=America%2FArgentina%2FBuenos_Aires",
+    "rosario: 503 Server Error: Service Unavailable for url: https://archive-api.open-meteo.com/v1/archive?latitude=-32.9468&longitude=-60.6393&start_date=2024-09-07&end_date=2026-09-07&daily=temperature_2m_max%2Ctemperature_2m_min&timezone=America%2FArgentina%2FBuenos_Aires",
+    "cordoba: 503 Server Error: Service Unavailable for url: https://archive-api.open-meteo.com/v1/archive?latitude=-31.4201&longitude=-64.1888&start_date=2024-09-07&end_date=2026-09-07&daily=temperature_2m_max%2Ctemperature_2m_min&timezone=America%2FArgentina%2FBuenos_Aires",
+    "santafe: 503 Server Error: Service Unavailable for url: https://archive-api.open-meteo.com/v1/archive?latitude=-31.6333&longitude=-60.7&start_date=2024-09-07&end_date=2026-09-07&daily=temperature_2m_max%2Ctemperature_2m_min&timezone=America%2FArgentina%2FBuenos_Aires",
+    "mendoza: 503 Server Error: Service Unavailable for url: https://archive-api.open-meteo.com/v1/archive?latitude=-32.8895&longitude=-68.8458&start_date=2024-09-07&end_date=2026-09-07&daily=temperature_2m_max%2Ctemperature_2m_min&timezone=America%2FArgentina%2FBuenos_Aires",
+    "neuquen: 503 Server Error: Service Unavailable for url: https://archive-api.open-meteo.com/v1/archive?latitude=-38.9517&longitude=-68.0591&start_date=2024-09-07&end_date=2026-09-07&daily=temperature_2m_max%2Ctemperature_2m_min&timezone=America%2FArgentina%2FBuenos_Aires",
+    "bahiablanca: 503 Server Error: Service Unavailable for url: https://archive-api.open-meteo.com/v1/archive?latitude=-38.7196&longitude=-62.2724&start_date=2024-09-07&end_date=2026-09-07&daily=temperature_2m_max%2Ctemperature_2m_min&timezone=America%2FArgentina%2FBuenos_Aires",
+    "esquel: 503 Server Error: Service Unavailable for url: https://archive-api.open-meteo.com/v1/archive?latitude=-42.9077&longitude=-71.3229&start_date=2024-09-07&end_date=2026-09-07&daily=temperature_2m_max%2Ctemperature_2m_min&timezone=America%2FArgentina%2FBuenos_Aires",
+    "salta: 503 Server Error: Service Unavailable for url: https://archive-api.open-meteo.com/v1/archive?latitude=-24.7859&longitude=-65.4117&start_date=2024-09-07&end_date=2026-09-07&daily=temperature_2m_max%2Ctemperature_2m_min&timezone=America%2FArgentina%2FBuenos_Aires",
+    "tucuman: 503 Server Error: Service Unavailable for url: https://archive-api.open-meteo.com/v1/archive?latitude=-26.8083&longitude=-65.2176&start_date=2024-09-07&end_date=2026-09-07&daily=temperature_2m_max%2Ctemperature_2m_min&timezone=America%2FArgentina%2FBuenos_Aires"
   ]
 }
