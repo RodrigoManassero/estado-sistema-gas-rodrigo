@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-15T13:14:24+00:00",
+  "generated_at": "2026-09-15T21:48:14+00:00",
   "source": "Cascada 4 niveles: PS_REAL > RDS > PS_PROJ > MODELO",
   "source_date": "2026-09-15",
   "data": [
@@ -45974,8 +45974,8 @@
       "var_linepack_tgs": null,
       "lim_inf_tgs": 215.0,
       "lim_sup_tgs": 235.0,
-      "linepack_tgn": null,
-      "var_linepack_tgn": null,
+      "linepack_tgn": 129.17,
+      "var_linepack_tgn": 1.98,
       "lim_inf_tgn": 110.0,
       "lim_sup_tgn": 142.0,
       "linepack_total": 350.6,
@@ -46003,7 +46003,7 @@
       "combustible": null,
       "ajuste": null,
       "origen_dato": "RDS_ESTIMADO",
-      "estado_tgn": null,
+      "estado_tgn": "NORMAL",
       "cammesa_gas_est": 31.0,
       "cammesa_gasoil_est": 0.546,
       "cammesa_fueloil_est": 0.236,
