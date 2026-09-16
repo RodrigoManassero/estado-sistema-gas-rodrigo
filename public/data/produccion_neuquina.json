@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-15T13:13:39+00:00",
+  "generated_at": "2026-09-16T13:16:24+00:00",
   "source": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
   "source_date": "2026-08",
   "data": [
@@ -28571,7 +28571,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 283.63,
       "prod_pet_m3": 119816.86,
-      "prod_agua_m3": 135272.63,
+      "prod_agua_m3": 135272.64,
       "pozos_activos": 95,
       "pozos_no_conv": 128
     },
@@ -29170,7 +29170,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 3.12,
-      "prod_pet_m3": 50043.78,
+      "prod_pet_m3": 50043.79,
       "prod_agua_m3": 2953.06,
       "pozos_activos": 28,
       "pozos_no_conv": 31
@@ -31738,7 +31738,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Mendoza",
       "prod_gas_mm3": 1.76,
-      "prod_pet_m3": 39723.49,
+      "prod_pet_m3": 39723.48,
       "prod_agua_m3": 586440.0,
       "pozos_activos": 310,
       "pozos_no_conv": 85
@@ -34103,7 +34103,7 @@
       "provincia": "Mendoza",
       "prod_gas_mm3": 1.96,
       "prod_pet_m3": 41688.4,
-      "prod_agua_m3": 641886.74,
+      "prod_agua_m3": 641886.75,
       "pozos_activos": 302,
       "pozos_no_conv": 85
     },
@@ -34570,7 +34570,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "La Pampa",
       "prod_gas_mm3": 0.29,
-      "prod_pet_m3": 18971.24,
+      "prod_pet_m3": 18971.23,
       "prod_agua_m3": 309791.03,
       "pozos_activos": 205,
       "pozos_no_conv": 42
@@ -35614,7 +35614,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 319.79,
-      "prod_pet_m3": 128416.67,
+      "prod_pet_m3": 128416.66,
       "prod_agua_m3": 148649.2,
       "pozos_activos": 98,
       "pozos_no_conv": 133
@@ -38758,7 +38758,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 1.99,
-      "prod_pet_m3": 5269.64,
+      "prod_pet_m3": 5269.63,
       "prod_agua_m3": 21910.31,
       "pozos_activos": 45,
       "pozos_no_conv": 0
@@ -38891,7 +38891,7 @@
       "provincia": "Rio Negro",
       "prod_gas_mm3": 1.27,
       "prod_pet_m3": 2232.92,
-      "prod_agua_m3": 28855.3,
+      "prod_agua_m3": 28855.29,
       "pozos_activos": 42,
       "pozos_no_conv": 43
     },
@@ -40439,7 +40439,7 @@
       "provincia": "Rio Negro",
       "prod_gas_mm3": 30.39,
       "prod_pet_m3": 5566.05,
-      "prod_agua_m3": 6035.26,
+      "prod_agua_m3": 6035.25,
       "pozos_activos": 165,
       "pozos_no_conv": 199
     },
@@ -41465,18 +41465,6 @@
     },
     {
       "mes": "2026-06",
-      "area": "CERRO HAMACA",
-      "empresa": "PETROLEOS SUDAMERICANOS S.A.",
-      "cuenca": "NEUQUINA",
-      "provincia": "Neuquén",
-      "prod_gas_mm3": 0.38,
-      "prod_pet_m3": 2749.65,
-      "prod_agua_m3": 45023.0,
-      "pozos_activos": 32,
-      "pozos_no_conv": 0
-    },
-    {
-      "mes": "2026-06",
       "area": "LOMA JARILLOSA ESTE",
       "empresa": "GEOPARK ARGENTINA S.A.",
       "cuenca": "NEUQUINA",
@@ -41486,6 +41474,18 @@
       "prod_agua_m3": 1793.86,
       "pozos_activos": 6,
       "pozos_no_conv": 11
+    },
+    {
+      "mes": "2026-06",
+      "area": "CERRO HAMACA",
+      "empresa": "PETROLEOS SUDAMERICANOS S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 0.37,
+      "prod_pet_m3": 2749.65,
+      "prod_agua_m3": 45023.0,
+      "pozos_activos": 32,
+      "pozos_no_conv": 0
     },
     {
       "mes": "2026-06",
@@ -43942,7 +43942,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Rio Negro",
       "prod_gas_mm3": 0.06,
-      "prod_pet_m3": 1197.15,
+      "prod_pet_m3": 1197.14,
       "prod_agua_m3": 38998.86,
       "pozos_activos": 20,
       "pozos_no_conv": 0
@@ -44506,7 +44506,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 0.0,
-      "prod_pet_m3": 316.1,
+      "prod_pet_m3": 316.09,
       "prod_agua_m3": 16576.5,
       "pozos_activos": 6,
       "pozos_no_conv": 0
@@ -44705,6 +44705,18 @@
     },
     {
       "mes": "2026-08",
+      "area": "AGUADA PICHANA OESTE",
+      "empresa": "PAN AMERICAN ENERGY SL",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 297.25,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 38499.23,
+      "pozos_activos": 55,
+      "pozos_no_conv": 59
+    },
+    {
+      "mes": "2026-08",
       "area": "BAJO DEL CHOIQUE - LA INVERNADA",
       "empresa": "PLUSPETROL CUENCA NEUQUINA S.R.L.",
       "cuenca": "NEUQUINA",
@@ -44714,6 +44726,18 @@
       "prod_agua_m3": 135150.79,
       "pozos_activos": 46,
       "pozos_no_conv": 59
+    },
+    {
+      "mes": "2026-08",
+      "area": "LINDERO ATRAVESADO",
+      "empresa": "PAN AMERICAN ENERGY SL",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 33.41,
+      "prod_pet_m3": 87549.11,
+      "prod_agua_m3": 17066.03,
+      "pozos_activos": 203,
+      "pozos_no_conv": 178
     },
     {
       "mes": "2026-08",
@@ -44738,6 +44762,18 @@
       "prod_agua_m3": 2914.93,
       "pozos_activos": 363,
       "pozos_no_conv": 159
+    },
+    {
+      "mes": "2026-08",
+      "area": "AGUADA DE CASTRO",
+      "empresa": "PAN AMERICAN ENERGY SL",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 12.32,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 9,
+      "pozos_no_conv": 10
     },
     {
       "mes": "2026-08",
@@ -44774,6 +44810,18 @@
       "prod_agua_m3": 8739.59,
       "pozos_activos": 166,
       "pozos_no_conv": 40
+    },
+    {
+      "mes": "2026-08",
+      "area": "COIRON AMARGO SUR ESTE",
+      "empresa": "PAN AMERICAN ENERGY SL",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 4.63,
+      "prod_pet_m3": 67951.59,
+      "prod_agua_m3": 30428.72,
+      "pozos_activos": 41,
+      "pozos_no_conv": 45
     },
     {
       "mes": "2026-08",
@@ -44861,6 +44909,18 @@
     },
     {
       "mes": "2026-08",
+      "area": "BANDURRIA CENTRO",
+      "empresa": "PAN AMERICAN ENERGY SL",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 1.26,
+      "prod_pet_m3": 4387.47,
+      "prod_agua_m3": 5834.43,
+      "pozos_activos": 24,
+      "pozos_no_conv": 25
+    },
+    {
+      "mes": "2026-08",
       "area": "DADIN",
       "empresa": "BENTIA ENERGY S.A.",
       "cuenca": "NEUQUINA",
@@ -44870,6 +44930,18 @@
       "prod_agua_m3": 912.6,
       "pozos_activos": 31,
       "pozos_no_conv": 2
+    },
+    {
+      "mes": "2026-08",
+      "area": "AGUADA CÁNEPA",
+      "empresa": "PAN AMERICAN ENERGY SL",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 0.81,
+      "prod_pet_m3": 18278.93,
+      "prod_agua_m3": 3814.41,
+      "pozos_activos": 12,
+      "pozos_no_conv": 12
     },
     {
       "mes": "2026-08",
@@ -44891,7 +44963,7 @@
       "provincia": "Mendoza",
       "prod_gas_mm3": 0.62,
       "prod_pet_m3": 18328.63,
-      "prod_agua_m3": 185591.65,
+      "prod_agua_m3": 185591.66,
       "pozos_activos": 105,
       "pozos_no_conv": 43
     },
@@ -45065,6 +45137,18 @@
     },
     {
       "mes": "2026-08",
+      "area": "FONDO DE LA LEGUA",
+      "empresa": "SAN JORGE PETROLEUM S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 0,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-08",
       "area": "LA PENDIENTE",
       "empresa": "INGENIERIA SIMA S.A.",
       "cuenca": "NEUQUINA",
@@ -45081,6 +45165,18 @@
       "empresa": "PLUSPETROL S.A.",
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 0,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-08",
+      "area": "LOMA GUADALOSA",
+      "empresa": "PAN AMERICAN ENERGY SL",
+      "cuenca": "NEUQUINA",
+      "provincia": "Rio Negro",
       "prod_gas_mm3": 0.0,
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 0.0,
@@ -45122,6 +45218,18 @@
       "prod_agua_m3": 0.0,
       "pozos_activos": 3,
       "pozos_no_conv": 4
+    },
+    {
+      "mes": "2026-08",
+      "area": "SENILLOSA",
+      "empresa": "PETROLERA PAMPA S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 0,
+      "pozos_no_conv": 25
     }
   ],
   "years_fetched": [
