@@ -133,27 +133,28 @@ def main():
     ppo, _ = _load('cammesa_ppo.json')
     ps, _ = _load('enargas_ps.json')
 
-    # Forzar la creación de celdas para todo el horizonte del forecast
+    # Forzar creación de celdas del forecast
     for f_fc in forecast_map.keys():
         row_for(f_fc)
 
     # -------------------------------------------------------------
-    # PASO 1 (Prioridad 4 - Menor): MODELO / PROYECCIÓN PROPIA
+    # PASO 1 (Nivel 4 - Menor): MODELO / PROYECCIÓN PROPIA
     # -------------------------------------------------------------
     for f_clean, dem_val in forecast_map.items():
         row = row_for(f_clean)
         if row:
-            row['demanda_total'] = round(dem_val, 1)
-            # Desglose base sintético
-            row['prioritaria'] = round(dem_val * 0.35, 1)
-            row['industria'] = round(dem_val * 0.30, 1)
-            row['usinas'] = round(dem_val * 0.25, 1)
-            row['gnc'] = round(dem_val * 0.05, 1)
-            row['exportaciones'] = round(dem_val * 0.05, 1)
-            row['origen_dato'] = 'MODELO_PROYECCION'
+            # Solo asignar si no viene con datos consolidados históricos
+            if row.get('demanda_total') is None or row.get('origen_dato') == 'MODELO_PROYECCION':
+                row['demanda_total'] = round(dem_val, 1)
+                row['prioritaria'] = round(dem_val * 0.35, 1)
+                row['industria'] = round(dem_val * 0.30, 1)
+                row['usinas'] = round(dem_val * 0.25, 1)
+                row['gnc'] = round(dem_val * 0.05, 1)
+                row['exportaciones'] = round(dem_val * 0.05, 1)
+                row['origen_dato'] = 'MODELO_PROYECCION'
 
     # -------------------------------------------------------------
-    # PASO 2 (Prioridad 3): PS PROYECCIÓN (Pisa al Modelo)
+    # PASO 2 (Nivel 3): PS PROYECCIÓN (Pisa al Modelo)
     # -------------------------------------------------------------
     for r in ps:
         if r.get('tipo') == 'P':
@@ -190,12 +191,17 @@ def main():
             row['origen_dato'] = 'PS_PROYECCION'
 
     # -------------------------------------------------------------
-    # PASO 3 (Prioridad 2): RDS (Pisa al día operativo actual)
+    # PASO 3 (Nivel 2): RDS (NO debe pisar si la PS Proyección ya cargó el día)
     # -------------------------------------------------------------
     for r in rds:
         row = row_for(r.get('fecha'))
         if not row:
             continue
+        
+        # Si la fila ya fue poblada por la PS Proyección, NO la sobreescribimos con RDS
+        if row.get('origen_dato') == 'PS_PROYECCION':
+            continue
+
         exps = r.get('exportaciones') or {}
         exp_total = None
         tgn, tgs = _get(exps, 'tgn', 'vol_exportar'), _get(exps, 'tgs', 'vol_exportar')
@@ -220,7 +226,6 @@ def main():
         if exp_total is not None:
             row['exportaciones'] = exp_total
         
-        # Programa de Importaciones
         imp_prog = r.get('programa_importacion') or {}
         if imp_prog:
             if imp_prog.get('bolivia') is not None:
@@ -237,10 +242,10 @@ def main():
         row['origen_dato'] = 'RDS_ESTIMADO'
 
     # -------------------------------------------------------------
-    # PASO 4 (Prioridad 1 - Máxima): PS REAL (Cierre consolidado)
+    # PASO 4 (Nivel 1 - Máxima Prioridad): PS REAL (Cierre definitivo)
     # -------------------------------------------------------------
     for r in ps:
-        if r.get('tipo') == 'R' or r.get('demanda_total') is not None:
+        if r.get('tipo') == 'R':
             row = row_for(r.get('fecha'))
             if not row:
                 continue
@@ -319,9 +324,8 @@ def main():
 
     rows = sorted(by_date.values(), key=lambda r: r.get('fecha') or '')
 
-    # COMPLETADO Y DESAGLOSE DE INYECCIONES EN CALIENTE (Para fechas sin inyección)
+    # COMPLETADO DE INYECCIONES FALTANTES
     recent_ps = [r for r in rows if r.get('iny_tgs') is not None and r.get('iny_tgn') is not None][-7:]
-    
     if recent_ps:
         avg_tgs = sum(r['iny_tgs'] for r in recent_ps) / len(recent_ps)
         avg_tgn = sum(r['iny_tgn'] for r in recent_ps) / len(recent_ps)
