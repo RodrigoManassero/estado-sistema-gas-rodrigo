@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-17T14:48:23+00:00",
+  "generated_at": "2026-09-17T15:11:07+00:00",
   "source": "MEGSA public API (megsa.ar/api)",
   "source_date": null,
   "data": {
@@ -10,13 +10,13 @@
         "series": "NATURAL_GAS_USD",
         "seriesDescription": "spot_price",
         "units": "USD/MMbtu",
-        "currentPrice": 2.95,
+        "currentPrice": 2.92,
         "currentPeriod": "2026-09-17T00:00:00",
-        "previousPrice": 2.93,
+        "previousPrice": 2.91,
         "previousPeriod": null,
-        "nominalDifference": 0.02,
-        "percentageDifference": 0.68,
-        "lastUpdated": "2026-09-17T11:40:06.3944304",
+        "nominalDifference": 0.01,
+        "percentageDifference": 0.34,
+        "lastUpdated": "2026-09-17T12:10:04.6416152",
         "marketType": "Gas",
         "displayName": "NAT GAS"
       },
@@ -26,13 +26,13 @@
         "series": "DUTCH_TTF_EUR",
         "seriesDescription": "spot_price",
         "units": "€/MWh",
-        "currentPrice": 76.61,
+        "currentPrice": 75.7,
         "currentPeriod": "2026-09-17T00:00:00",
-        "previousPrice": 80.45,
+        "previousPrice": 79.73,
         "previousPeriod": null,
-        "nominalDifference": -3.84,
-        "percentageDifference": -4.77,
-        "lastUpdated": "2026-09-17T11:40:07.0045696",
+        "nominalDifference": -4.03,
+        "percentageDifference": -5.05,
+        "lastUpdated": "2026-09-17T12:10:05.2062681",
         "marketType": "Gas",
         "displayName": "TTF GAS Fut"
       },
@@ -42,13 +42,13 @@
         "series": "BRENT_CRUDE_USD",
         "seriesDescription": "spot_price",
         "units": "USD/bbl",
-        "currentPrice": 103.01,
+        "currentPrice": 103.58,
         "currentPeriod": "2026-09-17T00:00:00",
-        "previousPrice": 106.84,
+        "previousPrice": 106.26,
         "previousPeriod": null,
-        "nominalDifference": -3.83,
-        "percentageDifference": -3.58,
-        "lastUpdated": "2026-09-17T11:40:05.9102346",
+        "nominalDifference": -2.68,
+        "percentageDifference": -2.52,
+        "lastUpdated": "2026-09-17T12:10:04.090446",
         "marketType": "Oil",
         "displayName": "BRENT"
       },
@@ -58,13 +58,13 @@
         "series": "WTI_USD",
         "seriesDescription": "spot_price",
         "units": "USD/bbl",
-        "currentPrice": 100.37,
+        "currentPrice": 101.07,
         "currentPeriod": "2026-09-17T00:00:00",
-        "previousPrice": 103.56,
+        "previousPrice": 101.93,
         "previousPeriod": null,
-        "nominalDifference": -3.19,
-        "percentageDifference": -3.08,
-        "lastUpdated": "2026-09-17T11:40:05.2575995",
+        "nominalDifference": -0.86,
+        "percentageDifference": -0.84,
+        "lastUpdated": "2026-09-17T12:10:02.8725714",
         "marketType": "Oil",
         "displayName": "WTI"
       }
@@ -90,7 +90,7 @@
         "fechaUltimaModificacion": "2026-09-11T10:04:21"
       }
     ],
-    "fetched_at": "2026-09-17T14:48:23+00:00"
+    "fetched_at": "2026-09-17T15:11:07+00:00"
   },
   "errors": null
 }
