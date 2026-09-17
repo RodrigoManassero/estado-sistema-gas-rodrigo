@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Build daily.json applying 4-level priority cascade:
+"""Build daily.json applying priority cascade with CAMMESA weekly support:
 1. PS REAL (columna REAL de Proyección Semanal - cierre oficial)
 2. RDS (Reporte Diario ENARGAS - consumo estimado y programa del día)
 3. PS Proyección (días hoy+1..+3 publicados por ENARGAS)
-4. Modelo / Proyección Propia (demand_forecast.json)
+4. Previsión Semanal CAMMESA (usinas y combustibles alternativos para ~2 semanas)
+5. Modelo / Proyección Propia (demand_forecast.json)
 """
 
 import json
@@ -131,6 +132,7 @@ def main():
     rds, _ = _load('enargas.json')
     etgs, _ = _load('etgs.json')
     ppo, _ = _load('cammesa_ppo.json')
+    weekly, _ = _load('cammesa_weekly.json')
     ps, _ = _load('enargas_ps.json')
 
     # Forzar creación de celdas del forecast
@@ -143,7 +145,6 @@ def main():
     for f_clean, dem_val in forecast_map.items():
         row = row_for(f_clean)
         if row:
-            # Solo asignar si no viene con datos consolidados históricos
             if row.get('demanda_total') is None or row.get('origen_dato') == 'MODELO_PROYECCION':
                 row['demanda_total'] = round(dem_val, 1)
                 row['prioritaria'] = round(dem_val * 0.35, 1)
@@ -198,7 +199,6 @@ def main():
         if not row:
             continue
         
-        # Si la fila ya fue poblada por la PS Proyección, NO la sobreescribimos con RDS
         if row.get('origen_dato') == 'PS_PROYECCION':
             continue
 
@@ -309,6 +309,26 @@ def main():
             row['cammesa_fueloil'] = fillz(row['cammesa_fueloil'], _gas_equiv_mmm3(r.get('fueloil_tn'), FUEL_KCAL['fueloil_tn']))
             row['cammesa_carbon'] = fillz(row['cammesa_carbon'], _gas_equiv_mmm3(r.get('carbon_tn'), FUEL_KCAL['carbon_tn']))
 
+    # -------------------------------------------------------------
+    # PREVISIÓN SEMANAL CAMMESA (Estimaciones e Impacto en Usinas Futuras)
+    # -------------------------------------------------------------
+    for r in weekly:
+        f_clean = clean_fecha(r.get('fecha'))
+        row = row_for(f_clean)
+        if row:
+            gas_dam = r.get('gas_dam3')
+            gas_mmm3 = round(gas_dam / 1000.0, 2) if gas_dam is not None else None
+
+            # Guardar estimadores directos de CAMMESA
+            row['cammesa_gas_est'] = fillz(row.get('cammesa_gas_est'), gas_mmm3)
+            row['cammesa_gasoil_est'] = fillz(row.get('cammesa_gasoil_est'), _gas_equiv_mmm3(r.get('go'), FUEL_KCAL['gasoil_m3']))
+            row['cammesa_fueloil_est'] = fillz(row.get('cammesa_fueloil_est'), _gas_equiv_mmm3(r.get('fo'), FUEL_KCAL['fueloil_tn']))
+            row['cammesa_carbon_est'] = fillz(row.get('cammesa_carbon_est'), _gas_equiv_mmm3(r.get('cm'), FUEL_KCAL['carbon_tn']))
+
+            # Pisa usinas del modelo en fechas donde no haya dato cerrado de ENARGAS
+            if row.get('origen_dato') in (None, 'MODELO_PROYECCION', 'PS_PROYECCION') and gas_mmm3 is not None:
+                row['usinas'] = gas_mmm3
+
     tgn_state, _ = _load('tgn_system_state.json')
     for r in tgn_state:
         f_clean = clean_fecha(r.get('fecha'))
@@ -365,7 +385,7 @@ def main():
 
     write_json(
         DAILY_JSON, rows,
-        source='Cascada 4 niveles: PS_REAL > RDS > PS_PROJ > MODELO',
+        source='Cascada 5 niveles: PS_REAL > RDS > PS_PROJ > CAMMESA_WEEKLY > MODELO',
         source_date=latest,
     )
     write_csv(json_to_csv_path(DAILY_JSON),
