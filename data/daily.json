@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-17T21:32:06+00:00",
+  "generated_at": "2026-09-17T21:48:00+00:00",
   "source": "Cascada 4 niveles: PS_REAL > RDS > PS_PROJ > MODELO",
   "source_date": "2026-09-20",
   "data": [
@@ -45872,7 +45872,7 @@
       "var_linepack_tgs": null,
       "lim_inf_tgs": null,
       "lim_sup_tgs": null,
-      "linepack_tgn": null,
+      "linepack_tgn": 129.71,
       "var_linepack_tgn": null,
       "lim_inf_tgn": null,
       "lim_sup_tgn": null,
