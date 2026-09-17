@@ -3,8 +3,11 @@ name: Test CAMMESA Weekly Fetch
 on:
   workflow_dispatch:  # Disparo manual desde GitHub Actions
 
+permissions:
+  contents: write  # Permite al workflow commitear cambios en el repo
+
 jobs:
-  run-weekly-test:
+  run-weekly-fetch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,12 +23,14 @@ jobs:
       - name: Run CAMMESA Weekly Fetcher
         run: python scripts/fetch_cammesa_weekly.py
 
-      - name: Verify JSON creation
+      - name: Commit and Push updated JSON
         run: |
-          if [ -f "public/data/cammesa_weekly.json" ]; then
-            echo "El archivo public/data/cammesa_weekly.json fue creado exitosamente."
-            ls -la public/data/cammesa_weekly.json
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/cammesa_weekly.json
+          if git diff --staged --quiet; then
+            echo "No hay cambios en cammesa_weekly.json para commitear."
           else
-            echo "ERROR: El archivo public/data/cammesa_weekly.json NO se creo."
-            exit 1
+            git commit -m "Update cammesa_weekly.json via manual action [skip ci]"
+            git push
           fi
