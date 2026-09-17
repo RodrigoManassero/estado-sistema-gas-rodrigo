@@ -11,22 +11,9 @@ columns are:  [día1 proyección] [REAL] [día del reporte] [día+1] [día+2] ..
 The **REAL** column carries the *actual* figures for día1 (the day before the
 report); the rest are the daily projection for the week.
 
-This source is the only automatic feed that carries the operational fields the
-manual Excel used to own:
-  - linepack TGN / TGS / total del sistema + límites (Min/Max)
-  - tramos iniciales / finales
-  - inyección por gasoducto (Sur, Neuba I/II, Norte, Neuquén) incl. ENARSA/GPFM,
-    Buque Escobar, Bolivia
-  - demanda por segmento + temperatura BA estimada
-
-We extract the REAL row (the D-1 actuals) from each report; over a backfill the
-REAL rows form a dense daily actual series. Output is upserted by fecha into
-enargas_ps.json so historical backfills survive a nightly run with few PDFs in
-raw/ (same merge discipline as parse_enargas.py).
-
-The CAMMESA report templates drift the table's column x-positions between
-reports, so column anchors are read from each PDF's own header row rather than
-hard-coded.
+This script parses BOTH the REAL actual row (D-1) and all forecasted days (P)
+so the downstream build pipeline can use actuals where available and fallback
+to projections/estimates when missing.
 """
 
 import io
@@ -83,18 +70,13 @@ PS_FIELDS = [
 
 
 def _num(s):
-    """Parse a number into float, or None.
-
-    PS reports come in two number formats: comma decimal ("129,57") in the daily
-    template and dot decimal ("166.9") in the heavier weekly one. Values are all
-    well under a thousand, so a lone separator is always the decimal point.
-    """
+    """Parse a number into float, or None."""
     if s is None:
         return None
     s = str(s).strip()
     if s in ('', '-'):
         return None
-    if ',' in s and '.' in s:           # e.g. 1.234,5 — dot thousands, comma decimal
+    if ',' in s and '.' in s:
         s = s.replace('.', '').replace(',', '.')
     else:
         s = s.replace(',', '.')
@@ -111,9 +93,7 @@ def _ascii(s):
 
 
 def _cluster_rows(words, tol=5.0):
-    """Group words into visual rows. Cell text and its numbers can sit a couple
-    of points apart vertically, so we cluster by a tolerance rather than an
-    exact top."""
+    """Group words into visual rows."""
     rows = []
     for w in sorted(words, key=lambda w: w['top']):
         if rows and (w['top'] - rows[-1]['top']) <= tol:
@@ -200,7 +180,6 @@ def _field_for(label, section):
 
     if L.startswith('temperatura'):
         return 'temp_prom_ba'
-    # Tomamos la demanda DENTRO DE SISTEMAS para mantener balance físico real (129.4 MMm3)
     if 'dentro de sistemas de transporte' in L or L.startswith('a- dentro'):
         return 'demanda_total'
     if has('demanda', 'prioritaria') or L.startswith('demanda prioritaria'):
@@ -340,13 +319,21 @@ def extract_ps(source, report_date=None):
 
 
 def load_existing():
+    """Load existing rows keyed by unique identifier 'fecha_tipo'."""
     if not os.path.exists(PS_JSON):
         return {}
     import json
     with open(PS_JSON, encoding='utf-8') as f:
         raw = json.load(f)
     data = raw.get('data', raw) if isinstance(raw, dict) else raw
-    return {r['fecha']: r for r in (data or []) if r.get('fecha')}
+    
+    existing = {}
+    for r in (data or []):
+        if r.get('fecha'):
+            tipo = r.get('tipo', 'R')
+            key = f"{r['fecha']}_{tipo}"
+            existing[key] = r
+    return existing
 
 
 def _report_date_from_name(fname):
@@ -358,39 +345,59 @@ def _report_date_from_name(fname):
 
 def main():
     have = load_existing()
-    print(f"Starting with {len(have)} existing PS rows in enargas_ps.json")
+    print(f"Starting with {len(have)} existing PS entries in enargas_ps.json")
 
     pdfs = sorted(glob.glob(os.path.join(RAW_DIR, 'PS_*.pdf')))
     issues = []
     added = 0
+
     for path in pdfs:
         fname = os.path.basename(path)
         rdate = _report_date_from_name(fname)
         try:
-            real_row, _fc, iss = extract_ps(path, report_date=rdate)
+            real_row, forecast_rows, iss = extract_ps(path, report_date=rdate)
         except Exception as e:
             issues.append(f'{fname}: parse error: {e}')
             continue
+        
         issues += [f'{fname}: {x}' for x in iss]
-        if not real_row or not real_row.get('fecha'):
-            issues.append(f'{fname}: no REAL row')
-            continue
-        real_row['source'] = fname
-        have[real_row['fecha']] = real_row
-        added += 1
 
-    rows = sorted(have.values(), key=lambda r: r.get('fecha') or '')
+        # 1. Guardar la fila con dato REAL (R)
+        if real_row and real_row.get('fecha'):
+            real_row['source'] = fname
+            key_real = f"{real_row['fecha']}_R"
+            have[key_real] = real_row
+            added += 1
+
+        # 2. Guardar todas las filas con dato PROYECTADO (P)
+        for fc_row in forecast_rows:
+            if fc_row and fc_row.get('fecha'):
+                fc_row['source'] = fname
+                key_fc = f"{fc_row['fecha']}_P"
+                # Solo inserta la proyección si no existe previamente o para actualizar con la más reciente
+                have[key_fc] = fc_row
+                added += 1
+
+    # Ordenar cronológicamente por fecha y luego por tipo (P primero, R después)
+    rows = sorted(
+        have.values(), 
+        key=lambda r: (r.get('fecha') or '', 0 if r.get('tipo') == 'P' else 1)
+    )
+    
     latest = rows[-1]['fecha'] if rows else None
+    
     write_json(
         PS_JSON, rows,
-        source='ENARGAS Proyección Semanal (PS) — columna REAL',
+        source='ENARGAS Proyección Semanal (PS) — datos REAL y Programados',
         source_date=latest,
         issues=issues[-50:],
     )
-    write_csv(json_to_csv_path(PS_JSON),
-              ({k: r.get(k) for k in PS_FIELDS} for r in rows),
-              fieldnames=PS_FIELDS)
-    print(f"enargas_ps.json: {len(rows)} rows ({added} parsed this run), latest={latest}")
+    write_csv(
+        json_to_csv_path(PS_JSON),
+        ({k: r.get(k) for k in PS_FIELDS} for r in rows),
+        fieldnames=PS_FIELDS
+    )
+    print(f"enargas_ps.json: {len(rows)} total rows ({added} parsed this run), latest={latest}")
     if issues:
         print(f"  {len(issues)} issues (see 'issues' in envelope)")
 
