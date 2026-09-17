@@ -1,0 +1,31 @@
+name: Test CAMMESA Weekly Fetch
+
+on:
+  workflow_dispatch:  # Disparo manual desde GitHub Actions
+
+jobs:
+  run-weekly-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run CAMMESA Weekly Fetcher
+        run: python scripts/fetch_cammesa_weekly.py
+
+      - name: Verify JSON creation
+        run: |
+          if [ -f "public/data/cammesa_weekly.json" ]; then
+            echo "El archivo public/data/cammesa_weekly.json fue creado exitosamente."
+            ls -la public/data/cammesa_weekly.json
+          else
+            echo "ERROR: El archivo public/data/cammesa_weekly.json NO se creo."
+            exit 1
+          fi
