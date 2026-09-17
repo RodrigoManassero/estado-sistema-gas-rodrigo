@@ -1,22 +1,20 @@
 #!/usr/bin/env python3
 """Build daily.json applying 4-level priority cascade:
-1. PS REAL (columna REAL de Proyección Semanal - cierre oficial dentro de sistema)
-2. RDS (Reporte Diario ENARGAS - programa diario provisorio)
-3. PS Proyección (días hoy+1 en adelante publicados por ENARGAS)
-4. Modelo / Fórmula (proyección calculada para días sin dato oficial vía demand_forecast.json)
+1. PS REAL (columna REAL de Proyección Semanal - cierre oficial de cuencas e importaciones)
+2. RDS (Reporte Diario ENARGAS - consumo estimado y programa de importaciones del día)
+3. PS Proyección (días hoy+1..+3 publicados por ENARGAS)
+4. Modelo / Proyección Propia (balance de oferta derivado de demand_forecast.json)
 """
 
 import json
 import os
 import sys
-from datetime import date, datetime, timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from _meta import write_json, write_csv, json_to_csv_path  # noqa: E402
+from _meta import write_json, write_csv, json_to_csv_path
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), '..', 'public', 'data')
 DAILY_JSON = os.path.join(OUT_DIR, 'daily.json')
-HISTORY_JSON = os.path.join(OUT_DIR, 'daily_history.json')
 FORECAST_JSON = os.path.join(OUT_DIR, 'demand_forecast.json')
 
 
@@ -129,7 +127,6 @@ def main():
             by_date[f_clean] = r
         return r
 
-    # Cargar Forecast de Demanda por Clima (Modelado)
     forecast_map = {}
     if os.path.exists(FORECAST_JSON):
         with open(FORECAST_JSON, encoding='utf-8') as f:
@@ -143,15 +140,34 @@ def main():
                     forecast_map[f_clean] = float(dem)
 
     rds, _ = _load('enargas.json')
-    ing, _ = _load('enargas_ing.json')
     etgs, _ = _load('etgs.json')
     ppo, _ = _load('cammesa_ppo.json')
     weekly, _ = _load('cammesa_weekly.json')
     ps, _ = _load('enargas_ps.json')
 
-    # --- APLICACIÓN DE CASCADA DE PRIORIDADES ---
+    # 1. PRIORIDAD 3: PS PROYECCIÓN (Futuro publicado por ENARGAS)
+    for r in ps:
+        if r.get('tipo') == 'P':
+            row = row_for(r.get('fecha'))
+            if not row:
+                continue
+            row['demanda_total'] = fill(row['demanda_total'], r.get('demanda_total'))
+            row['prioritaria'] = fill(row['prioritaria'], r.get('prioritaria'))
+            row['usinas'] = fillz(row['usinas'], r.get('usinas'))
+            row['industria'] = fillz(row['industria'], r.get('industria'))
+            row['gnc'] = fillz(row['gnc'], r.get('gnc'))
+            row['combustible'] = fillz(row['combustible'], r.get('combustible'))
+            
+            row['iny_tgs'] = fillz(row['iny_tgs'], r.get('iny_tgs'))
+            row['iny_tgn'] = fillz(row['iny_tgn'], r.get('iny_tgn'))
+            row['iny_total'] = fillz(row['iny_total'], r.get('iny_total'))
+            row['iny_enarsa'] = fill(row['iny_enarsa'], r.get('iny_enarsa'))
+            row['iny_gpm'] = fill(row['iny_gpm'], r.get('iny_gpm'))
+            row['iny_bolivia'] = fill(row['iny_bolivia'], r.get('iny_bolivia'))
+            row['iny_escobar'] = fill(row['iny_escobar'], r.get('iny_escobar'))
+            row['origen_dato'] = 'PS_PROYECCION'
 
-    # PRIORIDAD 2: RDS (Reporte Diario ENARGAS - Estimación)
+    # 2. PRIORIDAD 2: RDS (Reporte Diario - consumo y programa intradía de importaciones)
     for r in rds:
         row = row_for(r.get('fecha'))
         if not row:
@@ -167,44 +183,27 @@ def main():
         row['usinas'] = fillz(row['usinas'], _get(r, 'consumos', 'usinas', 'programa'))
         row['industria'] = fillz(row['industria'], _get(r, 'consumos', 'industria', 'programa'))
         row['exportaciones'] = fillz(row['exportaciones'], exp_total)
+        
+        # Programa de Importaciones (pisa PS para el día operativo)
+        imp_prog = r.get('programa_importacion') or {}
+        if imp_prog:
+            row['iny_bolivia'] = fill(imp_prog.get('bolivia'), row.get('iny_bolivia'))
+            row['iny_escobar'] = fill(imp_prog.get('escobar'), row.get('iny_escobar'))
+            row['iny_enarsa'] = fill(imp_prog.get('bahia_blanca'), row.get('iny_enarsa'))
+
         row['temp_prom_ba'] = fill(row['temp_prom_ba'], _get(r, 'temperatura_ba', 'tm'))
         row['temp_min_ba'] = fill(row['temp_min_ba'], _get(r, 'temperatura_ba', 'min'))
         row['temp_max_ba'] = fill(row['temp_max_ba'], _get(r, 'temperatura_ba', 'max'))
         row['linepack_total'] = fill(row['linepack_total'], r.get('linepack_total'))
         row['origen_dato'] = 'RDS_ESTIMADO'
 
-    # PRIORIDAD 3: PS PROYECCIÓN (Futuro publicado por ENARGAS en Semanal)
-    for r in ps:
-        if r.get('tipo') == 'P':
-            row = row_for(r.get('fecha'))
-            if not row:
-                continue
-            row['demanda_total'] = fill(row['demanda_total'], r.get('demanda_total'))
-            row['prioritaria'] = fill(row['prioritaria'], r.get('prioritaria'))
-            row['usinas'] = fillz(row['usinas'], r.get('usinas'))
-            row['industria'] = fillz(row['industria'], r.get('industria'))
-            row['gnc'] = fillz(row['gnc'], r.get('gnc'))
-            row['combustible'] = fillz(row['combustible'], r.get('combustible'))
-            
-            # Mantenemos las inyecciones proyectadas por el PS para los días hoy+1..+3
-            row['iny_tgs'] = fillz(row['iny_tgs'], r.get('iny_tgs'))
-            row['iny_tgn'] = fillz(row['iny_tgn'], r.get('iny_tgn'))
-            row['iny_total'] = fillz(row['iny_total'], r.get('iny_total'))
-            row['iny_enarsa'] = fill(row['iny_enarsa'], r.get('iny_enarsa'))
-            row['iny_gpm'] = fill(row['iny_gpm'], r.get('iny_gpm'))
-            row['iny_bolivia'] = fill(row['iny_bolivia'], r.get('iny_bolivia'))
-            row['iny_escobar'] = fill(row['iny_escobar'], r.get('iny_escobar'))
-            
-            row['origen_dato'] = 'PS_PROYECCION'
-
-    # PRIORIDAD 1: PS REAL (Máxima autoridad - Cierre dentro de sistema)
+    # 3. PRIORIDAD 1: PS REAL (Cierre oficial dentro de sistema)
     for r in ps:
         if r.get('tipo') == 'R' or r.get('demanda_total') is not None:
             row = row_for(r.get('fecha'))
             if not row:
                 continue
             
-            # PISA explícitamente valores anteriores para garantizar balance físico
             if r.get('demanda_total') is not None:
                 row['demanda_total'] = r.get('demanda_total')
             if r.get('prioritaria') is not None:
@@ -233,31 +232,11 @@ def main():
             row['iny_gpm'] = fill(row['iny_gpm'], r.get('iny_gpm'))
             row['iny_bolivia'] = fill(row['iny_bolivia'], r.get('iny_bolivia'))
             row['iny_escobar'] = fill(row['iny_escobar'], r.get('iny_escobar'))
-            row['temp_prom_ba'] = fill(row['temp_prom_ba'], r.get('temp_prom_ba'))
+            row['temp_prom_ba'] = fill(row['temp_prom_ba'], _get(r, 'temp_prom_ba'))
             row['linepack_total'] = fill(row['linepack_total'], r.get('linepack_total'))
-            row['var_linepack_total'] = fill(row['var_linepack_total'], r.get('var_linepack_total'))
-            row['lim_inf_total'] = fill(row['lim_inf_total'], r.get('lim_inf_total'))
-            row['lim_sup_total'] = fill(row['lim_sup_total'], r.get('lim_sup_total'))
-            row['linepack_tgs'] = fill(row['linepack_tgs'], r.get('linepack_tgs'))
-            row['lim_inf_tgs'] = fill(row['lim_inf_tgs'], r.get('lim_inf_tgs'))
-            row['lim_sup_tgs'] = fill(row['lim_sup_tgs'], r.get('lim_sup_tgs'))
-            row['linepack_tgn'] = fill(row['linepack_tgn'], r.get('linepack_tgn'))
-            row['lim_inf_tgn'] = fill(row['lim_inf_tgn'], r.get('lim_inf_tgn'))
-            row['lim_sup_tgn'] = fill(row['lim_sup_tgn'], r.get('lim_sup_tgn'))
-            row['tramo_final_tgs'] = fill(row['tramo_final_tgs'], r.get('tramo_final_tgs'))
-            row['tramo_final_tgn'] = fill(row['tramo_final_tgn'], r.get('tramo_final_tgn'))
             row['origen_dato'] = 'PS_REAL'
 
-    # Complementos Operativos (ING, ETGS, CAMMESA, TGN)
-    for r in ing:
-        if r.get('tipo') != 'R':
-            continue
-        row = row_for(r.get('fecha'))
-        if row:
-            row['iny_tgs'] = fillz(row['iny_tgs'], r.get('tgs'))
-            row['iny_tgn'] = fillz(row['iny_tgn'], r.get('tgn'))
-            row['iny_total'] = fillz(row['iny_total'], r.get('total'))
-
+    # Complementos CAMMESA y TGN (Linepack y combustibles)
     for r in etgs:
         f_clean = clean_fecha(r.get('fecha'))
         row = row_for(f_clean)
@@ -267,7 +246,6 @@ def main():
                 row['linepack_tgs'] = lp
             else:
                 row['linepack_tgs'] = fill(row['linepack_tgs'], lp)
-            row['var_linepack_tgs'] = fill(row['var_linepack_tgs'], r.get('linepack_tgs_variacion'))
 
     for r in ppo:
         row = row_for(r.get('fecha'))
@@ -276,15 +254,6 @@ def main():
             row['cammesa_gasoil'] = fillz(row['cammesa_gasoil'], _gas_equiv_mmm3(r.get('gasoil_m3'), FUEL_KCAL['gasoil_m3']))
             row['cammesa_fueloil'] = fillz(row['cammesa_fueloil'], _gas_equiv_mmm3(r.get('fueloil_tn'), FUEL_KCAL['fueloil_tn']))
             row['cammesa_carbon'] = fillz(row['cammesa_carbon'], _gas_equiv_mmm3(r.get('carbon_tn'), FUEL_KCAL['carbon_tn']))
-            row['cammesa_total'] = fillz(row['cammesa_total'], r.get('gas_mmm3'))
-
-    for r in weekly:
-        row = row_for(r.get('fecha'))
-        if row:
-            row['cammesa_gas_est'] = fill(row.get('cammesa_gas_est'), round(float(r.get('gas_dam3', 0)) / 1000, 3))
-            row['cammesa_gasoil_est'] = fill(row.get('cammesa_gasoil_est'), _gas_equiv_mmm3(r.get('go'), FUEL_KCAL['gasoil_m3']))
-            row['cammesa_fueloil_est'] = fill(row.get('cammesa_fueloil_est'), _gas_equiv_mmm3(r.get('fo'), FUEL_KCAL['fueloil_tn']))
-            row['cammesa_carbon_est'] = fill(row.get('cammesa_carbon_est'), _gas_equiv_mmm3(r.get('cm'), FUEL_KCAL['carbon_tn']))
 
     tgn_state, _ = _load('tgn_system_state.json')
     for r in tgn_state:
@@ -297,28 +266,22 @@ def main():
             except (TypeError, ValueError):
                 mmm3 = None
             if mmm3 is not None:
-                if f_clean not in hist_dates:
-                    row['linepack_tgn'] = mmm3
-                else:
-                    row['linepack_tgn'] = fill(row['linepack_tgn'], mmm3)
-            desb = _to_float(r.get('Desbalance porcentual'))
-            if desb is not None:
-                row['estado_tgn'] = 'ALERTA' if abs(desb) > TGN_TOLERANCIA_PCT else 'NORMAL'
+                row['linepack_tgn'] = mmm3 if f_clean not in hist_dates else fill(row['linepack_tgn'], mmm3)
 
-    # Forzar la creación de filas vacías para todas las fechas del forecast (15/9 al 27/9)
+    # Forzar filas para el horizonte del forecast
     for f_fc in forecast_map.keys():
         row_for(f_fc)
 
     rows = sorted(by_date.values(), key=lambda r: r.get('fecha') or '')
 
-    # PRIORIDAD 4: MODELO / FÓRMULA DE PROYECCIÓN (Para días sin dato oficial)
+    # 4. PRIORIDAD 4: MODELO / PROYECCIÓN PROPIA
     for row in rows:
         f = row['fecha']
         if row.get('demanda_total') is None and f in forecast_map:
             row['demanda_total'] = round(forecast_map[f], 1)
             row['origen_dato'] = 'MODELO_PROYECCION'
 
-    # --- PROYECCIÓN PROPÍA Y COMPLETADO DE INYECCIONES PARA EL GRÁFICO DE OFERTA ---
+    # COMPLETADO Y DESAGROSE DE INYECCIONES EN CALIENTE
     recent_ps = [r for r in rows if r.get('iny_tgs') is not None and r.get('iny_tgn') is not None][-7:]
     
     if recent_ps:
@@ -333,48 +296,32 @@ def main():
         share_tgn = avg_tgn / tot_nac if tot_nac > 0 else 0.35
 
         for row in rows:
-            # Rellenar inyecciones solo en días que tienen proyección de demanda pero carecen de desglose
-            if row.get('demanda_total') is not None and row.get('iny_tgs') is None:
-                dem = row['demanda_total']
-                
-                # Proyección basal de importaciones
+            if row.get('demanda_total') is not None:
                 row['iny_bolivia'] = fill(row.get('iny_bolivia'), round(avg_bolivia, 1))
                 row['iny_escobar'] = fill(row.get('iny_escobar'), round(avg_escobar, 1))
                 row['iny_enarsa'] = fill(row.get('iny_enarsa'), round(avg_enarsa, 1))
                 
-                imp = (row['iny_bolivia'] or 0) + (row['iny_escobar'] or 0) + (row['iny_enarsa'] or 0)
-                req_nac = max(dem - imp, 0)
-                
-                row['iny_tgs'] = round(req_nac * share_tgs, 1)
-                row['iny_tgn'] = round(req_nac * share_tgn, 1)
-                row['iny_total'] = round(dem, 1)
-                
-                if row.get('origen_dato') is None:
-                    row['origen_dato'] = 'PROYECCION_INYECCION'
+                if row.get('iny_tgs') is None or row.get('iny_tgn') is None:
+                    dem = row['demanda_total']
+                    imp = (row['iny_bolivia'] or 0) + (row['iny_escobar'] or 0) + (row['iny_enarsa'] or 0)
+                    req_nac = max(dem - imp, 0)
+                    
+                    row['iny_tgs'] = round(req_nac * share_tgs, 1)
+                    row['iny_tgn'] = round(req_nac * share_tgn, 1)
+                    row['iny_total'] = round(dem, 1)
+                    
+                    if row.get('origen_dato') is None:
+                        row['origen_dato'] = 'PROYECCION_INYECCION'
 
-    # Variación de Linepack TGN
-    prev_tgn = None
+    # SANITIZACIÓN FINAL PARA RECHARTS (Reemplaza None por 0.0 en campos de inyección)
+    INJECTION_FIELDS = ['iny_tgs', 'iny_tgn', 'iny_enarsa', 'iny_gpm', 'iny_bolivia', 'iny_escobar', 'iny_total']
     for row in rows:
-        lp = row.get('linepack_tgn')
-        if lp is not None:
-            if prev_tgn is not None and row.get('var_linepack_tgn') is None:
-                row['var_linepack_tgn'] = round(lp - prev_tgn, 2)
-            prev_tgn = lp
-
-    # Arrastre de límites
-    LIMIT_FIELDS = ['lim_inf_tgs', 'lim_sup_tgs', 'lim_inf_tgn', 'lim_sup_tgn', 'lim_inf_total', 'lim_sup_total']
-    last = {}
-    for row in rows:
-        for k in LIMIT_FIELDS:
-            if row.get(k) is not None:
-                last[k] = row[k]
-            elif k in last:
-                row[k] = last[k]
+        for fld in INJECTION_FIELDS:
+            if row.get(fld) is None:
+                row[fld] = 0.0
 
     real_dates = [r['fecha'] for r in rows if r.get('fecha') and (
-        r.get('demanda_total') is not None or r.get('linepack_total') is not None
-        or r.get('linepack_tgn') is not None or r.get('linepack_tgs') is not None
-        or r.get('cammesa_gas') is not None)]
+        r.get('demanda_total') is not None or r.get('linepack_total') is not None)]
     latest = max(real_dates) if real_dates else (rows[-1]['fecha'] if rows else None)
 
     write_json(
@@ -385,7 +332,8 @@ def main():
     write_csv(json_to_csv_path(DAILY_JSON),
               ({k: r.get(k) for k in fields} for r in rows),
               fieldnames=fields)
-    print(f"daily.json: {len(rows)} rows, {rows[0]['fecha']} -> {latest} (último cierre real)")
+    
+    print(f"daily.json actualizado correctamente: {len(rows)} filas hasta {latest}")
     return 0
 
 
