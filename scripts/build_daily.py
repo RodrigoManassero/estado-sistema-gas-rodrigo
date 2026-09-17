@@ -195,7 +195,8 @@ def main():
         row['temp_min_ba'] = fill(row['temp_min_ba'], _get(r, 'temperatura_ba', 'min'))
         row['temp_max_ba'] = fill(row['temp_max_ba'], _get(r, 'temperatura_ba', 'max'))
         row['linepack_total'] = fill(row['linepack_total'], r.get('linepack_total'))
-        row['origen_dato'] = 'RDS_ESTIMADO'
+        if row.get('origen_dato') != 'PS_PROYECCION':
+            row['origen_dato'] = 'RDS_ESTIMADO'
 
     # 3. PRIORIDAD 1: PS REAL (Cierre oficial dentro de sistema)
     for r in ps:
@@ -274,7 +275,7 @@ def main():
 
     rows = sorted(by_date.values(), key=lambda r: r.get('fecha') or '')
 
-    # 4. PRIORIDAD 4: MODELO / PROYECCIÓN PROPIA
+    # 4. PRIORIDAD 4: MODELO / PROYECCIÓN PROPIA (Solo aplica si NO fue poblado previamente por la PS)
     for row in rows:
         f = row['fecha']
         if row.get('demanda_total') is None and f in forecast_map:
