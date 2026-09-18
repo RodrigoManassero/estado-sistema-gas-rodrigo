@@ -162,8 +162,6 @@ def main():
             row = row_for(r.get('fecha'))
             if not row:
                 continue
-            if r.get('demanda_total') is not None:
-                row['demanda_total'] = r.get('demanda_total')
             if r.get('prioritaria') is not None:
                 row['prioritaria'] = r.get('prioritaria')
             if r.get('usinas') is not None:
@@ -174,6 +172,17 @@ def main():
                 row['gnc'] = r.get('gnc')
             if r.get('combustible') is not None:
                 row['combustible'] = r.get('combustible')
+
+            if r.get('demanda_total') is not None:
+                row['demanda_total'] = r.get('demanda_total')
+            else:
+                # Recalcular total si la PS Proyección aportó sectores
+                s_prio = row.get('prioritaria') or 0
+                s_ind = row.get('industria') or 0
+                s_us = row.get('usinas') or 0
+                s_gnc = row.get('gnc') or 0
+                s_exp = row.get('exportaciones') or 0
+                row['demanda_total'] = round(s_prio + s_ind + s_us + s_gnc + s_exp, 1)
 
             if r.get('iny_tgs') is not None:
                 row['iny_tgs'] = r.get('iny_tgs')
@@ -325,9 +334,17 @@ def main():
             row['cammesa_fueloil_est'] = fillz(row.get('cammesa_fueloil_est'), _gas_equiv_mmm3(r.get('fo'), FUEL_KCAL['fueloil_tn']))
             row['cammesa_carbon_est'] = fillz(row.get('cammesa_carbon_est'), _gas_equiv_mmm3(r.get('cm'), FUEL_KCAL['carbon_tn']))
 
-            # Pisa usinas del modelo en fechas donde no haya dato cerrado de ENARGAS
+            # Pisa usinas del modelo en fechas donde no haya dato cerrado de ENARGAS (PS_REAL o RDS)
             if row.get('origen_dato') in (None, 'MODELO_PROYECCION', 'PS_PROYECCION') and gas_mmm3 is not None:
                 row['usinas'] = gas_mmm3
+                
+                # Recalcular la demanda total sumando el nuevo valor de Usinas de CAMMESA
+                s_prio = row.get('prioritaria') or 0
+                s_ind = row.get('industria') or 0
+                s_us = row.get('usinas') or 0
+                s_gnc = row.get('gnc') or 0
+                s_exp = row.get('exportaciones') or 0
+                row['demanda_total'] = round(s_prio + s_ind + s_us + s_gnc + s_exp, 1)
 
     tgn_state, _ = _load('tgn_system_state.json')
     for r in tgn_state:
