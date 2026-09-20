@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-20T13:11:22+00:00",
+  "generated_at": "2026-09-20T21:47:53+00:00",
   "source": "Cascada 5 niveles: PS_REAL > RDS > PS_PROJ > CAMMESA_WEEKLY > MODELO",
   "source_date": "2026-09-27",
   "data": [
@@ -46031,7 +46031,7 @@
       "var_linepack_tgs": null,
       "lim_inf_tgs": null,
       "lim_sup_tgs": null,
-      "linepack_tgn": null,
+      "linepack_tgn": 137.51,
       "var_linepack_tgn": null,
       "lim_inf_tgn": null,
       "lim_sup_tgn": null,
