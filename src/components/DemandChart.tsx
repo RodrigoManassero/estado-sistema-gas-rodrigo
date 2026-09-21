@@ -1,8 +1,14 @@
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, ReferenceLine, ReferenceArea } from 'recharts'
 import type { DailyRow, DemandForecastDay } from '../types'
-import { padToDates, formatTooltipDate, weekendSpans } from '../utils/charts'
+import {
+  padToDates,
+  formatTooltipDate,
+  weekendSpans,
+  getTodayIso,
+  getLastDateWithData,
+} from '../utils/charts'
 
-const fmt = (d: string) => d.slice(5)
+const fmt = (d: string) => (d && d.length >= 10 ? d.slice(5, 10) : d)
 
 interface Props {
   data: DailyRow[]
@@ -39,56 +45,43 @@ export default function DemandChart({
   allDates,
   yDomain,
 }: Props) {
-  // Estado para arrastrar la última observación válida hacia adelante (forward fill)
-  let lastKnown = {
-    prioritaria: null as number | null,
-    industria: null as number | null,
-    usinas: null as number | null,
-    exportaciones: null as number | null,
-  }
+  // 1. Detección precisa de la última fecha que REALMENTE tiene datos cerrados de demanda
+  const lastHistorical = getLastDateWithData(data, 'usinas') || getLastDateWithData(data, 'prioritaria')
 
-  const historical = data.map((d) => {
-    // Si la serie existe la usamos y actualizamos el último valor conocido;
-    // si viene null/undefined, tomamos la última disponible hacia atrás.
-    const prio = d.prioritaria ?? lastKnown.prioritaria
-    const ind = d.industria ?? lastKnown.industria
-    const usi = d.usinas ?? lastKnown.usinas
-    const exp = d.exportaciones ?? lastKnown.exportaciones
+  // 2. Histórico: solo tomamos filas hasta lastHistorical para no meter nulos ni extender con 'forward fill'
+  const historical = data
+    .filter((d) => !lastHistorical || d.fecha <= lastHistorical)
+    .map((d) => {
+      const prio = d.prioritaria ?? null
+      const ind = d.industria ?? null
+      const usi = d.usinas ?? null
+      const exp = d.exportaciones ?? null
 
-    if (d.prioritaria != null) lastKnown.prioritaria = d.prioritaria
-    if (d.industria != null) lastKnown.industria = d.industria
-    if (d.usinas != null) lastKnown.usinas = d.usinas
-    if (d.exportaciones != null) lastKnown.exportaciones = d.exportaciones
+      const hasAnySector = prio != null || ind != null || usi != null || exp != null
+      const explicit = (prio ?? 0) + (ind ?? 0) + (usi ?? 0) + (exp ?? 0)
 
-    // Si no tenemos ningún dato histórico cerrado previo, las subseries quedan en null
-    const hasAnySector = prio != null || ind != null || usi != null || exp != null
+      const otros = d.demanda_total != null && hasAnySector
+        ? Math.max(0, d.demanda_total - explicit)
+        : null
 
-    const explicit = (prio ?? 0) + (ind ?? 0) + (usi ?? 0) + (exp ?? 0)
+      return {
+        fecha: d.fecha,
+        prioritaria: prio,
+        industria: ind,
+        usinas: usi,
+        exportaciones: exp,
+        otros,
+        prioritaria_est: null as number | null,
+        industria_est: null as number | null,
+        usinas_est: null as number | null,
+        exportaciones_est: null as number | null,
+        otros_est: null as number | null,
+      }
+    })
 
-    // Solo se calcula 'otros' si tenemos demanda_total y al menos una subserie histórica válida
-    const otros = d.demanda_total != null && hasAnySector
-      ? Math.max(0, d.demanda_total - explicit)
-      : null
-
-    return {
-      fecha: d.fecha,
-      prioritaria: hasAnySector ? prio : null,
-      industria: hasAnySector ? ind : null,
-      usinas: hasAnySector ? usi : null,
-      exportaciones: hasAnySector ? exp : null,
-      otros,
-      prioritaria_est: null as number | null,
-      industria_est: null as number | null,
-      usinas_est: null as number | null,
-      exportaciones_est: null as number | null,
-      otros_est: null as number | null,
-    }
-  })
-
-  const lastHistorical = historical[historical.length - 1]?.fecha ?? ''
-
+  // 3. Pronóstico: arranca en el primer día posterior a lastHistorical
   const forecastRows = forecast
-    .filter((f) => f.fecha > lastHistorical)
+    .filter((f) => !lastHistorical || f.fecha > lastHistorical)
     .map((f) => ({
       fecha: f.fecha,
       prioritaria: null as number | null,
@@ -107,6 +100,8 @@ export default function DemandChart({
   const rows = allDates ? padToDates(base, allDates) : base
   const weekends = weekendSpans(rows.map((r) => r.fecha))
 
+  const todayIso = getTodayIso()
+
   return (
     <ResponsiveContainer width="100%" height={300}>
       <AreaChart data={rows} syncId="outlook">
@@ -122,9 +117,14 @@ export default function DemandChart({
         {weekends.map(([s, e], i) => (
           <ReferenceArea key={`wk-${i}`} x1={s} x2={e} fill="#64748b" fillOpacity={0.08} strokeOpacity={0} ifOverflow="extendDomain" />
         ))}
-        {forecastRows.length > 0 && lastHistorical && (
-          <ReferenceLine x={lastHistorical} stroke="#64748b" strokeDasharray="3 3" label={{ value: 'Hoy', fill: '#64748b', fontSize: 10 }} />
-        )}
+
+        {/* Línea "Hoy" fija en la fecha real del sistema */}
+        <ReferenceLine
+          x={todayIso}
+          stroke="#64748b"
+          strokeDasharray="3 3"
+          label={{ value: 'Hoy', fill: '#64748b', fontSize: 10 }}
+        />
 
         {/* Capa Histórica (relleno sólido) */}
         <Area type="monotone" dataKey="prioritaria" stackId="real" fill={COLORS.prioritaria} stroke={COLORS.prioritaria} name="Prioritaria" isAnimationActive={false} />
