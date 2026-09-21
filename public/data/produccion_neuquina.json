@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-20T13:10:49+00:00",
+  "generated_at": "2026-09-21T13:14:01+00:00",
   "source": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
   "source_date": "2026-08",
   "data": [
@@ -28571,7 +28571,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 283.63,
       "prod_pet_m3": 119816.86,
-      "prod_agua_m3": 135272.64,
+      "prod_agua_m3": 135272.63,
       "pozos_activos": 95,
       "pozos_no_conv": 128
     },
@@ -31115,7 +31115,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 30.16,
       "prod_pet_m3": 253233.36,
-      "prod_agua_m3": 159456.62,
+      "prod_agua_m3": 159456.61,
       "pozos_activos": 167,
       "pozos_no_conv": 173
     },
@@ -31738,7 +31738,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Mendoza",
       "prod_gas_mm3": 1.76,
-      "prod_pet_m3": 39723.49,
+      "prod_pet_m3": 39723.48,
       "prod_agua_m3": 586440.0,
       "pozos_activos": 310,
       "pozos_no_conv": 85
@@ -34594,7 +34594,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Mendoza",
       "prod_gas_mm3": 0.25,
-      "prod_pet_m3": 2905.05,
+      "prod_pet_m3": 2905.06,
       "prod_agua_m3": 8530.8,
       "pozos_activos": 12,
       "pozos_no_conv": 1
@@ -36850,7 +36850,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Rio Negro",
       "prod_gas_mm3": 0.34,
-      "prod_pet_m3": 2472.78,
+      "prod_pet_m3": 2472.77,
       "prod_agua_m3": 141796.08,
       "pozos_activos": 37,
       "pozos_no_conv": 0
@@ -37834,7 +37834,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "La Pampa",
       "prod_gas_mm3": 0.0,
-      "prod_pet_m3": 111.33,
+      "prod_pet_m3": 111.34,
       "prod_agua_m3": 221.35,
       "pozos_activos": 4,
       "pozos_no_conv": 0
@@ -38758,7 +38758,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 1.99,
-      "prod_pet_m3": 5269.64,
+      "prod_pet_m3": 5269.63,
       "prod_agua_m3": 21910.31,
       "pozos_activos": 45,
       "pozos_no_conv": 0
@@ -41326,7 +41326,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Rio Negro",
       "prod_gas_mm3": 0.68,
-      "prod_pet_m3": 10425.34,
+      "prod_pet_m3": 10425.33,
       "prod_agua_m3": 126.44,
       "pozos_activos": 3,
       "pozos_no_conv": 4
@@ -41465,6 +41465,18 @@
     },
     {
       "mes": "2026-06",
+      "area": "CERRO HAMACA",
+      "empresa": "PETROLEOS SUDAMERICANOS S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 0.38,
+      "prod_pet_m3": 2749.65,
+      "prod_agua_m3": 45023.0,
+      "pozos_activos": 32,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-06",
       "area": "LOMA JARILLOSA ESTE",
       "empresa": "GEOPARK ARGENTINA S.A.",
       "cuenca": "NEUQUINA",
@@ -41474,18 +41486,6 @@
       "prod_agua_m3": 1793.86,
       "pozos_activos": 6,
       "pozos_no_conv": 11
-    },
-    {
-      "mes": "2026-06",
-      "area": "CERRO HAMACA",
-      "empresa": "PETROLEOS SUDAMERICANOS S.A.",
-      "cuenca": "NEUQUINA",
-      "provincia": "Neuquén",
-      "prod_gas_mm3": 0.37,
-      "prod_pet_m3": 2749.65,
-      "prod_agua_m3": 45023.0,
-      "pozos_activos": 32,
-      "pozos_no_conv": 0
     },
     {
       "mes": "2026-06",
@@ -45334,7 +45334,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 3.6,
-      "prod_pet_m3": 81035.21,
+      "prod_pet_m3": 81035.22,
       "prod_agua_m3": 8859.08,
       "pozos_activos": 33,
       "pozos_no_conv": 42
@@ -45502,7 +45502,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Rio Negro",
       "prod_gas_mm3": 1.99,
-      "prod_pet_m3": 5317.49,
+      "prod_pet_m3": 5317.5,
       "prod_agua_m3": 189595.08,
       "pozos_activos": 112,
       "pozos_no_conv": 0
@@ -45635,7 +45635,7 @@
       "provincia": "Rio Negro",
       "prod_gas_mm3": 1.19,
       "prod_pet_m3": 2171.89,
-      "prod_agua_m3": 31664.68,
+      "prod_agua_m3": 31664.67,
       "pozos_activos": 43,
       "pozos_no_conv": 43
     },
@@ -45905,6 +45905,18 @@
     },
     {
       "mes": "2026-08",
+      "area": "EL MANZANO ESTE",
+      "empresa": "VENOIL S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Mendoza",
+      "prod_gas_mm3": 0.23,
+      "prod_pet_m3": 5.7,
+      "prod_agua_m3": 25.3,
+      "pozos_activos": 1,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-08",
       "area": "CONFLUENCIA SUR",
       "empresa": "TANGO ENERGY ARGENTINA S.A.",
       "cuenca": "NEUQUINA",
@@ -45949,6 +45961,18 @@
       "prod_pet_m3": 33.88,
       "prod_agua_m3": 84.96,
       "pozos_activos": 2,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-08",
+      "area": "EL MANZANO OESTE (AGRIO)",
+      "empresa": "VENOIL S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Mendoza",
+      "prod_gas_mm3": 0.12,
+      "prod_pet_m3": 192.12,
+      "prod_agua_m3": 700.07,
+      "pozos_activos": 1,
       "pozos_no_conv": 0
     },
     {
@@ -46097,6 +46121,18 @@
     },
     {
       "mes": "2026-08",
+      "area": "CAJON DE LOS CABALLOS",
+      "empresa": "ROCH S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Mendoza",
+      "prod_gas_mm3": 0.04,
+      "prod_pet_m3": 553.6,
+      "prod_agua_m3": 2010.0,
+      "pozos_activos": 5,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-08",
       "area": "LOMA DE LA MINA",
       "empresa": "E.M.E.S.A",
       "cuenca": "NEUQUINA",
@@ -46153,6 +46189,18 @@
       "prod_pet_m3": 9.21,
       "prod_agua_m3": 281.01,
       "pozos_activos": 2,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-08",
+      "area": "AGUA BOTADA",
+      "empresa": "ROCH S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Mendoza",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 0,
       "pozos_no_conv": 0
     },
     {
@@ -46329,6 +46377,18 @@
       "empresa": "ARGENTA ENERGIA S.A.",
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 0,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-08",
+      "area": "EL MANZANO OESTE (RESTO)",
+      "empresa": "VENOIL S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Mendoza",
       "prod_gas_mm3": 0.0,
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 0.0,
