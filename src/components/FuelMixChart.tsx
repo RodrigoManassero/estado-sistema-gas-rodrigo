@@ -12,7 +12,13 @@ import {
 } from 'recharts'
 import type { DailyRow, DemandForecastDay } from '../types'
 import type { CammesaPPORow } from '../hooks/useData'
-import { padToDates, formatTooltipDate, weekendSpans } from '../utils/charts'
+import {
+  padToDates,
+  formatTooltipDate,
+  weekendSpans,
+  getTodayIso,
+  getLastDateWithData,
+} from '../utils/charts'
 
 const fmt = (d: string) => (d && d.length >= 10 ? d.slice(5, 10) : d)
 
@@ -41,6 +47,9 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
     if (fClean && typeof r.gas_mmm3 === 'number') ppoByDate.set(fClean, r.gas_mmm3)
   }
 
+  // 1. Obtener de forma segura la última fecha que REALMENTE tiene datos de despacho real
+  const lastHistorical = getLastDateWithData(data, 'cammesa_gas')
+
   const historical = data
     .map((d) => ({ ...d, fecha: clean(d.fecha) }))
     .filter((d) => d.cammesa_gas != null)
@@ -57,12 +66,11 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
       cammesa_fueloil_est: null as number | null,
       cammesa_carbon_est: null as number | null,
     }))
-  const lastHistorical = historical[historical.length - 1]?.fecha ?? ''
 
   const excelFechas = new Set(historical.map((h) => h.fecha))
   const ppoExtraRows = ppoRows
     .map((r) => ({ ...r, fecha: clean(r.fecha) }))
-    .filter((r) => r.fecha && !excelFechas.has(r.fecha) && r.fecha <= lastHistorical)
+    .filter((r) => r.fecha && !excelFechas.has(r.fecha) && (lastHistorical ? r.fecha <= lastHistorical : true))
     .map((r) => ({
       fecha: r.fecha,
       cammesa_gas: null as number | null,
@@ -80,7 +88,7 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
   const usinasByDate = new Map<string, number>()
   for (const f of demandForecast) {
     const fClean = clean(f.fecha)
-    if (fClean > lastHistorical && f.usinas_est != null) {
+    if ((!lastHistorical || fClean > lastHistorical) && f.usinas_est != null) {
       usinasByDate.set(fClean, f.usinas_est)
     }
   }
@@ -90,29 +98,29 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
 
   for (const d of data) {
     const fClean = clean(d.fecha)
-    if (fClean > lastHistorical && d.cammesa_gas_est != null) {
+    if ((!lastHistorical || fClean > lastHistorical) && d.cammesa_gas_est != null) {
       fcDates.add(fClean)
     }
   }
   for (const f of usinasByDate.keys()) fcDates.add(f)
 
-  // 1. Ultima fecha con Weekly de CAMMESA
+  // Ultima fecha con Weekly de CAMMESA
   const lastWeeklyRow = [...data]
     .map((d) => ({ ...d, fecha: clean(d.fecha) }))
-    .filter((d) => d.fecha > lastHistorical && d.cammesa_gas_est != null)
+    .filter((d) => (!lastHistorical || d.fecha > lastHistorical) && d.cammesa_gas_est != null)
     .pop()
 
   const lastWeeklyDate = lastWeeklyRow?.fecha ?? ''
   const lastWeeklyVal = lastWeeklyRow?.cammesa_gas_est ?? null
 
-  // 2. Bias del modelo respecto al final del Weekly
+  // Bias del modelo respecto al final del Weekly
   const modelValAtWeeklyEnd = lastWeeklyDate ? usinasByDate.get(lastWeeklyDate) : null
   const localGasBias =
     lastWeeklyVal != null && modelValAtWeeklyEnd != null
       ? lastWeeklyVal - modelValAtWeeklyEnd
       : 0
 
-  // 3. Generacion de filas separando Weekly (Sólido) y Modelo (Translúcido)
+  // Generación de filas separando Weekly (Sólido) y Modelo (Translúcido)
   const forecastRows = [...fcDates].sort().map((fecha) => {
     const d = dailyByDate.get(fecha)
     const u = usinasByDate.get(fecha)
@@ -121,10 +129,8 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
     let gasEstModel: number | null = null
 
     if (d?.cammesa_gas_est != null) {
-      // Dato Oficial CAMMESA Weekly -> Sólido
       gasWeekly = d.cammesa_gas_est
     } else if (u != null) {
-      // Estimación Modelo por Clima -> Translúcido
       gasEstModel = Math.round((u + localGasBias) * 10) / 10
     }
 
@@ -149,6 +155,8 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
   const base = [...merged.values()].sort((a, b) => a.fecha.localeCompare(b.fecha))
   const rows = allDates ? padToDates(base, allDates) : base
   const weekends = weekendSpans(rows.map((r) => r.fecha))
+
+  const todayIso = getTodayIso()
 
   return (
     <ResponsiveContainer width="100%" height={300}>
@@ -178,14 +186,15 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
             ifOverflow="extendDomain"
           />
         ))}
-        {forecastRows.length > 0 && lastHistorical && (
-          <ReferenceLine
-            x={lastHistorical}
-            stroke="#64748b"
-            strokeDasharray="3 3"
-            label={{ value: 'Hoy', fill: '#64748b', fontSize: 10 }}
-          />
-        )}
+
+        {/* Línea "Hoy" dinámica en función de la fecha del sistema */}
+        <ReferenceLine
+          x={todayIso}
+          stroke="#64748b"
+          strokeDasharray="3 3"
+          label={{ value: 'Hoy', fill: '#64748b', fontSize: 10 }}
+        />
+
         {/* Cerrado: mezcla real apilada (Sólido) */}
         <Bar dataKey="cammesa_gas" stackId="1" fill={GAS} name="Gas" isAnimationActive={false} />
         <Bar dataKey="cammesa_gasoil" stackId="1" fill={GASOIL} name="Gas Oil" isAnimationActive={false} />
