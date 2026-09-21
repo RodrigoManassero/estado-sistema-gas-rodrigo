@@ -42,7 +42,10 @@ export default function TemperatureChart({
   }[selectedCityId as 'ba' | 'esquel']
 
   const { rows, lastHistorical, hasForecast, weekends } = useMemo(() => {
-    const lastDate = data[data.length - 1]?.fecha ?? ''
+    // 1. Determinar la última fecha que REALMENTE tiene datos de temperatura cargados
+    const lastDateWithData = histKey
+      ? data.filter((d) => (d as never)[histKey.prom] != null).pop()?.fecha ?? ''
+      : ''
 
     const byDate = new Map<string, {
       fecha: string
@@ -52,6 +55,7 @@ export default function TemperatureChart({
       temp_range_fc?: [number | null, number | null] | null
     }>()
 
+    // 2. Cargar la serie histórica existente
     if (histKey) {
       for (const d of data) {
         const min = (d as never)[histKey.min] as number | null
@@ -64,23 +68,33 @@ export default function TemperatureChart({
       }
     }
 
+    // 3. Unir el Forecast de Open-Meteo
     const fcSource: ForecastDay[] = city?.forecast ?? forecast
     let hasForecast = false
     for (const f of fcSource) {
-      if (f.fecha <= lastDate) continue
-      hasForecast = true
-      const existing = byDate.get(f.fecha) ?? { fecha: f.fecha }
-      byDate.set(f.fecha, {
-        ...existing,
-        temp_prom_fc: f.temp_prom,
-        temp_range_fc: f.temp_min != null && f.temp_max != null ? [f.temp_min, f.temp_max] : null,
-      })
+      const existing = byDate.get(f.fecha)
+      
+      // Permitir el forecast si la fecha supera el último dato real O si en esa fecha el histórico es null
+      if (f.fecha > lastDateWithData || !existing?.temp_prom_real) {
+        hasForecast = true
+        byDate.set(f.fecha, {
+          ...(existing ?? { fecha: f.fecha }),
+          temp_prom_fc: f.temp_prom,
+          temp_range_fc: f.temp_min != null && f.temp_max != null ? [f.temp_min, f.temp_max] : null,
+        })
+      }
     }
 
     const merged = [...byDate.values()].sort((a, b) => a.fecha.localeCompare(b.fecha))
     const padded = allDates ? padToDates(merged, allDates) : merged
     const weekends = weekendSpans(padded.map((r) => r.fecha))
-    return { rows: padded, lastHistorical: lastDate, hasForecast, weekends }
+
+    return { 
+      rows: padded, 
+      lastHistorical: lastDateWithData, 
+      hasForecast, 
+      weekends 
+    }
   }, [data, forecast, city, histKey, allDates])
 
   return (
