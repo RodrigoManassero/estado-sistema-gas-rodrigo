@@ -115,3 +115,27 @@ export function demandYDomain(
   const top = Math.max(historicalMax, forecastMax)
   return [0, top === 0 ? 10 : roundUp(top * 1.1, 10)]
 }
+
+/**
+ * Retorna la fecha de hoy real del sistema en formato YYYY-MM-DD.
+ * Garantiza que la línea 'Hoy' de los gráficos se posicione dinámicamente según el reloj.
+ */
+export function getTodayIso(): string {
+  return new Date().toISOString().slice(0, 10)
+}
+
+/**
+ * Busca de atrás hacia adelante la última fecha que efectivamente tenga un dato
+ * no nulo en la columna especificada. Evita falsos positivos en data sets que
+ * traen filas pre-creadas con valores nulos para el futuro.
+ */
+export function getLastDateWithData<T extends DateCarrier>(rows: T[], key: keyof T): string {
+  if (!rows || rows.length === 0) return ''
+  for (let i = rows.length - 1; i >= 0; i--) {
+    const val = rows[i][key]
+    if (val !== null && val !== undefined) {
+      return rows[i].fecha
+    }
+  }
+  return ''
+}
