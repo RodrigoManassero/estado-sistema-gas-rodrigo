@@ -13,7 +13,13 @@ import {
 } from 'recharts'
 import type { DailyRow, ForecastDay, RegionCity } from '../types'
 import { colors } from '../theme'
-import { padToDates, formatTooltipDate, weekendSpans } from '../utils/charts'
+import {
+  padToDates,
+  formatTooltipDate,
+  weekendSpans,
+  getTodayIso,
+  getLastDateWithData,
+} from '../utils/charts'
 
 const fmt = (d: string) => d.slice(5)
 
@@ -37,15 +43,13 @@ export default function TemperatureChart({
   const city = regions?.find((r) => r.id === selectedCityId)
 
   const histKey = {
-    ba: { min: 'temp_min_ba', max: 'temp_max_ba', prom: 'temp_prom_ba' },
-    esquel: { min: 'temp_min_esquel', max: 'temp_max_esquel', prom: 'temp_prom_esquel' },
-  }[selectedCityId as 'ba' | 'esquel']
+    ba: 'temp_prom_ba',
+    esquel: 'temp_prom_esquel',
+  }[selectedCityId as 'ba' | 'esquel'] as keyof DailyRow | undefined
 
-  const { rows, lastHistorical, hasForecast, weekends } = useMemo(() => {
-    // 1. Determinar la última fecha que REALMENTE tiene datos de temperatura cargados
-    const lastDateWithData = histKey
-      ? data.filter((d) => (d as never)[histKey.prom] != null).pop()?.fecha ?? ''
-      : ''
+  const { rows, hasForecast, weekends } = useMemo(() => {
+    // 1. Obtener última fecha que realmente tiene datos en el histórico
+    const lastDateWithData = histKey ? getLastDateWithData(data, histKey) : ''
 
     const byDate = new Map<string, {
       fecha: string
@@ -55,26 +59,26 @@ export default function TemperatureChart({
       temp_range_fc?: [number | null, number | null] | null
     }>()
 
-    // 2. Cargar la serie histórica existente
+    // 2. Cargar histórico
     if (histKey) {
+      const minKey = histKey.replace('prom', 'min') as keyof DailyRow
+      const maxKey = histKey.replace('prom', 'max') as keyof DailyRow
       for (const d of data) {
-        const min = (d as never)[histKey.min] as number | null
-        const max = (d as never)[histKey.max] as number | null
+        const min = d[minKey] as number | null
+        const max = d[maxKey] as number | null
         byDate.set(d.fecha, {
           fecha: d.fecha,
-          temp_prom_real: (d as never)[histKey.prom] as number | null,
+          temp_prom_real: d[histKey] as number | null,
           temp_range_real: min != null && max != null ? [min, max] : null,
         })
       }
     }
 
-    // 3. Unir el Forecast de Open-Meteo
+    // 3. Empalmar Forecast sin dejar brechas
     const fcSource: ForecastDay[] = city?.forecast ?? forecast
     let hasForecast = false
     for (const f of fcSource) {
       const existing = byDate.get(f.fecha)
-      
-      // Permitir el forecast si la fecha supera el último dato real O si en esa fecha el histórico es null
       if (f.fecha > lastDateWithData || !existing?.temp_prom_real) {
         hasForecast = true
         byDate.set(f.fecha, {
@@ -89,13 +93,10 @@ export default function TemperatureChart({
     const padded = allDates ? padToDates(merged, allDates) : merged
     const weekends = weekendSpans(padded.map((r) => r.fecha))
 
-    return { 
-      rows: padded, 
-      lastHistorical: lastDateWithData, 
-      hasForecast, 
-      weekends 
-    }
+    return { rows: padded, hasForecast, weekends }
   }, [data, forecast, city, histKey, allDates])
+
+  const todayIso = getTodayIso()
 
   return (
     <div>
@@ -146,11 +147,17 @@ export default function TemperatureChart({
           {weekends.map(([s, e], i) => (
             <ReferenceArea key={`wk-${i}`} x1={s} x2={e} fill="#64748b" fillOpacity={0.08} strokeOpacity={0} ifOverflow="extendDomain" />
           ))}
-          {hasForecast && lastHistorical && (
-            <ReferenceLine x={lastHistorical} stroke="#64748b" strokeDasharray="3 3" label={{ value: 'Hoy', fill: '#64748b', fontSize: 10 }} />
+          
+          {/* Línea "Hoy" dinámica basada en la fecha del reloj */}
+          {hasForecast && (
+            <ReferenceLine
+              x={todayIso}
+              stroke="#64748b"
+              strokeDasharray="3 3"
+              label={{ value: 'Hoy', fill: '#64748b', fontSize: 10 }}
+            />
           )}
 
-          {/* Historical: shaded min–max envelope + line for the average. */}
           <Area
             type="monotone"
             dataKey="temp_range_real"
@@ -172,7 +179,6 @@ export default function TemperatureChart({
             isAnimationActive={false}
           />
 
-          {/* Forecast: same pattern, lighter fill + dashed line. */}
           <Area
             type="monotone"
             dataKey="temp_range_fc"
