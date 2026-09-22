@@ -5,7 +5,6 @@ import {
   formatTooltipDate,
   weekendSpans,
   getTodayIso,
-  getLastDateWithData,
 } from '../utils/charts'
 
 const fmt = (d: string) => (d && d.length >= 10 ? d.slice(5, 10) : d)
@@ -45,10 +44,17 @@ export default function DemandChart({
   allDates,
   yDomain,
 }: Props) {
-  // 1. Detección precisa de la última fecha que REALMENTE tiene datos cerrados de demanda
-  const lastHistorical = getLastDateWithData(data, 'usinas') || getLastDateWithData(data, 'prioritaria')
+  // 1. Encontrar la última fecha que tiene la información HISTÓRICA COMPLETA (ENARGAS)
+  // Requerimos que 'prioritaria' e 'industria' NO sean null.
+  let lastHistorical = ''
+  for (let i = data.length - 1; i >= 0; i--) {
+    if (data[i].prioritaria != null && data[i].industria != null) {
+      lastHistorical = data[i].fecha
+      break
+    }
+  }
 
-  // 2. Histórico: solo tomamos filas hasta lastHistorical para no meter nulos ni extender con 'forward fill'
+  // 2. Capa Histórica: Únicamente filas hasta la última fecha con datos completos
   const historical = data
     .filter((d) => !lastHistorical || d.fecha <= lastHistorical)
     .map((d) => {
@@ -60,9 +66,10 @@ export default function DemandChart({
       const hasAnySector = prio != null || ind != null || usi != null || exp != null
       const explicit = (prio ?? 0) + (ind ?? 0) + (usi ?? 0) + (exp ?? 0)
 
-      const otros = d.demanda_total != null && hasAnySector
-        ? Math.max(0, d.demanda_total - explicit)
-        : null
+      const otros =
+        d.demanda_total != null && hasAnySector
+          ? Math.max(0, d.demanda_total - explicit)
+          : null
 
       return {
         fecha: d.fecha,
@@ -79,7 +86,7 @@ export default function DemandChart({
       }
     })
 
-  // 3. Pronóstico: arranca en el primer día posterior a lastHistorical
+  // 3. Capa Proyección: Arranca EXACTAMENTE en el primer día faltante (en este caso el 26/09)
   const forecastRows = forecast
     .filter((f) => !lastHistorical || f.fecha > lastHistorical)
     .map((f) => ({
@@ -118,7 +125,7 @@ export default function DemandChart({
           <ReferenceArea key={`wk-${i}`} x1={s} x2={e} fill="#64748b" fillOpacity={0.08} strokeOpacity={0} ifOverflow="extendDomain" />
         ))}
 
-        {/* Línea "Hoy" fija en la fecha real del sistema */}
+        {/* Línea "Hoy" dinámica basada en la fecha del sistema */}
         <ReferenceLine
           x={todayIso}
           stroke="#64748b"
@@ -126,14 +133,14 @@ export default function DemandChart({
           label={{ value: 'Hoy', fill: '#64748b', fontSize: 10 }}
         />
 
-        {/* Capa Histórica (relleno sólido) */}
+        {/* Capa Histórica (sólida) */}
         <Area type="monotone" dataKey="prioritaria" stackId="real" fill={COLORS.prioritaria} stroke={COLORS.prioritaria} name="Prioritaria" isAnimationActive={false} />
         <Area type="monotone" dataKey="industria" stackId="real" fill={COLORS.industria} stroke={COLORS.industria} name="Industria" isAnimationActive={false} />
         <Area type="monotone" dataKey="usinas" stackId="real" fill={COLORS.usinas} stroke={COLORS.usinas} name="Usinas" isAnimationActive={false} />
         <Area type="monotone" dataKey="otros" stackId="real" fill={COLORS.otros} stroke={COLORS.otros} name="GNC + combustible" isAnimationActive={false} />
         <Area type="monotone" dataKey="exportaciones" stackId="real" fill={COLORS.exportaciones} stroke={COLORS.exportaciones} name="Exportaciones" isAnimationActive={false} />
 
-        {/* Capa Forecast (trazo punteado) */}
+        {/* Capa Forecast (translúcida / punteada) */}
         <Area type="monotone" dataKey="prioritaria_est" stackId="est" fill={COLORS.prioritaria} fillOpacity={0.15} stroke={COLORS.prioritaria} strokeWidth={1} strokeDasharray="4 3" name="Prioritaria est." legendType="none" isAnimationActive={false} />
         <Area type="monotone" dataKey="industria_est" stackId="est" fill={COLORS.industria} fillOpacity={0.15} stroke={COLORS.industria} strokeWidth={1} strokeDasharray="4 3" name="Industria est." legendType="none" isAnimationActive={false} />
         <Area type="monotone" dataKey="usinas_est" stackId="est" fill={COLORS.usinas} fillOpacity={0.15} stroke={COLORS.usinas} strokeWidth={1} strokeDasharray="4 3" name="Usinas est." legendType="none" isAnimationActive={false} />
