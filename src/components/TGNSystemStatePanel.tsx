@@ -4,9 +4,6 @@ import type { TGNSystemStateRow } from '../hooks/useData'
 interface Props {
   rows: TGNSystemStateRow[] | null
   generatedAt: string | null
-  /** Proyección de linepack TGN (MMm³) por fecha. Cuando ABII no publicó el
-   *  día, se muestra la estimación marcada "(est.)"; los derivados quedan en —. */
-  estByDate?: Map<string, number>
 }
 
 const MONTHS: Record<string, number> = {
@@ -80,10 +77,13 @@ function Metric({
   )
 }
 
-export default function TGNSystemStatePanel({ rows, generatedAt, estByDate }: Props) {
-  // Pick the most recent row by Día Operativo.
+export default function TGNSystemStatePanel({ rows, generatedAt }: Props) {
+  // Ordenar filas por fecha de forma ascendente
   const sorted = (rows ?? []).slice().sort((a, b) => rowFecha(a).localeCompare(rowFecha(b)))
+  
+  // Tomar la última fila con reporte real disponible (día n-1 o cierre previo)
   const latest = sorted[sorted.length - 1]
+
   if (!latest) {
     return (
       <div style={{ ...card, marginTop: space.xl, borderTop: `3px solid ${colors.accent.blue}` }}>
@@ -96,16 +96,8 @@ export default function TGNSystemStatePanel({ rows, generatedAt, estByDate }: Pr
   }
 
   const fecha = rowFecha(latest)
-  // Relleno: si ABII no publicó un día posterior (hasta hoy) y hay estimación,
-  // se muestra el linepack estimado; los derivados (equilibrio/desbalance/%)
-  // quedan en — porque no hay reporte real para inventarlos.
-  const today = new Date().toISOString().slice(0, 10)
-  const estDatesTgn = [...(estByDate?.keys() ?? [])].filter(f => f > fecha && f <= today).sort()
-  const estDate = estDatesTgn[estDatesTgn.length - 1] ?? null
-  const estVal = estDate ? (estByDate?.get(estDate) ?? null) : null   // MMm³
-  const useEst = estVal != null
-  // 'Actual' es el linepack TGN del día (m³); su variación sale de comparar
-  // contra la fila previa disponible (espejo del Linepack TGS en TGSPanel).
+
+  // Linepack TGN del día y variación respecto al día previo disponible
   const actual = toNumber(latest['Actual'])
   const prev = sorted[sorted.length - 2]
   const prevActual = prev ? toNumber(prev['Actual']) : null
@@ -113,19 +105,16 @@ export default function TGNSystemStatePanel({ rows, generatedAt, estByDate }: Pr
   const varHint = varActual != null
     ? `${varActual >= 0 ? '+' : ''}${(varActual / 1_000_000).toFixed(2)} MMm³ vs día anterior`
     : 'Volumen en el sistema'
+
   const equilibrio = toNumber(latest['Equilibrio'])
   const desbalance = toNumber(latest['Desbalance del sistema'])
   const desbalancePct = toNumber(latest['Desbalance porcentual'])
-  // ABII ya publica el desbalance con su signo correcto: POSITIVO cuando el
-  // linepack actual está por debajo del equilibrio (déficit), negativo cuando
-  // hay superávit. Mostrarlo tal cual viene del reporte — no reinvertir el
-  // signo (el pedido del analista: tomar el número como aparece en ABII).
+
   const deficit = actual != null && equilibrio != null && actual < equilibrio
   const sevColor = severityColor(desbalancePct != null ? Math.abs(desbalancePct) : null)
 
-  const labelFecha = useEst ? estDate : fecha
-  const dateLabel = labelFecha
-    ? new Date(labelFecha + 'T00:00:00').toLocaleDateString('es-AR', {
+  const dateLabel = fecha
+    ? new Date(fecha + 'T00:00:00').toLocaleDateString('es-AR', {
         weekday: 'short', day: '2-digit', month: 'short',
       })
     : '—'
@@ -152,21 +141,25 @@ export default function TGNSystemStatePanel({ rows, generatedAt, estByDate }: Pr
       >
         <Metric
           label="Linepack TGN"
-          value={useEst ? `${estVal.toFixed(2)} MMm³ (est.)` : fmtMMm3(actual)}
-          hint={useEst ? 'Estimado (sin cierre ABII)' : varHint}
+          value={fmtMMm3(actual)}
+          hint={varHint}
         />
-        <Metric label="Equilibrio" value={useEst ? '—' : fmtMMm3(equilibrio)} hint="Demanda + extracciones esperadas" />
+        <Metric 
+          label="Equilibrio" 
+          value={fmtMMm3(equilibrio)} 
+          hint="Demanda + extracciones esperadas" 
+        />
         <Metric
           label="Desbalance"
-          value={useEst ? '—' : fmtMMm3(desbalance != null ? Math.abs(desbalance) : null)}
-          hint={useEst ? 'Sin reporte real' : (deficit ? 'Déficit del sistema' : 'Superávit del sistema')}
-          color={useEst ? undefined : sevColor}
+          value={fmtMMm3(desbalance != null ? Math.abs(desbalance) : null)}
+          hint={deficit ? 'Déficit del sistema' : 'Superávit del sistema'}
+          color={sevColor}
         />
         <Metric
           label="Desbalance %"
-          value={useEst ? '—' : fmtPct(desbalancePct, true)}
+          value={fmtPct(desbalancePct, true)}
           hint="Sobre equilibrio (ABII)"
-          color={useEst ? undefined : sevColor}
+          color={sevColor}
         />
       </div>
 
