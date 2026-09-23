@@ -2,8 +2,8 @@ name: Actualizar ETGS Automático
 
 on:
   schedule:
-    # Se ejecuta de lunes a viernes a las 19:00 hs (Hora Argentina / 22:00 UTC)
-    - cron: '0 22 * * 1-5'
+    # Se ejecuta de lunes a domingo a las 08:00 AM (Hora Argentina / 11:00 UTC)
+    - cron: '0 11 * * *'
   workflow_dispatch: # Permite ejecutarlo manualmente desde un botón en GitHub cuando quieras
 
 jobs:
