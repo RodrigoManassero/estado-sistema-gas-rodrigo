@@ -48,9 +48,6 @@ def _num(s):
     s = str(s).strip()
     if not s or s == '-':
         return None
-    # Many fields use comma as decimal (es-AR locale), but a few are written
-    # with US-style dot. Normalise: if exactly one comma and no dot → comma is
-    # decimal; otherwise treat dots as decimal and strip any thousands commas.
     if s.count(',') == 1 and '.' not in s:
         s = s.replace(',', '.')
     else:
@@ -62,12 +59,7 @@ def _num(s):
 
 
 def _kcal(s):
-    """Parse PCS (Kcal) — comma is thousands separator, not decimal.
-
-    '9,638' -> 9638. PCS values for natural gas are always 4-digit ints
-    (~9000-11000 Kcal), so the disambiguation vs the recepciones (where
-    comma is decimal) is by field, not by heuristic.
-    """
+    """Parse PCS (Kcal) — comma is thousands separator, not decimal."""
     if s is None:
         return None
     s = str(s).strip().replace(',', '').replace('.', '')
@@ -105,19 +97,24 @@ def extract_etgs(text: str) -> dict:
         d['linepack_tgs_dia_actual'] = _num(m.group(2))
         d['linepack_tgs_variacion'] = _num(m.group(3))
 
-    # "Motivo TGSA - Alerta Por bajo linepack del sistema"
-    # The label "Motivo" precedes the alert state and reason on the same line.
-    m = re.search(r'Motivo\s+([^\n]+?)\s+(Por\s+[^\n]+|Sin\s+[^\n]+|Normal[^\n]*)', text)
-    if m:
-        d['alerta_estado'] = m.group(1).strip()
-        d['alerta_motivo'] = m.group(2).strip()
+    # ---------------------------------------------------------------------
+    # Extracción de ESTADO DEL SISTEMA y MOTIVO
+    # ---------------------------------------------------------------------
+    # 1. Busca la palabra "Estado" seguida de alguno de los 4 estados posibles
+    m_estado = re.search(r'Estado\s*\n?\s*(Normal|Alerta|Cr[ií]tico|Emergencia)', text, re.IGNORECASE)
+    if m_estado:
+        d['alerta_estado'] = m_estado.group(1).capitalize()
     else:
-        # Fallback: just the "Motivo X" line if no Por/Sin/Normal anchor.
-        m = re.search(r'Motivo\s+(.+)', text)
-        if m:
-            d['alerta_estado'] = m.group(1).strip()
+        d['alerta_estado'] = "Normal"
 
-    # Poder calorífico — both columns share the same key prefixes.
+    # 2. Busca la etiqueta "Motivo" y extrae toda la línea
+    m_motivo = re.search(r'Motivo\s*\n?\s*([^\n]+)', text)
+    if m_motivo:
+        d['alerta_motivo'] = m_motivo.group(1).strip()
+    else:
+        d['alerta_motivo'] = None
+
+    # Poder calorífico
     pcs_patterns = [
         ('pcs_san_martin', r'Gasoducto\s*San\s*Mart[ií]n\s+([\d.,]+)'),
         ('pcs_neuba_1', r'Gasoducto\s*Neuba\s*I\s+([\d.,]+)'),
@@ -167,11 +164,8 @@ def main():
             if not row.get('fecha'):
                 issues.append(f'{os.path.basename(path)}: no fecha extracted')
                 continue
-            # Latest write wins for a given fecha; the reports get re-issued
-            # if TGS revises numbers, and the most recent file in raw/ is the
-            # source of truth.
             by_date[row['fecha']] = row
-            print(f"Parsed {os.path.basename(path)}: fecha={row['fecha']} LP_TGS={row.get('linepack_tgs_dia_actual')}")
+            print(f"Parsed {os.path.basename(path)}: fecha={row['fecha']} Estado={row.get('alerta_estado')} LP_TGS={row.get('linepack_tgs_dia_actual')}")
         except Exception as e:
             issues.append(f'{os.path.basename(path)}: exception {e}')
             print(f'Error parsing {path}: {e}', file=sys.stderr)
@@ -191,7 +185,7 @@ def main():
         issues=issues,
     )
     write_csv(json_to_csv_path(ETGS_JSON), rows, fieldnames=ETGS_CSV_COLS)
-    print(f'etgs.json: {len(rows)} rows')
+    print(f'etgs.json: {len(rows)} rows updated successfully')
 
 
 if __name__ == '__main__':
