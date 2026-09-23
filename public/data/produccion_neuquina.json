@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-22T14:33:10+00:00",
+  "generated_at": "2026-09-23T13:14:34+00:00",
   "source": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
   "source_date": "2026-08",
   "data": [
@@ -28571,7 +28571,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 283.63,
       "prod_pet_m3": 119816.86,
-      "prod_agua_m3": 135272.63,
+      "prod_agua_m3": 135272.64,
       "pozos_activos": 95,
       "pozos_no_conv": 128
     },
@@ -31115,7 +31115,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 30.16,
       "prod_pet_m3": 253233.36,
-      "prod_agua_m3": 159456.61,
+      "prod_agua_m3": 159456.62,
       "pozos_activos": 167,
       "pozos_no_conv": 173
     },
@@ -37834,7 +37834,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "La Pampa",
       "prod_gas_mm3": 0.0,
-      "prod_pet_m3": 111.34,
+      "prod_pet_m3": 111.33,
       "prod_agua_m3": 221.35,
       "pozos_activos": 4,
       "pozos_no_conv": 0
@@ -38758,7 +38758,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 1.99,
-      "prod_pet_m3": 5269.64,
+      "prod_pet_m3": 5269.63,
       "prod_agua_m3": 21910.31,
       "pozos_activos": 45,
       "pozos_no_conv": 0
@@ -41027,7 +41027,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 2.33,
       "prod_pet_m3": 5117.8,
-      "prod_agua_m3": 19807.85,
+      "prod_agua_m3": 19807.86,
       "pozos_activos": 41,
       "pozos_no_conv": 0
     },
@@ -41362,7 +41362,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Mendoza",
       "prod_gas_mm3": 0.6,
-      "prod_pet_m3": 18901.51,
+      "prod_pet_m3": 18901.52,
       "prod_agua_m3": 190786.25,
       "pozos_activos": 107,
       "pozos_no_conv": 43
@@ -41675,7 +41675,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 0.07,
       "prod_pet_m3": 1236.42,
-      "prod_agua_m3": 555.38,
+      "prod_agua_m3": 555.39,
       "pozos_activos": 11,
       "pozos_no_conv": 3
     },
@@ -43187,7 +43187,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 2.86,
       "prod_pet_m3": 5467.33,
-      "prod_agua_m3": 22572.23,
+      "prod_agua_m3": 22572.24,
       "pozos_activos": 49,
       "pozos_no_conv": 0
     },
