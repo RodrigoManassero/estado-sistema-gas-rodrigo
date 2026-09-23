@@ -31,9 +31,9 @@ jobs:
         # Ejecuta el script que descarga de OneDrive y luego procesa los datos
         python scripts/parse_etgs.py
 
-    - name: Hacer Commit y Push de los cambios en GitHub
+        - name: Hacer Commit y Push de los cambios en GitHub
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add raw/ etgs.json
+        git add raw/ public/data/
         git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update ETGS JSON [skip ci]" && git push)
