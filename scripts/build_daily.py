@@ -5,6 +5,7 @@
 3. PS Proyección (días hoy+1..+3 publicados por ENARGAS)
 4. Previsión Semanal CAMMESA (usinas y combustibles alternativos para ~2 semanas)
 5. Modelo / Proyección Propia (demand_forecast.json)
+6. Enriquecimiento Meteorológico (weather_history.json)
 """
 
 import json
@@ -76,7 +77,7 @@ def main():
     if not history:
         print('ERROR: daily_history.json missing or empty', file=sys.stderr)
         return 1
-        
+
     fields = list(history[0].keys())
     for extra in (
         'gnc',
@@ -207,7 +208,7 @@ def main():
         row = row_for(r.get('fecha'))
         if not row:
             continue
-        
+
         if row.get('origen_dato') == 'PS_PROYECCION':
             continue
 
@@ -216,25 +217,25 @@ def main():
         tgn, tgs = _get(exps, 'tgn', 'vol_exportar'), _get(exps, 'tgs', 'vol_exportar')
         if tgn is not None or tgs is not None:
             exp_total = (tgn or 0) + (tgs or 0)
-            
+
         if r.get('consumo_total_estimado') is not None:
             row['demanda_total'] = r.get('consumo_total_estimado')
-        
+
         prio_rds = _get(r, 'consumos', 'prioritaria', 'programa')
         if prio_rds is not None:
             row['prioritaria'] = prio_rds
-            
+
         us_rds = _get(r, 'consumos', 'usinas', 'programa')
         if us_rds is not None:
             row['usinas'] = us_rds
-            
+
         ind_rds = _get(r, 'consumos', 'industria', 'programa')
         if ind_rds is not None:
             row['industria'] = ind_rds
-            
+
         if exp_total is not None:
             row['exportaciones'] = exp_total
-        
+
         imp_prog = r.get('programa_importacion') or {}
         if imp_prog:
             if imp_prog.get('bolivia') is not None:
@@ -258,7 +259,7 @@ def main():
             row = row_for(r.get('fecha'))
             if not row:
                 continue
-            
+
             if r.get('demanda_total') is not None:
                 row['demanda_total'] = r.get('demanda_total')
             if r.get('prioritaria') is not None:
@@ -273,13 +274,13 @@ def main():
                 row['combustible'] = r.get('combustible')
             if r.get('ajuste') is not None:
                 row['ajuste'] = r.get('ajuste')
-                
+
             exp = None
             if r.get('exp_tgn') is not None or r.get('exp_tgs') is not None:
                 exp = (r.get('exp_tgn') or 0) + (r.get('exp_tgs') or 0)
             if exp is not None:
                 row['exportaciones'] = exp
-                
+
             if r.get('iny_tgs') is not None:
                 row['iny_tgs'] = r.get('iny_tgs')
             if r.get('iny_tgn') is not None:
@@ -337,7 +338,7 @@ def main():
             # Pisa usinas del modelo en fechas donde no haya dato cerrado de ENARGAS (PS_REAL o RDS)
             if row.get('origen_dato') in (None, 'MODELO_PROYECCION', 'PS_PROYECCION') and gas_mmm3 is not None:
                 row['usinas'] = gas_mmm3
-                
+
                 # Recalcular la demanda total sumando el nuevo valor de Usinas de CAMMESA
                 s_prio = row.get('prioritaria') or 0
                 s_ind = row.get('industria') or 0
@@ -359,6 +360,23 @@ def main():
             if mmm3 is not None:
                 row['linepack_tgn'] = mmm3 if f_clean not in hist_dates else fill(row['linepack_tgn'], mmm3)
 
+    # -------------------------------------------------------------
+    # PASO 5: ENRIQUECIMIENTO DE TEMPERATURAS DESDE WEATHER_HISTORY
+    # -------------------------------------------------------------
+    history_weather, _ = _load('weather_history.json')
+    if history_weather:
+        ba_data = next((c for c in history_weather if c.get('id') == 'ba'), None)
+        if ba_data:
+            ba_map = {h['fecha']: h for h in ba_data.get('history', []) if h.get('fecha')}
+            for row in by_date.values():
+                f_clean = row.get('fecha')
+                if f_clean in ba_map:
+                    wh = ba_map[f_clean]
+                    # Completar o reparar min/max/prom si vienen nulos desde la cascada
+                    row['temp_prom_ba'] = fill(row.get('temp_prom_ba'), wh.get('temp_prom'))
+                    row['temp_min_ba'] = fill(row.get('temp_min_ba'), wh.get('temp_min'))
+                    row['temp_max_ba'] = fill(row.get('temp_max_ba'), wh.get('temp_max'))
+
     rows = sorted(by_date.values(), key=lambda r: r.get('fecha') or '')
 
     # COMPLETADO DE INYECCIONES FALTANTES
@@ -369,7 +387,7 @@ def main():
         avg_bolivia = sum(r.get('iny_bolivia') or 0 for r in recent_ps) / len(recent_ps)
         avg_escobar = sum(r.get('iny_escobar') or 0 for r in recent_ps) / len(recent_ps)
         avg_enarsa = sum(r.get('iny_enarsa') or 0 for r in recent_ps) / len(recent_ps)
-        
+
         tot_nac = avg_tgs + avg_tgn
         share_tgs = avg_tgs / tot_nac if tot_nac > 0 else 0.65
         share_tgn = avg_tgn / tot_nac if tot_nac > 0 else 0.35
@@ -379,12 +397,12 @@ def main():
                 row['iny_bolivia'] = fill(row.get('iny_bolivia'), round(avg_bolivia, 1))
                 row['iny_escobar'] = fill(row.get('iny_escobar'), round(avg_escobar, 1))
                 row['iny_enarsa'] = fill(row.get('iny_enarsa'), round(avg_enarsa, 1))
-                
+
                 if row.get('iny_tgs') is None or row.get('iny_tgn') is None or row.get('iny_tgs') == 0:
                     dem = row['demanda_total']
                     imp = (row['iny_bolivia'] or 0) + (row['iny_escobar'] or 0) + (row['iny_enarsa'] or 0)
                     req_nac = max(dem - imp, 0)
-                    
+
                     row['iny_tgs'] = round(req_nac * share_tgs, 1)
                     row['iny_tgn'] = round(req_nac * share_tgn, 1)
                     row['iny_total'] = round(dem, 1)
@@ -402,13 +420,13 @@ def main():
 
     write_json(
         DAILY_JSON, rows,
-        source='Cascada 5 niveles: PS_REAL > RDS > PS_PROJ > CAMMESA_WEEKLY > MODELO',
+        source='Cascada 6 niveles: PS_REAL > RDS > PS_PROJ > CAMMESA_WEEKLY > MODELO > WEATHER_HISTORY',
         source_date=latest,
     )
     write_csv(json_to_csv_path(DAILY_JSON),
               ({k: r.get(k) for k in fields} for r in rows),
               fieldnames=fields)
-    
+
     print(f"daily.json actualizado correctamente: {len(rows)} filas hasta {latest}")
     return 0
 
