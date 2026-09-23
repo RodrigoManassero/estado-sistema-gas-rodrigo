@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-23T16:47:53+00:00",
+  "generated_at": "2026-09-23T16:54:51+00:00",
   "source": "Cascada 6 niveles: PS_REAL > RDS > PS_PROJ > CAMMESA_WEEKLY > MODELO > WEATHER_HISTORY",
   "source_date": "2026-09-27",
   "data": [
@@ -46190,7 +46190,7 @@
       "var_linepack_tgs": null,
       "lim_inf_tgs": null,
       "lim_sup_tgs": null,
-      "linepack_tgn": null,
+      "linepack_tgn": 131.01,
       "var_linepack_tgn": null,
       "lim_inf_tgn": null,
       "lim_sup_tgn": null,
