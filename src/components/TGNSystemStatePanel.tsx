@@ -4,6 +4,7 @@ import type { TGNSystemStateRow } from '../hooks/useData'
 interface Props {
   rows: TGNSystemStateRow[] | null
   generatedAt: string | null
+  estByDate?: Map<string, number>
 }
 
 const MONTHS: Record<string, number> = {
