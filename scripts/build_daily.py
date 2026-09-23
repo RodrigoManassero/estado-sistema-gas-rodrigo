@@ -177,7 +177,6 @@ def main():
             if r.get('demanda_total') is not None:
                 row['demanda_total'] = r.get('demanda_total')
             else:
-                # Recalcular total si la PS Proyección aportó sectores
                 s_prio = row.get('prioritaria') or 0
                 s_ind = row.get('industria') or 0
                 s_us = row.get('usinas') or 0
@@ -329,17 +328,14 @@ def main():
             gas_dam = r.get('gas_dam3')
             gas_mmm3 = round(gas_dam / 1000.0, 2) if gas_dam is not None else None
 
-            # Guardar estimadores directos de CAMMESA
             row['cammesa_gas_est'] = fillz(row.get('cammesa_gas_est'), gas_mmm3)
             row['cammesa_gasoil_est'] = fillz(row.get('cammesa_gasoil_est'), _gas_equiv_mmm3(r.get('go'), FUEL_KCAL['gasoil_m3']))
             row['cammesa_fueloil_est'] = fillz(row.get('cammesa_fueloil_est'), _gas_equiv_mmm3(r.get('fo'), FUEL_KCAL['fueloil_tn']))
             row['cammesa_carbon_est'] = fillz(row.get('cammesa_carbon_est'), _gas_equiv_mmm3(r.get('cm'), FUEL_KCAL['carbon_tn']))
 
-            # Pisa usinas del modelo en fechas donde no haya dato cerrado de ENARGAS (PS_REAL o RDS)
             if row.get('origen_dato') in (None, 'MODELO_PROYECCION', 'PS_PROYECCION') and gas_mmm3 is not None:
                 row['usinas'] = gas_mmm3
 
-                # Recalcular la demanda total sumando el nuevo valor de Usinas de CAMMESA
                 s_prio = row.get('prioritaria') or 0
                 s_ind = row.get('industria') or 0
                 s_us = row.get('usinas') or 0
@@ -372,15 +368,17 @@ def main():
                 f_clean = row.get('fecha')
                 if f_clean in ba_map:
                     wh = ba_map[f_clean]
-                    # Completar o reparar min/max/prom si vienen nulos desde la cascada
                     row['temp_prom_ba'] = fill(row.get('temp_prom_ba'), wh.get('temp_prom'))
                     row['temp_min_ba'] = fill(row.get('temp_min_ba'), wh.get('temp_min'))
                     row['temp_max_ba'] = fill(row.get('temp_max_ba'), wh.get('temp_max'))
 
     rows = sorted(by_date.values(), key=lambda r: r.get('fecha') or '')
 
-    # COMPLETADO DE INYECCIONES FALTANTES
-    recent_ps = [r for r in rows if r.get('iny_tgs') is not None and r.get('iny_tgn') is not None][-7:]
+    # -------------------------------------------------------------
+    # PASO 6: COMPLETADO Y PROYECCIÓN DE INYECCIONES FALTANTES
+    # -------------------------------------------------------------
+    recent_ps = [r for r in rows if (r.get('iny_tgs') or 0) > 0 and (r.get('iny_tgn') or 0) > 0][-7:]
+    
     if recent_ps:
         avg_tgs = sum(r['iny_tgs'] for r in recent_ps) / len(recent_ps)
         avg_tgn = sum(r['iny_tgn'] for r in recent_ps) / len(recent_ps)
@@ -393,21 +391,32 @@ def main():
         share_tgn = avg_tgn / tot_nac if tot_nac > 0 else 0.35
 
         for row in rows:
-            if row.get('demanda_total') is not None:
+            # Evaluar si faltan las inyecciones principales
+            if not row.get('iny_tgs') or not row.get('iny_tgn'):
+                dem = row.get('demanda_total')
+
+                # Completar las importaciones estimadas si vienen vacías
                 row['iny_bolivia'] = fill(row.get('iny_bolivia'), round(avg_bolivia, 1))
                 row['iny_escobar'] = fill(row.get('iny_escobar'), round(avg_escobar, 1))
                 row['iny_enarsa'] = fill(row.get('iny_enarsa'), round(avg_enarsa, 1))
 
-                if row.get('iny_tgs') is None or row.get('iny_tgn') is None or row.get('iny_tgs') == 0:
-                    dem = row['demanda_total']
+                if dem and dem > 0:
+                    # CASO A: Hay Demanda Proyectada -> Cubrimos el remanente con TGS y TGN
                     imp = (row['iny_bolivia'] or 0) + (row['iny_escobar'] or 0) + (row['iny_enarsa'] or 0)
                     req_nac = max(dem - imp, 0)
 
                     row['iny_tgs'] = round(req_nac * share_tgs, 1)
                     row['iny_tgn'] = round(req_nac * share_tgn, 1)
                     row['iny_total'] = round(dem, 1)
+                else:
+                    # CASO B: No hay Demanda Proyectada -> Proyección plana (Flat Forecast)
+                    row['iny_tgs'] = round(avg_tgs, 1)
+                    row['iny_tgn'] = round(avg_tgn, 1)
+                    row['iny_total'] = round(avg_tgs + avg_tgn + row['iny_bolivia'] + row['iny_escobar'] + row['iny_enarsa'], 1)
 
-    # SANITIZACIÓN FINAL PARA RECHARTS
+    # -------------------------------------------------------------
+    # PASO 7: SANITIZACIÓN FINAL PARA RECHARTS
+    # -------------------------------------------------------------
     INJECTION_FIELDS = ['iny_tgs', 'iny_tgn', 'iny_enarsa', 'iny_gpm', 'iny_bolivia', 'iny_escobar', 'iny_total']
     for row in rows:
         for fld in INJECTION_FIELDS:
