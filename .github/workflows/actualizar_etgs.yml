@@ -1,0 +1,39 @@
+name: Actualizar ETGS Automático
+
+on:
+  schedule:
+    # Se ejecuta de lunes a viernes a las 19:00 hs (Hora Argentina / 22:00 UTC)
+    - cron: '0 22 * * 1-5'
+  workflow_dispatch: # Permite ejecutarlo manualmente desde un botón en GitHub cuando quieras
+
+jobs:
+  procesar-pdf-y-actualizar:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clonar el repositorio
+      uses: actions/checkout@v3
+
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Instalar librerías necesarias
+      run: |
+        python -m pip install --upgrade pip
+        pip install pdfplumber
+
+    - name: Descargar PDFs desde OneDrive y Ejecutar Parser
+      env:
+        ONEDRIVE_FOLDER_URL: ${{ secrets.ONEDRIVE_FOLDER_URL }}
+      run: |
+        # Ejecuta el script que descarga de OneDrive y luego procesa los datos
+        python scripts/parse_etgs.py
+
+    - name: Hacer Commit y Push de los cambios en GitHub
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add raw/ etgs.json
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update ETGS JSON [skip ci]" && git push)
