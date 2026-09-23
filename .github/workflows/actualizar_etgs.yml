@@ -4,7 +4,10 @@ on:
   schedule:
     # Corre todos los días (Lunes a Domingo) a las 08:00 AM Argentina (11:00 UTC)
     - cron: '0 11 * * *'
-  workflow_dispatch: # Permite ejecutarlo manualmente desde GitHub cuando quieras
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   procesar-pdf-y-actualizar:
