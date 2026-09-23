@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Fetch 2 years of historical daily temperatures from Open-Meteo Archive API.
+"""Fetch 2 years of historical daily temperatures from Open-Meteo.
 
-Free, public, no auth. Runs once (or anytime you want to refresh); output
-is used by generate_forecast.py to train a regression with more data points
-than the ~20 rows we have from the Excel base.
+Combines Open-Meteo Archive API (for long historical data) and Forecast API
+(with past_days to bridge the ~7-day lag up to yesterday).
+Output is used by generate_forecast.py and frontend charts.
 """
 
 import os
@@ -18,11 +18,13 @@ from fetch_weather import CITIES  # noqa: E402
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), '..', 'public', 'data')
 ARCHIVE_URL = 'https://archive-api.open-meteo.com/v1/archive'
+FORECAST_URL = 'https://api.open-meteo.com/v1/forecast'
 YEARS_BACK = 2
 
 
 def fetch_city_history(city_id, label, lat, lon, region, start, end, timeout=30):
-    params = {
+    # 1. Traer historia pesada de Archive API (hasta 'end', aprox. hace 7 días)
+    params_archive = {
         'latitude': lat,
         'longitude': lon,
         'start_date': start.isoformat(),
@@ -30,20 +32,57 @@ def fetch_city_history(city_id, label, lat, lon, region, start, end, timeout=30)
         'daily': 'temperature_2m_max,temperature_2m_min',
         'timezone': 'America/Argentina/Buenos_Aires',
     }
-    r = requests.get(ARCHIVE_URL, params=params, timeout=timeout)
+    r = requests.get(ARCHIVE_URL, params=params_archive, timeout=timeout)
     r.raise_for_status()
-    payload = r.json()
-    daily = payload.get('daily', {})
-    dates = daily.get('time', []) or []
-    maxs = daily.get('temperature_2m_max', []) or []
-    mins = daily.get('temperature_2m_min', []) or []
+    payload_archive = r.json().get('daily', {})
 
-    rows = []
-    for i, fecha in enumerate(dates):
-        t_max = maxs[i] if i < len(maxs) else None
-        t_min = mins[i] if i < len(mins) else None
+    history_map = {}
+    
+    dates_arch = payload_archive.get('time', []) or []
+    maxs_arch = payload_archive.get('temperature_2m_max', []) or []
+    mins_arch = payload_archive.get('temperature_2m_min', []) or []
+
+    for i, fecha in enumerate(dates_arch):
+        t_max = maxs_arch[i] if i < len(maxs_arch) else None
+        t_min = mins_arch[i] if i < len(mins_arch) else None
         t_prom = round((t_max + t_min) / 2, 1) if t_max is not None and t_min is not None else None
-        rows.append({'fecha': fecha, 'temp_max': t_max, 'temp_min': t_min, 'temp_prom': t_prom})
+        history_map[fecha] = {'fecha': fecha, 'temp_max': t_max, 'temp_min': t_min, 'temp_prom': t_prom}
+
+    # 2. Traer días recientes (incluyendo ayer) desde Forecast API con past_days
+    params_recent = {
+        'latitude': lat,
+        'longitude': lon,
+        'past_days': 10,
+        'forecast_days': 1,
+        'daily': 'temperature_2m_max,temperature_2m_min',
+        'timezone': 'America/Argentina/Buenos_Aires',
+    }
+    try:
+        r_rec = requests.get(FORECAST_URL, params=params_recent, timeout=timeout)
+        r_rec.raise_for_status()
+        payload_rec = r_rec.json().get('daily', {})
+        
+        dates_rec = payload_rec.get('time', []) or []
+        maxs_rec = payload_rec.get('temperature_2m_max', []) or []
+        mins_rec = payload_rec.get('temperature_2m_min', []) or []
+
+        today_str = date.today().isoformat()
+
+        for i, fecha in enumerate(dates_rec):
+            # Solo guardamos días estrictamente pasados (hasta ayer)
+            if fecha >= today_str:
+                continue
+            t_max = maxs_rec[i] if i < len(maxs_rec) else None
+            t_min = mins_rec[i] if i < len(mins_rec) else None
+            t_prom = round((t_max + t_min) / 2, 1) if t_max is not None and t_min is not None else None
+            
+            # Sobrescribimos o agregamos para cubrir el lag de la Archive API
+            history_map[fecha] = {'fecha': fecha, 'temp_max': t_max, 'temp_min': t_min, 'temp_prom': t_prom}
+    except Exception as e:
+        print(f"  Warning: couldn't fetch recent days for {city_id}: {e}", file=sys.stderr)
+
+    # Ordenar cronológicamente
+    sorted_rows = [history_map[k] for k in sorted(history_map.keys())]
 
     return {
         'id': city_id,
@@ -51,18 +90,19 @@ def fetch_city_history(city_id, label, lat, lon, region, start, end, timeout=30)
         'lat': lat,
         'lon': lon,
         'region': region,
-        'history': rows,
+        'history': sorted_rows,
     }
 
 
 def main():
     os.makedirs(OUT_DIR, exist_ok=True)
-    # Archive trails real-time by ~5 days; pick yesterday - 5d as a safe end.
+    
     today = date.today()
+    # Archive llega seguro hasta hace 7 días
     end = today - timedelta(days=7)
     start = end.replace(year=end.year - YEARS_BACK)
 
-    print(f"Fetching Open-Meteo archive {start} to {end} for {len(CITIES)} cities")
+    print(f"Fetching Open-Meteo history ({start} to yesterday) for {len(CITIES)} cities")
 
     cities_out = []
     failures = []
@@ -79,11 +119,11 @@ def main():
     write_json(
         history_path,
         cities_out,
-        source=f'Open-Meteo Archive API ({start} to {end})',
-        source_date=end.isoformat(),
+        source=f'Open-Meteo API ({start} to {today - timedelta(days=1)})',
+        source_date=(today - timedelta(days=1)).isoformat(),
         failures=failures,
     )
-    # Long format: one row per (ciudad, fecha). ~7300 rows per city → ~73k total.
+
     history_flat = [
         {
             'ciudad_id': c['id'],
