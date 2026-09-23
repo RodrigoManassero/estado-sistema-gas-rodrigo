@@ -4,7 +4,7 @@ on:
   schedule:
     # Corre todos los días (Lunes a Domingo) a las 08:00 AM Argentina (11:00 UTC)
     - cron: '0 11 * * *'
-  workflow_dispatch:
+  workflow_dispatch: # Permite ejecutarlo manualmente desde GitHub cuando quieras
 
 permissions:
   contents: write
@@ -31,6 +31,7 @@ jobs:
       env:
         ONEDRIVE_FOLDER_URL: ${{ secrets.ONEDRIVE_FOLDER_URL }}
       run: |
+        python scripts/descargar_onedrive.py
         python scripts/parse_etgs.py
 
     - name: Hacer Commit y Push de los cambios en GitHub
