@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-23T21:38:23+00:00",
+  "generated_at": "2026-09-24T12:15:24+00:00",
   "source": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
   "source_date": "2026-08",
   "data": [
@@ -31738,7 +31738,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Mendoza",
       "prod_gas_mm3": 1.76,
-      "prod_pet_m3": 39723.49,
+      "prod_pet_m3": 39723.48,
       "prod_agua_m3": 586440.0,
       "pozos_activos": 310,
       "pozos_no_conv": 85
@@ -38758,7 +38758,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 1.99,
-      "prod_pet_m3": 5269.63,
+      "prod_pet_m3": 5269.64,
       "prod_agua_m3": 21910.31,
       "pozos_activos": 45,
       "pozos_no_conv": 0
@@ -38891,7 +38891,7 @@
       "provincia": "Rio Negro",
       "prod_gas_mm3": 1.27,
       "prod_pet_m3": 2232.92,
-      "prod_agua_m3": 28855.29,
+      "prod_agua_m3": 28855.3,
       "pozos_activos": 42,
       "pozos_no_conv": 43
     },
@@ -43187,7 +43187,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 2.86,
       "prod_pet_m3": 5467.33,
-      "prod_agua_m3": 22572.24,
+      "prod_agua_m3": 22572.23,
       "pozos_activos": 49,
       "pozos_no_conv": 0
     },
@@ -45358,7 +45358,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 3.6,
-      "prod_pet_m3": 81035.22,
+      "prod_pet_m3": 81035.21,
       "prod_agua_m3": 8859.08,
       "pozos_activos": 33,
       "pozos_no_conv": 42
@@ -46421,6 +46421,18 @@
     },
     {
       "mes": "2026-08",
+      "area": "CN-V",
+      "empresa": "HATTRICK ENERGY SAS",
+      "cuenca": "NEUQUINA",
+      "provincia": "Mendoza",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 93.46,
+      "prod_agua_m3": 11.24,
+      "pozos_activos": 1,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-08",
       "area": "COIRON AMARGO NORTE",
       "empresa": "VISTA ENERGY ARGENTINA SAU",
       "cuenca": "NEUQUINA",
@@ -46649,6 +46661,18 @@
     },
     {
       "mes": "2026-08",
+      "area": "LINDERO DE PIEDRA",
+      "empresa": "HATTRICK ENERGY SAS",
+      "cuenca": "NEUQUINA",
+      "provincia": "Mendoza",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 4623.57,
+      "prod_agua_m3": 20646.06,
+      "pozos_activos": 17,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-08",
       "area": "LLANCANELO R",
       "empresa": "PETROQUIMICA COMODORO RIVADAVIA S.A.",
       "cuenca": "NEUQUINA",
@@ -46682,6 +46706,18 @@
       "prod_agua_m3": 0.0,
       "pozos_activos": 0,
       "pozos_no_conv": 2
+    },
+    {
+      "mes": "2026-08",
+      "area": "LOMA EL DIVISADERO",
+      "empresa": "HATTRICK ENERGY SAS",
+      "cuenca": "NEUQUINA",
+      "provincia": "Mendoza",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 0,
+      "pozos_no_conv": 0
     },
     {
       "mes": "2026-08",

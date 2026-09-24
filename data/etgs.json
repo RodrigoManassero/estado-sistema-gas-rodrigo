@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-23T21:40:00+00:00",
+  "generated_at": "2026-09-24T12:16:01+00:00",
   "source": "TGS — Síntesis del Estado Operativo (ETGS)",
-  "source_date": "2026-09-22",
+  "source_date": "2026-09-23",
   "data": [
     {
       "generado_at": "2026-04-03T08:17:23",
@@ -13,13 +13,13 @@
       "linepack_tgs_dia_anterior": 217.8,
       "linepack_tgs_dia_actual": 216.66,
       "linepack_tgs_variacion": -1.13,
-      "alerta_estado": "TGSA - Alerta Alerta por bajo linepack proyectado",
       "pcs_san_martin": 9528,
       "pcs_neuba_1": 9937,
       "pcs_neuba_2": 10321,
       "pcs_troncal": 9219,
       "pcs_paralelo": 9209,
-      "source": "ETGS1775185200000.pdf"
+      "source": "ETGS1775185200000.pdf",
+      "estado": "Alerta"
     },
     {
       "generado_at": "2026-04-04T08:04:27",
@@ -31,13 +31,13 @@
       "linepack_tgs_dia_anterior": 216.66,
       "linepack_tgs_dia_actual": 215.09,
       "linepack_tgs_variacion": -1.58,
-      "alerta_estado": "TGSA - Alerta Alerta por bajo linepack proyectado.",
       "pcs_san_martin": 9541,
       "pcs_neuba_1": 9901,
       "pcs_neuba_2": 10350,
       "pcs_troncal": 9491,
       "pcs_paralelo": 9545,
-      "source": "ETGS1775271600000.pdf"
+      "source": "ETGS1775271600000.pdf",
+      "estado": "Alerta"
     },
     {
       "generado_at": "2026-04-05T09:51:54",
@@ -49,13 +49,13 @@
       "linepack_tgs_dia_anterior": 215.09,
       "linepack_tgs_dia_actual": 220.23,
       "linepack_tgs_variacion": 5.15,
-      "alerta_estado": "TGSA - Alerta Alerta por bajo linepack proyectado",
       "pcs_san_martin": 9530,
       "pcs_neuba_1": 9918,
       "pcs_neuba_2": 10289,
       "pcs_troncal": 9441,
       "pcs_paralelo": 9597,
-      "source": "ETGS1775358000000.pdf"
+      "source": "ETGS1775358000000.pdf",
+      "estado": "Alerta"
     },
     {
       "generado_at": "2026-04-06T08:19:49",
@@ -67,13 +67,13 @@
       "linepack_tgs_dia_anterior": 220.23,
       "linepack_tgs_dia_actual": 220.85,
       "linepack_tgs_variacion": 0.62,
-      "alerta_estado": "TGSA - Alerta Alerta por bajo linepack proyectado",
       "pcs_san_martin": 9534,
       "pcs_neuba_1": 9889,
       "pcs_neuba_2": 10346,
       "pcs_troncal": 9548,
       "pcs_paralelo": 9640,
-      "source": "ETGS1775444400000.pdf"
+      "source": "ETGS1775444400000.pdf",
+      "estado": "Alerta"
     },
     {
       "generado_at": "2026-04-07T08:33:37",
@@ -85,14 +85,14 @@
       "linepack_tgs_dia_anterior": 220.85,
       "linepack_tgs_dia_actual": 225.25,
       "linepack_tgs_variacion": 4.4,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9538,
       "pcs_neuba_1": 9921,
       "pcs_neuba_2": 10351,
       "pcs_troncal": 9406,
       "pcs_paralelo": 9358,
-      "source": "ETGS1775530800000.pdf"
+      "source": "ETGS1775530800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-08T07:50:04",
@@ -104,14 +104,14 @@
       "linepack_tgs_dia_anterior": 225.25,
       "linepack_tgs_dia_actual": 227.73,
       "linepack_tgs_variacion": 2.49,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9519,
       "pcs_neuba_1": 9949,
       "pcs_neuba_2": 10456,
       "pcs_troncal": 9284,
       "pcs_paralelo": 9477,
-      "source": "ETGS1775617200000.pdf"
+      "source": "ETGS1775617200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-09T08:04:43",
@@ -123,14 +123,14 @@
       "linepack_tgs_dia_anterior": 227.73,
       "linepack_tgs_dia_actual": 228.5,
       "linepack_tgs_variacion": 0.77,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9540,
       "pcs_neuba_1": 9933,
       "pcs_neuba_2": 10361,
       "pcs_troncal": 9357,
       "pcs_paralelo": 9481,
-      "source": "ETGS1775703600000.pdf"
+      "source": "ETGS1775703600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-10T08:17:49",
@@ -142,14 +142,14 @@
       "linepack_tgs_dia_anterior": 228.5,
       "linepack_tgs_dia_actual": 226.87,
       "linepack_tgs_variacion": -1.63,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9583,
       "pcs_neuba_1": 9826,
       "pcs_neuba_2": 10223,
       "pcs_troncal": 9289,
       "pcs_paralelo": 9456,
-      "source": "ETGS1775790000000.pdf"
+      "source": "ETGS1775790000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-11T08:05:38",
@@ -161,14 +161,14 @@
       "linepack_tgs_dia_anterior": 226.87,
       "linepack_tgs_dia_actual": 229.32,
       "linepack_tgs_variacion": 2.45,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por alto linepack en el sistema.",
       "pcs_san_martin": 9526,
       "pcs_neuba_1": 9940,
       "pcs_neuba_2": 10372,
       "pcs_troncal": 9269,
       "pcs_paralelo": 9431,
-      "source": "ETGS1775876400000.pdf"
+      "source": "ETGS1775876400000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por alto linepack en el sistema."
     },
     {
       "generado_at": "2026-04-12T08:20:06",
@@ -180,14 +180,14 @@
       "linepack_tgs_dia_anterior": 229.32,
       "linepack_tgs_dia_actual": 235.81,
       "linepack_tgs_variacion": 6.5,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por alto linepack en el sistema.",
       "pcs_san_martin": 9571,
       "pcs_neuba_1": 9984,
       "pcs_neuba_2": 10585,
       "pcs_troncal": 9382,
       "pcs_paralelo": 9594,
-      "source": "ETGS1775962800000.pdf"
+      "source": "ETGS1775962800000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por alto linepack en el sistema."
     },
     {
       "generado_at": "2026-04-13T08:25:53",
@@ -195,14 +195,14 @@
       "linepack_tgs_dia_anterior": 235.81,
       "linepack_tgs_dia_actual": 235.46,
       "linepack_tgs_variacion": -0.36,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por alto linepack en el sistema.",
       "pcs_san_martin": 9537,
       "pcs_neuba_1": 9991,
       "pcs_neuba_2": 10345,
       "pcs_troncal": 9259,
       "pcs_paralelo": 9428,
-      "source": "ETGS1776049200000.pdf"
+      "source": "ETGS1776049200000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por alto linepack en el sistema."
     },
     {
       "generado_at": "2026-04-14T09:00:00",
@@ -214,14 +214,14 @@
       "linepack_tgs_dia_anterior": 235.46,
       "linepack_tgs_dia_actual": 230.48,
       "linepack_tgs_variacion": -4.98,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9520,
       "pcs_neuba_1": 9924,
       "pcs_neuba_2": 10422,
       "pcs_troncal": 9285,
       "pcs_paralelo": 9382,
-      "source": "ETGS1776135600000.pdf"
+      "source": "ETGS1776135600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-15T08:47:58",
@@ -233,14 +233,14 @@
       "linepack_tgs_dia_anterior": 230.48,
       "linepack_tgs_dia_actual": 225.81,
       "linepack_tgs_variacion": -4.67,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9534,
       "pcs_neuba_1": 9883,
       "pcs_neuba_2": 10426,
       "pcs_troncal": 9213,
       "pcs_paralelo": 9316,
-      "source": "ETGS1776222000000.pdf"
+      "source": "ETGS1776222000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-16T10:19:10",
@@ -252,14 +252,14 @@
       "linepack_tgs_dia_anterior": 225.81,
       "linepack_tgs_dia_actual": 220.03,
       "linepack_tgs_variacion": -5.78,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9510,
       "pcs_neuba_1": 9978,
       "pcs_neuba_2": 10369,
       "pcs_troncal": 9395,
       "pcs_paralelo": 9537,
-      "source": "ETGS1776308400000.pdf"
+      "source": "ETGS1776308400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-17T08:35:47",
@@ -271,14 +271,14 @@
       "linepack_tgs_dia_anterior": 210.75,
       "linepack_tgs_dia_actual": 208.09,
       "linepack_tgs_variacion": -2.67,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9506,
       "pcs_neuba_1": 10045,
       "pcs_neuba_2": 10484,
       "pcs_troncal": 9264,
       "pcs_paralelo": 9496,
-      "source": "ETGS1776394800000.pdf"
+      "source": "ETGS1776394800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-18T08:21:50",
@@ -290,14 +290,14 @@
       "linepack_tgs_dia_anterior": 216.68,
       "linepack_tgs_dia_actual": 216.02,
       "linepack_tgs_variacion": -0.66,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9500,
       "pcs_neuba_1": 9846,
       "pcs_neuba_2": 10431,
       "pcs_troncal": 9230,
       "pcs_paralelo": 9456,
-      "source": "ETGS1776481200000.pdf"
+      "source": "ETGS1776481200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-19T07:32:38",
@@ -309,14 +309,14 @@
       "linepack_tgs_dia_anterior": 216.02,
       "linepack_tgs_dia_actual": 216.08,
       "linepack_tgs_variacion": 0.06,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9471,
       "pcs_neuba_1": 9873,
       "pcs_neuba_2": 10350,
       "pcs_troncal": 9227,
       "pcs_paralelo": 9452,
-      "source": "ETGS1776567600000.pdf"
+      "source": "ETGS1776567600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-20T08:28:16",
@@ -328,14 +328,14 @@
       "linepack_tgs_dia_anterior": 216.08,
       "linepack_tgs_dia_actual": 217.81,
       "linepack_tgs_variacion": 1.73,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9470,
       "pcs_neuba_1": 9835,
       "pcs_neuba_2": 10342,
       "pcs_troncal": 9216,
       "pcs_paralelo": 9423,
-      "source": "ETGS1776654000000.pdf"
+      "source": "ETGS1776654000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-21T09:06:19",
@@ -347,14 +347,14 @@
       "linepack_tgs_dia_anterior": 217.81,
       "linepack_tgs_dia_actual": 213.01,
       "linepack_tgs_variacion": -4.81,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9506,
       "pcs_neuba_1": 9886,
       "pcs_neuba_2": 10454,
       "pcs_troncal": 9213,
       "pcs_paralelo": 9390,
-      "source": "ETGS1776740400000.pdf"
+      "source": "ETGS1776740400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-22T08:32:42",
@@ -366,14 +366,14 @@
       "linepack_tgs_dia_anterior": 213.01,
       "linepack_tgs_dia_actual": 210.26,
       "linepack_tgs_variacion": -2.75,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9489,
       "pcs_neuba_1": 9898,
       "pcs_neuba_2": 10461,
       "pcs_troncal": 9118,
       "pcs_paralelo": 9468,
-      "source": "ETGS1776826800000.pdf"
+      "source": "ETGS1776826800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-23T08:09:51",
@@ -385,14 +385,14 @@
       "linepack_tgs_dia_anterior": 210.26,
       "linepack_tgs_dia_actual": 214.63,
       "linepack_tgs_variacion": 4.37,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9483,
       "pcs_neuba_1": 9966,
       "pcs_neuba_2": 10428,
       "pcs_troncal": 9659,
       "pcs_paralelo": 9923,
-      "source": "ETGS1776913200000.pdf"
+      "source": "ETGS1776913200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-24T08:40:09",
@@ -404,14 +404,14 @@
       "linepack_tgs_dia_anterior": 214.63,
       "linepack_tgs_dia_actual": 218.97,
       "linepack_tgs_variacion": 4.35,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9488,
       "pcs_neuba_1": 9961,
       "pcs_neuba_2": 10336,
       "pcs_troncal": 9642,
       "pcs_paralelo": 9895,
-      "source": "ETGS1776999600000.pdf"
+      "source": "ETGS1776999600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-25T07:44:16",
@@ -423,14 +423,14 @@
       "linepack_tgs_dia_anterior": 218.97,
       "linepack_tgs_dia_actual": 213.96,
       "linepack_tgs_variacion": -5.01,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9589,
       "pcs_neuba_1": 10104,
       "pcs_neuba_2": 10357,
       "pcs_troncal": 9857,
       "pcs_paralelo": 10031,
-      "source": "ETGS1777086000000.pdf"
+      "source": "ETGS1777086000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-26T08:37:46",
@@ -442,14 +442,14 @@
       "linepack_tgs_dia_anterior": 213.96,
       "linepack_tgs_dia_actual": 212.08,
       "linepack_tgs_variacion": -1.88,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9631,
       "pcs_neuba_1": 9906,
       "pcs_neuba_2": 10338,
       "pcs_troncal": 9687,
       "pcs_paralelo": 9737,
-      "source": "ETGS1777172400000.pdf"
+      "source": "ETGS1777172400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-27T08:21:22",
@@ -461,14 +461,14 @@
       "linepack_tgs_dia_anterior": 212.08,
       "linepack_tgs_dia_actual": 211.96,
       "linepack_tgs_variacion": -0.12,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9645,
       "pcs_neuba_1": 10048,
       "pcs_neuba_2": 10498,
       "pcs_troncal": 9787,
       "pcs_paralelo": 9954,
-      "source": "ETGS1777258800000.pdf"
+      "source": "ETGS1777258800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-04-28T09:26:03",
@@ -480,13 +480,13 @@
       "linepack_tgs_dia_anterior": 211.96,
       "linepack_tgs_dia_actual": 208.76,
       "linepack_tgs_variacion": -3.2,
-      "alerta_estado": "TGSA - Alerta Alerta por bajo linepack en el",
       "pcs_san_martin": 9620,
       "pcs_neuba_1": 9988,
       "pcs_neuba_2": 10411,
       "pcs_troncal": 9652,
       "pcs_paralelo": 9675,
-      "source": "ETGS1777345200000.pdf"
+      "source": "ETGS1777345200000.pdf",
+      "estado": "Alerta"
     },
     {
       "generado_at": "2026-04-29T08:24:04",
@@ -498,13 +498,13 @@
       "linepack_tgs_dia_anterior": 208.76,
       "linepack_tgs_dia_actual": 208.16,
       "linepack_tgs_variacion": -0.6,
-      "alerta_estado": "TGSA - Alerta Alerta por bajo linepack en el",
       "pcs_san_martin": 9635,
       "pcs_neuba_1": 9898,
       "pcs_neuba_2": 10419,
       "pcs_troncal": 9532,
       "pcs_paralelo": 9579,
-      "source": "ETGS1777431600000.pdf"
+      "source": "ETGS1777431600000.pdf",
+      "estado": "Alerta"
     },
     {
       "generado_at": "2026-04-30T08:34:52",
@@ -512,14 +512,14 @@
       "linepack_tgs_dia_anterior": 208.16,
       "linepack_tgs_dia_actual": 204.96,
       "linepack_tgs_variacion": -3.2,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack del sistema",
       "pcs_san_martin": 9638,
       "pcs_neuba_1": 9959,
       "pcs_neuba_2": 10362,
       "pcs_troncal": 9476,
       "pcs_paralelo": 9525,
-      "source": "ETGS1777518000000.pdf"
+      "source": "ETGS1777518000000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack del sistema"
     },
     {
       "generado_at": "2026-05-01T08:59:15",
@@ -531,14 +531,14 @@
       "linepack_tgs_dia_anterior": 204.96,
       "linepack_tgs_dia_actual": 205.66,
       "linepack_tgs_variacion": 0.7,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack del sistema",
       "pcs_san_martin": 9631,
       "pcs_neuba_1": 9845,
       "pcs_neuba_2": 10295,
       "pcs_troncal": 9403,
       "pcs_paralelo": 9462,
-      "source": "ETGS1777604400000.pdf"
+      "source": "ETGS1777604400000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack del sistema"
     },
     {
       "generado_at": "2026-05-02T08:21:40",
@@ -550,14 +550,14 @@
       "linepack_tgs_dia_anterior": 205.66,
       "linepack_tgs_dia_actual": 215.07,
       "linepack_tgs_variacion": 9.42,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9655,
       "pcs_neuba_1": 9863,
       "pcs_neuba_2": 10388,
       "pcs_troncal": 9396,
       "pcs_paralelo": 9472,
-      "source": "ETGS1777690800000.pdf"
+      "source": "ETGS1777690800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-03T08:17:28",
@@ -569,14 +569,14 @@
       "linepack_tgs_dia_anterior": 217.57,
       "linepack_tgs_dia_actual": 218.94,
       "linepack_tgs_variacion": 1.37,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9648,
       "pcs_neuba_1": 9955,
       "pcs_neuba_2": 10510,
       "pcs_troncal": 9333,
       "pcs_paralelo": 9579,
-      "source": "ETGS1777777200000.pdf"
+      "source": "ETGS1777777200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-04T09:00:06",
@@ -588,14 +588,14 @@
       "linepack_tgs_dia_anterior": 218.94,
       "linepack_tgs_dia_actual": 224.72,
       "linepack_tgs_variacion": 5.78,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9507,
       "pcs_neuba_1": 10047,
       "pcs_neuba_2": 10469,
       "pcs_troncal": 9277,
       "pcs_paralelo": 9386,
-      "source": "ETGS1777863600000.pdf"
+      "source": "ETGS1777863600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-05T09:36:59",
@@ -607,14 +607,14 @@
       "linepack_tgs_dia_anterior": 224.72,
       "linepack_tgs_dia_actual": 223.04,
       "linepack_tgs_variacion": -1.69,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9481,
       "pcs_neuba_1": 10113,
       "pcs_neuba_2": 10485,
       "pcs_troncal": 9318,
       "pcs_paralelo": 9434,
-      "source": "ETGS1777950000000.pdf"
+      "source": "ETGS1777950000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-06T07:20:42",
@@ -626,14 +626,14 @@
       "linepack_tgs_dia_anterior": 223.04,
       "linepack_tgs_dia_actual": 225.59,
       "linepack_tgs_variacion": 2.55,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9521,
       "pcs_neuba_1": 10092,
       "pcs_neuba_2": 10441,
       "pcs_troncal": 9367,
       "pcs_paralelo": 9499,
-      "source": "ETGS1778036400000.pdf"
+      "source": "ETGS1778036400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-07T07:59:31",
@@ -645,14 +645,14 @@
       "linepack_tgs_dia_anterior": 225.59,
       "linepack_tgs_dia_actual": 232.47,
       "linepack_tgs_variacion": 6.89,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9525,
       "pcs_neuba_1": 9904,
       "pcs_neuba_2": 10383,
       "pcs_troncal": 9367,
       "pcs_paralelo": 9499,
-      "source": "ETGS1778122800000.pdf"
+      "source": "ETGS1778122800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-08T09:14:50",
@@ -664,14 +664,14 @@
       "linepack_tgs_dia_anterior": 232.47,
       "linepack_tgs_dia_actual": 232.79,
       "linepack_tgs_variacion": 0.32,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9521,
       "pcs_neuba_1": 9956,
       "pcs_neuba_2": 10437,
       "pcs_troncal": 9372,
       "pcs_paralelo": 9456,
-      "source": "ETGS1778209200000.pdf"
+      "source": "ETGS1778209200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-09T08:12:31",
@@ -683,14 +683,14 @@
       "linepack_tgs_dia_anterior": 232.79,
       "linepack_tgs_dia_actual": 228.64,
       "linepack_tgs_variacion": -4.15,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9525,
       "pcs_neuba_1": 9984,
       "pcs_neuba_2": 10358,
       "pcs_troncal": 9318,
       "pcs_paralelo": 9428,
-      "source": "ETGS1778295600000.pdf"
+      "source": "ETGS1778295600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-10T08:08:09",
@@ -702,14 +702,14 @@
       "linepack_tgs_dia_anterior": 228.64,
       "linepack_tgs_dia_actual": 225.16,
       "linepack_tgs_variacion": -3.48,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9527,
       "pcs_neuba_1": 10043,
       "pcs_neuba_2": 10469,
       "pcs_troncal": 9261,
       "pcs_paralelo": 9386,
-      "source": "ETGS1778382000000.pdf"
+      "source": "ETGS1778382000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-11T09:06:42",
@@ -721,14 +721,14 @@
       "linepack_tgs_dia_anterior": 225.16,
       "linepack_tgs_dia_actual": 223.88,
       "linepack_tgs_variacion": -1.28,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9529,
       "pcs_neuba_1": 9984,
       "pcs_neuba_2": 10527,
       "pcs_troncal": 9346,
       "pcs_paralelo": 9492,
-      "source": "ETGS1778468400000.pdf"
+      "source": "ETGS1778468400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-12T08:54:35",
@@ -740,14 +740,14 @@
       "linepack_tgs_dia_anterior": 223.88,
       "linepack_tgs_dia_actual": 222.94,
       "linepack_tgs_variacion": -0.94,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9511,
       "pcs_neuba_1": 10045,
       "pcs_neuba_2": 10537,
       "pcs_troncal": 9360,
       "pcs_paralelo": 9500,
-      "source": "ETGS1778554800000.pdf"
+      "source": "ETGS1778554800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-13T08:23:00",
@@ -759,14 +759,14 @@
       "linepack_tgs_dia_anterior": 222.94,
       "linepack_tgs_dia_actual": 223.0,
       "linepack_tgs_variacion": 0.06,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9534,
       "pcs_neuba_1": 9902,
       "pcs_neuba_2": 10432,
       "pcs_troncal": 9384,
       "pcs_paralelo": 9506,
-      "source": "ETGS1778641200000.pdf"
+      "source": "ETGS1778641200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-14T09:32:35",
@@ -778,14 +778,14 @@
       "linepack_tgs_dia_anterior": 223.0,
       "linepack_tgs_dia_actual": 221.29,
       "linepack_tgs_variacion": -1.71,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9528,
       "pcs_neuba_1": 9995,
       "pcs_neuba_2": 10480,
       "pcs_troncal": 9394,
       "pcs_paralelo": 9508,
-      "source": "ETGS1778727600000.pdf"
+      "source": "ETGS1778727600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-15T09:16:09",
@@ -797,14 +797,14 @@
       "linepack_tgs_dia_anterior": 221.29,
       "linepack_tgs_dia_actual": 221.09,
       "linepack_tgs_variacion": -0.2,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9517,
       "pcs_neuba_1": 9999,
       "pcs_neuba_2": 10362,
       "pcs_troncal": 9350,
       "pcs_paralelo": 9420,
-      "source": "ETGS1778814000000.pdf"
+      "source": "ETGS1778814000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-16T09:05:56",
@@ -816,14 +816,14 @@
       "linepack_tgs_dia_anterior": 221.09,
       "linepack_tgs_dia_actual": 221.88,
       "linepack_tgs_variacion": 0.79,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9515,
       "pcs_neuba_1": 9987,
       "pcs_neuba_2": 10398,
       "pcs_troncal": 9357,
       "pcs_paralelo": 9421,
-      "source": "ETGS1778900400000.pdf"
+      "source": "ETGS1778900400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-17T08:24:51",
@@ -835,14 +835,14 @@
       "linepack_tgs_dia_anterior": 221.88,
       "linepack_tgs_dia_actual": 223.58,
       "linepack_tgs_variacion": 1.7,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9511,
       "pcs_neuba_1": 9976,
       "pcs_neuba_2": 10446,
       "pcs_troncal": 9386,
       "pcs_paralelo": 9462,
-      "source": "ETGS1778986800000.pdf"
+      "source": "ETGS1778986800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-18T08:41:12",
@@ -854,14 +854,14 @@
       "linepack_tgs_dia_anterior": 223.58,
       "linepack_tgs_dia_actual": 223.69,
       "linepack_tgs_variacion": 0.11,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9523,
       "pcs_neuba_1": 9963,
       "pcs_neuba_2": 10351,
       "pcs_troncal": 9354,
       "pcs_paralelo": 9414,
-      "source": "ETGS1779073200000.pdf"
+      "source": "ETGS1779073200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-19T09:32:52",
@@ -873,14 +873,14 @@
       "linepack_tgs_dia_anterior": 223.69,
       "linepack_tgs_dia_actual": 220.59,
       "linepack_tgs_variacion": -3.09,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9519,
       "pcs_neuba_1": 9986,
       "pcs_neuba_2": 10365,
       "pcs_troncal": 9359,
       "pcs_paralelo": 9414,
-      "source": "ETGS1779159600000.pdf"
+      "source": "ETGS1779159600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-20T08:39:42",
@@ -892,14 +892,14 @@
       "linepack_tgs_dia_anterior": 220.59,
       "linepack_tgs_dia_actual": 218.19,
       "linepack_tgs_variacion": -2.41,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9521,
       "pcs_neuba_1": 9921,
       "pcs_neuba_2": 10468,
       "pcs_troncal": 9318,
       "pcs_paralelo": 9437,
-      "source": "ETGS1779246000000.pdf"
+      "source": "ETGS1779246000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-21T08:58:22",
@@ -911,14 +911,14 @@
       "linepack_tgs_dia_anterior": 218.19,
       "linepack_tgs_dia_actual": 212.35,
       "linepack_tgs_variacion": -5.83,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9516,
       "pcs_neuba_1": 10007,
       "pcs_neuba_2": 10345,
       "pcs_troncal": 9279,
       "pcs_paralelo": 9412,
-      "source": "ETGS1779332400000.pdf"
+      "source": "ETGS1779332400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-05-22T08:33:52",
@@ -930,13 +930,13 @@
       "linepack_tgs_dia_anterior": 212.35,
       "linepack_tgs_dia_actual": 211.41,
       "linepack_tgs_variacion": -0.94,
-      "alerta_estado": "TGS - Alerta",
       "pcs_san_martin": 9527,
       "pcs_neuba_1": 10032,
       "pcs_neuba_2": 10413,
       "pcs_troncal": 9412,
       "pcs_paralelo": 9510,
-      "source": "ETGS1779418800000.pdf"
+      "source": "ETGS1779418800000.pdf",
+      "estado": "Alerta"
     },
     {
       "generado_at": "2026-05-23T08:24:23",
@@ -948,14 +948,14 @@
       "linepack_tgs_dia_anterior": 211.41,
       "linepack_tgs_dia_actual": 214.64,
       "linepack_tgs_variacion": 3.23,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en tramos finales.-",
       "pcs_san_martin": 9504,
       "pcs_neuba_1": 10010,
       "pcs_neuba_2": 10399,
       "pcs_troncal": 9407,
       "pcs_paralelo": 9475,
-      "source": "ETGS1779505200000.pdf"
+      "source": "ETGS1779505200000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en tramos finales.-"
     },
     {
       "generado_at": "2026-05-24T08:17:06",
@@ -967,14 +967,14 @@
       "linepack_tgs_dia_anterior": 214.64,
       "linepack_tgs_dia_actual": 218.66,
       "linepack_tgs_variacion": 4.02,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en tramos finales",
       "pcs_san_martin": 9512,
       "pcs_neuba_1": 9993,
       "pcs_neuba_2": 10358,
       "pcs_troncal": 9427,
       "pcs_paralelo": 9511,
-      "source": "ETGS1779591600000.pdf"
+      "source": "ETGS1779591600000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en tramos finales"
     },
     {
       "generado_at": "2026-05-25T08:47:36",
@@ -986,14 +986,14 @@
       "linepack_tgs_dia_anterior": 218.66,
       "linepack_tgs_dia_actual": 220.0,
       "linepack_tgs_variacion": 1.34,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en tramos finales.",
       "pcs_san_martin": 9503,
       "pcs_neuba_1": 9980,
       "pcs_neuba_2": 10359,
       "pcs_troncal": 9417,
       "pcs_paralelo": 9491,
-      "source": "ETGS1779678000000.pdf"
+      "source": "ETGS1779678000000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en tramos finales."
     },
     {
       "generado_at": "2026-05-26T10:54:02",
@@ -1005,14 +1005,14 @@
       "linepack_tgs_dia_anterior": 220.0,
       "linepack_tgs_dia_actual": 219.25,
       "linepack_tgs_variacion": -0.75,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en tramos finales",
       "pcs_san_martin": 9705,
       "pcs_neuba_1": 10014,
       "pcs_neuba_2": 10403,
       "pcs_troncal": 9382,
       "pcs_paralelo": 9510,
-      "source": "ETGS1779764400000.pdf"
+      "source": "ETGS1779764400000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en tramos finales"
     },
     {
       "generado_at": "2026-05-27T08:17:33",
@@ -1024,13 +1024,13 @@
       "linepack_tgs_dia_anterior": 219.25,
       "linepack_tgs_dia_actual": 216.32,
       "linepack_tgs_variacion": -2.93,
-      "alerta_estado": "TGS - Alerta por bajo nivel de Linepack en Tramos",
       "pcs_san_martin": 9618,
       "pcs_neuba_1": 9982,
       "pcs_neuba_2": 10355,
       "pcs_troncal": 9359,
       "pcs_paralelo": 9452,
-      "source": "ETGS1779850800000.pdf"
+      "source": "ETGS1779850800000.pdf",
+      "estado": "Alerta"
     },
     {
       "generado_at": "2026-05-28T08:40:56",
@@ -1042,14 +1042,14 @@
       "linepack_tgs_dia_anterior": 216.32,
       "linepack_tgs_dia_actual": 216.94,
       "linepack_tgs_variacion": 0.62,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en tramos finales",
       "pcs_san_martin": 9704,
       "pcs_neuba_1": 10024,
       "pcs_neuba_2": 10450,
       "pcs_troncal": 9421,
       "pcs_paralelo": 9523,
-      "source": "ETGS1779937200000.pdf"
+      "source": "ETGS1779937200000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en tramos finales"
     },
     {
       "generado_at": "2026-05-29T08:45:16",
@@ -1061,14 +1061,14 @@
       "linepack_tgs_dia_anterior": 216.94,
       "linepack_tgs_dia_actual": 218.22,
       "linepack_tgs_variacion": 1.28,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en tramos finales",
       "pcs_san_martin": 9736,
       "pcs_neuba_1": 10007,
       "pcs_neuba_2": 10389,
       "pcs_troncal": 9416,
       "pcs_paralelo": 9512,
-      "source": "ETGS1780023600000.pdf"
+      "source": "ETGS1780023600000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en tramos finales"
     },
     {
       "generado_at": "2026-05-30T08:19:18",
@@ -1080,13 +1080,13 @@
       "linepack_tgs_dia_anterior": 218.22,
       "linepack_tgs_dia_actual": 217.5,
       "linepack_tgs_variacion": -0.72,
-      "alerta_estado": "TGS - Alerta",
       "pcs_san_martin": 9723,
       "pcs_neuba_1": 10056,
       "pcs_neuba_2": 10481,
       "pcs_troncal": 9426,
       "pcs_paralelo": 9539,
-      "source": "ETGS1780110000000.pdf"
+      "source": "ETGS1780110000000.pdf",
+      "estado": "Alerta"
     },
     {
       "generado_at": "2026-05-31T08:21:01",
@@ -1098,14 +1098,14 @@
       "linepack_tgs_dia_anterior": 217.5,
       "linepack_tgs_dia_actual": 217.82,
       "linepack_tgs_variacion": 0.32,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en tramos finales",
       "pcs_san_martin": 9720,
       "pcs_neuba_1": 10026,
       "pcs_neuba_2": 10476,
       "pcs_troncal": 9402,
       "pcs_paralelo": 9524,
-      "source": "ETGS1780196400000.pdf"
+      "source": "ETGS1780196400000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en tramos finales"
     },
     {
       "generado_at": "2026-06-01T08:00:09",
@@ -1117,14 +1117,14 @@
       "linepack_tgs_dia_anterior": 217.82,
       "linepack_tgs_dia_actual": 219.56,
       "linepack_tgs_variacion": 1.75,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9722,
       "pcs_neuba_1": 10003,
       "pcs_neuba_2": 10462,
       "pcs_troncal": 9410,
       "pcs_paralelo": 9524,
-      "source": "ETGS1780282800000.pdf"
+      "source": "ETGS1780282800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-02T08:19:08",
@@ -1136,14 +1136,14 @@
       "linepack_tgs_dia_anterior": 219.56,
       "linepack_tgs_dia_actual": 220.68,
       "linepack_tgs_variacion": 1.11,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9729,
       "pcs_neuba_1": 10018,
       "pcs_neuba_2": 10437,
       "pcs_troncal": 9371,
       "pcs_paralelo": 9498,
-      "source": "ETGS1780369200000.pdf"
+      "source": "ETGS1780369200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-03T08:37:52",
@@ -1155,14 +1155,14 @@
       "linepack_tgs_dia_anterior": 220.68,
       "linepack_tgs_dia_actual": 219.98,
       "linepack_tgs_variacion": -0.7,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9707,
       "pcs_neuba_1": 10030,
       "pcs_neuba_2": 10448,
       "pcs_troncal": 9388,
       "pcs_paralelo": 9499,
-      "source": "ETGS1780455600000.pdf"
+      "source": "ETGS1780455600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-05T08:11:47",
@@ -1174,14 +1174,14 @@
       "linepack_tgs_dia_anterior": 223.98,
       "linepack_tgs_dia_actual": 224.94,
       "linepack_tgs_variacion": 0.96,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9722,
       "pcs_neuba_1": 10037,
       "pcs_neuba_2": 10456,
       "pcs_troncal": 9420,
       "pcs_paralelo": 9521,
-      "source": "ETGS1780628400000.pdf"
+      "source": "ETGS1780628400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-06T08:17:46",
@@ -1193,14 +1193,14 @@
       "linepack_tgs_dia_anterior": 224.94,
       "linepack_tgs_dia_actual": 226.45,
       "linepack_tgs_variacion": 1.52,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9623,
       "pcs_neuba_1": 10042,
       "pcs_neuba_2": 10419,
       "pcs_troncal": 9415,
       "pcs_paralelo": 9498,
-      "source": "ETGS1780714800000.pdf"
+      "source": "ETGS1780714800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-07T08:28:29",
@@ -1212,14 +1212,14 @@
       "linepack_tgs_dia_anterior": 226.45,
       "linepack_tgs_dia_actual": 228.57,
       "linepack_tgs_variacion": 2.11,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por alto line pack en tramo final",
       "pcs_san_martin": 9514,
       "pcs_neuba_1": 9963,
       "pcs_neuba_2": 10371,
       "pcs_troncal": 9353,
       "pcs_paralelo": 9434,
-      "source": "ETGS1780801200000.pdf"
+      "source": "ETGS1780801200000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por alto line pack en tramo final"
     },
     {
       "generado_at": "2026-06-08T08:21:54",
@@ -1231,14 +1231,14 @@
       "linepack_tgs_dia_anterior": 228.57,
       "linepack_tgs_dia_actual": 228.14,
       "linepack_tgs_variacion": -0.42,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9475,
       "pcs_neuba_1": 10005,
       "pcs_neuba_2": 10417,
       "pcs_troncal": 9377,
       "pcs_paralelo": 9458,
-      "source": "ETGS1780887600000.pdf"
+      "source": "ETGS1780887600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-10T08:20:26",
@@ -1250,14 +1250,14 @@
       "linepack_tgs_dia_anterior": 221.28,
       "linepack_tgs_dia_actual": 221.34,
       "linepack_tgs_variacion": 0.06,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9517,
       "pcs_neuba_1": 10003,
       "pcs_neuba_2": 10353,
       "pcs_troncal": 9377,
       "pcs_paralelo": 9430,
-      "source": "ETGS1781060400000.pdf"
+      "source": "ETGS1781060400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-11T08:43:36",
@@ -1265,14 +1265,14 @@
       "linepack_tgs_dia_anterior": 221.34,
       "linepack_tgs_dia_actual": 218.91,
       "linepack_tgs_variacion": -2.42,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9519,
       "pcs_neuba_1": 10060,
       "pcs_neuba_2": 10465,
       "pcs_troncal": 9467,
       "pcs_paralelo": 9712,
-      "source": "ETGS1781146800000.pdf"
+      "source": "ETGS1781146800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-12T08:16:45",
@@ -1280,14 +1280,14 @@
       "linepack_tgs_dia_anterior": 218.91,
       "linepack_tgs_dia_actual": 222.99,
       "linepack_tgs_variacion": 4.08,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9525,
       "pcs_neuba_1": 10071,
       "pcs_neuba_2": 10441,
       "pcs_troncal": 9525,
       "pcs_paralelo": 9672,
-      "source": "ETGS1781233200000.pdf"
+      "source": "ETGS1781233200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-13T08:06:23",
@@ -1295,14 +1295,14 @@
       "linepack_tgs_dia_anterior": 222.99,
       "linepack_tgs_dia_actual": 222.39,
       "linepack_tgs_variacion": -0.6,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9514,
       "pcs_neuba_1": 10024,
       "pcs_neuba_2": 10389,
       "pcs_troncal": 9556,
       "pcs_paralelo": 9673,
-      "source": "ETGS1781319600000.pdf"
+      "source": "ETGS1781319600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-14T07:39:22",
@@ -1310,14 +1310,14 @@
       "linepack_tgs_dia_anterior": 222.39,
       "linepack_tgs_dia_actual": 221.63,
       "linepack_tgs_variacion": -0.76,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9544,
       "pcs_neuba_1": 9976,
       "pcs_neuba_2": 10319,
       "pcs_troncal": 9798,
       "pcs_paralelo": 9900,
-      "source": "ETGS1781406000000.pdf"
+      "source": "ETGS1781406000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-15T08:39:16",
@@ -1325,14 +1325,14 @@
       "linepack_tgs_dia_anterior": 221.63,
       "linepack_tgs_dia_actual": 222.64,
       "linepack_tgs_variacion": 1.02,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9526,
       "pcs_neuba_1": 10017,
       "pcs_neuba_2": 10468,
       "pcs_troncal": 9824,
       "pcs_paralelo": 9925,
-      "source": "ETGS1781492400000.pdf"
+      "source": "ETGS1781492400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-16T08:47:12",
@@ -1340,14 +1340,14 @@
       "linepack_tgs_dia_anterior": 222.64,
       "linepack_tgs_dia_actual": 224.59,
       "linepack_tgs_variacion": 1.94,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9514,
       "pcs_neuba_1": 9997,
       "pcs_neuba_2": 10399,
       "pcs_troncal": 9769,
       "pcs_paralelo": 9875,
-      "source": "ETGS1781578800000.pdf"
+      "source": "ETGS1781578800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-17T08:35:07",
@@ -1355,14 +1355,14 @@
       "linepack_tgs_dia_anterior": 224.59,
       "linepack_tgs_dia_actual": 222.54,
       "linepack_tgs_variacion": -2.05,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9516,
       "pcs_neuba_1": 10054,
       "pcs_neuba_2": 10481,
       "pcs_troncal": 9808,
       "pcs_paralelo": 9936,
-      "source": "ETGS1781665200000.pdf"
+      "source": "ETGS1781665200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-18T08:33:55",
@@ -1370,14 +1370,14 @@
       "linepack_tgs_dia_anterior": 222.54,
       "linepack_tgs_dia_actual": 221.34,
       "linepack_tgs_variacion": -1.2,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9522,
       "pcs_neuba_1": 10051,
       "pcs_neuba_2": 10447,
       "pcs_troncal": 9743,
       "pcs_paralelo": 9878,
-      "source": "ETGS1781751600000.pdf"
+      "source": "ETGS1781751600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-19T07:27:04",
@@ -1385,14 +1385,14 @@
       "linepack_tgs_dia_anterior": 221.34,
       "linepack_tgs_dia_actual": 219.56,
       "linepack_tgs_variacion": -1.79,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9542,
       "pcs_neuba_1": 10032,
       "pcs_neuba_2": 10418,
       "pcs_troncal": 9781,
       "pcs_paralelo": 9890,
-      "source": "ETGS1781838000000.pdf"
+      "source": "ETGS1781838000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-20T07:44:11",
@@ -1400,14 +1400,14 @@
       "linepack_tgs_dia_anterior": 219.56,
       "linepack_tgs_dia_actual": 220.8,
       "linepack_tgs_variacion": 1.24,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9529,
       "pcs_neuba_1": 9990,
       "pcs_neuba_2": 10407,
       "pcs_troncal": 9881,
       "pcs_paralelo": 9958,
-      "source": "ETGS1781924400000.pdf"
+      "source": "ETGS1781924400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-21T07:53:54",
@@ -1415,14 +1415,14 @@
       "linepack_tgs_dia_anterior": 220.8,
       "linepack_tgs_dia_actual": 225.5,
       "linepack_tgs_variacion": 4.7,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9506,
       "pcs_neuba_1": 9979,
       "pcs_neuba_2": 10366,
       "pcs_troncal": 9871,
       "pcs_paralelo": 9978,
-      "source": "ETGS1782010800000.pdf"
+      "source": "ETGS1782010800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-22T08:19:52",
@@ -1430,14 +1430,14 @@
       "linepack_tgs_dia_anterior": 225.5,
       "linepack_tgs_dia_actual": 231.46,
       "linepack_tgs_variacion": 5.97,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9514,
       "pcs_neuba_1": 10012,
       "pcs_neuba_2": 10384,
       "pcs_troncal": 9947,
       "pcs_paralelo": 10061,
-      "source": "ETGS1782097200000.pdf"
+      "source": "ETGS1782097200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-23T08:32:23",
@@ -1445,14 +1445,14 @@
       "linepack_tgs_dia_anterior": 231.46,
       "linepack_tgs_dia_actual": 231.82,
       "linepack_tgs_variacion": 0.35,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9507,
       "pcs_neuba_1": 9999,
       "pcs_neuba_2": 10457,
       "pcs_troncal": 10074,
       "pcs_paralelo": 10055,
-      "source": "ETGS1782183600000.pdf"
+      "source": "ETGS1782183600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-24T08:23:44",
@@ -1460,14 +1460,14 @@
       "linepack_tgs_dia_anterior": 231.82,
       "linepack_tgs_dia_actual": 230.65,
       "linepack_tgs_variacion": -1.17,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9583,
       "pcs_neuba_1": 9826,
       "pcs_neuba_2": 10223,
       "pcs_troncal": 10065,
       "pcs_paralelo": 10062,
-      "source": "ETGS1782270000000.pdf"
+      "source": "ETGS1782270000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-25T09:16:47",
@@ -1475,14 +1475,14 @@
       "linepack_tgs_dia_anterior": 231.04,
       "linepack_tgs_dia_actual": 227.74,
       "linepack_tgs_variacion": -3.29,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9501,
       "pcs_neuba_1": 9988,
       "pcs_neuba_2": 10426,
       "pcs_troncal": 10034,
       "pcs_paralelo": 10032,
-      "source": "ETGS1782356400000.pdf"
+      "source": "ETGS1782356400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-26T08:42:20",
@@ -1490,14 +1490,14 @@
       "linepack_tgs_dia_anterior": 227.74,
       "linepack_tgs_dia_actual": 226.8,
       "linepack_tgs_variacion": -0.95,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9515,
       "pcs_neuba_1": 10021,
       "pcs_neuba_2": 10459,
       "pcs_troncal": 9686,
       "pcs_paralelo": 9614,
-      "source": "ETGS1782442800000.pdf"
+      "source": "ETGS1782442800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-27T08:14:26",
@@ -1505,14 +1505,14 @@
       "linepack_tgs_dia_anterior": 226.8,
       "linepack_tgs_dia_actual": 226.39,
       "linepack_tgs_variacion": -0.4,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9518,
       "pcs_neuba_1": 10055,
       "pcs_neuba_2": 10423,
       "pcs_troncal": 9766,
       "pcs_paralelo": 9689,
-      "source": "ETGS1782529200000.pdf"
+      "source": "ETGS1782529200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-28T08:03:17",
@@ -1520,14 +1520,14 @@
       "linepack_tgs_dia_anterior": 226.39,
       "linepack_tgs_dia_actual": 229.98,
       "linepack_tgs_variacion": 3.58,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9515,
       "pcs_neuba_1": 10049,
       "pcs_neuba_2": 10404,
       "pcs_troncal": 9592,
       "pcs_paralelo": 9644,
-      "source": "ETGS1782615600000.pdf"
+      "source": "ETGS1782615600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-29T08:09:49",
@@ -1535,14 +1535,14 @@
       "linepack_tgs_dia_anterior": 229.98,
       "linepack_tgs_dia_actual": 236.38,
       "linepack_tgs_variacion": 6.4,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9526,
       "pcs_neuba_1": 10070,
       "pcs_neuba_2": 10378,
       "pcs_troncal": 9587,
       "pcs_paralelo": 9608,
-      "source": "ETGS1782702000000.pdf"
+      "source": "ETGS1782702000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-06-30T07:49:33",
@@ -1550,14 +1550,14 @@
       "linepack_tgs_dia_anterior": 236.38,
       "linepack_tgs_dia_actual": 236.23,
       "linepack_tgs_variacion": -0.15,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9521,
       "pcs_neuba_1": 10011,
       "pcs_neuba_2": 10443,
       "pcs_troncal": 9678,
       "pcs_paralelo": 9935,
-      "source": "ETGS1782788400000.pdf"
+      "source": "ETGS1782788400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-01T08:39:05",
@@ -1565,14 +1565,14 @@
       "linepack_tgs_dia_anterior": 236.23,
       "linepack_tgs_dia_actual": 236.72,
       "linepack_tgs_variacion": 0.49,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9532,
       "pcs_neuba_1": 10064,
       "pcs_neuba_2": 10410,
       "pcs_troncal": 9763,
       "pcs_paralelo": 9816,
-      "source": "ETGS1782874800000.pdf"
+      "source": "ETGS1782874800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-02T10:00:18",
@@ -1580,14 +1580,14 @@
       "linepack_tgs_dia_anterior": 236.72,
       "linepack_tgs_dia_actual": 229.92,
       "linepack_tgs_variacion": -6.8,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9522,
       "pcs_neuba_1": 10021,
       "pcs_neuba_2": 10421,
       "pcs_troncal": 9709,
       "pcs_paralelo": 9923,
-      "source": "ETGS1782961200000.pdf"
+      "source": "ETGS1782961200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-03T08:15:15",
@@ -1595,14 +1595,14 @@
       "linepack_tgs_dia_anterior": 229.92,
       "linepack_tgs_dia_actual": 223.0,
       "linepack_tgs_variacion": -6.92,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9530,
       "pcs_neuba_1": 10137,
       "pcs_neuba_2": 10396,
       "pcs_troncal": 10006,
       "pcs_paralelo": 9969,
-      "source": "ETGS1783047600000.pdf"
+      "source": "ETGS1783047600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-04T08:52:50",
@@ -1610,14 +1610,14 @@
       "linepack_tgs_dia_anterior": 223.0,
       "linepack_tgs_dia_actual": 221.08,
       "linepack_tgs_variacion": -1.92,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en el sistema de",
       "pcs_san_martin": 9559,
       "pcs_neuba_1": 10152,
       "pcs_neuba_2": 10433,
       "pcs_troncal": 10119,
       "pcs_paralelo": 10113,
-      "source": "ETGS1783134000000.pdf"
+      "source": "ETGS1783134000000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en el sistema de"
     },
     {
       "generado_at": "2026-07-05T08:09:27",
@@ -1625,14 +1625,14 @@
       "linepack_tgs_dia_anterior": 221.08,
       "linepack_tgs_dia_actual": 221.24,
       "linepack_tgs_variacion": 0.16,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en el sistema de",
       "pcs_san_martin": 9569,
       "pcs_neuba_1": 10025,
       "pcs_neuba_2": 10352,
       "pcs_troncal": 10101,
       "pcs_paralelo": 10110,
-      "source": "ETGS1783220400000.pdf"
+      "source": "ETGS1783220400000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en el sistema de"
     },
     {
       "generado_at": "2026-07-06T08:01:23",
@@ -1640,14 +1640,14 @@
       "linepack_tgs_dia_anterior": 221.24,
       "linepack_tgs_dia_actual": 223.94,
       "linepack_tgs_variacion": 2.7,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9521,
       "pcs_neuba_1": 10057,
       "pcs_neuba_2": 10417,
       "pcs_troncal": 9849,
       "pcs_paralelo": 9835,
-      "source": "ETGS1783306800000.pdf"
+      "source": "ETGS1783306800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-07T08:11:32",
@@ -1655,14 +1655,14 @@
       "linepack_tgs_dia_anterior": 223.94,
       "linepack_tgs_dia_actual": 224.33,
       "linepack_tgs_variacion": 0.39,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9562,
       "pcs_neuba_1": 9982,
       "pcs_neuba_2": 10306,
       "pcs_troncal": 9599,
       "pcs_paralelo": 9596,
-      "source": "ETGS1783393200000.pdf"
+      "source": "ETGS1783393200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-09T07:52:01",
@@ -1670,14 +1670,14 @@
       "linepack_tgs_dia_anterior": 227.76,
       "linepack_tgs_dia_actual": 231.46,
       "linepack_tgs_variacion": 3.7,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9618,
       "pcs_neuba_1": 10016,
       "pcs_neuba_2": 10410,
       "pcs_troncal": 9806,
       "pcs_paralelo": 9812,
-      "source": "ETGS1783566000000.pdf"
+      "source": "ETGS1783566000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-10T08:21:33",
@@ -1685,14 +1685,14 @@
       "linepack_tgs_dia_anterior": 231.46,
       "linepack_tgs_dia_actual": 229.92,
       "linepack_tgs_variacion": -1.54,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9608,
       "pcs_neuba_1": 9987,
       "pcs_neuba_2": 10387,
       "pcs_troncal": 9626,
       "pcs_paralelo": 9631,
-      "source": "ETGS1783652400000.pdf"
+      "source": "ETGS1783652400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-11T08:29:24",
@@ -1700,14 +1700,14 @@
       "linepack_tgs_dia_anterior": 229.92,
       "linepack_tgs_dia_actual": 226.95,
       "linepack_tgs_variacion": -2.97,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9662,
       "pcs_neuba_1": 10079,
       "pcs_neuba_2": 10501,
       "pcs_troncal": 9680,
       "pcs_paralelo": 9678,
-      "source": "ETGS1783738800000.pdf"
+      "source": "ETGS1783738800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-12T07:53:41",
@@ -1715,14 +1715,14 @@
       "linepack_tgs_dia_anterior": 226.95,
       "linepack_tgs_dia_actual": 223.11,
       "linepack_tgs_variacion": -3.83,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9753,
       "pcs_neuba_1": 10039,
       "pcs_neuba_2": 10450,
       "pcs_troncal": 9698,
       "pcs_paralelo": 9704,
-      "source": "ETGS1783825200000.pdf"
+      "source": "ETGS1783825200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-14T08:31:07",
@@ -1730,14 +1730,14 @@
       "linepack_tgs_dia_anterior": 224.11,
       "linepack_tgs_dia_actual": 220.36,
       "linepack_tgs_variacion": -3.75,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9723,
       "pcs_neuba_1": 10074,
       "pcs_neuba_2": 10438,
       "pcs_troncal": 9770,
       "pcs_paralelo": 9885,
-      "source": "ETGS1783998000000.pdf"
+      "source": "ETGS1783998000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-15T09:33:25",
@@ -1745,14 +1745,14 @@
       "linepack_tgs_dia_anterior": 220.36,
       "linepack_tgs_dia_actual": 219.64,
       "linepack_tgs_variacion": -0.72,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9536,
       "pcs_neuba_1": 10081,
       "pcs_neuba_2": 10434,
       "pcs_troncal": 9845,
       "pcs_paralelo": 9948,
-      "source": "ETGS1784084400000.pdf"
+      "source": "ETGS1784084400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-16T08:30:35",
@@ -1760,14 +1760,14 @@
       "linepack_tgs_dia_anterior": 219.64,
       "linepack_tgs_dia_actual": 224.93,
       "linepack_tgs_variacion": 5.29,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9538,
       "pcs_neuba_1": 9987,
       "pcs_neuba_2": 10414,
       "pcs_troncal": 9754,
       "pcs_paralelo": 9866,
-      "source": "ETGS1784170800000.pdf"
+      "source": "ETGS1784170800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-17T07:08:14",
@@ -1775,14 +1775,14 @@
       "linepack_tgs_dia_anterior": 222.64,
       "linepack_tgs_dia_actual": 232.31,
       "linepack_tgs_variacion": 9.67,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9549,
       "pcs_neuba_1": 10019,
       "pcs_neuba_2": 10380,
       "pcs_troncal": 9764,
       "pcs_paralelo": 9847,
-      "source": "ETGS1784257200000.pdf"
+      "source": "ETGS1784257200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-18T07:54:20",
@@ -1790,14 +1790,14 @@
       "linepack_tgs_dia_anterior": 232.31,
       "linepack_tgs_dia_actual": 235.4,
       "linepack_tgs_variacion": 3.09,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9535,
       "pcs_neuba_1": 10073,
       "pcs_neuba_2": 10510,
       "pcs_troncal": 9675,
       "pcs_paralelo": 9664,
-      "source": "ETGS1784343600000.pdf"
+      "source": "ETGS1784343600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-19T08:24:58",
@@ -1805,14 +1805,14 @@
       "linepack_tgs_dia_anterior": 235.4,
       "linepack_tgs_dia_actual": 231.99,
       "linepack_tgs_variacion": -3.41,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por alto linepack entramos finales",
       "pcs_san_martin": 9532,
       "pcs_neuba_1": 9947,
       "pcs_neuba_2": 10219,
       "pcs_troncal": 9525,
       "pcs_paralelo": 9553,
-      "source": "ETGS1784430000000.pdf"
+      "source": "ETGS1784430000000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por alto linepack entramos finales"
     },
     {
       "generado_at": "2026-07-20T08:08:52",
@@ -1820,14 +1820,14 @@
       "linepack_tgs_dia_anterior": 231.99,
       "linepack_tgs_dia_actual": 225.51,
       "linepack_tgs_variacion": -6.48,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9552,
       "pcs_neuba_1": 10023,
       "pcs_neuba_2": 10345,
       "pcs_troncal": 9570,
       "pcs_paralelo": 9577,
-      "source": "ETGS1784516400000.pdf"
+      "source": "ETGS1784516400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-21T09:41:19",
@@ -1835,14 +1835,14 @@
       "linepack_tgs_dia_anterior": 225.51,
       "linepack_tgs_dia_actual": 220.92,
       "linepack_tgs_variacion": -4.59,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9530,
       "pcs_neuba_1": 10018,
       "pcs_neuba_2": 10389,
       "pcs_troncal": 9582,
       "pcs_paralelo": 9593,
-      "source": "ETGS1784602800000.pdf"
+      "source": "ETGS1784602800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-23T08:14:41",
@@ -1850,14 +1850,14 @@
       "linepack_tgs_dia_anterior": 216.96,
       "linepack_tgs_dia_actual": 216.02,
       "linepack_tgs_variacion": -0.94,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo line pack en tramos finales",
       "pcs_san_martin": 9583,
       "pcs_neuba_1": 9826,
       "pcs_neuba_2": 10223,
       "pcs_troncal": 9992,
       "pcs_paralelo": 9990,
-      "source": "ETGS1784775600000.pdf"
+      "source": "ETGS1784775600000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo line pack en tramos finales"
     },
     {
       "generado_at": "2026-07-25T07:51:10",
@@ -1865,14 +1865,14 @@
       "linepack_tgs_dia_anterior": 222.21,
       "linepack_tgs_dia_actual": 224.53,
       "linepack_tgs_variacion": 2.32,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9512,
       "pcs_neuba_1": 10057,
       "pcs_neuba_2": 10354,
       "pcs_troncal": 10000,
       "pcs_paralelo": 10018,
-      "source": "ETGS1784948400000.pdf"
+      "source": "ETGS1784948400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-26T07:08:12",
@@ -1880,14 +1880,14 @@
       "linepack_tgs_dia_anterior": 224.53,
       "linepack_tgs_dia_actual": 230.27,
       "linepack_tgs_variacion": 5.74,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9517,
       "pcs_neuba_1": 9977,
       "pcs_neuba_2": 10259,
       "pcs_troncal": 9870,
       "pcs_paralelo": 9867,
-      "source": "ETGS1785034800000.pdf"
+      "source": "ETGS1785034800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-27T08:16:11",
@@ -1895,14 +1895,14 @@
       "linepack_tgs_dia_anterior": 230.27,
       "linepack_tgs_dia_actual": 237.43,
       "linepack_tgs_variacion": 7.16,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9502,
       "pcs_neuba_1": 10031,
       "pcs_neuba_2": 10330,
       "pcs_troncal": 9941,
       "pcs_paralelo": 9941,
-      "source": "ETGS1785121200000.pdf"
+      "source": "ETGS1785121200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-28T08:20:43",
@@ -1910,14 +1910,14 @@
       "linepack_tgs_dia_anterior": 237.43,
       "linepack_tgs_dia_actual": 236.14,
       "linepack_tgs_variacion": -1.29,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9508,
       "pcs_neuba_1": 9961,
       "pcs_neuba_2": 10206,
       "pcs_troncal": 9482,
       "pcs_paralelo": 9488,
-      "source": "ETGS1785207600000.pdf"
+      "source": "ETGS1785207600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-30T09:54:27",
@@ -1925,14 +1925,14 @@
       "linepack_tgs_dia_anterior": 227.97,
       "linepack_tgs_dia_actual": 218.6,
       "linepack_tgs_variacion": -9.38,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9519,
       "pcs_neuba_1": 10050,
       "pcs_neuba_2": 10402,
       "pcs_troncal": 9508,
       "pcs_paralelo": 9528,
-      "source": "ETGS1785380400000.pdf"
+      "source": "ETGS1785380400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-07-31T08:56:55",
@@ -1940,14 +1940,14 @@
       "linepack_tgs_dia_anterior": 218.6,
       "linepack_tgs_dia_actual": 218.84,
       "linepack_tgs_variacion": 0.25,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en Tramos",
       "pcs_san_martin": 9509,
       "pcs_neuba_1": 10104,
       "pcs_neuba_2": 10519,
       "pcs_troncal": 9543,
       "pcs_paralelo": 9599,
-      "source": "ETGS1785466800000.pdf"
+      "source": "ETGS1785466800000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en Tramos"
     },
     {
       "generado_at": "2026-08-01T08:21:46",
@@ -1955,14 +1955,14 @@
       "linepack_tgs_dia_anterior": 218.84,
       "linepack_tgs_dia_actual": 221.78,
       "linepack_tgs_variacion": 2.94,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9529,
       "pcs_neuba_1": 10021,
       "pcs_neuba_2": 10354,
       "pcs_troncal": 9440,
       "pcs_paralelo": 9495,
-      "source": "ETGS1785553200000.pdf"
+      "source": "ETGS1785553200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-02T07:44:33",
@@ -1970,14 +1970,14 @@
       "linepack_tgs_dia_anterior": 221.78,
       "linepack_tgs_dia_actual": 224.78,
       "linepack_tgs_variacion": 3.0,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9583,
       "pcs_neuba_1": 9826,
       "pcs_neuba_2": 10223,
       "pcs_troncal": 9616,
       "pcs_paralelo": 9656,
-      "source": "ETGS1785639600000.pdf"
+      "source": "ETGS1785639600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-03T07:21:31",
@@ -1985,14 +1985,14 @@
       "linepack_tgs_dia_anterior": 224.78,
       "linepack_tgs_dia_actual": 232.22,
       "linepack_tgs_variacion": 7.43,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9555,
       "pcs_neuba_1": 10124,
       "pcs_neuba_2": 10556,
       "pcs_troncal": 9560,
       "pcs_paralelo": 9626,
-      "source": "ETGS1785726000000.pdf"
+      "source": "ETGS1785726000000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-04T07:25:25",
@@ -2000,14 +2000,14 @@
       "linepack_tgs_dia_anterior": 232.22,
       "linepack_tgs_dia_actual": 229.69,
       "linepack_tgs_variacion": -2.53,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9583,
       "pcs_neuba_1": 9826,
       "pcs_neuba_2": 10223,
       "pcs_troncal": 9576,
       "pcs_paralelo": 9649,
-      "source": "ETGS1785812400000.pdf"
+      "source": "ETGS1785812400000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-05T07:21:50",
@@ -2015,14 +2015,14 @@
       "linepack_tgs_dia_anterior": 229.71,
       "linepack_tgs_dia_actual": 228.57,
       "linepack_tgs_variacion": -1.14,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9522,
       "pcs_neuba_1": 10006,
       "pcs_neuba_2": 10360,
       "pcs_troncal": 9431,
       "pcs_paralelo": 9480,
-      "source": "ETGS1785898800000.pdf"
+      "source": "ETGS1785898800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-06T08:09:53",
@@ -2030,14 +2030,14 @@
       "linepack_tgs_dia_anterior": 228.58,
       "linepack_tgs_dia_actual": 225.08,
       "linepack_tgs_variacion": -3.5,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9523,
       "pcs_neuba_1": 10088,
       "pcs_neuba_2": 10517,
       "pcs_troncal": 9532,
       "pcs_paralelo": 9592,
-      "source": "ETGS1785985200000.pdf"
+      "source": "ETGS1785985200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-08T14:42:05",
@@ -2045,14 +2045,14 @@
       "linepack_tgs_dia_anterior": 221.32,
       "linepack_tgs_dia_actual": 221.37,
       "linepack_tgs_variacion": 0.05,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en Tramos",
       "pcs_san_martin": 9516,
       "pcs_neuba_1": 10097,
       "pcs_neuba_2": 10542,
       "pcs_troncal": 9481,
       "pcs_paralelo": 9550,
-      "source": "ETGS1786158000000.pdf"
+      "source": "ETGS1786158000000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en Tramos"
     },
     {
       "generado_at": "2026-08-09T08:13:25",
@@ -2060,14 +2060,14 @@
       "linepack_tgs_dia_anterior": 221.37,
       "linepack_tgs_dia_actual": 224.37,
       "linepack_tgs_variacion": 3.0,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en Tramos",
       "pcs_san_martin": 9522,
       "pcs_neuba_1": 10068,
       "pcs_neuba_2": 10421,
       "pcs_troncal": 9439,
       "pcs_paralelo": 9499,
-      "source": "ETGS1786244400000.pdf"
+      "source": "ETGS1786244400000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en Tramos"
     },
     {
       "generado_at": "2026-08-10T08:38:27",
@@ -2075,14 +2075,14 @@
       "linepack_tgs_dia_anterior": 224.37,
       "linepack_tgs_dia_actual": 225.93,
       "linepack_tgs_variacion": 1.56,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9520,
       "pcs_neuba_1": 10092,
       "pcs_neuba_2": 10421,
       "pcs_troncal": 9454,
       "pcs_paralelo": 9533,
-      "source": "ETGS1786330800000.pdf"
+      "source": "ETGS1786330800000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-11T08:21:44",
@@ -2090,14 +2090,14 @@
       "linepack_tgs_dia_anterior": 225.93,
       "linepack_tgs_dia_actual": 218.63,
       "linepack_tgs_variacion": -7.3,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9520,
       "pcs_neuba_1": 10068,
       "pcs_neuba_2": 10489,
       "pcs_troncal": 10052,
       "pcs_paralelo": 9584,
-      "source": "ETGS1786417200000.pdf"
+      "source": "ETGS1786417200000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-12T08:30:30",
@@ -2105,14 +2105,14 @@
       "linepack_tgs_dia_anterior": 218.63,
       "linepack_tgs_dia_actual": 216.39,
       "linepack_tgs_variacion": -2.23,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9528,
       "pcs_neuba_1": 10085,
       "pcs_neuba_2": 10460,
       "pcs_troncal": 9871,
       "pcs_paralelo": 9642,
-      "source": "ETGS1786503600000.pdf"
+      "source": "ETGS1786503600000.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-13T08:18:13",
@@ -2120,14 +2120,14 @@
       "linepack_tgs_dia_anterior": 216.39,
       "linepack_tgs_dia_actual": 217.16,
       "linepack_tgs_variacion": 0.76,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo line pack",
       "pcs_san_martin": 9525,
       "pcs_neuba_1": 10042,
       "pcs_neuba_2": 10389,
       "pcs_troncal": 9788,
       "pcs_paralelo": 9913,
-      "source": "ETGS1786590000000.pdf"
+      "source": "ETGS1786590000000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo line pack"
     },
     {
       "generado_at": "2026-08-14T08:01:58",
@@ -2135,14 +2135,14 @@
       "linepack_tgs_dia_anterior": 217.16,
       "linepack_tgs_dia_actual": 220.31,
       "linepack_tgs_variacion": 3.16,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en tramos finales.",
       "pcs_san_martin": 9534,
       "pcs_neuba_1": 10070,
       "pcs_neuba_2": 10441,
       "pcs_troncal": 9829,
       "pcs_paralelo": 9954,
-      "source": "ETGS1786676400000.pdf"
+      "source": "ETGS1786676400000.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en tramos finales."
     },
     {
       "generado_at": "2026-08-15T08:33:43",
@@ -2150,13 +2150,13 @@
       "linepack_tgs_dia_anterior": 220.31,
       "linepack_tgs_dia_actual": 221.99,
       "linepack_tgs_variacion": 1.67,
-      "alerta_estado": "TGS - Alerta",
       "pcs_san_martin": 9540,
       "pcs_neuba_1": 10089,
       "pcs_neuba_2": 10500,
       "pcs_troncal": 9883,
       "pcs_paralelo": 9996,
-      "source": "ETGS1786762800000.pdf"
+      "source": "ETGS1786762800000.pdf",
+      "estado": "Alerta"
     },
     {
       "generado_at": "2026-08-16T07:35:02",
@@ -2164,14 +2164,14 @@
       "linepack_tgs_dia_anterior": 221.99,
       "linepack_tgs_dia_actual": 225.14,
       "linepack_tgs_variacion": 3.15,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en tramos finales.",
       "pcs_san_martin": 9570,
       "pcs_neuba_1": 10054,
       "pcs_neuba_2": 10464,
       "pcs_troncal": 9827,
       "pcs_paralelo": 9940,
-      "source": "ETGS_20260815.pdf"
+      "source": "ETGS_20260815.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en tramos finales."
     },
     {
       "generado_at": "2026-08-17T08:02:45",
@@ -2179,14 +2179,14 @@
       "linepack_tgs_dia_anterior": 225.14,
       "linepack_tgs_dia_actual": 229.98,
       "linepack_tgs_variacion": 4.84,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9607,
       "pcs_neuba_1": 10049,
       "pcs_neuba_2": 10504,
       "pcs_troncal": 9873,
       "pcs_paralelo": 9999,
-      "source": "ETGS_20260816.pdf"
+      "source": "ETGS_20260816.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-18T07:59:01",
@@ -2194,14 +2194,14 @@
       "linepack_tgs_dia_anterior": 229.98,
       "linepack_tgs_dia_actual": 229.96,
       "linepack_tgs_variacion": -0.02,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9566,
       "pcs_neuba_1": 10024,
       "pcs_neuba_2": 10479,
       "pcs_troncal": 9876,
       "pcs_paralelo": 9994,
-      "source": "ETGS_20260817.pdf"
+      "source": "ETGS_20260817.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-19T07:59:34",
@@ -2209,14 +2209,14 @@
       "linepack_tgs_dia_anterior": 229.96,
       "linepack_tgs_dia_actual": 227.01,
       "linepack_tgs_variacion": -2.95,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9615,
       "pcs_neuba_1": 10037,
       "pcs_neuba_2": 10402,
       "pcs_troncal": 9854,
       "pcs_paralelo": 9962,
-      "source": "ETGS_20260818.pdf"
+      "source": "ETGS_20260818.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-20T07:40:42",
@@ -2224,14 +2224,14 @@
       "linepack_tgs_dia_anterior": 227.01,
       "linepack_tgs_dia_actual": 228.35,
       "linepack_tgs_variacion": 1.33,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9629,
       "pcs_neuba_1": 10085,
       "pcs_neuba_2": 10496,
       "pcs_troncal": 9834,
       "pcs_paralelo": 9964,
-      "source": "ETGS_20260819.pdf"
+      "source": "ETGS_20260819.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-21T07:05:13",
@@ -2239,14 +2239,14 @@
       "linepack_tgs_dia_anterior": 228.35,
       "linepack_tgs_dia_actual": 231.16,
       "linepack_tgs_variacion": 2.81,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9627,
       "pcs_neuba_1": 10029,
       "pcs_neuba_2": 10422,
       "pcs_troncal": 9793,
       "pcs_paralelo": 9911,
-      "source": "ETGS_20260820.pdf"
+      "source": "ETGS_20260820.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-22T08:42:52",
@@ -2254,14 +2254,14 @@
       "linepack_tgs_dia_anterior": 231.16,
       "linepack_tgs_dia_actual": 228.13,
       "linepack_tgs_variacion": -3.03,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9624,
       "pcs_neuba_1": 9993,
       "pcs_neuba_2": 10367,
       "pcs_troncal": 9688,
       "pcs_paralelo": 9693,
-      "source": "ETGS_20260821.pdf"
+      "source": "ETGS_20260821.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-23T08:36:56",
@@ -2269,14 +2269,14 @@
       "linepack_tgs_dia_anterior": 228.13,
       "linepack_tgs_dia_actual": 229.16,
       "linepack_tgs_variacion": 1.03,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9618,
       "pcs_neuba_1": 10067,
       "pcs_neuba_2": 10391,
       "pcs_troncal": 9750,
       "pcs_paralelo": 9886,
-      "source": "ETGS_20260822.pdf"
+      "source": "ETGS_20260822.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-24T08:24:13",
@@ -2284,14 +2284,14 @@
       "linepack_tgs_dia_anterior": 229.16,
       "linepack_tgs_dia_actual": 228.55,
       "linepack_tgs_variacion": -0.61,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9620,
       "pcs_neuba_1": 10008,
       "pcs_neuba_2": 10366,
       "pcs_troncal": 9644,
       "pcs_paralelo": 9787,
-      "source": "ETGS_20260823.pdf"
+      "source": "ETGS_20260823.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-25T08:45:24",
@@ -2299,14 +2299,14 @@
       "linepack_tgs_dia_anterior": 228.55,
       "linepack_tgs_dia_actual": 219.99,
       "linepack_tgs_variacion": -8.56,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9611,
       "pcs_neuba_1": 10064,
       "pcs_neuba_2": 10365,
       "pcs_troncal": 9697,
       "pcs_paralelo": 9676,
-      "source": "ETGS_20260824.pdf"
+      "source": "ETGS_20260824.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-26T08:02:47",
@@ -2314,14 +2314,14 @@
       "linepack_tgs_dia_anterior": 219.99,
       "linepack_tgs_dia_actual": 219.22,
       "linepack_tgs_variacion": -0.77,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9623,
       "pcs_neuba_1": 10002,
       "pcs_neuba_2": 10410,
       "pcs_troncal": 9596,
       "pcs_paralelo": 9598,
-      "source": "ETGS_20260825.pdf"
+      "source": "ETGS_20260825.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-27T08:21:02",
@@ -2329,14 +2329,14 @@
       "linepack_tgs_dia_anterior": 219.22,
       "linepack_tgs_dia_actual": 220.73,
       "linepack_tgs_variacion": 1.5,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9617,
       "pcs_neuba_1": 9962,
       "pcs_neuba_2": 10415,
       "pcs_troncal": 9602,
       "pcs_paralelo": 9610,
-      "source": "ETGS_20260826.pdf"
+      "source": "ETGS_20260826.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-28T07:28:05",
@@ -2344,13 +2344,13 @@
       "linepack_tgs_dia_anterior": 220.73,
       "linepack_tgs_dia_actual": 220.58,
       "linepack_tgs_variacion": -0.15,
-      "alerta_estado": "TGS - Alerta",
       "pcs_san_martin": 9609,
       "pcs_neuba_1": 9949,
       "pcs_neuba_2": 10358,
       "pcs_troncal": 9599,
       "pcs_paralelo": 9606,
-      "source": "ETGS_20260827.pdf"
+      "source": "ETGS_20260827.pdf",
+      "estado": "Alerta"
     },
     {
       "generado_at": "2026-08-29T07:24:12",
@@ -2358,14 +2358,14 @@
       "linepack_tgs_dia_anterior": 220.58,
       "linepack_tgs_dia_actual": 223.43,
       "linepack_tgs_variacion": 2.85,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo linepack en tramos finales",
       "pcs_san_martin": 9611,
       "pcs_neuba_1": 9989,
       "pcs_neuba_2": 10422,
       "pcs_troncal": 9513,
       "pcs_paralelo": 9577,
-      "source": "ETGS_20260828.pdf"
+      "source": "ETGS_20260828.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en tramos finales"
     },
     {
       "generado_at": "2026-08-30T07:03:53",
@@ -2373,14 +2373,14 @@
       "linepack_tgs_dia_anterior": 223.43,
       "linepack_tgs_dia_actual": 229.48,
       "linepack_tgs_variacion": 6.05,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9622,
       "pcs_neuba_1": 10057,
       "pcs_neuba_2": 10357,
       "pcs_troncal": 9473,
       "pcs_paralelo": 9547,
-      "source": "ETGS_20260829.pdf"
+      "source": "ETGS_20260829.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-08-31T07:38:46",
@@ -2388,14 +2388,14 @@
       "linepack_tgs_dia_anterior": 229.48,
       "linepack_tgs_dia_actual": 241.48,
       "linepack_tgs_variacion": 12.0,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9626,
       "pcs_neuba_1": 10007,
       "pcs_neuba_2": 10409,
       "pcs_troncal": 9400,
       "pcs_paralelo": 9485,
-      "source": "ETGS_20260830.pdf"
+      "source": "ETGS_20260830.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-09-01T08:29:59",
@@ -2403,14 +2403,14 @@
       "linepack_tgs_dia_anterior": 241.48,
       "linepack_tgs_dia_actual": 238.69,
       "linepack_tgs_variacion": -2.8,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9610,
       "pcs_neuba_1": 9993,
       "pcs_neuba_2": 10417,
       "pcs_troncal": 9455,
       "pcs_paralelo": 9543,
-      "source": "ETGS_20260831.pdf"
+      "source": "ETGS_20260831.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-09-02T08:11:48",
@@ -2418,14 +2418,14 @@
       "linepack_tgs_dia_anterior": 238.33,
       "linepack_tgs_dia_actual": 233.48,
       "linepack_tgs_variacion": -4.86,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9660,
       "pcs_neuba_1": 9969,
       "pcs_neuba_2": 10375,
       "pcs_troncal": 9412,
       "pcs_paralelo": 9502,
-      "source": "ETGS_20260901.pdf"
+      "source": "ETGS_20260901.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-09-03T09:52:27",
@@ -2433,14 +2433,14 @@
       "linepack_tgs_dia_anterior": 233.48,
       "linepack_tgs_dia_actual": 235.13,
       "linepack_tgs_variacion": 1.66,
-      "alerta_estado": "TGS -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9713,
       "pcs_neuba_1": 9952,
       "pcs_neuba_2": 10373,
       "pcs_troncal": 9426,
       "pcs_paralelo": 9511,
-      "source": "ETGS_20260902.pdf"
+      "source": "ETGS_20260902.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-09-04T08:32:22",
@@ -2448,14 +2448,14 @@
       "linepack_tgs_dia_anterior": 235.13,
       "linepack_tgs_dia_actual": 234.87,
       "linepack_tgs_variacion": -0.26,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9740,
       "pcs_neuba_1": 10009,
       "pcs_neuba_2": 10359,
       "pcs_troncal": 9482,
       "pcs_paralelo": 9544,
-      "source": "ETGS_20260903.pdf"
+      "source": "ETGS_20260903.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-09-05T08:40:24",
@@ -2463,14 +2463,14 @@
       "linepack_tgs_dia_anterior": 234.87,
       "linepack_tgs_dia_actual": 234.78,
       "linepack_tgs_variacion": -0.09,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9739,
       "pcs_neuba_1": 9980,
       "pcs_neuba_2": 10327,
       "pcs_troncal": 9449,
       "pcs_paralelo": 9519,
-      "source": "ETGS_20260904.pdf"
+      "source": "ETGS_20260904.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-09-06T07:34:12",
@@ -2478,14 +2478,14 @@
       "linepack_tgs_dia_anterior": 234.78,
       "linepack_tgs_dia_actual": 229.75,
       "linepack_tgs_variacion": -5.03,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9723,
       "pcs_neuba_1": 9996,
       "pcs_neuba_2": 10326,
       "pcs_troncal": 9525,
       "pcs_paralelo": 9583,
-      "source": "ETGS_20260905.pdf"
+      "source": "ETGS_20260905.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-09-07T08:11:12",
@@ -2493,14 +2493,14 @@
       "linepack_tgs_dia_anterior": 229.75,
       "linepack_tgs_dia_actual": 222.86,
       "linepack_tgs_variacion": -6.9,
-      "alerta_estado": "TGSA -",
-      "alerta_motivo": "Normal",
       "pcs_san_martin": 9736,
       "pcs_neuba_1": 10010,
       "pcs_neuba_2": 10357,
       "pcs_troncal": 9504,
       "pcs_paralelo": 9552,
-      "source": "ETGS_20260906.pdf"
+      "source": "ETGS_20260906.pdf",
+      "estado": "Normal",
+      "motivo": null
     },
     {
       "generado_at": "2026-09-08T09:31:06",
@@ -2508,14 +2508,14 @@
       "linepack_tgs_dia_anterior": 222.86,
       "linepack_tgs_dia_actual": 218.37,
       "linepack_tgs_variacion": -4.49,
-      "alerta_estado": "TGSA - Alerta",
-      "alerta_motivo": "Por bajo line pack en tramos finales",
       "pcs_san_martin": 9743,
       "pcs_neuba_1": 10054,
       "pcs_neuba_2": 10410,
       "pcs_troncal": 9494,
       "pcs_paralelo": 9797,
-      "source": "ETGS_20260907.pdf"
+      "source": "ETGS_20260907.pdf",
+      "estado": "Alerta",
+      "motivo": "Por bajo line pack en tramos finales"
     },
     {
       "generado_at": "2026-09-09T08:21:27",
@@ -2523,8 +2523,8 @@
       "linepack_tgs_dia_anterior": 218.37,
       "linepack_tgs_dia_actual": 220.85,
       "linepack_tgs_variacion": 2.48,
-      "alerta_estado": "Alerta",
-      "alerta_motivo": "TGSA - Alerta Por bajo line pack en tramos",
+      "estado": "Alerta",
+      "motivo": "Por bajo line pack en tramos",
       "pcs_san_martin": 9664,
       "pcs_neuba_1": 9964,
       "pcs_neuba_2": 10556,
@@ -2538,8 +2538,8 @@
       "linepack_tgs_dia_anterior": 220.85,
       "linepack_tgs_dia_actual": 225.87,
       "linepack_tgs_variacion": 5.02,
-      "alerta_estado": "Normal",
-      "alerta_motivo": "TGSA - Normal",
+      "estado": "Normal",
+      "motivo": null,
       "pcs_san_martin": 9625,
       "pcs_neuba_1": 9925,
       "pcs_neuba_2": 10258,
@@ -2553,8 +2553,8 @@
       "linepack_tgs_dia_anterior": 225.87,
       "linepack_tgs_dia_actual": 229.48,
       "linepack_tgs_variacion": 3.61,
-      "alerta_estado": "Normal",
-      "alerta_motivo": "TGSA - Normal",
+      "estado": "Normal",
+      "motivo": null,
       "pcs_san_martin": 9618,
       "pcs_neuba_1": 9997,
       "pcs_neuba_2": 10404,
@@ -2568,8 +2568,8 @@
       "linepack_tgs_dia_anterior": 229.48,
       "linepack_tgs_dia_actual": 230.54,
       "linepack_tgs_variacion": 1.06,
-      "alerta_estado": "Normal",
-      "alerta_motivo": "TGSA - Normal",
+      "estado": "Normal",
+      "motivo": null,
       "pcs_san_martin": 9616,
       "pcs_neuba_1": 9943,
       "pcs_neuba_2": 10358,
@@ -2583,8 +2583,8 @@
       "linepack_tgs_dia_anterior": 230.54,
       "linepack_tgs_dia_actual": 224.23,
       "linepack_tgs_variacion": -6.3,
-      "alerta_estado": "Normal",
-      "alerta_motivo": "TGSA - Normal",
+      "estado": "Normal",
+      "motivo": null,
       "pcs_san_martin": 9619,
       "pcs_neuba_1": 9903,
       "pcs_neuba_2": 10305,
@@ -2598,8 +2598,8 @@
       "linepack_tgs_dia_anterior": 224.23,
       "linepack_tgs_dia_actual": 223.36,
       "linepack_tgs_variacion": -0.88,
-      "alerta_estado": "Alerta",
-      "alerta_motivo": "TGSA - Alerta Por bajo linepack en tramos finales.",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en tramos finales.",
       "pcs_san_martin": 9631,
       "pcs_neuba_1": 9976,
       "pcs_neuba_2": 10368,
@@ -2613,8 +2613,8 @@
       "linepack_tgs_dia_anterior": 223.36,
       "linepack_tgs_dia_actual": 222.92,
       "linepack_tgs_variacion": -0.44,
-      "alerta_estado": "Alerta",
-      "alerta_motivo": "TGSA - Alerta Por bajo linepack en tramos finales.",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en tramos finales.",
       "pcs_san_martin": 9617,
       "pcs_neuba_1": 9969,
       "pcs_neuba_2": 10375,
@@ -2628,8 +2628,8 @@
       "linepack_tgs_dia_anterior": 222.92,
       "linepack_tgs_dia_actual": 222.77,
       "linepack_tgs_variacion": -0.16,
-      "alerta_estado": "Normal",
-      "alerta_motivo": "TGS - Normal",
+      "estado": "Normal",
+      "motivo": null,
       "pcs_san_martin": 9619,
       "pcs_neuba_1": 10043,
       "pcs_neuba_2": 10478,
@@ -2643,8 +2643,8 @@
       "linepack_tgs_dia_anterior": 222.77,
       "linepack_tgs_dia_actual": 221.86,
       "linepack_tgs_variacion": -0.91,
-      "alerta_estado": "Normal",
-      "alerta_motivo": "TGSA - Normal",
+      "estado": "Normal",
+      "motivo": null,
       "pcs_san_martin": 9639,
       "pcs_neuba_1": 10050,
       "pcs_neuba_2": 10549,
@@ -2658,8 +2658,8 @@
       "linepack_tgs_dia_anterior": 221.86,
       "linepack_tgs_dia_actual": 227.49,
       "linepack_tgs_variacion": 5.63,
-      "alerta_estado": "Normal",
-      "alerta_motivo": "TGS - Normal",
+      "estado": "Normal",
+      "motivo": null,
       "pcs_san_martin": 9646,
       "pcs_neuba_1": 9982,
       "pcs_neuba_2": 10476,
@@ -2673,8 +2673,8 @@
       "linepack_tgs_dia_anterior": 227.49,
       "linepack_tgs_dia_actual": 233.56,
       "linepack_tgs_variacion": 6.07,
-      "alerta_estado": "Normal",
-      "alerta_motivo": "TGS - Normal",
+      "estado": "Normal",
+      "motivo": null,
       "pcs_san_martin": 9630,
       "pcs_neuba_1": 9932,
       "pcs_neuba_2": 10458,
@@ -2688,8 +2688,8 @@
       "linepack_tgs_dia_anterior": 233.56,
       "linepack_tgs_dia_actual": 234.94,
       "linepack_tgs_variacion": 1.38,
-      "alerta_estado": "Alerta",
-      "alerta_motivo": "TGSA - Alerta Por alto linepack en el sistema.",
+      "estado": "Alerta",
+      "motivo": "Por alto linepack en el sistema.",
       "pcs_san_martin": 9633,
       "pcs_neuba_1": 9888,
       "pcs_neuba_2": 10287,
@@ -2703,8 +2703,8 @@
       "linepack_tgs_dia_anterior": 234.94,
       "linepack_tgs_dia_actual": 229.19,
       "linepack_tgs_variacion": -5.75,
-      "alerta_estado": "Alerta",
-      "alerta_motivo": "TGSA - Alerta Por alto linepack en el sistema.",
+      "estado": "Alerta",
+      "motivo": "Por alto linepack en el sistema.",
       "pcs_san_martin": 9634,
       "pcs_neuba_1": 9969,
       "pcs_neuba_2": 10496,
@@ -2718,8 +2718,8 @@
       "linepack_tgs_dia_anterior": 229.19,
       "linepack_tgs_dia_actual": 224.91,
       "linepack_tgs_variacion": -4.28,
-      "alerta_estado": "Normal",
-      "alerta_motivo": "TGS - Normal",
+      "estado": "Normal",
+      "motivo": null,
       "pcs_san_martin": 9626,
       "pcs_neuba_1": 9905,
       "pcs_neuba_2": 10290,
@@ -2733,14 +2733,29 @@
       "linepack_tgs_dia_anterior": 224.91,
       "linepack_tgs_dia_actual": 220.83,
       "linepack_tgs_variacion": -4.08,
-      "alerta_estado": "Alerta",
-      "alerta_motivo": "TGSA - Alerta Por bajo linepack en Tramos finales.",
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en Tramos finales.",
       "pcs_san_martin": 9635,
       "pcs_neuba_1": 9914,
       "pcs_neuba_2": 10435,
       "pcs_troncal": 9586,
       "pcs_paralelo": 9584,
       "source": "ETGS_20260922.pdf"
+    },
+    {
+      "generado_at": "2026-09-24T07:43:19",
+      "fecha": "2026-09-23",
+      "linepack_tgs_dia_anterior": 220.83,
+      "linepack_tgs_dia_actual": 228.06,
+      "linepack_tgs_variacion": 7.23,
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en Tramos finales.",
+      "pcs_san_martin": 9626,
+      "pcs_neuba_1": 10002,
+      "pcs_neuba_2": 10436,
+      "pcs_troncal": 9611,
+      "pcs_paralelo": 9610,
+      "source": "ETGS_20260923.pdf"
     }
   ],
   "issues": []
