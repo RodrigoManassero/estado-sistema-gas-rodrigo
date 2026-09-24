@@ -5,7 +5,7 @@ TGS sends this PDF every morning to all transport shippers. It's the only
 direct line into TGS-specific operational state we have:
     - Linepack TGS in absolute MMm³ (stock, not delta) — the value the public
       ENARGAS PDFs only show as a system total.
-    - Operational alert + motivo (e.g. "Por bajo linepack del sistema").
+    - Operational estado + motivo (e.g. "Por bajo linepack del sistema").
     - Poder calorífico (Kcal) per gasoducto and cámara.
 
 The PDF arrives via the email-ingest pipeline (fetch_inbox.py drops to
@@ -35,7 +35,7 @@ ETGS_JSON = os.path.join(OUT_DIR, 'etgs.json')
 ETGS_CSV_COLS = [
     'fecha', 'source', 'generado_at',
     'linepack_tgs_dia_anterior', 'linepack_tgs_dia_actual', 'linepack_tgs_variacion',
-    'alerta_estado', 'alerta_motivo',
+    'estado', 'motivo',
     'pcs_san_martin', 'pcs_neuba_1', 'pcs_neuba_2',
     'pcs_troncal', 'pcs_paralelo',
 ]
@@ -98,21 +98,35 @@ def extract_etgs(text: str) -> dict:
         d['linepack_tgs_variacion'] = _num(m.group(3))
 
     # ---------------------------------------------------------------------
-    # Extracción de ESTADO DEL SISTEMA y MOTIVO
+    # Extracción de ESTADO y MOTIVO
     # ---------------------------------------------------------------------
-    # 1. Busca la palabra "Estado" seguida de alguno de los 4 estados posibles
+    # 1. Extracción del ESTADO
     m_estado = re.search(r'Estado\s*\n?\s*(Normal|Alerta|Cr[ií]tico|Emergencia)', text, re.IGNORECASE)
     if m_estado:
-        d['alerta_estado'] = m_estado.group(1).capitalize()
+        estado_raw = m_estado.group(1).capitalize()
+        # Normalizar acento
+        d['estado'] = 'Crítico' if estado_raw.lower() in ['critico', 'crítico'] else estado_raw
     else:
-        d['alerta_estado'] = "Normal"
+        # Fallback por si la palabra "Estado" no figura explícitamente pero hay alerta
+        if re.search(r'Alerta', text, re.IGNORECASE):
+            d['estado'] = 'Alerta'
+        else:
+            d['estado'] = 'Normal'
 
-    # 2. Busca la etiqueta "Motivo" y extrae toda la línea
+    # 2. Extracción del MOTIVO
     m_motivo = re.search(r'Motivo\s*\n?\s*([^\n]+)', text)
     if m_motivo:
-        d['alerta_motivo'] = m_motivo.group(1).strip()
+        raw_m = m_motivo.group(1).strip()
+        # Si el motivo dice "Normal" o está vacío, asignamos None
+        if raw_m.lower() in ['normal', '-', ''] or d['estado'] == 'Normal':
+            d['motivo'] = None
+        else:
+            # Limpia prefijos repetidos o basuras como "TGS - Alerta " del texto del motivo
+            clean_m = re.sub(r'^(?:TGSA?|TGS)\s*-\s*', '', raw_m, flags=re.IGNORECASE)
+            clean_m = re.sub(r'^Alerta\s*', '', clean_m, flags=re.IGNORECASE).strip()
+            d['motivo'] = clean_m if clean_m else None
     else:
-        d['alerta_motivo'] = None
+        d['motivo'] = None
 
     # Poder calorífico
     pcs_patterns = [
@@ -144,7 +158,23 @@ def load_existing() -> dict:
     with open(ETGS_JSON, encoding='utf-8') as f:
         raw = json.load(f)
     data = raw.get('data', raw) if isinstance(raw, dict) else raw
-    return {r['fecha']: r for r in (data or []) if r.get('fecha')}
+    
+    # Migración/normalización para mantener retrocompatibilidad con keys viejas en cache
+    cleaned_rows = {}
+    for r in (data or []):
+        if not r.get('fecha'):
+            continue
+        # Mapea keys viejas a las nuevas si existen
+        if 'alerta_estado' in r and 'estado' not in r:
+            old_est = r.pop('alerta_estado', 'Normal')
+            r['estado'] = 'Alerta' if 'alerta' in str(old_est).lower() else 'Normal'
+        if 'alerta_motivo' in r and 'motivo' not in r:
+            old_mot = r.pop('alerta_motivo', None)
+            r['motivo'] = None if str(old_mot).lower() == 'normal' else old_mot
+            
+        cleaned_rows[r['fecha']] = r
+        
+    return cleaned_rows
 
 
 def main():
@@ -165,7 +195,7 @@ def main():
                 issues.append(f'{os.path.basename(path)}: no fecha extracted')
                 continue
             by_date[row['fecha']] = row
-            print(f"Parsed {os.path.basename(path)}: fecha={row['fecha']} Estado={row.get('alerta_estado')} LP_TGS={row.get('linepack_tgs_dia_actual')}")
+            print(f"Parsed {os.path.basename(path)}: fecha={row['fecha']} Estado={row.get('estado')} Motivo={row.get('motivo')} LP_TGS={row.get('linepack_tgs_dia_actual')}")
         except Exception as e:
             issues.append(f'{os.path.basename(path)}: exception {e}')
             print(f'Error parsing {path}: {e}', file=sys.stderr)
