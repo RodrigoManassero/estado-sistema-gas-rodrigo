@@ -1,18 +1,16 @@
 import { useETGS } from '../hooks/useData'
 import { card, colors, sectionTitle, space } from '../theme'
 
-// Tipado de la fila según la estructura del JSON del archivo/backend
+// Tipado de la fila según la estructura del JSON
 interface ETGSDataRow {
   fecha: string
   linepack_tgs_dia_actual: number | null
-  linepack_tgs_dia_anterior?: number | null
   linepack_tgs_variacion: number | null
   estado?: 'Normal' | 'Alerta' | 'Crítico' | 'Emergencia' | string
   motivo?: string | null
-  generado_at?: string
 }
 
-// Referencias de desbalance TGS (en m³).
+// Referencias de desbalance TGS (en m³)
 const LINEPACK_EQUILIBRIO_M3 = 224_486_000      // Linepack de equilibrio
 const CAPACIDAD_TRANSPORTE_TGS_M3 = 92_393_583  // Capacidad de Transporte TGS
 
@@ -26,23 +24,14 @@ function getAlertColor(estado?: string, motivo?: string | null) {
   if (lowMotivo.includes('bajo')) return colors.status.err
   if (lowMotivo.includes('alto')) return colors.accent.orange
 
-  return colors.accent.orange // Color default para alertas sin bajo/alto
+  return colors.accent.orange
 }
 
 export default function TGSPanel({ estByDate }: { estByDate?: Map<string, number> }) {
-  const response = useETGS()
-
-  // Resiliencia de datos: extrae el array ya sea si useETGS() devuelve { data: [...] } o [...] directamente
-  const rawList: any = Array.isArray(response)
-    ? response
-    : (response?.data ?? response?.registros ?? [])
-
-  const metaGeneratedAt = response?.meta?.generated_at ?? response?.generated_at
-
-  const rows: ETGSDataRow[] = rawList
-  if (!rows || rows.length === 0) return null
-
-  // Tomamos el último registro disponible (p. ej. 2026-09-23)
+  const { data, meta } = useETGS()
+  const rows: ETGSDataRow[] = (data as ETGSDataRow[]) ?? []
+  
+  if (rows.length === 0) return null
   const latest = rows[rows.length - 1]
 
   // Relleno: si el último ETGS quedó viejo y hay estimación para un día posterior
@@ -54,9 +43,7 @@ export default function TGSPanel({ estByDate }: { estByDate?: Map<string, number
 
   const lp = useEst ? estVal : latest.linepack_tgs_dia_actual
   const fechaLabel = useEst ? estDate : latest.fecha
-  
-  // Variación directa desde 'linepack_tgs_variacion'
-  const variacion = useEst ? null : (latest.linepack_tgs_variacion ?? null)
+  const variacion = useEst ? null : latest.linepack_tgs_variacion
 
   // Evaluación de alertas
   const estado = useEst ? 'Normal' : (latest.estado ?? 'Normal')
@@ -71,15 +58,13 @@ export default function TGSPanel({ estByDate }: { estByDate?: Map<string, number
     ? ((LINEPACK_EQUILIBRIO_M3 - lpActualM3) / CAPACIDAD_TRANSPORTE_TGS_M3) * 100
     : null
 
-  const fechaGeneracion = metaGeneratedAt || latest.generado_at
-
   return (
     <div style={{ ...card, borderTop: `3px solid ${colors.accent.green}`, marginTop: space.xl }}>
       <h3 style={sectionTitle}>
         TGS — Síntesis operativa{' '}
         <span style={{ color: colors.textDim, fontSize: 11, fontWeight: 400, textTransform: 'none', float: 'right' }}>
           {fechaLabel} · fuente: {useEst ? 'estimado' : 'ETGS'}
-          {fechaGeneracion && ` · actualizado ${new Date(fechaGeneracion).toLocaleString('es-AR', { hour: '2-digit', minute: '2-digit' })}`}
+          {meta?.generated_at && ` · actualizado ${new Date(meta.generated_at).toLocaleString('es-AR', { hour: '2-digit', minute: '2-digit' })}`}
         </span>
       </h3>
 
