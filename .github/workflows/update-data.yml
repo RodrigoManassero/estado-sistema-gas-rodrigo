@@ -68,7 +68,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git fetch origin main
           git add public/data/
-          if git diff --staged --quiet; then
+          if ! git diff --staged --quiet; then
             git commit -m "Auto-update data $(date -u +%Y-%m-%d)"
             # Intento de push seguro con rebase autoresuelto
             git pull --rebase -X ours origin main || (git rebase --abort && git pull --no-rebase origin main -s recursive -X ours)
