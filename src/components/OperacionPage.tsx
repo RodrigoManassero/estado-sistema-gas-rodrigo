@@ -206,6 +206,7 @@ export default function OperacionPage() {
           varKey="var_linepack_tgs"
           limInfKey="lim_inf_tgs"
           limSupKey="lim_sup_tgs"
+          estadoKey="estado"
           estByDate={tgsEstByDate}
         />
         <SystemPanel
