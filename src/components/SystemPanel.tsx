@@ -39,7 +39,7 @@ function fmtDate(d: string) {
 export default function SystemPanel({ title, color, data, linepackKey, varKey, limInfKey, limSupKey, estadoKey, estByDate }: Props) {
   // 1. Filtrar únicamente filas que tengan valor real de linepack (no nulo)
   const rowsWithRealLinepack = data.filter(d => {
-    const val = (d as any)[linepackKey] ?? (d as any).linepack_tgs ?? (d as any).linepack_tgs_dia_actual
+    const val = (d as any)[linepackKey] ?? (d as any).linepack_tgs ?? (d as any).linepack_tgs_dia_actual ?? (d as any).linepack_tgn
     return val !== undefined && val !== null
   })
 
@@ -61,9 +61,9 @@ export default function SystemPanel({ title, color, data, linepackKey, varKey, l
   const last6 = [...new Set([...realDates, ...estDates])].sort().slice(-6)
 
   // Obtener límites
-  const lastRealRow = [...validData].reverse().find(d => (d as any)[limInfKey] != null || (d as any).lim_inf_tgs != null)
-  const limInf = ((lastRealRow as any)?.[limInfKey] ?? (lastRealRow as any)?.lim_inf_tgs ?? 215) as number | null
-  const limSup = ((lastRealRow as any)?.[limSupKey] ?? (lastRealRow as any)?.lim_sup_tgs ?? 235) as number | null
+  const lastRealRow = [...validData].reverse().find(d => (d as any)[limInfKey] != null || (d as any).lim_inf_tgs != null || (d as any).lim_inf_tgn != null)
+  const limInf = ((lastRealRow as any)?.[limInfKey] ?? (lastRealRow as any)?.lim_inf_tgs ?? (lastRealRow as any)?.lim_inf_tgn ?? 215) as number | null
+  const limSup = ((lastRealRow as any)?.[limSupKey] ?? (lastRealRow as any)?.lim_sup_tgs ?? (lastRealRow as any)?.lim_sup_tgn ?? 235) as number | null
 
   return (
     <div style={{ ...s.panel, borderTop: `3px solid ${color}` }}>
@@ -87,18 +87,30 @@ export default function SystemPanel({ title, color, data, linepackKey, varKey, l
             const val = real ?? est
             const isEst = real == null && est != null
 
-            // Extracción exhaustiva de Variación
-            const varVal = (
+            // Extracción de Variación desde claves del JSON
+            const rawVarVal = (
               row[varKey] ?? 
               row.linepack_tgs_variacion ?? 
               row.var_linepack_tgs ?? 
               row.linepack_tgn_variacion ?? 
               row.var_linepack_tgn ?? 
+              row.var_tgn ?? 
               row.variacion ?? 
               null
             ) as number | null
 
-            // Extracción exhaustiva de Estado
+            // Cálculo de respaldo: si no viene la variación en el JSON, la calcula restando el linepack del día anterior
+            let varVal = rawVarVal
+            if (varVal == null && val != null && i > 0) {
+              const prevFecha = last6[i - 1]
+              const prevRow = byDate.get(prevFecha) ?? {}
+              const prevVal = (prevRow[linepackKey] ?? prevRow.linepack_tgs ?? prevRow.linepack_tgn ?? null) as number | null
+              if (prevVal != null) {
+                varVal = val - prevVal
+              }
+            }
+
+            // Extracción de Estado
             const estadoVal = (
               (estadoKey ? row[estadoKey] : null) ?? 
               row.estado ?? 
