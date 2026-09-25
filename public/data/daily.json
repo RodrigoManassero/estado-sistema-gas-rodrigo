@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-25T13:12:58+00:00",
+  "generated_at": "2026-09-25T21:23:12+00:00",
   "source": "Cascada 6 niveles: PS_REAL > RDS > PS_PROJ > CAMMESA_WEEKLY > MODELO > WEATHER_HISTORY",
   "source_date": "2026-09-27",
   "data": [
@@ -46316,10 +46316,10 @@
       "temp_min_esquel": null,
       "temp_max_esquel": null,
       "temp_prom_esquel": null,
-      "cammesa_gas": null,
-      "cammesa_gasoil": null,
-      "cammesa_fueloil": null,
-      "cammesa_carbon": null,
+      "cammesa_gas": 23.428,
+      "cammesa_gasoil": 0.082,
+      "cammesa_fueloil": 0.0,
+      "cammesa_carbon": 0.0,
       "cammesa_total": null,
       "gnc": 5.6,
       "combustible": 3.3,
