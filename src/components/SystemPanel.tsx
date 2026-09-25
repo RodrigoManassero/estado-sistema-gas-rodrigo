@@ -4,15 +4,11 @@ interface Props {
   title: string
   color: string
   data: DailyRow[]
-  linepackKey: 'linepack_tgs' | 'linepack_tgn'
-  varKey: 'var_linepack_tgs' | 'var_linepack_tgn'
-  limInfKey: 'lim_inf_tgs' | 'lim_inf_tgn'
-  limSupKey: 'lim_sup_tgs' | 'lim_sup_tgn'
-  /** Si está, el ESTADO sale de este campo (estado real ABII) en vez de la
-   *  banda lim_inf/lim_sup. TGN lo usa; TGS sigue con la banda. */
-  estadoKey?: 'estado_tgn'
-  /** Proyección de linepack por fecha. Cuando un día reciente no tiene dato
-   *  real, se muestra la estimación marcada "(est.)" en vez de quedar vacío. */
+  linepackKey: 'linepack_tgs' | 'linepack_tgn' | string
+  varKey: string
+  limInfKey: string
+  limSupKey: string
+  estadoKey?: string
   estByDate?: Map<string, number>
 }
 
@@ -26,7 +22,7 @@ const s = {
     if (val > sup) return { color: '#f59e0b', label: 'ALTO' }
     return { color: '#10b981', label: 'NORMAL' }
   },
-  // Estado autoritativo reportado por ABII (string). ALERTA = ámbar.
+  // Estado reportado por el sistema. ALERTA = ámbar, CRÍTICO/EMERGENCIA = rojo
   estadoBadge: (estado: string) => {
     const up = estado.toUpperCase()
     if (up.includes('ALERTA')) return { color: '#f59e0b', label: 'ALERTA' }
@@ -42,20 +38,19 @@ function fmtDate(d: string) {
 }
 
 export default function SystemPanel({ title, color, data, linepackKey, varKey, limInfKey, limSupKey, estadoKey, estByDate }: Props) {
-  const byDate = new Map<string, DailyRow>()
+  const byDate = new Map<string, any>()
   for (const d of data) if (d.fecha) byDate.set(d.fecha, d)
   const today = new Date().toISOString().slice(0, 10)
 
-  // Últimas 6 fechas (n-1 a n-6) tomando dato real y, si falta, la estimación
-  // (sólo hasta hoy — el futuro va en el gráfico, no en la tabla).
-  const realDates = data.filter(d => d[linepackKey] != null).map(d => d.fecha)
+  // Toma las fechas con dato real o estimaciones
+  const realDates = data.filter(d => (d as any)[linepackKey] != null || (d as any).linepack_tgs_dia_actual != null).map(d => d.fecha)
   const estDates = [...(estByDate?.keys() ?? [])].filter(f => f <= today)
   const last6 = [...new Set([...realDates, ...estDates])].sort().slice(-6)
 
-  // Límites: del último día real disponible (los est-only no los traen).
-  const lastRealRow = [...data].reverse().find(d => d[limInfKey] != null)
-  const limInf = (lastRealRow?.[limInfKey] ?? null) as number | null
-  const limSup = (lastRealRow?.[limSupKey] ?? null) as number | null
+  // Obtiene los límites inferior y superior
+  const lastRealRow = [...data].reverse().find(d => (d as any)[limInfKey] != null || (d as any).lim_inf_tgs != null)
+  const limInf = ((lastRealRow as any)?.[limInfKey] ?? (lastRealRow as any)?.lim_inf_tgs ?? 215) as number | null
+  const limSup = ((lastRealRow as any)?.[limSupKey] ?? (lastRealRow as any)?.lim_sup_tgs ?? 235) as number | null
 
   return (
     <div style={{ ...s.panel, borderTop: `3px solid ${color}` }}>
@@ -71,16 +66,23 @@ export default function SystemPanel({ title, color, data, linepackKey, varKey, l
         </thead>
         <tbody>
           {last6.map((fecha, i) => {
-            const row = byDate.get(fecha)
-            const real = (row?.[linepackKey] ?? null) as number | null
+            const row = byDate.get(fecha) ?? {}
+            
+            // Soporte fallback para claves de TGS nuevas vs viejas
+            const real = (row[linepackKey] ?? row.linepack_tgs_dia_actual ?? null) as number | null
             const est = estByDate?.get(fecha) ?? null
             const val = real ?? est
             const isEst = real == null && est != null
-            const varVal = (row?.[varKey] ?? null) as number | null
-            const estadoVal = estadoKey ? ((row?.[estadoKey] ?? null) as string | null) : null
-            // En días estimados no inventamos estado/var: sólo el nivel.
+
+            // Variación: Lee varKey o 'linepack_tgs_variacion'
+            const varVal = (row[varKey] ?? row.linepack_tgs_variacion ?? null) as number | null
+
+            // Estado: Lee estadoKey o la propiedad 'estado' de TGS
+            const estadoVal = (estadoKey ? row[estadoKey] : (row.estado ?? null)) as string | null
+
             const st = isEst ? null : (estadoVal ? s.estadoBadge(estadoVal) : s.status(val, limInf, limSup))
             const isLast = i === last6.length - 1
+
             return (
               <tr key={fecha} style={{ background: isLast ? '#0f172a' : 'transparent' }}>
                 <td style={{ ...s.td, color: '#e2e8f0', fontWeight: isLast ? 700 : 400 }}>
