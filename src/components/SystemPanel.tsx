@@ -37,39 +37,30 @@ function fmtDate(d: string) {
 }
 
 export default function SystemPanel({ title, color, data, linepackKey, varKey, limInfKey, limSupKey, estadoKey, estByDate }: Props) {
-  // LOG DE DEPURACIÓN EN CONSOLA
-  if (data && data.length > 0) {
-    console.log(`[DEBUG - ${title}] Props recibidas:`, {
-      linepackKey,
-      varKey,
-      limInfKey,
-      limSupKey,
-      estadoKey,
-      ultimoRegistroData: data[data.length - 1]
-    })
-  }
+  // 1. Filtrar únicamente filas que tengan valor real de linepack (no nulo)
+  const rowsWithRealLinepack = data.filter(d => {
+    const val = (d as any)[linepackKey] ?? (d as any).linepack_tgs ?? (d as any).linepack_tgs_dia_actual
+    return val !== undefined && val !== null
+  })
 
-  // 1. Filtrar registros con dato real
-  const rowsWithRealData = data.filter(
-    d => (d as any)[linepackKey] != null || (d as any).linepack_tgs_dia_actual != null || (d as any).linepack_tgs != null
-  )
-
-  // 2. Determinar dinámicamente la última fecha real disponible
-  const maxRealDate = rowsWithRealData.length > 0
-    ? rowsWithRealData.reduce((max, d) => (d.fecha > max ? d.fecha : max), rowsWithRealData[0].fecha)
+  // 2. Determinar la última fecha con dato real efectivo
+  const maxRealDate = rowsWithRealLinepack.length > 0
+    ? rowsWithRealLinepack.reduce((max, d) => (d.fecha > max ? d.fecha : max), rowsWithRealLinepack[0].fecha)
     : new Date().toISOString().slice(0, 10)
 
-  // 3. Filtrar datos hasta esa fecha
+  // 3. Quedarnos únicamente con datos hasta esa fecha máxima real
   const validData = data.filter(d => d.fecha && d.fecha <= maxRealDate)
 
   const byDate = new Map<string, any>()
   for (const d of validData) if (d.fecha) byDate.set(d.fecha, d)
 
-  const realDates = validData.map(d => d.fecha)
+  const realDates = rowsWithRealLinepack.map(d => d.fecha).filter(f => f <= maxRealDate)
   const estDates = [...(estByDate?.keys() ?? [])].filter(f => f <= maxRealDate)
 
+  // Tomar los últimos 6 días con datos reales
   const last6 = [...new Set([...realDates, ...estDates])].sort().slice(-6)
 
+  // Obtener límites
   const lastRealRow = [...validData].reverse().find(d => (d as any)[limInfKey] != null || (d as any).lim_inf_tgs != null)
   const limInf = ((lastRealRow as any)?.[limInfKey] ?? (lastRealRow as any)?.lim_inf_tgs ?? 215) as number | null
   const limSup = ((lastRealRow as any)?.[limSupKey] ?? (lastRealRow as any)?.lim_sup_tgs ?? 235) as number | null
@@ -90,13 +81,13 @@ export default function SystemPanel({ title, color, data, linepackKey, varKey, l
           {last6.map((fecha, i) => {
             const row = byDate.get(fecha) ?? {}
             
-            // Búsqueda exhaustiva de Linepack
+            // Extracción de Linepack
             const real = (row[linepackKey] ?? row.linepack_tgs ?? row.linepack_tgs_dia_actual ?? row.linepack_tgn ?? null) as number | null
             const est = estByDate?.get(fecha) ?? null
             const val = real ?? est
             const isEst = real == null && est != null
 
-            // Búsqueda exhaustiva de Variación
+            // Extracción exhaustiva de Variación
             const varVal = (
               row[varKey] ?? 
               row.linepack_tgs_variacion ?? 
@@ -107,7 +98,7 @@ export default function SystemPanel({ title, color, data, linepackKey, varKey, l
               null
             ) as number | null
 
-            // Búsqueda exhaustiva de Estado
+            // Extracción exhaustiva de Estado
             const estadoVal = (
               (estadoKey ? row[estadoKey] : null) ?? 
               row.estado ?? 
