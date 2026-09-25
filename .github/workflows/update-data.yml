@@ -66,15 +66,15 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
           git add public/data/
           if git diff --staged --quiet; then
-            echo "No data changes to commit"
-          else
             git commit -m "Auto-update data $(date -u +%Y-%m-%d)"
-            # The tgn-update workflow can push to master concurrently (its
-            # 12:45 UTC run overlaps this 13:00 one), so rebase before pushing.
-            git pull --rebase origin main || git rebase --abort
-            git push
+            # Intento de push seguro con rebase autoresuelto
+            git pull --rebase -X ours origin main || (git rebase --abort && git pull --no-rebase origin main -s recursive -X ours)
+            git push origin main
+          else
+            echo "No data changes to commit"
           fi
 
       - name: Deploy to GitHub Pages
