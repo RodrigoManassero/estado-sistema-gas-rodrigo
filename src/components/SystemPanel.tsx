@@ -22,7 +22,6 @@ const s = {
     if (val > sup) return { color: '#f59e0b', label: 'ALTO' }
     return { color: '#10b981', label: 'NORMAL' }
   },
-  // Estado reportado por el sistema. ALERTA = ámbar, CRÍTICO/EMERGENCIA = rojo
   estadoBadge: (estado: string) => {
     const up = estado.toUpperCase()
     if (up.includes('ALERTA')) return { color: '#f59e0b', label: 'ALERTA' }
@@ -38,17 +37,30 @@ function fmtDate(d: string) {
 }
 
 export default function SystemPanel({ title, color, data, linepackKey, varKey, limInfKey, limSupKey, estadoKey, estByDate }: Props) {
-  const byDate = new Map<string, any>()
-  for (const d of data) if (d.fecha) byDate.set(d.fecha, d)
-  const today = new Date().toISOString().slice(0, 10)
+  // 1. Filtrar registros que tengan dato real en el JSON
+  const rowsWithRealData = data.filter(
+    d => (d as any)[linepackKey] != null || (d as any).linepack_tgs_dia_actual != null
+  )
 
-  // Toma las fechas con dato real o estimaciones
-  const realDates = data.filter(d => (d as any)[linepackKey] != null || (d as any).linepack_tgs_dia_actual != null).map(d => d.fecha)
-  const estDates = [...(estByDate?.keys() ?? [])].filter(f => f <= today)
+  // 2. Determinar dinámicamente la última fecha real disponible
+  const maxRealDate = rowsWithRealData.length > 0
+    ? rowsWithRealData.reduce((max, d) => (d.fecha > max ? d.fecha : max), rowsWithRealData[0].fecha)
+    : new Date().toISOString().slice(0, 10)
+
+  // 3. Filtrar los datos hasta esa fecha máxima real
+  const validData = data.filter(d => d.fecha && d.fecha <= maxRealDate)
+
+  const byDate = new Map<string, any>()
+  for (const d of validData) if (d.fecha) byDate.set(d.fecha, d)
+
+  const realDates = validData.map(d => d.fecha)
+  const estDates = [...(estByDate?.keys() ?? [])].filter(f => f <= maxRealDate)
+
+  // Tomar los últimos 6 días con datos reales/válidos
   const last6 = [...new Set([...realDates, ...estDates])].sort().slice(-6)
 
-  // Obtiene los límites inferior y superior
-  const lastRealRow = [...data].reverse().find(d => (d as any)[limInfKey] != null || (d as any).lim_inf_tgs != null)
+  // Obtener límites del último registro real
+  const lastRealRow = [...validData].reverse().find(d => (d as any)[limInfKey] != null || (d as any).lim_inf_tgs != null)
   const limInf = ((lastRealRow as any)?.[limInfKey] ?? (lastRealRow as any)?.lim_inf_tgs ?? 215) as number | null
   const limSup = ((lastRealRow as any)?.[limSupKey] ?? (lastRealRow as any)?.lim_sup_tgs ?? 235) as number | null
 
@@ -68,16 +80,12 @@ export default function SystemPanel({ title, color, data, linepackKey, varKey, l
           {last6.map((fecha, i) => {
             const row = byDate.get(fecha) ?? {}
             
-            // Soporte fallback para claves de TGS nuevas vs viejas
             const real = (row[linepackKey] ?? row.linepack_tgs_dia_actual ?? null) as number | null
             const est = estByDate?.get(fecha) ?? null
             const val = real ?? est
             const isEst = real == null && est != null
 
-            // Variación: Lee varKey o 'linepack_tgs_variacion'
             const varVal = (row[varKey] ?? row.linepack_tgs_variacion ?? null) as number | null
-
-            // Estado: Lee estadoKey o la propiedad 'estado' de TGS
             const estadoVal = (estadoKey ? row[estadoKey] : (row.estado ?? null)) as string | null
 
             const st = isEst ? null : (estadoVal ? s.estadoBadge(estadoVal) : s.status(val, limInf, limSup))
