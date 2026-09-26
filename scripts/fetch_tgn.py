@@ -9,8 +9,9 @@ from bs4 import BeautifulSoup
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
-BASE_URL = "https://www.tgn.com.ar"  # Reemplazar con la URL base o endpoint exacto de ABII
-SYSTEM_STATE_ENDPOINT = "/ABII/Reportes/EstadoSistema" # Ajustar según el endpoint real
+# URL base corregida con doble 'i' (abii)
+BASE_URL = "https://abii.tgn.com.ar"
+SYSTEM_STATE_ENDPOINT = "/ABII/Reportes/EstadoSistema"  # Ajustar si el endpoint exacto varía
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -54,7 +55,6 @@ def _parse_table_by_caption(soup: BeautifulSoup, caption_keyword: str) -> Dict[s
     data = {}
     target_table = None
 
-    # Buscar por caption o por celdas con el título de la sección
     for caption in soup.find_all(["caption", "td", "th", "div"]):
         if caption_keyword.lower() in caption.get_text().lower():
             parent_table = caption.find_parent("table")
@@ -65,7 +65,6 @@ def _parse_table_by_caption(soup: BeautifulSoup, caption_keyword: str) -> Dict[s
     if not target_table:
         return data
 
-    # Extraer encabezados limpiando saltos <br>
     headers = []
     header_row = target_table.find("tr")
     if header_row:
@@ -74,7 +73,6 @@ def _parse_table_by_caption(soup: BeautifulSoup, caption_keyword: str) -> Dict[s
             text = re.sub(r"\s+", " ", text)
             headers.append(text)
 
-    # Extraer la primera fila de datos relevante
     for tr in target_table.find_all("tr")[1:]:
         cols = tr.find_all("td")
         if len(cols) == len(headers) and len(cols) > 0:
@@ -110,7 +108,6 @@ def _scrape_system_state_day(session: requests.Session, target_date: datetime.da
     if not linepack_raw and not status_raw:
         return None
 
-    # Normalización de clave de fecha
     raw_date = linepack_raw.get("Día Operativo") or status_raw.get("Día Operativo") or date_str
     formatted_date = _iso_date(raw_date)
 
@@ -118,7 +115,7 @@ def _scrape_system_state_day(session: requests.Session, target_date: datetime.da
     equilibrio = _to_float(linepack_raw.get("Equilibrio"))
     desbalance = _to_float(linepack_raw.get("Desbalance del sistema"))
 
-    # Sentinel Check: Si es un día aún no cerrado donde Actual == Equilibrio y Desbalance es 0
+    # Descartar días no cerrados / valores sentinel
     if actual is not None and equilibrio is not None and actual == equilibrio and desbalance == 0:
         logging.info(f"Día {formatted_date} descartado por ser valor provisional / sentinel.")
         return None
@@ -148,19 +145,21 @@ def fetch_system_state(days_back: int = 7) -> List[Dict[str, Any]]:
         if record:
             results.append(record)
 
-    # Ordenar cronológicamente (de más antiguo a más reciente)
     results.sort(key=lambda x: x["fecha"])
     return results
 
-def save_json(data: List[Dict[str, Any]], filename: str = "tgn_system_state.json"):
+def save_json(data: List[Dict[str, Any]], filepath: str = "public/data/tgn_system_state.json"):
+    # Asegurar que el directorio de destino exista
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    
     payload = {
         "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "source": "TGN - Estado del Sistema",
         "data": data
     }
-    with open(filename, "w", encoding="utf-8") as f:
+    with open(filepath, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
-    logging.info(f"Archivo {filename} actualizado exitosamente con {len(data)} registros.")
+    logging.info(f"Archivo {filepath} actualizado exitosamente con {len(data)} registros.")
 
 if __name__ == "__main__":
     records = fetch_system_state(days_back=5)
