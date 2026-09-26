@@ -15,7 +15,7 @@ from datetime import datetime, timezone, timedelta
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _meta import write_json, write_csv, json_to_csv_path  # noqa: E402
 
-SYSTEM_STATE_DAYS_BACK = 30
+SYSTEM_STATE_DAYS_BACK = 4
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 RAW_DIR = os.path.join(ROOT, 'raw')
