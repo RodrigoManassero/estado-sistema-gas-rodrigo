@@ -910,7 +910,7 @@
       "Desbalance del sistema": "-2213130",
       "Desbalance porcentual": "-2.44",
       "fecha": "2026-08-07",
-      "Estado": "NORMAL"
+      "Estado": "ALERTA"
     },
     {
       "Día Operativo": "Sat Aug 08 00:00:00 ART 2026",
@@ -919,7 +919,7 @@
       "Desbalance del sistema": "-2605430",
       "Desbalance porcentual": "-2.88",
       "fecha": "2026-08-08",
-      "Estado": "NORMAL"
+      "Estado": "ALERTA"
     },
     {
       "Día Operativo": "Sun Aug 09 00:00:00 ART 2026",
@@ -928,7 +928,7 @@
       "Desbalance del sistema": "-2280200",
       "Desbalance porcentual": "-2.52",
       "fecha": "2026-08-09",
-      "Estado": "NORMAL"
+      "Estado": "ALERTA"
     },
     {
       "Día Operativo": "Mon Aug 10 00:00:00 ART 2026",
@@ -973,7 +973,7 @@
       "Desbalance del sistema": "16626460",
       "Desbalance porcentual": "18.35",
       "fecha": "2026-08-14",
-      "Estado": "NORMAL"
+      "Estado": "ALERTA"
     },
     {
       "Día Operativo": "Sat Aug 15 00:00:00 ART 2026",
@@ -982,7 +982,7 @@
       "Desbalance del sistema": "12363334",
       "Desbalance porcentual": "13.65",
       "fecha": "2026-08-15",
-      "Estado": "NORMAL"
+      "Estado": "ALERTA"
     },
     {
       "Día Operativo": "Sun Aug 16 00:00:00 ART 2026",
@@ -991,7 +991,7 @@
       "Desbalance del sistema": "4860940",
       "Desbalance porcentual": "5.37",
       "fecha": "2026-08-16",
-      "Estado": "NORMAL"
+      "Estado": "ALERTA"
     },
     {
       "Día Operativo": "Mon Aug 17 00:00:00 ART 2026",
@@ -1000,7 +1000,7 @@
       "Desbalance del sistema": "4847640",
       "Desbalance porcentual": "5.35",
       "fecha": "2026-08-17",
-      "Estado": "NORMAL"
+      "Estado": "ALERTA"
     },
     {
       "Día Operativo": "Tue Aug 18 00:00:00 ART 2026",
