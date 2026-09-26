@@ -84,6 +84,9 @@ def main():
         'combustible',
         'ajuste',
         'origen_dato',
+        'estado',            # 👈 Mapeo directo para TGS
+        'estado_tgs',        # 👈 Compatibilidad
+        'var_linepack_tgs',  # 👈 Variación explícita
         'estado_tgn',
         'cammesa_gas_est',
         'cammesa_gasoil_est',
@@ -300,16 +303,30 @@ def main():
             row['linepack_total'] = fill(row['linepack_total'], r.get('linepack_total'))
             row['origen_dato'] = 'PS_REAL'
 
-    # Datos adicionales de CAMMESA y TGN
+    # -------------------------------------------------------------
+    # DATOS ADICIONALES DE TGS (desde etgs.json) Y CAMMESA
+    # -------------------------------------------------------------
     for r in etgs:
         f_clean = clean_fecha(r.get('fecha'))
         row = row_for(f_clean)
         if row:
-            lp = r.get('linepack_tgs_dia_actual')
+            # Linepack
+            lp = r.get('linepack_tgs_dia_actual') or r.get('linepack')
             if lp is not None and f_clean not in hist_dates:
                 row['linepack_tgs'] = lp
             else:
                 row['linepack_tgs'] = fill(row['linepack_tgs'], lp)
+
+            # Variación
+            var_lp = r.get('linepack_tgs_variacion') or r.get('variacion')
+            if var_lp is not None:
+                row['var_linepack_tgs'] = fill(row.get('var_linepack_tgs'), var_lp)
+
+            # Estado del Sistema (ALERTA / NORMAL / etc.)
+            est = r.get('estado') or r.get('estado_sistema') or r.get('estado_tgs')
+            if est:
+                row['estado'] = est
+                row['estado_tgs'] = est
 
     for r in ppo:
         row = row_for(r.get('fecha'))
