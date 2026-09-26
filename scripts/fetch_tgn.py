@@ -51,54 +51,20 @@ def _is_sentinel(rec):
     return bool(a) and a == e and d in ('0', '0.0', '')
 
 
-def _load_existing_state():
-    out_path = os.path.join(OUT_DIR, 'tgn_system_state.json')
-    fechas, sentinels = set(), set()
-    if not os.path.exists(out_path):
-        return fechas, sentinels
-    try:
-        with open(out_path, encoding='utf-8') as f:
-            payload = json.load(f)
-    except (OSError, json.JSONDecodeError):
-        return fechas, sentinels
-    for r in (payload.get('data') or []):
-        fecha = r.get('fecha')
-        if not fecha:
-            continue
-        fechas.add(fecha)
-        if _is_sentinel(r):
-            sentinels.add(fecha)
-    return fechas, sentinels
-
-
 def scrape_system_state(page):
     today = datetime.now(timezone.utc).date()
-    today_iso = today.isoformat()
-    existing, sentinels = _load_existing_state()
-
-    all_rows = []
-    headers = []
+    desde_date = today - timedelta(days=SYSTEM_STATE_DAYS_BACK)
     
-    desde_str = (today - timedelta(days=SYSTEM_STATE_DAYS_BACK)).strftime('%d/%m/%Y')
+    desde_str = desde_date.strftime('%d/%m/%Y')
     hasta_str = today.strftime('%d/%m/%Y')
 
-    for n in range(SYSTEM_STATE_DAYS_BACK + 1):
-        day = today - timedelta(days=n)
-        iso = day.isoformat()
-        if iso != today_iso and iso in existing and iso not in sentinels:
-            continue
-        day_str = day.strftime('%d/%m/%Y')
-        rows, day_headers = _scrape_system_state_day(page, day_str)
-        if day_headers and not headers:
-            headers = day_headers
-        all_rows.extend(rows)
+    print(f'fetch_tgn: fetching range {desde_str} to {hasta_str}')
+    rows, headers = _scrape_system_state_range(page, desde_str, hasta_str)
 
-    _save_system_state(all_rows, desde_str, hasta_str, headers)
+    _save_system_state(rows, desde_str, hasta_str, headers)
 
 
-def _scrape_system_state_day(page, day_str):
-    print(f'fetch_tgn: system_state day {day_str}')
-
+def _scrape_system_state_range(page, desde_str, hasta_str):
     try:
         page.goto(BASE_URL + SYSTEM_STATE_PATH, wait_until='networkidle', timeout=30000)
     except Exception as e:
@@ -116,8 +82,8 @@ def _scrape_system_state_day(page, day_str):
         return [], []
 
     for fid, value in [
-        ('formulario:report_fecha_desde_id_input', day_str),
-        ('formulario:report_fecha_hasta_id_input', day_str),
+        ('formulario:report_fecha_desde_id_input', desde_str),
+        ('formulario:report_fecha_hasta_id_input', hasta_str),
     ]:
         try:
             page.fill(f'input[id="{fid}"]', value)
@@ -182,7 +148,7 @@ def _scrape_system_state_day(page, day_str):
                 
                 const headers = matrix[0].map(x => x.toLowerCase());
 
-                // 1. Extraer Estado de la tabla secundaria (index 1)
+                // Extraer Estado de la tabla de Estado del Sistema (index 1)
                 if (headers.some(x => x.includes('estado'))) {
                     const statusIdx = headers.findIndex(x => x.includes('estado'));
                     for (let i = 1; i < matrix.length; i++) {
@@ -197,7 +163,7 @@ def _scrape_system_state_day(page, day_str):
                     }
                 }
 
-                // 2. Extraer Tabla Principal de Linepack (index 0)
+                // Extraer Tabla Principal de Linepack (index 0)
                 if (headers.some(x => x.includes('actual') || x.includes('linepack')) && mainMatrix.length === 0) {
                     mainMatrix = matrix;
                 }
@@ -228,6 +194,7 @@ def _scrape_system_state_day(page, day_str):
         raw_date = record.get('Día Operativo') or record.get('Día\nOperativo') or list(record.values())[0]
         iso_date = _iso_date(raw_date)
         
+        # Mapea el estado capturado para esa fecha ISO
         record['Estado'] = status_map.get(iso_date, 'NORMAL')
         data_rows.append(record)
         
@@ -259,7 +226,7 @@ def _save_system_state(rows, desde, hasta, headers):
     def _clean(s):
         return re.sub(r'\s+', ' ', str(s).replace('<br>', ' ')).strip()
 
-    # 1. Limpiar y forzar la clave 'Estado' en los registros de la ejecución actual
+    # 1. Limpiar los registros recién scrapeados
     cleaned = []
     for r in rows:
         record = {_clean(k): v for k, v in r.items()}
@@ -267,7 +234,7 @@ def _save_system_state(rows, desde, hasta, headers):
         record['Estado'] = str(r.get('Estado') or 'NORMAL').strip()
         cleaned.append(record)
 
-    # 2. Cargar registros previos guardados en disco
+    # 2. Cargar registros existentes en el archivo
     existing = []
     if os.path.exists(out_path):
         try:
@@ -279,16 +246,13 @@ def _save_system_state(rows, desde, hasta, headers):
         except (OSError, json.JSONDecodeError):
             existing = []
 
-    # 3. Normalizar registros históricos agregando la propiedad 'Estado' si faltara
     merged = {}
     for r in existing:
         f_iso = r.get('fecha')
         if f_iso and not _is_sentinel(r):
-            if 'Estado' not in r or not r['Estado']:
-                r['Estado'] = 'NORMAL'
             merged[f_iso] = r
 
-    # 4. Actualizar/sobreescribir con las filas más recientes
+    # 3. Sobrescribir con los datos recién extraídos (los datos frescos reemplazan los valores viejos)
     for r in cleaned:
         f_iso = r.get('fecha')
         if f_iso and not _is_sentinel(r):
@@ -296,7 +260,6 @@ def _save_system_state(rows, desde, hasta, headers):
             
     final_rows = sorted(merged.values(), key=lambda r: r.get('fecha') or '')
 
-    # 5. Asegurar headers
     headers = [_clean(h) for h in headers]
     if 'Estado' not in headers:
         headers.append('Estado')
