@@ -79,6 +79,7 @@ def scrape_system_state(page):
     all_rows = []
     headers = []
     
+    # Rango total que abarca la ventana de 30 días para registrar en los metadatos
     desde_str = (today - timedelta(days=SYSTEM_STATE_DAYS_BACK)).strftime('%d/%m/%Y')
     hasta_str = today.strftime('%d/%m/%Y')
 
@@ -146,7 +147,7 @@ def _scrape_system_state_day(page, day_str):
                 const p = document.getElementById('formulario:panelGrilla');
                 if (!p) return false;
                 const tbls = p.querySelectorAll('table');
-                return tbls && tbls.length >= 1 && tbls[0].rows.length >= 2;
+                return tbls && tbls.length >= 2 && tbls[0].rows.length >= 1;
             }""",
             timeout=60000,
         )
@@ -154,32 +155,79 @@ def _scrape_system_state_day(page, day_str):
         print(f'fetch_tgn: panelGrilla never populated: {e}', file=sys.stderr)
         return [], []
 
-    # --- BLOQUE DE DIAGNÓSTICO / DEBUG ---
-    os.makedirs(RAW_DIR, exist_ok=True)
-    try:
-        html_content = page.inner_html('div[id="formulario:panelGrilla"]')
-        with open(os.path.join(RAW_DIR, 'debug_panel_grilla.html'), 'w', encoding='utf-8') as f:
-            f.write(html_content)
-        print("DEBUG: Guardado raw/debug_panel_grilla.html")
+    result = page.eval_on_selector(
+        'div[id="formulario:panelGrilla"]',
+        """p => {
+            const tables = Array.from(p.querySelectorAll('table'));
+            let mainMatrix = [];
+            let statusMap = {};
 
-        debug_info = page.evaluate(
-            """() => {
-                const p = document.getElementById('formulario:panelGrilla');
-                const allTables = Array.from(p.querySelectorAll('table')).map((t, idx) => {
-                    const headers = Array.from(t.rows[0]?.cells || []).map(c => c.textContent.trim());
-                    return { idx, rowsCount: t.rows.length, headers };
-                });
-                const allPanels = Array.from(document.querySelectorAll('div[id*="panel"], div[id*="Grilla"]')).map(d => d.id);
-                return { allTables, allPanels };
-            }"""
-        )
-        print("DEBUG TABLES:", json.dumps(debug_info['allTables'], indent=2))
-        print("DEBUG PANELS:", json.dumps(debug_info['allPanels'], indent=2))
-    except Exception as e:
-        print(f'fetch_tgn: debug block failed: {e}', file=sys.stderr)
-    # ------------------------------------
+            const parseTable = (t) => Array.from(t.rows).map(r =>
+                Array.from(r.cells).map(c => (c.textContent || '').replace(/\\s+/g, ' ').trim())
+            );
 
-    return [], []
+            // 1. Extraer Estado de la Tabla con índice 1
+            if (tables.length > 1) {
+                const stateMatrix = parseTable(tables[1]);
+                if (stateMatrix.length >= 2) {
+                    const h = stateMatrix[0].map(x => x.toLowerCase());
+                    const dateIdx = h.findIndex(x => x.includes('día') || x.includes('dia') || x.includes('fecha'));
+                    const statusIdx = h.findIndex(x => x.includes('estado'));
+                    
+                    for (let i = 1; i < stateMatrix.length; i++) {
+                        const row = stateMatrix[i];
+                        const dateVal = dateIdx !== -1 ? row[dateIdx] : 'default';
+                        const statusVal = statusIdx !== -1 ? row[statusIdx] : '';
+                        if (statusVal) {
+                            statusMap[dateVal] = statusVal;
+                            if (!statusMap['DEFAULT']) statusMap['DEFAULT'] = statusVal;
+                        }
+                    }
+                }
+            }
+
+            // 2. Extraer datos numéricos de Linepack (Buscamos la tabla que contenga "Actual")
+            for (const t of tables) {
+                const matrix = parseTable(t);
+                if (matrix.length < 2) continue;
+                const headers = matrix[0].map(x => x.toLowerCase());
+                if (headers.some(x => x.includes('actual') || x.includes('linepack'))) {
+                    mainMatrix = matrix;
+                    break;
+                }
+            }
+
+            if (mainMatrix.length === 0 && tables.length > 0) {
+                mainMatrix = parseTable(tables[0]);
+            }
+
+            return {
+                rows: mainMatrix,
+                statusMap: statusMap
+            };
+        }"""
+    )
+    
+    rows = result.get('rows') or []
+    status_map = result.get('statusMap') or {}
+    headers = rows[0] if rows else []
+
+    data_rows = []
+    for r in rows[1:]:
+        record = {headers[i] if i < len(headers) else f'col_{i}': r[i]
+                  for i in range(len(r))}
+        
+        # Cruzar estado por fecha o usar el valor detectado por defecto
+        estado = status_map.get('DEFAULT', 'NORMAL')
+        for key, val in status_map.items():
+            if key != 'DEFAULT' and key in str(record.get('Día Operativo', '')):
+                estado = val
+                break
+
+        record['Estado'] = estado
+        data_rows.append(record)
+        
+    return data_rows, headers
 
 
 _MONTHS = {
