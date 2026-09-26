@@ -78,25 +78,23 @@ def scrape_system_state(page):
 
     all_rows = []
     headers = []
-    last_desde = last_hasta = ''
+    
+    # Rango total que abarca la ventana de 30 días para registrar en los metadatos
+    desde_str = (today - timedelta(days=SYSTEM_STATE_DAYS_BACK)).strftime('%d/%m/%Y')
+    hasta_str = today.strftime('%d/%m/%Y')
+
     for n in range(SYSTEM_STATE_DAYS_BACK + 1):
         day = today - timedelta(days=n)
         iso = day.isoformat()
         if iso != today_iso and iso in existing and iso not in sentinels:
             continue
         day_str = day.strftime('%d/%m/%Y')
-        last_desde = last_hasta = day_str
         rows, day_headers = _scrape_system_state_day(page, day_str)
         if day_headers and not headers:
             headers = day_headers
         all_rows.extend(rows)
 
-    if not last_desde:
-        print('fetch_tgn: system_state — nothing to fetch (cache up to date)')
-        _save_system_state([], today.strftime('%d/%m/%Y'),
-                            today.strftime('%d/%m/%Y'), headers)
-        return
-    _save_system_state(all_rows, last_desde, last_hasta, headers)
+    _save_system_state(all_rows, desde_str, hasta_str, headers)
 
 
 def _scrape_system_state_day(page, day_str):
