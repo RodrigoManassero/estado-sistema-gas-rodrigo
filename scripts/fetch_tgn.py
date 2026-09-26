@@ -127,11 +127,18 @@ def _scrape_system_state_range(page, desde_str, hasta_str):
             
             const toIso = (strVal) => {
                 if (!strVal) return '';
-                const m1 = strVal.match(/(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})/);
-                if (m1) return `${m1[3]}-${m1[2].padStart(2,'0')}-${m1[1].padStart(2,'0')}`;
-                const m2 = strVal.match(/^\\w+\\s+(\\w+)\\s+(\\d{1,2})\\s+.*\\s+(\\d{4})$/);
-                if (m2 && months[m2[1]]) return `${m2[3]}-${String(months[m2[1]]).padStart(2,'0')}-${m2[2].padStart(2,'0')}`;
-                return strVal;
+                const s = strVal.trim();
+                // Parsea DD/MM/YYYY (ej: 14/09/2026 de la tabla de Estado)
+                const m1 = s.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})$/);
+                if (m1) {
+                    return `${m1[3]}-${m1[2].padStart(2,'0')}-${m1[1].padStart(2,'0')}`;
+                }
+                // Parsea Mon Sep 14 00:00:00 ART 2026 (de la tabla principal)
+                const m2 = s.match(/^\\w+\\s+(\\w+)\\s+(\\d{1,2})\\s+.*\\s+(\\d{4})$/);
+                if (m2 && months[m2[1]]) {
+                    return `${m2[3]}-${String(months[m2[1]]).padStart(2,'0')}-${m2[2].padStart(2,'0')}`;
+                }
+                return '';
             };
 
             const tables = Array.from(p.querySelectorAll('table'));
@@ -148,7 +155,7 @@ def _scrape_system_state_range(page, desde_str, hasta_str):
                 
                 const headers = matrix[0].map(x => x.toLowerCase());
 
-                // Extraer Estado de la tabla de Estado del Sistema (index 1)
+                // Mapeo de la tabla secundaria de Estado
                 if (headers.some(x => x.includes('estado'))) {
                     const statusIdx = headers.findIndex(x => x.includes('estado'));
                     for (let i = 1; i < matrix.length; i++) {
@@ -163,7 +170,7 @@ def _scrape_system_state_range(page, desde_str, hasta_str):
                     }
                 }
 
-                // Extraer Tabla Principal de Linepack (index 0)
+                // Mapeo de la tabla principal de Linepack
                 if (headers.some(x => x.includes('actual') || x.includes('linepack')) && mainMatrix.length === 0) {
                     mainMatrix = matrix;
                 }
@@ -194,7 +201,7 @@ def _scrape_system_state_range(page, desde_str, hasta_str):
         raw_date = record.get('Día Operativo') or record.get('Día\nOperativo') or list(record.values())[0]
         iso_date = _iso_date(raw_date)
         
-        # Mapea el estado capturado para esa fecha ISO
+        # Mapea el estado capturado correctamente desde statusMap
         record['Estado'] = status_map.get(iso_date, 'NORMAL')
         data_rows.append(record)
         
@@ -226,7 +233,6 @@ def _save_system_state(rows, desde, hasta, headers):
     def _clean(s):
         return re.sub(r'\s+', ' ', str(s).replace('<br>', ' ')).strip()
 
-    # 1. Limpiar los registros recién scrapeados
     cleaned = []
     for r in rows:
         record = {_clean(k): v for k, v in r.items()}
@@ -234,7 +240,6 @@ def _save_system_state(rows, desde, hasta, headers):
         record['Estado'] = str(r.get('Estado') or 'NORMAL').strip()
         cleaned.append(record)
 
-    # 2. Cargar registros existentes en el archivo
     existing = []
     if os.path.exists(out_path):
         try:
@@ -252,7 +257,7 @@ def _save_system_state(rows, desde, hasta, headers):
         if f_iso and not _is_sentinel(r):
             merged[f_iso] = r
 
-    # 3. Sobrescribir con los datos recién extraídos (los datos frescos reemplazan los valores viejos)
+    # Reemplaza siempre con los datos extraídos en la última corrida
     for r in cleaned:
         f_iso = r.get('fecha')
         if f_iso and not _is_sentinel(r):
