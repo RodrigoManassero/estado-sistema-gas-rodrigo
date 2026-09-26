@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-26T13:16:31+00:00",
+  "generated_at": "2026-09-26T16:26:56+00:00",
   "source": "Cascada 6 niveles: PS_REAL > RDS > PS_PROJ > CAMMESA_WEEKLY > MODELO > WEATHER_HISTORY",
   "source_date": "2026-10-04",
   "data": [
@@ -46345,11 +46345,11 @@
       "iny_bolivia": 0.0,
       "iny_escobar": 0.0,
       "iny_total": 113.6,
-      "linepack_tgs": null,
+      "linepack_tgs": 231.92,
       "var_linepack_tgs": null,
       "lim_inf_tgs": null,
       "lim_sup_tgs": null,
-      "linepack_tgn": null,
+      "linepack_tgn": 136.54,
       "var_linepack_tgn": null,
       "lim_inf_tgn": null,
       "lim_sup_tgn": null,
