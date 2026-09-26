@@ -27,7 +27,6 @@ LOGIN_PATH = 'pages/login.xhtml'
 PROBE_PATH = 'pages/home.xhtml'
 
 SYSTEM_STATE_PATH = 'pages/reports/system_state/system-state-report.xhtml'
-NOMINACIONES_PATH = 'pages/programacion/nominaciones/nominacion.xhtml'
 
 
 def env_credentials():
@@ -128,12 +127,10 @@ def _scrape_system_state_range(page, desde_str, hasta_str):
             const toIso = (strVal) => {
                 if (!strVal) return '';
                 const s = strVal.trim();
-                // Parsea DD/MM/YYYY (ej: 14/09/2026 de la tabla de Estado)
                 const m1 = s.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})$/);
                 if (m1) {
                     return `${m1[3]}-${m1[2].padStart(2,'0')}-${m1[1].padStart(2,'0')}`;
                 }
-                // Parsea Mon Sep 14 00:00:00 ART 2026 (de la tabla principal)
                 const m2 = s.match(/^\\w+\\s+(\\w+)\\s+(\\d{1,2})\\s+.*\\s+(\\d{4})$/);
                 if (m2 && months[m2[1]]) {
                     return `${m2[3]}-${String(months[m2[1]]).padStart(2,'0')}-${m2[2].padStart(2,'0')}`;
@@ -155,7 +152,6 @@ def _scrape_system_state_range(page, desde_str, hasta_str):
                 
                 const headers = matrix[0].map(x => x.toLowerCase());
 
-                // Mapeo de la tabla secundaria de Estado
                 if (headers.some(x => x.includes('estado'))) {
                     const statusIdx = headers.findIndex(x => x.includes('estado'));
                     for (let i = 1; i < matrix.length; i++) {
@@ -170,7 +166,6 @@ def _scrape_system_state_range(page, desde_str, hasta_str):
                     }
                 }
 
-                // Mapeo de la tabla principal de Linepack
                 if (headers.some(x => x.includes('actual') || x.includes('linepack')) && mainMatrix.length === 0) {
                     mainMatrix = matrix;
                 }
@@ -190,6 +185,11 @@ def _scrape_system_state_range(page, desde_str, hasta_str):
     rows = result.get('rows') or []
     status_map = result.get('statusMap') or {}
     
+    # === IMPRESIÓN DE DIAGNÓSTICO EN CONSOLA ===
+    print("\n--- DIAGNÓSTICO: MAPA DE ESTADOS CAPTURADO DIRECTAMENTE DEL DOM ---")
+    print(json.dumps(status_map, indent=2))
+    print("-------------------------------------------------------------------\n")
+
     raw_headers = rows[0] if rows else []
     headers = [re.sub(r'\s+', ' ', h).strip() for h in raw_headers]
 
@@ -201,8 +201,8 @@ def _scrape_system_state_range(page, desde_str, hasta_str):
         raw_date = record.get('Día Operativo') or record.get('Día\nOperativo') or list(record.values())[0]
         iso_date = _iso_date(raw_date)
         
-        # Mapea el estado capturado correctamente desde statusMap
-        record['Estado'] = status_map.get(iso_date, 'NORMAL')
+        # SIN FALLBACK DE 'NORMAL': Si no lo mapea, asigna explícitamente "NO_ENCONTRADO"
+        record['Estado'] = status_map.get(iso_date, 'NO_ENCONTRADO')
         data_rows.append(record)
         
     return data_rows, headers
@@ -237,7 +237,7 @@ def _save_system_state(rows, desde, hasta, headers):
     for r in rows:
         record = {_clean(k): v for k, v in r.items()}
         record['fecha'] = _iso_date(record.get('Día Operativo'))
-        record['Estado'] = str(r.get('Estado') or 'NORMAL').strip()
+        record['Estado'] = str(r.get('Estado') or 'NO_ENCONTRADO').strip()
         cleaned.append(record)
 
     existing = []
@@ -257,7 +257,6 @@ def _save_system_state(rows, desde, hasta, headers):
         if f_iso and not _is_sentinel(r):
             merged[f_iso] = r
 
-    # Reemplaza siempre con los datos extraídos en la última corrida
     for r in cleaned:
         f_iso = r.get('fecha')
         if f_iso and not _is_sentinel(r):
