@@ -228,6 +228,7 @@ def _scrape_system_state_day(page, day_str):
         raw_date = record.get('Día Operativo') or record.get('Día\nOperativo') or list(record.values())[0]
         iso_date = _iso_date(raw_date)
         
+        # Asignar explícitamente el estado al diccionario de la fila
         record['Estado'] = status_map.get(iso_date, 'NORMAL')
         data_rows.append(record)
         
@@ -259,18 +260,6 @@ def _save_system_state(rows, desde, hasta, headers):
     def _clean(s):
         return re.sub(r'\s+', ' ', str(s).replace('<br>', ' ')).strip()
 
-    cleaned = []
-    for r in rows:
-        record = {_clean(k): v for k, v in r.items()}
-        record['fecha'] = _iso_date(record.get('Día Operativo'))
-        if 'Estado' in r:
-            record['Estado'] = str(r['Estado']).strip()
-        cleaned.append(record)
-        
-    headers = [_clean(h) for h in headers]
-    if 'Estado' not in headers:
-        headers.append('Estado')
-
     existing = []
     if os.path.exists(out_path):
         try:
@@ -284,11 +273,26 @@ def _save_system_state(rows, desde, hasta, headers):
 
     merged = {r.get('fecha'): r for r in existing
               if r.get('fecha') and not _is_sentinel(r)}
+
+    # Forzar la inclusión explícita del campo 'Estado' en cada fila
+    cleaned = []
+    for r in rows:
+        record = {_clean(k): v for k, v in r.items()}
+        record['fecha'] = _iso_date(record.get('Día Operativo'))
+        record['Estado'] = str(r.get('Estado') or 'NORMAL').strip()
+        cleaned.append(record)
+
     for r in cleaned:
         if r.get('fecha') and not _is_sentinel(r):
+            # Preservar o actualizar el campo Estado en los registros combinados
             merged[r['fecha']] = r
             
     final_rows = sorted(merged.values(), key=lambda r: r.get('fecha') or '')
+
+    # Asegurar que 'Estado' esté en los headers exportados
+    headers = [_clean(h) for h in headers]
+    if 'Estado' not in headers:
+        headers.append('Estado')
 
     write_json(
         out_path,
