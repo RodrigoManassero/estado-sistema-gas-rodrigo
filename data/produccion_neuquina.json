@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-26T01:11:28+00:00",
+  "generated_at": "2026-09-26T13:15:16+00:00",
   "source": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
   "source_date": "2026-08",
   "data": [
@@ -45153,7 +45153,7 @@
       "empresa": "YPF S.A.",
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
-      "prod_gas_mm3": 6.51,
+      "prod_gas_mm3": 6.52,
       "prod_pet_m3": 39540.08,
       "prod_agua_m3": 55624.95,
       "pozos_activos": 22,
@@ -45358,7 +45358,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 3.6,
-      "prod_pet_m3": 81035.21,
+      "prod_pet_m3": 81035.22,
       "prod_agua_m3": 8859.08,
       "pozos_activos": 33,
       "pozos_no_conv": 42
