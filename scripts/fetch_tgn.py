@@ -79,7 +79,6 @@ def scrape_system_state(page):
     all_rows = []
     headers = []
     
-    # Rango total que abarca la ventana de 30 días para registrar en los metadatos
     desde_str = (today - timedelta(days=SYSTEM_STATE_DAYS_BACK)).strftime('%d/%m/%Y')
     hasta_str = today.strftime('%d/%m/%Y')
 
@@ -147,7 +146,7 @@ def _scrape_system_state_day(page, day_str):
                 const p = document.getElementById('formulario:panelGrilla');
                 if (!p) return false;
                 const tbls = p.querySelectorAll('table');
-                return tbls && tbls.length >= 2 && tbls[0].rows.length >= 1;
+                return tbls && tbls.length >= 1 && tbls[0].rows.length >= 2;
             }""",
             timeout=60000,
         )
@@ -158,6 +157,19 @@ def _scrape_system_state_day(page, day_str):
     result = page.eval_on_selector(
         'div[id="formulario:panelGrilla"]',
         """p => {
+            const months = { 'Jan':1, 'Feb':2, 'Mar':3, 'Apr':4, 'May':5, 'Jun':6, 'Jul':7, 'Aug':8, 'Sep':9, 'Oct':10, 'Nov':11, 'Dec':12 };
+            
+            const toIso = (strVal) => {
+                if (!strVal) return '';
+                // Parsea DD/MM/YYYY
+                const m1 = strVal.match(/(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})/);
+                if (m1) return `${m1[3]}-${m1[2].padStart(2,'0')}-${m1[1].padStart(2,'0')}`;
+                // Parsea formato de servidor: Tue Sep 22 00:00:00 ART 2026
+                const m2 = strVal.match(/^\\w+\\s+(\\w+)\\s+(\\d{1,2})\\s+.*\\s+(\\d{4})$/);
+                if (m2 && months[m2[1]]) return `${m2[3]}-${String(months[m2[1]]).padStart(2,'0')}-${m2[2].padStart(2,'0')}`;
+                return strVal;
+            };
+
             const tables = Array.from(p.querySelectorAll('table'));
             let mainMatrix = [];
             let statusMap = {};
@@ -166,34 +178,30 @@ def _scrape_system_state_day(page, day_str):
                 Array.from(r.cells).map(c => (c.textContent || '').replace(/\\s+/g, ' ').trim())
             );
 
-            // 1. Extraer Estado de la Tabla con índice 1
-            if (tables.length > 1) {
-                const stateMatrix = parseTable(tables[1]);
-                if (stateMatrix.length >= 2) {
-                    const h = stateMatrix[0].map(x => x.toLowerCase());
-                    const dateIdx = h.findIndex(x => x.includes('día') || x.includes('dia') || x.includes('fecha'));
-                    const statusIdx = h.findIndex(x => x.includes('estado'));
-                    
-                    for (let i = 1; i < stateMatrix.length; i++) {
-                        const row = stateMatrix[i];
-                        const dateVal = dateIdx !== -1 ? row[dateIdx] : 'default';
-                        const statusVal = statusIdx !== -1 ? row[statusIdx] : '';
-                        if (statusVal) {
-                            statusMap[dateVal] = statusVal;
-                            if (!statusMap['DEFAULT']) statusMap['DEFAULT'] = statusVal;
-                        }
-                    }
-                }
-            }
-
-            // 2. Extraer datos numéricos de Linepack (Buscamos la tabla que contenga "Actual")
             for (const t of tables) {
                 const matrix = parseTable(t);
                 if (matrix.length < 2) continue;
                 const headers = matrix[0].map(x => x.toLowerCase());
+
+                // Extrae tabla de Estado del Sistema
+                if (headers.some(x => x.includes('estado'))) {
+                    const dateIdx = headers.findIndex(x => x.includes('día') || x.includes('dia') || x.includes('fecha'));
+                    const statusIdx = headers.findIndex(x => x.includes('estado'));
+
+                    for (let i = 1; i < matrix.length; i++) {
+                        const row = matrix[i];
+                        if (row.length <= statusIdx) continue;
+                        const dateIso = dateIdx !== -1 ? toIso(row[dateIdx]) : '';
+                        const statusVal = row[statusIdx];
+                        if (dateIso && statusVal) {
+                            statusMap[dateIso] = statusVal;
+                        }
+                    }
+                }
+
+                // Extrae tabla principal de Linepack
                 if (headers.some(x => x.includes('actual') || x.includes('linepack'))) {
                     mainMatrix = matrix;
-                    break;
                 }
             }
 
@@ -217,14 +225,11 @@ def _scrape_system_state_day(page, day_str):
         record = {headers[i] if i < len(headers) else f'col_{i}': r[i]
                   for i in range(len(r))}
         
-        # Cruzar estado por fecha o usar el valor detectado por defecto
-        estado = status_map.get('DEFAULT', 'NORMAL')
-        for key, val in status_map.items():
-            if key != 'DEFAULT' and key in str(record.get('Día Operativo', '')):
-                estado = val
-                break
-
-        record['Estado'] = estado
+        raw_date = record.get('Día Operativo', '')
+        iso_date = _iso_date(raw_date)
+        
+        # Inyecta el estado correspondiente según la fecha ISO
+        record['Estado'] = status_map.get(iso_date, 'NORMAL')
         data_rows.append(record)
         
     return data_rows, headers
