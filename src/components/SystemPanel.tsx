@@ -24,9 +24,10 @@ const s = {
   },
   estadoBadge: (estado: string) => {
     const up = estado.toUpperCase()
-    if (up.includes('ALERTA')) return { color: '#f59e0b', label: 'ALERTA' }
+    if (up.includes('ALERT') || up.includes('ALERTA')) return { color: '#f59e0b', label: 'ALERTA' }
     if (up.includes('EMERG') || up.includes('CRÍT') || up.includes('CRIT')) return { color: '#ef4444', label: up }
-    return { color: '#10b981', label: 'NORMAL' }
+    if (up.includes('NORM')) return { color: '#10b981', label: 'NORMAL' }
+    return { color: '#10b981', label: up }
   },
 }
 
@@ -110,12 +111,12 @@ export default function SystemPanel({ title, color, data, linepackKey, varKey, l
               }
             }
 
-            // Extracción de Estado
+            // Extracción de Estado (Dando prioridad a las claves explícitas de estado de sistema)
             const estadoVal = (
-              (estadoKey ? row[estadoKey] : null) ?? 
-              row.estado ?? 
               row.estado_tgs ?? 
               row.estado_tgn ?? 
+              (estadoKey ? row[estadoKey] : null) ?? 
+              row.estado ?? 
               null
             ) as string | null
 
