@@ -148,8 +148,8 @@ def _scrape_system_state_day(page, day_str):
             """() => {
                 const p = document.getElementById('formulario:panelGrilla');
                 if (!p) return false;
-                const tbl = p.querySelector('table');
-                return tbl && tbl.rows.length >= 2;
+                const tbls = p.querySelectorAll('table');
+                return tbls && tbls.length >= 1 && tbls[0].rows.length >= 2;
             }""",
             timeout=60000,
         )
@@ -157,48 +157,41 @@ def _scrape_system_state_day(page, day_str):
         print(f'fetch_tgn: panelGrilla never populated: {e}', file=sys.stderr)
         return [], []
 
-    # Extraemos tanto la tabla principal como las secundarias o etiquetas de Estado
     result = page.eval_on_selector(
         'div[id="formulario:panelGrilla"]',
         """p => {
             const tables = Array.from(p.querySelectorAll('table'));
-            if (tables.length === 0) return { rows: [], estado: 'NORMAL' };
+            let mainRows = [];
+            let statusVal = 'NORMAL';
 
-            // Tabla 1: Datos de Linepack
-            const mainTable = tables[0];
-            const rows = Array.from(mainTable.rows).map(r =>
-                Array.from(r.cells).map(c => (c.textContent || '').trim())
+            const parseTable = (t) => Array.from(t.rows).map(r =>
+                Array.from(r.cells).map(c => (c.textContent || '').replace(/\\s+/g, ' ').trim())
             );
 
-            // Búsqueda de Estado en el panel o en tablas secundarias
-            let estado = 'NORMAL';
-            const textContent = p.textContent || '';
-            
-            if (tables.length > 1) {
-                // Si existe una segunda tabla con la grilla de "Estado del Sistema"
-                const secTable = tables[1];
-                const secRows = Array.from(secTable.rows).map(r =>
-                    Array.from(r.cells).map(c => (c.textContent || '').trim())
-                );
-                if (secRows.length > 1) {
-                    const headers = secRows[0].map(h => h.toLowerCase());
-                    const idx = headers.findIndex(h => h.includes('estado'));
-                    if (idx !== -1 && secRows[1][idx]) {
-                        estado = secRows[1][idx];
-                    }
+            for (const t of tables) {
+                const matrix = parseTable(t);
+                if (matrix.length < 2) continue;
+                
+                const headers = matrix[0].map(h => h.toLowerCase());
+                
+                if (headers.some(h => h.includes('actual') || h.includes('linepack') || h.includes('equilibrio'))) {
+                    mainRows = matrix;
                 }
-            } else {
-                // Búsqueda por heurística de texto/badges en caso de ser un texto flotante
-                const match = textContent.match(/Estado:\\s*([A-Za-zÁÉÍÓÚáéíóú]+)/i);
-                if (match && match[1]) {
-                    estado = match[1].trim();
+                if (headers.some(h => h.includes('estado'))) {
+                    const idx = headers.findIndex(h => h.includes('estado'));
+                    if (idx !== -1 && matrix[1] && matrix[1][idx]) {
+                        statusVal = matrix[1][idx];
+                    }
                 }
             }
 
+            if (mainRows.length === 0 && tables.length > 0) {
+                mainRows = parseTable(tables[0]);
+            }
+
             return {
-                id: mainTable.id,
-                rows: rows,
-                estado: estado
+                rows: mainRows,
+                estado: statusVal
             };
         }"""
     )
@@ -207,15 +200,13 @@ def _scrape_system_state_day(page, day_str):
     estado_sistema = result.get('estado') or 'NORMAL'
     headers = rows[0] if rows else []
     
-    print(f"fetch_tgn: system_state result table id={result.get('id')!r} "
-          f"{len(rows)} rows x {len(headers)} cols | estado={estado_sistema!r}")
+    print(f"fetch_tgn: system_state result {len(rows)} rows x {len(headers)} cols | Estado={estado_sistema!r}")
 
     data_rows = []
     for r in rows[1:]:
         record = {headers[i] if i < len(headers) else f'col_{i}': r[i]
                   for i in range(len(r))}
-        # Incorporamos la clave 'estado' en el objeto extraído
-        record['estado'] = estado_sistema
+        record['Estado'] = estado_sistema
         data_rows.append(record)
         
     return data_rows, headers
@@ -250,14 +241,13 @@ def _save_system_state(rows, desde, hasta, headers):
     for r in rows:
         record = {_clean(k): v for k, v in r.items()}
         record['fecha'] = _iso_date(record.get('Día Operativo'))
-        # Aseguramos que el atributo 'estado' se conserve limpio
-        if 'estado' in r:
-            record['estado'] = str(r['estado']).strip().upper()
+        if 'Estado' in r:
+            record['Estado'] = str(r['Estado']).strip()
         cleaned.append(record)
         
     headers = [_clean(h) for h in headers]
-    if 'estado' not in [h.lower() for h in headers]:
-        headers.append('estado')
+    if 'Estado' not in headers:
+        headers.append('Estado')
 
     existing = []
     if os.path.exists(out_path):
