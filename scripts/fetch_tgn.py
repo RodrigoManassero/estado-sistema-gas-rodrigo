@@ -154,40 +154,6 @@ def _scrape_system_state_day(page, day_str):
         print(f'fetch_tgn: panelGrilla never populated: {e}', file=sys.stderr)
         return [], []
 
-    # =========================================================================
-    # DIAGNÓSTICO DOM: VOLCADO DE HTML Y ESTRUCTURA DE TABLAS EN CONSOLA
-    # =========================================================================
-    try:
-        html_content = page.inner_html('div[id="formulario:panelGrilla"]')
-        debug_html_path = os.path.join(RAW_DIR, 'panel_grilla_debug.html')
-        os.makedirs(RAW_DIR, exist_ok=True)
-        with open(debug_html_path, 'w', encoding='utf-8') as f:
-            f.write(html_content)
-        print(f'fetch_tgn: [DEBUG] HTML completo guardado en: {debug_html_path}')
-
-        debug_structure = page.eval_on_selector(
-            'div[id="formulario:panelGrilla"]',
-            """p => {
-                const tables = Array.from(p.querySelectorAll('table'));
-                return tables.map((t, idx) => {
-                    const rows = Array.from(t.rows);
-                    return {
-                        index: idx,
-                        id: t.id || 'sin-id',
-                        class: t.className || '',
-                        rowCount: rows.length,
-                        headers: rows.length > 0 ? Array.from(rows[0].cells).map(c => c.textContent.trim().replace(/\\s+/g, ' ')) : [],
-                        sampleRow: rows.length > 1 ? Array.from(rows[1].cells).map(c => c.textContent.trim().replace(/\\s+/g, ' ')) : []
-                    };
-                });
-            }"""
-        )
-        print('fetch_tgn: [DEBUG] Estructura de tablas detectadas:')
-        print(json.dumps(debug_structure, indent=2, ensure_ascii=False))
-    except Exception as e:
-        print(f'fetch_tgn: [DEBUG] Error capturando estructura: {e}', file=sys.stderr)
-    # =========================================================================
-
     result = page.eval_on_selector(
         'div[id="formulario:panelGrilla"]',
         """p => {
@@ -207,37 +173,32 @@ def _scrape_system_state_day(page, day_str):
             let statusMap = {};
 
             const parseTable = (t) => Array.from(t.rows).map(r =>
-                Array.from(r.cells).map(c => (c.textContent || '').replace(/\\s+/g, ' ').trim())
+                Array.from(r.cells).map(c => (c.innerText || c.textContent || '').replace(/\\s+/g, ' ').trim())
             );
 
             for (const t of tables) {
                 const matrix = parseTable(t);
                 if (matrix.length < 2) continue;
                 
-                // Mapear todas las filas buscando referencias a Estado
-                for (let i = 0; i < matrix.length; i++) {
-                    const row = matrix[i];
-                    for (let j = 0; j < row.length; j++) {
-                        const cellText = row[j].toLowerCase();
-                        if (cellText === 'estado' || cellText.includes('estado')) {
-                            // Buscar valores en la misma columna de las siguientes filas
-                            for (let k = i + 1; k < matrix.length; k++) {
-                                const targetRow = matrix[k];
-                                if (targetRow.length > j) {
-                                    const rawDate = targetRow[0];
-                                    const isoDate = toIso(rawDate);
-                                    const statusVal = targetRow[j];
-                                    if (isoDate && statusVal) {
-                                        statusMap[isoDate] = statusVal;
-                                    }
-                                }
+                const headers = matrix[0].map(x => x.toLowerCase());
+
+                // 1. Extraer Estado de la tabla secundaria (index 1)
+                if (headers.some(x => x.includes('estado'))) {
+                    const statusIdx = headers.findIndex(x => x.includes('estado'));
+                    for (let i = 1; i < matrix.length; i++) {
+                        const row = matrix[i];
+                        if (row.length > statusIdx) {
+                            const isoDate = toIso(row[0]);
+                            const statusVal = row[statusIdx];
+                            if (isoDate && statusVal) {
+                                statusMap[isoDate] = statusVal;
                             }
                         }
                     }
                 }
 
-                const headers = matrix[0].map(x => x.toLowerCase());
-                if (headers.some(x => x.includes('actual') || x.includes('linepack'))) {
+                // 2. Extraer Tabla Principal de Linepack (index 0)
+                if (headers.some(x => x.includes('actual') || x.includes('linepack')) && mainMatrix.length === 0) {
                     mainMatrix = matrix;
                 }
             }
@@ -255,14 +216,16 @@ def _scrape_system_state_day(page, day_str):
     
     rows = result.get('rows') or []
     status_map = result.get('statusMap') or {}
-    headers = rows[0] if rows else []
+    
+    raw_headers = rows[0] if rows else []
+    headers = [re.sub(r'\s+', ' ', h).strip() for h in raw_headers]
 
     data_rows = []
     for r in rows[1:]:
         record = {headers[i] if i < len(headers) else f'col_{i}': r[i]
                   for i in range(len(r))}
         
-        raw_date = record.get('Día Operativo', '')
+        raw_date = record.get('Día Operativo') or record.get('Día\nOperativo') or list(record.values())[0]
         iso_date = _iso_date(raw_date)
         
         record['Estado'] = status_map.get(iso_date, 'NORMAL')
