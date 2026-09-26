@@ -79,7 +79,6 @@ def scrape_system_state(page):
     all_rows = []
     headers = []
     
-    # Rango total que abarca la ventana de 30 días para registrar en los metadatos
     desde_str = (today - timedelta(days=SYSTEM_STATE_DAYS_BACK)).strftime('%d/%m/%Y')
     hasta_str = today.strftime('%d/%m/%Y')
 
@@ -155,78 +154,32 @@ def _scrape_system_state_day(page, day_str):
         print(f'fetch_tgn: panelGrilla never populated: {e}', file=sys.stderr)
         return [], []
 
-    result = page.eval_on_selector(
-        'div[id="formulario:panelGrilla"]',
-        """p => {
-            const tables = Array.from(p.querySelectorAll('table'));
-            let mainMatrix = [];
-            let statusMap = {}; // Mapa para relacionar fecha -> estado
+    # --- BLOQUE DE DIAGNÓSTICO / DEBUG ---
+    os.makedirs(RAW_DIR, exist_ok=True)
+    try:
+        html_content = page.inner_html('div[id="formulario:panelGrilla"]')
+        with open(os.path.join(RAW_DIR, 'debug_panel_grilla.html'), 'w', encoding='utf-8') as f:
+            f.write(html_content)
+        print("DEBUG: Guardado raw/debug_panel_grilla.html")
 
-            const parseTable = (t) => Array.from(t.rows).map(r =>
-                Array.from(r.cells).map(c => (c.textContent || '').replace(/\\s+/g, ' ').trim())
-            );
+        debug_info = page.evaluate(
+            """() => {
+                const p = document.getElementById('formulario:panelGrilla');
+                const allTables = Array.from(p.querySelectorAll('table')).map((t, idx) => {
+                    const headers = Array.from(t.rows[0]?.cells || []).map(c => c.textContent.trim());
+                    return { idx, rowsCount: t.rows.length, headers };
+                });
+                const allPanels = Array.from(document.querySelectorAll('div[id*="panel"], div[id*="Grilla"]')).map(d => d.id);
+                return { allTables, allPanels };
+            }"""
+        )
+        print("DEBUG TABLES:", json.dumps(debug_info['allTables'], indent=2))
+        print("DEBUG PANELS:", json.dumps(debug_info['allPanels'], indent=2))
+    except Exception as e:
+        print(f'fetch_tgn: debug block failed: {e}', file=sys.stderr)
+    # ------------------------------------
 
-            for (const t of tables) {
-                const matrix = parseTable(t);
-                if (matrix.length < 2) continue;
-                
-                const headers = matrix[0].map(h => h.toLowerCase());
-                
-                // Tabla principal de Linepack
-                if (headers.some(h => h.includes('actual') || h.includes('linepack') || h.includes('equilibrio'))) {
-                    mainMatrix = matrix;
-                }
-                
-                // Tabla de Estado del Sistema
-                if (headers.some(h => h.includes('estado'))) {
-                    const dateIdx = headers.findIndex(h => h.includes('día') || h.includes('dia') || h.includes('fecha'));
-                    const statusIdx = headers.findIndex(h => h.includes('estado'));
-                    
-                    if (statusIdx !== -1) {
-                        for (let i = 1; i < matrix.length; i++) {
-                            const row = matrix[i];
-                            const dateVal = dateIdx !== -1 ? row[dateIdx] : 'default';
-                            const statusVal = row[statusIdx];
-                            if (statusVal) {
-                                statusMap[dateVal] = statusVal;
-                                if (!statusMap['DEFAULT']) statusMap['DEFAULT'] = statusVal;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (mainMatrix.length === 0 && tables.length > 0) {
-                mainMatrix = parseTable(tables[0]);
-            }
-
-            return {
-                rows: mainMatrix,
-                statusMap: statusMap
-            };
-        }"""
-    )
-    
-    rows = result.get('rows') or []
-    status_map = result.get('statusMap') or {}
-    headers = rows[0] if rows else []
-
-    data_rows = []
-    for r in rows[1:]:
-        record = {headers[i] if i < len(headers) else f'col_{i}': r[i]
-                  for i in range(len(r))}
-        
-        # Obtener estado cruzando fecha o usando el valor detectado por defecto
-        estado = status_map.get('DEFAULT', 'NORMAL')
-        for key, val in status_map.items():
-            if key != 'DEFAULT' and key in str(record.get('Día Operativo', '')):
-                estado = val
-                break
-
-        record['Estado'] = estado
-        data_rows.append(record)
-        
-    return data_rows, headers
+    return [], []
 
 
 _MONTHS = {
