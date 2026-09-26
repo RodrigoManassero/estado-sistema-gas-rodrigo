@@ -159,8 +159,8 @@ def _scrape_system_state_day(page, day_str):
         'div[id="formulario:panelGrilla"]',
         """p => {
             const tables = Array.from(p.querySelectorAll('table'));
-            let mainRows = [];
-            let statusVal = 'NORMAL';
+            let mainMatrix = [];
+            let statusMap = {}; // Mapa para relacionar fecha -> estado
 
             const parseTable = (t) => Array.from(t.rows).map(r =>
                 Array.from(r.cells).map(c => (c.textContent || '').replace(/\\s+/g, ' ').trim())
@@ -172,39 +172,58 @@ def _scrape_system_state_day(page, day_str):
                 
                 const headers = matrix[0].map(h => h.toLowerCase());
                 
+                // Tabla principal de Linepack
                 if (headers.some(h => h.includes('actual') || h.includes('linepack') || h.includes('equilibrio'))) {
-                    mainRows = matrix;
+                    mainMatrix = matrix;
                 }
+                
+                // Tabla de Estado del Sistema
                 if (headers.some(h => h.includes('estado'))) {
-                    const idx = headers.findIndex(h => h.includes('estado'));
-                    if (idx !== -1 && matrix[1] && matrix[1][idx]) {
-                        statusVal = matrix[1][idx];
+                    const dateIdx = headers.findIndex(h => h.includes('día') || h.includes('dia') || h.includes('fecha'));
+                    const statusIdx = headers.findIndex(h => h.includes('estado'));
+                    
+                    if (statusIdx !== -1) {
+                        for (let i = 1; i < matrix.length; i++) {
+                            const row = matrix[i];
+                            const dateVal = dateIdx !== -1 ? row[dateIdx] : 'default';
+                            const statusVal = row[statusIdx];
+                            if (statusVal) {
+                                statusMap[dateVal] = statusVal;
+                                if (!statusMap['DEFAULT']) statusMap['DEFAULT'] = statusVal;
+                            }
+                        }
                     }
                 }
             }
 
-            if (mainRows.length === 0 && tables.length > 0) {
-                mainRows = parseTable(tables[0]);
+            if (mainMatrix.length === 0 && tables.length > 0) {
+                mainMatrix = parseTable(tables[0]);
             }
 
             return {
-                rows: mainRows,
-                estado: statusVal
+                rows: mainMatrix,
+                statusMap: statusMap
             };
         }"""
     )
     
     rows = result.get('rows') or []
-    estado_sistema = result.get('estado') or 'NORMAL'
+    status_map = result.get('statusMap') or {}
     headers = rows[0] if rows else []
-    
-    print(f"fetch_tgn: system_state result {len(rows)} rows x {len(headers)} cols | Estado={estado_sistema!r}")
 
     data_rows = []
     for r in rows[1:]:
         record = {headers[i] if i < len(headers) else f'col_{i}': r[i]
                   for i in range(len(r))}
-        record['Estado'] = estado_sistema
+        
+        # Obtener estado cruzando fecha o usando el valor detectado por defecto
+        estado = status_map.get('DEFAULT', 'NORMAL')
+        for key, val in status_map.items():
+            if key != 'DEFAULT' and key in str(record.get('Día Operativo', '')):
+                estado = val
+                break
+
+        record['Estado'] = estado
         data_rows.append(record)
         
     return data_rows, headers
