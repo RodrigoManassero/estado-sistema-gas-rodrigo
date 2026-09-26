@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-26T21:50:13+00:00",
+  "generated_at": "2026-09-26T22:07:28+00:00",
   "source": "TGN ABII — Estado del Sistema",
   "source_date": "26/09/2026",
   "data": [
@@ -1210,6 +1210,11 @@
     "gasoducto": "TODOS"
   },
   "headers": [
+    "Día Operativo",
+    "Actual",
+    "Equilibrio",
+    "Desbalance del sistema",
+    "Desbalance porcentual",
     "Estado"
   ]
 }
