@@ -27,6 +27,7 @@ LOGIN_PATH = 'pages/login.xhtml'
 PROBE_PATH = 'pages/home.xhtml'
 
 SYSTEM_STATE_PATH = 'pages/reports/system_state/system-state-report.xhtml'
+NOMINACIONES_PATH = 'pages/programacion/nominaciones/nominacion.xhtml'
 
 
 def env_credentials():
@@ -52,18 +53,29 @@ def _is_sentinel(rec):
 
 def scrape_system_state(page):
     today = datetime.now(timezone.utc).date()
-    desde_date = today - timedelta(days=SYSTEM_STATE_DAYS_BACK)
+
+    all_rows = []
+    headers = []
     
-    desde_str = desde_date.strftime('%d/%m/%Y')
+    desde_str = (today - timedelta(days=SYSTEM_STATE_DAYS_BACK)).strftime('%d/%m/%Y')
     hasta_str = today.strftime('%d/%m/%Y')
 
-    print(f'fetch_tgn: fetching range {desde_str} to {hasta_str}')
-    rows, headers = _scrape_system_state_range(page, desde_str, hasta_str)
+    # Iterar día por día para forzar a PrimeFaces a cargar exactamente esa fila
+    for n in range(SYSTEM_STATE_DAYS_BACK + 1):
+        day = today - timedelta(days=n)
+        day_str = day.strftime('%d/%m/%Y')
+        
+        rows, day_headers = _scrape_system_state_day(page, day_str)
+        if day_headers and not headers:
+            headers = day_headers
+        all_rows.extend(rows)
 
-    _save_system_state(rows, desde_str, hasta_str, headers)
+    _save_system_state(all_rows, desde_str, hasta_str, headers)
 
 
-def _scrape_system_state_range(page, desde_str, hasta_str):
+def _scrape_system_state_day(page, day_str):
+    print(f'fetch_tgn: system_state day {day_str}')
+
     try:
         page.goto(BASE_URL + SYSTEM_STATE_PATH, wait_until='networkidle', timeout=30000)
     except Exception as e:
@@ -75,14 +87,14 @@ def _scrape_system_state_range(page, desde_str, hasta_str):
             'button[id="formulario:report_btnSearch_id"]',
             state='visible', timeout=15000,
         )
-        page.wait_for_timeout(1000)
+        page.wait_for_timeout(500)
     except Exception as e:
         print(f'fetch_tgn: report button never showed up: {e}', file=sys.stderr)
         return [], []
 
     for fid, value in [
-        ('formulario:report_fecha_desde_id_input', desde_str),
-        ('formulario:report_fecha_hasta_id_input', hasta_str),
+        ('formulario:report_fecha_desde_id_input', day_str),
+        ('formulario:report_fecha_hasta_id_input', day_str),
     ]:
         try:
             page.fill(f'input[id="{fid}"]', value)
@@ -122,25 +134,9 @@ def _scrape_system_state_range(page, desde_str, hasta_str):
     result = page.eval_on_selector(
         'div[id="formulario:panelGrilla"]',
         """p => {
-            const months = { 'Jan':1, 'Feb':2, 'Mar':3, 'Apr':4, 'May':5, 'Jun':6, 'Jul':7, 'Aug':8, 'Sep':9, 'Oct':10, 'Nov':11, 'Dec':12 };
-            
-            const toIso = (strVal) => {
-                if (!strVal) return '';
-                const s = strVal.trim();
-                const m1 = s.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})$/);
-                if (m1) {
-                    return `${m1[3]}-${m1[2].padStart(2,'0')}-${m1[1].padStart(2,'0')}`;
-                }
-                const m2 = s.match(/^\\w+\\s+(\\w+)\\s+(\\d{1,2})\\s+.*\\s+(\\d{4})$/);
-                if (m2 && months[m2[1]]) {
-                    return `${m2[3]}-${String(months[m2[1]]).padStart(2,'0')}-${m2[2].padStart(2,'0')}`;
-                }
-                return '';
-            };
-
             const tables = Array.from(p.querySelectorAll('table'));
             let mainMatrix = [];
-            let statusMap = {};
+            let statusVal = 'NORMAL';
 
             const parseTable = (t) => Array.from(t.rows).map(r =>
                 Array.from(r.cells).map(c => (c.innerText || c.textContent || '').replace(/\\s+/g, ' ').trim())
@@ -152,17 +148,11 @@ def _scrape_system_state_range(page, desde_str, hasta_str):
                 
                 const headers = matrix[0].map(x => x.toLowerCase());
 
+                // Al consultar 1 solo día, tomamos el Estado directamente de la fila 1
                 if (headers.some(x => x.includes('estado'))) {
                     const statusIdx = headers.findIndex(x => x.includes('estado'));
-                    for (let i = 1; i < matrix.length; i++) {
-                        const row = matrix[i];
-                        if (row.length > statusIdx) {
-                            const isoDate = toIso(row[0]);
-                            const statusVal = row[statusIdx];
-                            if (isoDate && statusVal) {
-                                statusMap[isoDate] = statusVal;
-                            }
-                        }
+                    if (matrix.length > 1 && matrix[1].length > statusIdx) {
+                        statusVal = matrix[1][statusIdx] || 'NORMAL';
                     }
                 }
 
@@ -177,19 +167,14 @@ def _scrape_system_state_range(page, desde_str, hasta_str):
 
             return {
                 rows: mainMatrix,
-                statusMap: statusMap
+                status: statusVal
             };
         }"""
     )
     
     rows = result.get('rows') or []
-    status_map = result.get('statusMap') or {}
+    day_status = result.get('status') or 'NORMAL'
     
-    # === IMPRESIÓN DE DIAGNÓSTICO EN CONSOLA ===
-    print("\n--- DIAGNÓSTICO: MAPA DE ESTADOS CAPTURADO DIRECTAMENTE DEL DOM ---")
-    print(json.dumps(status_map, indent=2))
-    print("-------------------------------------------------------------------\n")
-
     raw_headers = rows[0] if rows else []
     headers = [re.sub(r'\s+', ' ', h).strip() for h in raw_headers]
 
@@ -198,11 +183,8 @@ def _scrape_system_state_range(page, desde_str, hasta_str):
         record = {headers[i] if i < len(headers) else f'col_{i}': r[i]
                   for i in range(len(r))}
         
-        raw_date = record.get('Día Operativo') or record.get('Día\nOperativo') or list(record.values())[0]
-        iso_date = _iso_date(raw_date)
-        
-        # SIN FALLBACK DE 'NORMAL': Si no lo mapea, asigna explícitamente "NO_ENCONTRADO"
-        record['Estado'] = status_map.get(iso_date, 'NO_ENCONTRADO')
+        # Asigna el estado capturado en la tabla secundaria para este día
+        record['Estado'] = day_status
         data_rows.append(record)
         
     return data_rows, headers
@@ -237,7 +219,7 @@ def _save_system_state(rows, desde, hasta, headers):
     for r in rows:
         record = {_clean(k): v for k, v in r.items()}
         record['fecha'] = _iso_date(record.get('Día Operativo'))
-        record['Estado'] = str(r.get('Estado') or 'NO_ENCONTRADO').strip()
+        record['Estado'] = str(r.get('Estado') or 'NORMAL').strip()
         cleaned.append(record)
 
     existing = []
