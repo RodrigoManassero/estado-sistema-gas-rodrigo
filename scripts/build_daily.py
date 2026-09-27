@@ -84,10 +84,10 @@ def main():
         'combustible',
         'ajuste',
         'origen_dato',
-        'estado',            # 👈 Mapeo directo para TGS
-        'estado_tgs',        # 👈 Compatibilidad
-        'var_linepack_tgs',  # 👈 Variación explícita
-        'estado_tgn',
+        'estado',            # Mapeo directo para TGS
+        'estado_tgs',        # Compatibilidad
+        'var_linepack_tgs',  # Variación explícita
+        'estado_tgn',        # Mapeo para TGN
         'cammesa_gas_est',
         'cammesa_gasoil_est',
         'cammesa_fueloil_est',
@@ -180,7 +180,6 @@ def main():
             if r.get('demanda_total') is not None:
                 row['demanda_total'] = r.get('demanda_total')
             else:
-                # Recalcular total si la PS Proyección aportó sectores
                 s_prio = row.get('prioritaria') or 0
                 s_ind = row.get('industria') or 0
                 s_us = row.get('usinas') or 0
@@ -205,7 +204,7 @@ def main():
             row['origen_dato'] = 'PS_PROYECCION'
 
     # -------------------------------------------------------------
-    # PASO 3 (Nivel 2): RDS (NO debe pisar si la PS Proyección ya cargó el día)
+    # PASO 3 (Nivel 2): RDS
     # -------------------------------------------------------------
     for r in rds:
         row = row_for(r.get('fecha'))
@@ -255,7 +254,7 @@ def main():
         row['origen_dato'] = 'RDS_ESTIMADO'
 
     # -------------------------------------------------------------
-    # PASO 4 (Nivel 1 - Máxima Prioridad): PS REAL (Cierre definitivo)
+    # PASO 4 (Nivel 1 - Máxima Prioridad): PS REAL
     # -------------------------------------------------------------
     for r in ps:
         if r.get('tipo') == 'R':
@@ -310,19 +309,16 @@ def main():
         f_clean = clean_fecha(r.get('fecha'))
         row = row_for(f_clean)
         if row:
-            # Linepack
             lp = r.get('linepack_tgs_dia_actual') or r.get('linepack')
             if lp is not None and f_clean not in hist_dates:
                 row['linepack_tgs'] = lp
             else:
                 row['linepack_tgs'] = fill(row['linepack_tgs'], lp)
 
-            # Variación
             var_lp = r.get('linepack_tgs_variacion') or r.get('variacion')
             if var_lp is not None:
                 row['var_linepack_tgs'] = fill(row.get('var_linepack_tgs'), var_lp)
 
-            # Estado del Sistema (ALERTA / NORMAL / etc.)
             est = r.get('estado') or r.get('estado_sistema') or r.get('estado_tgs')
             if est:
                 row['estado'] = est
@@ -337,7 +333,7 @@ def main():
             row['cammesa_carbon'] = fillz(row['cammesa_carbon'], _gas_equiv_mmm3(r.get('carbon_tn'), FUEL_KCAL['carbon_tn']))
 
     # -------------------------------------------------------------
-    # PREVISIÓN SEMANAL CAMMESA (Estimaciones e Impacto en Usinas Futuras)
+    # PREVISIÓN SEMANAL CAMMESA
     # -------------------------------------------------------------
     for r in weekly:
         f_clean = clean_fecha(r.get('fecha'))
@@ -346,17 +342,14 @@ def main():
             gas_dam = r.get('gas_dam3')
             gas_mmm3 = round(gas_dam / 1000.0, 2) if gas_dam is not None else None
 
-            # Guardar estimadores directos de CAMMESA
             row['cammesa_gas_est'] = fillz(row.get('cammesa_gas_est'), gas_mmm3)
             row['cammesa_gasoil_est'] = fillz(row.get('cammesa_gasoil_est'), _gas_equiv_mmm3(r.get('go'), FUEL_KCAL['gasoil_m3']))
             row['cammesa_fueloil_est'] = fillz(row.get('cammesa_fueloil_est'), _gas_equiv_mmm3(r.get('fo'), FUEL_KCAL['fueloil_tn']))
             row['cammesa_carbon_est'] = fillz(row.get('cammesa_carbon_est'), _gas_equiv_mmm3(r.get('cm'), FUEL_KCAL['carbon_tn']))
 
-            # Pisa usinas del modelo en fechas donde no haya dato cerrado de ENARGAS (PS_REAL o RDS)
             if row.get('origen_dato') in (None, 'MODELO_PROYECCION', 'PS_PROYECCION') and gas_mmm3 is not None:
                 row['usinas'] = gas_mmm3
 
-                # Recalcular la demanda total sumando el nuevo valor de Usinas de CAMMESA
                 s_prio = row.get('prioritaria') or 0
                 s_ind = row.get('industria') or 0
                 s_us = row.get('usinas') or 0
@@ -364,6 +357,9 @@ def main():
                 s_exp = row.get('exportaciones') or 0
                 row['demanda_total'] = round(s_prio + s_ind + s_us + s_gnc + s_exp, 1)
 
+    # -------------------------------------------------------------
+    # DATOS ADICIONALES DE TGN (desde tgn_system_state.json)
+    # -------------------------------------------------------------
     tgn_state, _ = _load('tgn_system_state.json')
     for r in tgn_state:
         f_clean = clean_fecha(r.get('fecha'))
@@ -377,6 +373,10 @@ def main():
             if mmm3 is not None:
                 row['linepack_tgn'] = mmm3 if f_clean not in hist_dates else fill(row['linepack_tgn'], mmm3)
 
+            est_tgn = r.get('Estado')
+            if est_tgn:
+                row['estado_tgn'] = est_tgn
+
     # -------------------------------------------------------------
     # PASO 5: ENRIQUECIMIENTO DE TEMPERATURAS DESDE WEATHER_HISTORY
     # -------------------------------------------------------------
@@ -389,7 +389,6 @@ def main():
                 f_clean = row.get('fecha')
                 if f_clean in ba_map:
                     wh = ba_map[f_clean]
-                    # Completar o reparar min/max/prom si vienen nulos desde la cascada
                     row['temp_prom_ba'] = fill(row.get('temp_prom_ba'), wh.get('temp_prom'))
                     row['temp_min_ba'] = fill(row.get('temp_min_ba'), wh.get('temp_min'))
                     row['temp_max_ba'] = fill(row.get('temp_max_ba'), wh.get('temp_max'))
