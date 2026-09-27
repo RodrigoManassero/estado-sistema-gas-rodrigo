@@ -50,7 +50,7 @@ export default function SystemFlowPanel({ latest, generatedAt }: Props) {
 
   const cons = latest.consumos ?? {}
   const prioritaria = cons.prioritaria?.programa ?? 0
-  const cammesa = cons.cammesa?.programa ?? 0
+  const cammesa = cons.usinas?.programa ?? cons.cammesa?.programa ?? 0
   const industria = cons.industria?.programa ?? 0
   const gnc = cons.gnc?.programa ?? 0
   const combustible = cons.combustible?.programa ?? 0
