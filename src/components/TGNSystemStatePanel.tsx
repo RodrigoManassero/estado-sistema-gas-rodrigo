@@ -48,10 +48,10 @@ function severityColor(absPct: number | null): string {
   return colors.status.ok
 }
 
-// Badge visual para la columna ESTADO
+// Badge visual para la columna ESTADO (con color: string explícito)
 function EstadoBadge({ estado }: { estado: string }) {
   const up = estado.toUpperCase()
-  let color = colors.status.ok
+  let color: string = colors.status.ok
   if (up.includes('ALERT') || up.includes('ALERTA') || up.includes('ALTO')) color = colors.status.warn
   if (up.includes('EMERG') || up.includes('CRÍT') || up.includes('CRIT') || up.includes('BAJO')) color = colors.status.err
 
@@ -134,7 +134,6 @@ export default function TGNSystemStatePanel({ rows, generatedAt }: Props) {
   const desbalancePct = toNumber(latest['Desbalance porcentual'])
   const sevColor = severityColor(desbalancePct != null ? Math.abs(desbalancePct) : null)
 
-  // Obtención/inferencia del Estado
   const rawEstado = (latest as any)['Estado'] ?? (latest as any)['estado']
   const estadoCalculado = rawEstado ?? (
     desbalancePct != null && Math.abs(desbalancePct) >= 5 ? 'ALERTA' :
@@ -167,26 +166,19 @@ export default function TGNSystemStatePanel({ rows, generatedAt }: Props) {
           padding: `${space.sm}px 0`,
         }}
       >
-        {/* Columna 1: Linepack */}
         <Metric
           label="Linepack TGN"
           value={fmtMMm3(actual)}
           hint={varHint}
         />
-
-        {/* Columna 2: Equilibrio */}
         <Metric 
           label="Equilibrio" 
           value={fmtMMm3(equilibrio)} 
           hint="Demanda + extracciones esperadas" 
         />
-
-        {/* Columna 3: Estado (Reemplaza a Desbalance en MMm³) */}
         <Metric label="Estado">
           <EstadoBadge estado={estadoCalculado} />
         </Metric>
-
-        {/* Columna 4: Desbalance % */}
         <Metric
           label="Desbalance %"
           value={fmtPct(desbalancePct, true)}
