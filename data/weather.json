@@ -1,32 +1,32 @@
 {
-  "generated_at": "2026-09-27T18:42:49+00:00",
+  "generated_at": "2026-09-27T19:14:02+00:00",
   "source": "Open-Meteo API (Buenos Aires)",
   "source_date": "2026-09-27",
   "data": {
     "forecast": [
       {
         "fecha": "2026-09-27",
-        "temp_max": 18.6,
+        "temp_max": 16.9,
         "temp_min": 13.6,
-        "temp_prom": 16.1
+        "temp_prom": 15.2
       },
       {
         "fecha": "2026-09-28",
-        "temp_max": 19.0,
-        "temp_min": 14.5,
-        "temp_prom": 16.8
+        "temp_max": 20.4,
+        "temp_min": 13.9,
+        "temp_prom": 17.1
       },
       {
         "fecha": "2026-09-29",
-        "temp_max": 18.9,
-        "temp_min": 15.0,
-        "temp_prom": 16.9
+        "temp_max": 19.9,
+        "temp_min": 14.8,
+        "temp_prom": 17.4
       },
       {
         "fecha": "2026-09-30",
-        "temp_max": 17.8,
-        "temp_min": 10.2,
-        "temp_prom": 14.0
+        "temp_max": 18.5,
+        "temp_min": 9.0,
+        "temp_prom": 13.8
       },
       {
         "fecha": "2026-10-01",
