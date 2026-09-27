@@ -37,7 +37,6 @@ export default function SystemFlowPanel({ latest, generatedAt }: Props) {
 
   const cons = latest.consumos ?? {}
   const prioritaria = cons.prioritaria?.programa ?? 0
-  // Mapea 'usinas' (ENARGAS RDS) con fallback a 'cammesa'
   const cammesa = cons.usinas?.programa ?? cons.cammesa?.programa ?? 0
   const industria = cons.industria?.programa ?? 0
   const gnc = cons.gnc?.programa ?? 0
@@ -71,14 +70,14 @@ export default function SystemFlowPanel({ latest, generatedAt }: Props) {
     <div>
       <h3 style={sectionTitle}>
         Sistema de transporte — flujo del día
-        <span style={{ float: 'right', fontSize: 11, color: colors.textDim, textTransform: 'none', fontWeight: 400 }}>
+        <span style={{ float: 'right', fontSize: 12, color: colors.textDim, textTransform: 'none', fontWeight: 400 }}>
           {latest.fecha} · MMm³/día
           {generatedAt && ` · actualizado ${new Date(generatedAt).toLocaleString('es-AR', { hour: '2-digit', minute: '2-digit' })}`}
         </span>
       </h3>
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
         gap: space.md,
         alignItems: 'stretch',
       }}>
@@ -130,44 +129,50 @@ function Column({ title, color, items, total, totalLabel }: { title: string; col
       border: `1px solid ${colors.border}`,
       borderTop: `3px solid ${color}`,
       borderRadius: 8,
-      padding: `${space.sm + 2}px ${space.md}px`,
+      padding: `${space.sm + 4}px ${space.md}px`,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
       minWidth: 0,
     }}>
-      <div style={{ color: colors.textMuted, fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5, fontWeight: 600, marginBottom: space.sm }}>
-        {title}
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        {items.map((i) => {
-          const w = max > 0 ? (Math.abs(i.value) / max) * 100 : 0
-          return (
-            <div key={i.label}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 12 }}>
-                <span style={{ color: colors.textSecondary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {i.label}
-                </span>
-                <span style={{ color: colors.textPrimary, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
-                  {i.value > 0 || i.value === 0 ? i.value.toFixed(1) : '—'}
-                </span>
+      <div>
+        <div style={{ color: colors.textMuted, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.6, fontWeight: 700, marginBottom: space.sm + 2 }}>
+          {title}
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          {items.map((i) => {
+            const w = max > 0 ? (Math.abs(i.value) / max) * 100 : 0
+            return (
+              <div key={i.label}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, fontSize: 13.5 }}>
+                  <span style={{ color: colors.textSecondary, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    {i.label}
+                  </span>
+                  <span style={{ color: colors.textPrimary, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
+                    {i.value > 0 || i.value === 0 ? i.value.toFixed(1) : '—'}
+                  </span>
+                </div>
+                <div style={{ height: 4, background: colors.surface, borderRadius: 2, marginTop: 3, overflow: 'hidden' }}>
+                  <div style={{ width: `${w}%`, height: '100%', background: color, opacity: 0.6 }} />
+                </div>
+                {i.note && (
+                  <div style={{ color: colors.textDim, fontSize: 11, marginTop: 1 }}>{i.note}</div>
+                )}
               </div>
-              <div style={{ height: 3, background: colors.surface, borderRadius: 2, marginTop: 2, overflow: 'hidden' }}>
-                <div style={{ width: `${w}%`, height: '100%', background: color, opacity: 0.55 }} />
-              </div>
-              {i.note && (
-                <div style={{ color: colors.textDim, fontSize: 10, marginTop: 1 }}>{i.note}</div>
-              )}
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
       <div style={{
-        marginTop: space.sm,
-        paddingTop: space.sm,
+        marginTop: space.md,
+        paddingTop: space.sm + 2,
         borderTop: `1px solid ${colors.border}`,
         display: 'flex',
         justifyContent: 'space-between',
+        alignItems: 'baseline',
       }}>
-        <span style={{ color: colors.textMuted, fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5 }}>{totalLabel}</span>
-        <span style={{ color: colors.textPrimary, fontSize: 15, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
+        <span style={{ color: colors.textMuted, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.5, fontWeight: 600 }}>{totalLabel}</span>
+        <span style={{ color: colors.textPrimary, fontSize: 17, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>
           {total.toFixed(1)}
         </span>
       </div>
@@ -183,24 +188,26 @@ function Middle({ delta, deltaColor, deltaLabel }: { delta: number; deltaColor: 
       border: `1px solid ${colors.border}`,
       borderTop: `3px solid ${colors.accent.orange}`,
       borderRadius: 8,
-      padding: `${space.sm + 2}px ${space.md}px`,
+      padding: `${space.sm + 4}px ${space.md}px`,
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
       alignItems: 'center',
       textAlign: 'center',
       minWidth: 0,
     }}>
-      <div style={{ color: colors.textMuted, fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5, fontWeight: 600, marginBottom: space.sm, alignSelf: 'flex-start' }}>
+      <div style={{ color: colors.textMuted, fontSize: 12, textTransform: 'uppercase', letterSpacing: 0.6, fontWeight: 700, marginBottom: space.sm + 2, alignSelf: 'flex-start' }}>
         Sistema
       </div>
-      <div style={{ color: colors.textDim, fontSize: 11 }}>Variación Linepack</div>
-      <div style={{ color: deltaColor, fontSize: 28, fontWeight: 700, marginTop: 4, display: 'flex', alignItems: 'baseline', gap: 4 }}>
-        <span>{arrow}</span>
-        <span>{delta > 0 ? `+${delta.toFixed(1)}` : delta.toFixed(1)}</span>
-        <span style={{ color: colors.textDim, fontSize: 12, fontWeight: 400 }}>MMm³</span>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ color: colors.textDim, fontSize: 12, fontWeight: 500 }}>Variación Linepack</div>
+        <div style={{ color: deltaColor, fontSize: 32, fontWeight: 700, marginTop: 6, display: 'flex', alignItems: 'baseline', gap: 5 }}>
+          <span>{arrow}</span>
+          <span>{delta > 0 ? `+${delta.toFixed(1)}` : delta.toFixed(1)}</span>
+          <span style={{ color: colors.textDim, fontSize: 13, fontWeight: 400 }}>MMm³</span>
+        </div>
+        <div style={{ color: colors.textDim, fontSize: 12, marginTop: 4 }}>{deltaLabel}</div>
       </div>
-      <div style={{ color: colors.textDim, fontSize: 11, marginTop: 4 }}>{deltaLabel}</div>
     </div>
   )
 }
