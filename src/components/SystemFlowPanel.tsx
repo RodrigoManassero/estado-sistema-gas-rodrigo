@@ -25,19 +25,6 @@ interface Props {
   generatedAt?: string | null
 }
 
-/**
- * "System flow" summary: supply sources on the left, transport state in the
- * middle, demand sinks on the right. Numbers come from the latest RDS. Local
- * production isn't reported directly — we derive it from the flow identity
- *   local = consumo + exports + Δlinepack − imports
- * which by construction makes the balance check zero out exactly; the value
- * is in surfacing the composition, not in verifying consistency.
- *
- * NOTE: the RDS `consumo_total_estimado` ALREADY includes exportaciones (its
- * TOTAL line = the 5 segments + exports), so it stands in for "consumo +
- * exports" directly — don't add exportsTotal on top of it or exports get
- * double-counted (which inflated both the demand total and derived local).
- */
 export default function SystemFlowPanel({ latest, generatedAt }: Props) {
   if (!latest || !latest.fecha) return null
 
@@ -50,6 +37,7 @@ export default function SystemFlowPanel({ latest, generatedAt }: Props) {
 
   const cons = latest.consumos ?? {}
   const prioritaria = cons.prioritaria?.programa ?? 0
+  // Mapea 'usinas' (ENARGAS RDS) con fallback a 'cammesa'
   const cammesa = cons.usinas?.programa ?? cons.cammesa?.programa ?? 0
   const industria = cons.industria?.programa ?? 0
   const gnc = cons.gnc?.programa ?? 0
@@ -60,8 +48,6 @@ export default function SystemFlowPanel({ latest, generatedAt }: Props) {
   const exp_tgs = exps.tgs?.vol_exportar ?? 0
   const exportsTotal = exp_tgn + exp_tgs
 
-  // consumo_total_estimado ya incluye exportaciones; solo el fallback (suma de
-  // segmentos) necesita sumarlas para no subcontar.
   const demandTotal = latest.consumo_total_estimado
     ?? prioritaria + cammesa + industria + gnc + combustible + exportsTotal
   const deltaLP = latest.linepack_delta ?? 0
@@ -69,12 +55,17 @@ export default function SystemFlowPanel({ latest, generatedAt }: Props) {
   const local = Math.max(0, demandTotal + deltaLP - importsTotal)
   const supplyTotal = local + importsTotal
 
-  const deltaColor = Math.abs(deltaLP) < 1 ? colors.textDim
-    : deltaLP > 0 ? colors.status.ok
+  const deltaColor = Math.abs(deltaLP) < 0.1 
+    ? colors.textDim
+    : deltaLP > 0 
+    ? colors.status.ok 
     : colors.status.err
-  const deltaLabel = Math.abs(deltaLP) < 1 ? 'estable'
-    : deltaLP > 0 ? 'sumando al stock'
-    : 'drawdown'
+
+  const deltaLabel = Math.abs(deltaLP) < 0.1 
+    ? 'sin variación'
+    : deltaLP > 0 
+    ? 'sumando al stock' 
+    : 'desabasteciendo stock'
 
   return (
     <div>
@@ -105,7 +96,6 @@ export default function SystemFlowPanel({ latest, generatedAt }: Props) {
           totalLabel="Total oferta"
         />
         <Middle
-          linepack={latest.linepack_total ?? null}
           delta={deltaLP}
           deltaColor={deltaColor}
           deltaLabel={deltaLabel}
@@ -126,11 +116,6 @@ export default function SystemFlowPanel({ latest, generatedAt }: Props) {
           totalLabel="Total demanda"
         />
       </div>
-      <p style={{ color: colors.textDim, fontSize: 11, marginTop: space.md }}>
-        Balance: <strong style={{ color: colors.textSecondary }}>oferta − demanda = {(supplyTotal - demandTotal).toFixed(1)}</strong>{' '}
-        MMm³/d. El Δ linepack observado fue <strong style={{ color: deltaColor }}>{deltaLP >= 0 ? '+' : ''}{deltaLP.toFixed(1)}</strong>.
-        La producción local es el residuo del balance — si hay discrepancia entre fuentes, el número fluctúa.
-      </p>
     </div>
   )
 }
@@ -190,8 +175,8 @@ function Column({ title, color, items, total, totalLabel }: { title: string; col
   )
 }
 
-function Middle({ linepack, delta, deltaColor, deltaLabel }: { linepack: number | null; delta: number; deltaColor: string; deltaLabel: string }) {
-  const arrow = Math.abs(delta) < 1 ? '→' : delta > 0 ? '↑' : '↓'
+function Middle({ delta, deltaColor, deltaLabel }: { delta: number; deltaColor: string; deltaLabel: string }) {
+  const arrow = Math.abs(delta) < 0.1 ? '→' : delta > 0 ? '↑' : '↓'
   return (
     <div style={{
       background: colors.surfaceAlt,
@@ -209,15 +194,13 @@ function Middle({ linepack, delta, deltaColor, deltaLabel }: { linepack: number 
       <div style={{ color: colors.textMuted, fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.5, fontWeight: 600, marginBottom: space.sm, alignSelf: 'flex-start' }}>
         Sistema
       </div>
-      <div style={{ color: colors.textDim, fontSize: 11 }}>Line pack total</div>
-      <div style={{ color: colors.textPrimary, fontSize: 28, fontWeight: 700, marginTop: 2 }}>
-        {linepack != null ? linepack.toFixed(1) : '—'}
-        <span style={{ color: colors.textDim, fontSize: 12, fontWeight: 400, marginLeft: 4 }}>MMm³</span>
+      <div style={{ color: colors.textDim, fontSize: 11 }}>Variación Linepack</div>
+      <div style={{ color: deltaColor, fontSize: 28, fontWeight: 700, marginTop: 4, display: 'flex', alignItems: 'baseline', gap: 4 }}>
+        <span>{arrow}</span>
+        <span>{delta > 0 ? `+${delta.toFixed(1)}` : delta.toFixed(1)}</span>
+        <span style={{ color: colors.textDim, fontSize: 12, fontWeight: 400 }}>MMm³</span>
       </div>
-      <div style={{ color: deltaColor, fontSize: 18, fontWeight: 700, marginTop: space.md }}>
-        {arrow} {delta >= 0 ? '+' : ''}{delta.toFixed(1)} MMm³
-      </div>
-      <div style={{ color: colors.textDim, fontSize: 11, marginTop: 2 }}>{deltaLabel}</div>
+      <div style={{ color: colors.textDim, fontSize: 11, marginTop: 4 }}>{deltaLabel}</div>
     </div>
   )
 }
