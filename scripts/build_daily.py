@@ -166,6 +166,14 @@ def main():
             row = row_for(r.get('fecha'))
             if not row:
                 continue
+
+            # Mapeo y suma de exportaciones (exp_tgn + exp_tgs)
+            exp_proj = None
+            if r.get('exp_tgn') is not None or r.get('exp_tgs') is not None:
+                exp_proj = (r.get('exp_tgn') or 0) + (r.get('exp_tgs') or 0)
+            if exp_proj is not None:
+                row['exportaciones'] = exp_proj
+
             if r.get('prioritaria') is not None:
                 row['prioritaria'] = r.get('prioritaria')
             if r.get('usinas') is not None:
