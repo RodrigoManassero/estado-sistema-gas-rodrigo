@@ -1,4 +1,4 @@
-import { card, colors, radius, sectionTitle, space } from '../theme'
+import { card, colors, sectionTitle, space } from '../theme'
 import type { TGNSystemStateRow } from '../hooks/useData'
 
 interface Props {
@@ -41,14 +41,7 @@ function fmtPct(p: number | null, signed = false): string {
   return `${signed && p > 0 ? '+' : ''}${p.toFixed(2)}%`
 }
 
-function severityColor(absPct: number | null): string {
-  if (absPct == null) return colors.textDim
-  if (absPct >= 5) return colors.status.err
-  if (absPct >= 2) return colors.status.warn
-  return colors.status.ok
-}
-
-// Badge visual para la columna ESTADO (con color: string explícito)
+// Badge visual para la columna ESTADO
 function EstadoBadge({ estado }: { estado: string }) {
   const up = estado.toUpperCase()
   let color: string = colors.status.ok
@@ -132,7 +125,6 @@ export default function TGNSystemStatePanel({ rows, generatedAt }: Props) {
 
   const equilibrio = toNumber(latest['Equilibrio'])
   const desbalancePct = toNumber(latest['Desbalance porcentual'])
-  const sevColor = severityColor(desbalancePct != null ? Math.abs(desbalancePct) : null)
 
   const rawEstado = (latest as any)['Estado'] ?? (latest as any)['estado']
   const estadoCalculado = rawEstado ?? (
@@ -183,21 +175,7 @@ export default function TGNSystemStatePanel({ rows, generatedAt }: Props) {
           label="Desbalance %"
           value={fmtPct(desbalancePct, true)}
           hint="Sobre equilibrio (ABII)"
-          color={sevColor}
         />
-      </div>
-
-      <div
-        style={{
-          marginTop: space.md,
-          padding: `${space.sm}px ${space.md}px`,
-          background: colors.surfaceAlt,
-          borderRadius: radius.sm,
-          color: colors.textMuted,
-          fontSize: 11,
-        }}
-      >
-        Fuente: portal TGN ABII (`pages/reports/system_state`). Se consulta cada 3 h con rango ayer→hoy y todos los gasoductos.
       </div>
     </div>
   )
