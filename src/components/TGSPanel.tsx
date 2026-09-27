@@ -1,5 +1,5 @@
 import { useETGS } from '../hooks/useData'
-import { card, colors, space } from '../theme'
+import { card, colors, sectionTitle, space } from '../theme'
 
 interface ETGSDataRow {
   fecha: string
@@ -89,10 +89,10 @@ export default function TGSPanel(_props: Props) {
     : '—'
 
   return (
-    <div style={{ ...card, borderTop: `3px solid ${colors.accent.green}`, marginTop: space.xl }}>
+    <div style={{ ...card, borderTop: `3px solid ${colors.accent.blue}`, marginTop: space.xl }}>
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: space.sm, marginBottom: space.md }}>
-        <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: colors.textPrimary }}>
-          TGS — Síntesis operativa
+        <h3 style={{ ...sectionTitle, margin: 0 }}>
+          TGS — Estado del sistema
         </h3>
         <div style={{ color: colors.textDim, fontSize: 12 }}>
           Día operativo: <strong style={{ color: colors.textSecondary }}>{dateLabel}</strong>
