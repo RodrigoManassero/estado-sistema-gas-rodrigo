@@ -38,9 +38,9 @@ function fmtDate(d: string) {
 }
 
 export default function SystemPanel({ title, color, data, linepackKey, varKey, limInfKey, limSupKey, estadoKey, estByDate }: Props) {
-  // 1. Filtrar únicamente filas que tengan valor real de linepack (no nulo)
+  // 1. Filtrar únicamente filas que tengan valor real de linepack para la clave específica
   const rowsWithRealLinepack = data.filter(d => {
-    const val = (d as any)[linepackKey] ?? (d as any).linepack_tgs ?? (d as any).linepack_tgs_dia_actual ?? (d as any).linepack_tgn
+    const val = (d as any)[linepackKey]
     return val !== undefined && val !== null
   })
 
@@ -61,10 +61,10 @@ export default function SystemPanel({ title, color, data, linepackKey, varKey, l
   // Tomar los últimos 6 días con datos reales
   const last6 = [...new Set([...realDates, ...estDates])].sort().slice(-6)
 
-  // Obtener límites
-  const lastRealRow = [...validData].reverse().find(d => (d as any)[limInfKey] != null || (d as any).lim_inf_tgs != null || (d as any).lim_inf_tgn != null)
-  const limInf = ((lastRealRow as any)?.[limInfKey] ?? (lastRealRow as any)?.lim_inf_tgs ?? (lastRealRow as any)?.lim_inf_tgn ?? 215) as number | null
-  const limSup = ((lastRealRow as any)?.[limSupKey] ?? (lastRealRow as any)?.lim_sup_tgs ?? (lastRealRow as any)?.lim_sup_tgn ?? 235) as number | null
+  // Obtener límites estrictos según la clave enviada
+  const lastRealRow = [...validData].reverse().find(d => (d as any)[limInfKey] != null)
+  const limInf = ((lastRealRow as any)?.[limInfKey] ?? null) as number | null
+  const limSup = ((lastRealRow as any)?.[limSupKey] ?? null) as number | null
 
   return (
     <div style={{ ...s.panel, borderTop: `3px solid ${color}` }}>
@@ -82,43 +82,28 @@ export default function SystemPanel({ title, color, data, linepackKey, varKey, l
           {last6.map((fecha, i) => {
             const row = byDate.get(fecha) ?? {}
             
-            // Extracción de Linepack
-            const real = (row[linepackKey] ?? row.linepack_tgs ?? row.linepack_tgs_dia_actual ?? row.linepack_tgn ?? null) as number | null
+            // Extracción estricta de Linepack
+            const real = (row[linepackKey] ?? null) as number | null
             const est = estByDate?.get(fecha) ?? null
             const val = real ?? est
             const isEst = real == null && est != null
 
-            // Extracción de Variación desde claves del JSON
-            const rawVarVal = (
-              row[varKey] ?? 
-              row.linepack_tgs_variacion ?? 
-              row.var_linepack_tgs ?? 
-              row.linepack_tgn_variacion ?? 
-              row.var_linepack_tgn ?? 
-              row.var_tgn ?? 
-              row.variacion ?? 
-              null
-            ) as number | null
+            // Extracción estricta de Variación
+            const rawVarVal = (row[varKey] ?? null) as number | null
 
-            // Cálculo de respaldo: si no viene la variación en el JSON, la calcula restando el linepack del día anterior
+            // Cálculo de respaldo: si no viene variación explícita, se resta con el día anterior del MISMO sistema
             let varVal = rawVarVal
             if (varVal == null && val != null && i > 0) {
               const prevFecha = last6[i - 1]
               const prevRow = byDate.get(prevFecha) ?? {}
-              const prevVal = (prevRow[linepackKey] ?? prevRow.linepack_tgs ?? prevRow.linepack_tgn ?? null) as number | null
+              const prevVal = (prevRow[linepackKey] ?? null) as number | null
               if (prevVal != null) {
                 varVal = val - prevVal
               }
             }
 
-            // Extracción de Estado (Dando prioridad a las claves explícitas de estado de sistema)
-            const estadoVal = (
-              row.estado_tgs ?? 
-              row.estado_tgn ?? 
-              (estadoKey ? row[estadoKey] : null) ?? 
-              row.estado ?? 
-              null
-            ) as string | null
+            // Extracción estricta de Estado según la clave recibida
+            const estadoVal = (estadoKey ? row[estadoKey] : null) as string | null
 
             const st = isEst ? null : (estadoVal ? s.estadoBadge(estadoVal) : s.status(val, limInf, limSup))
             const isLast = i === last6.length - 1
