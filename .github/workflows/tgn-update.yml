@@ -1,4 +1,4 @@
-name: Update TGN data
+name: Update_TGN_TGS
 
 on:
   schedule:
@@ -12,9 +12,9 @@ permissions:
   id-token: write
 
 jobs:
-  fetch:
+  fetch-and-build:
     runs-on: ubuntu-latest
-    timeout-minutes: 22
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
 
@@ -24,7 +24,10 @@ jobs:
           python-version: '3.12'
 
       - name: Install Python dependencies
-        run: pip install -r requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pdfplumber pandas
 
       - name: Install Playwright Chromium
         run: playwright install --with-deps chromium
@@ -37,6 +40,11 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
+      # --- PASO 1: Procesar TGS (PDFs) ---
+      - name: Ejecutar Parser de PDFs TGS
+        run: python scripts/parse_etgs.py
+
+      # --- PASO 2: Procesar TGN (Scraping/Playwright) ---
       - name: Fetch TGN
         timeout-minutes: 10
         env:
@@ -44,11 +52,11 @@ jobs:
           TGN_PASSWORD: ${{ secrets.TGN_PASSWORD }}
         run: python scripts/fetch_tgn.py
 
+      # --- PASO 3: Reconstruir JSON diario unificado ---
       - name: Rebuild daily.json
-        # Refresca linepack_tgn en daily.json con el TGN recién bajado, sin
-        # volver a correr todo el pipeline (build_daily.py solo lee JSONs locales).
         run: python scripts/build_daily.py
 
+      # --- PASO 4: Chequeo de tipos y Build del Frontend ---
       - name: Type check
         run: npx tsc --noEmit
 
@@ -68,6 +76,7 @@ jobs:
           mkdir -p dist/curso
           cp -r curso/dist/. dist/curso/
 
+      # --- PASO 5: Commit y Deploy unificado ---
       - name: Commit data
         run: |
           git config user.name "github-actions[bot]"
@@ -76,8 +85,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No data changes to commit"
           else
-            git commit -m "TGN auto-update $(date -u +%Y-%m-%dT%H:%MZ)"
-            # Keep up with the main workflow's commits to data files.
+            git commit -m "TGN & TGS auto-update $(date -u +%Y-%m-%dT%H:%MZ)"
             git pull --rebase origin main || git rebase --abort
             git push
           fi
