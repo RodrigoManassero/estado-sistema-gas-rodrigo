@@ -12,8 +12,6 @@ const MONTHS: Record<string, number> = {
   Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12,
 }
 
-// 'Thu May 28 00:00:00 ART 2026' -> '2026-05-28'. Used as a fallback for
-// rows from older runs that don't carry a precomputed 'fecha' field.
 function parseJavaDate(raw: string | undefined): string | null {
   if (!raw) return null
   const m = raw.match(/^\w+\s+(\w+)\s+(\d{1,2})\s+\d{2}:\d{2}:\d{2}\s+\w+\s+(\d{4})$/)
@@ -43,8 +41,6 @@ function fmtPct(p: number | null, signed = false): string {
   return `${signed && p > 0 ? '+' : ''}${p.toFixed(2)}%`
 }
 
-// Color the deviation by severity. Same thresholds used elsewhere
-// to flag operational stress.
 function severityColor(absPct: number | null): string {
   if (absPct == null) return colors.textDim
   if (absPct >= 5) return colors.status.err
@@ -52,25 +48,56 @@ function severityColor(absPct: number | null): string {
   return colors.status.ok
 }
 
+// Badge visual para la columna ESTADO
+function EstadoBadge({ estado }: { estado: string }) {
+  const up = estado.toUpperCase()
+  let color = colors.status.ok
+  if (up.includes('ALERT') || up.includes('ALERTA') || up.includes('ALTO')) color = colors.status.warn
+  if (up.includes('EMERG') || up.includes('CRÍT') || up.includes('CRIT') || up.includes('BAJO')) color = colors.status.err
+
+  return (
+    <span
+      style={{
+        background: color + '22',
+        color: color,
+        padding: '4px 12px',
+        borderRadius: 20,
+        fontSize: 13,
+        fontWeight: 700,
+        display: 'inline-block',
+        marginTop: 4,
+      }}
+    >
+      {up}
+    </span>
+  )
+}
+
 function Metric({
   label,
   value,
   hint,
   color,
+  children,
 }: {
   label: string
-  value: string
+  value?: string
   hint?: string
   color?: string
+  children?: React.ReactNode
 }) {
   return (
     <div>
       <div style={{ color: colors.textDim, fontSize: 11, fontWeight: 600, letterSpacing: 0.4, textTransform: 'uppercase' }}>
         {label}
       </div>
-      <div style={{ color: color ?? colors.textPrimary, fontSize: 22, fontWeight: 700, marginTop: 4 }}>
-        {value}
-      </div>
+      {children ? (
+        children
+      ) : (
+        <div style={{ color: color ?? colors.textPrimary, fontSize: 22, fontWeight: 700, marginTop: 4 }}>
+          {value}
+        </div>
+      )}
       {hint && (
         <div style={{ color: colors.textMuted, fontSize: 11, marginTop: 2 }}>{hint}</div>
       )}
@@ -79,10 +106,7 @@ function Metric({
 }
 
 export default function TGNSystemStatePanel({ rows, generatedAt }: Props) {
-  // Ordenar filas por fecha de forma ascendente
   const sorted = (rows ?? []).slice().sort((a, b) => rowFecha(a).localeCompare(rowFecha(b)))
-  
-  // Tomar la última fila con reporte real disponible (día n-1 o cierre previo)
   const latest = sorted[sorted.length - 1]
 
   if (!latest) {
@@ -98,7 +122,6 @@ export default function TGNSystemStatePanel({ rows, generatedAt }: Props) {
 
   const fecha = rowFecha(latest)
 
-  // Linepack TGN del día y variación respecto al día previo disponible
   const actual = toNumber(latest['Actual'])
   const prev = sorted[sorted.length - 2]
   const prevActual = prev ? toNumber(prev['Actual']) : null
@@ -108,11 +131,15 @@ export default function TGNSystemStatePanel({ rows, generatedAt }: Props) {
     : 'Volumen en el sistema'
 
   const equilibrio = toNumber(latest['Equilibrio'])
-  const desbalance = toNumber(latest['Desbalance del sistema'])
   const desbalancePct = toNumber(latest['Desbalance porcentual'])
-
-  const deficit = actual != null && equilibrio != null && actual < equilibrio
   const sevColor = severityColor(desbalancePct != null ? Math.abs(desbalancePct) : null)
+
+  // Obtención/inferencia del Estado
+  const rawEstado = (latest as any)['Estado'] ?? (latest as any)['estado']
+  const estadoCalculado = rawEstado ?? (
+    desbalancePct != null && Math.abs(desbalancePct) >= 5 ? 'ALERTA' :
+    desbalancePct != null && Math.abs(desbalancePct) >= 2 ? 'ALERTA' : 'NORMAL'
+  )
 
   const dateLabel = fecha
     ? new Date(fecha + 'T00:00:00').toLocaleDateString('es-AR', {
@@ -135,27 +162,31 @@ export default function TGNSystemStatePanel({ rows, generatedAt }: Props) {
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+          gridTemplateColumns: 'repeat(4, 1fr)',
           gap: space.lg,
           padding: `${space.sm}px 0`,
         }}
       >
+        {/* Columna 1: Linepack */}
         <Metric
           label="Linepack TGN"
           value={fmtMMm3(actual)}
           hint={varHint}
         />
+
+        {/* Columna 2: Equilibrio */}
         <Metric 
           label="Equilibrio" 
           value={fmtMMm3(equilibrio)} 
           hint="Demanda + extracciones esperadas" 
         />
-        <Metric
-          label="Desbalance"
-          value={fmtMMm3(desbalance != null ? Math.abs(desbalance) : null)}
-          hint={deficit ? 'Déficit del sistema' : 'Superávit del sistema'}
-          color={sevColor}
-        />
+
+        {/* Columna 3: Estado (Reemplaza a Desbalance en MMm³) */}
+        <Metric label="Estado">
+          <EstadoBadge estado={estadoCalculado} />
+        </Metric>
+
+        {/* Columna 4: Desbalance % */}
         <Metric
           label="Desbalance %"
           value={fmtPct(desbalancePct, true)}
