@@ -1,7 +1,6 @@
 import { useETGS } from '../hooks/useData'
-import { card, colors, sectionTitle, space } from '../theme'
+import { card, colors, space } from '../theme'
 
-// Tipado de la fila según la estructura del JSON
 interface ETGSDataRow {
   fecha: string
   linepack_tgs_dia_actual: number | null
@@ -10,47 +9,68 @@ interface ETGSDataRow {
   motivo?: string | null
 }
 
-// Referencias de desbalance TGS (en m³)
-const LINEPACK_EQUILIBRIO_M3 = 224_486_000      // Linepack de equilibrio
+const LINEPACK_EQUILIBRIO_M3 = 224_486_000      // Linepack de equilibrio (224.49 MMm³)
 const CAPACIDAD_TRANSPORTE_TGS_M3 = 92_393_583  // Capacidad de Transporte TGS
 
-// Helper para definir colores según estado y palabras clave en el motivo
-function getAlertColor(estado?: string, motivo?: string | null) {
-  if (estado === 'Crítico' || estado === 'Emergencia') {
-    return colors.status.err
-  }
-  
-  const lowMotivo = (motivo ?? '').toLowerCase()
-  if (lowMotivo.includes('bajo')) return colors.status.err
-  if (lowMotivo.includes('alto')) return colors.accent.orange
+function EstadoBadge({ estado }: { estado: string }) {
+  const up = estado.toUpperCase()
+  let color = colors.status.ok
+  if (up.includes('ALERT') || up.includes('ALERTA') || up.includes('ALTO')) color = colors.status.warn
+  if (up.includes('EMERG') || up.includes('CRÍT') || up.includes('CRIT') || up.includes('BAJO')) color = colors.status.err
 
-  return colors.accent.orange
+  return (
+    <span
+      style={{
+        background: color + '22',
+        color: color,
+        padding: '4px 12px',
+        borderRadius: 20,
+        fontSize: 13,
+        fontWeight: 700,
+        display: 'inline-block',
+        marginTop: 4,
+      }}
+    >
+      {up}
+    </span>
+  )
 }
 
-export default function TGSPanel({ estByDate }: { estByDate?: Map<string, number> }) {
+function Stat({ label, value, sub, children }: { label: string; value?: string; sub?: string; children?: React.ReactNode }) {
+  return (
+    <div>
+      <div style={{ color: colors.textDim, fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+        {label}
+      </div>
+      {children ? (
+        children
+      ) : (
+        <div style={{ color: colors.textPrimary, fontSize: 22, fontWeight: 700, marginTop: 4 }}>
+          {value}
+        </div>
+      )}
+      {sub && (
+        <div style={{ color: colors.textMuted, fontSize: 11, marginTop: 2 }}>
+          {sub}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default function TGSPanel() {
   const { data, meta } = useETGS()
   const rows: ETGSDataRow[] = (data as ETGSDataRow[]) ?? []
   
   if (rows.length === 0) return null
+
+  // Tomar siempre el último registro con dato real de ETGS (día n-1)
   const latest = rows[rows.length - 1]
 
-  // Relleno: si el último ETGS quedó viejo y hay estimación para un día posterior
-  const today = new Date().toISOString().slice(0, 10)
-  const estDates = [...(estByDate?.keys() ?? [])].filter(f => f > latest.fecha && f <= today).sort()
-  const estDate = estDates[estDates.length - 1] ?? null
-  const estVal = estDate ? (estByDate?.get(estDate) ?? null) : null
-  const useEst = estVal != null
-
-  const lp = useEst ? estVal : latest.linepack_tgs_dia_actual
-  const fechaLabel = useEst ? estDate : latest.fecha
-  const variacion = useEst ? null : latest.linepack_tgs_variacion
-
-  // Evaluación de alertas
-  const estado = useEst ? 'Normal' : (latest.estado ?? 'Normal')
-  const motivo = useEst ? null : latest.motivo
-  const hasAlert = estado !== 'Normal'
-
-  const alertColor = getAlertColor(estado, motivo)
+  const lp = latest.linepack_tgs_dia_actual
+  const fechaLabel = latest.fecha
+  const variacion = latest.linepack_tgs_variacion
+  const estado = latest.estado ?? 'Normal'
 
   // Desbalance % = (Linepack de equilibrio − Linepack actual) / Capacidad de Transporte TGS
   const lpActualM3 = lp != null ? lp * 1_000_000 : null
@@ -58,65 +78,52 @@ export default function TGSPanel({ estByDate }: { estByDate?: Map<string, number
     ? ((LINEPACK_EQUILIBRIO_M3 - lpActualM3) / CAPACIDAD_TRANSPORTE_TGS_M3) * 100
     : null
 
+  const dateLabel = fechaLabel
+    ? new Date(fechaLabel + 'T00:00:00').toLocaleDateString('es-AR', {
+        weekday: 'short', day: '2-digit', month: 'short',
+      })
+    : '—'
+
   return (
     <div style={{ ...card, borderTop: `3px solid ${colors.accent.green}`, marginTop: space.xl }}>
-      <h3 style={sectionTitle}>
-        TGS — Síntesis operativa{' '}
-        <span style={{ color: colors.textDim, fontSize: 11, fontWeight: 400, textTransform: 'none', float: 'right' }}>
-          {fechaLabel} · fuente: {useEst ? 'estimado' : 'ETGS'}
-          {meta?.generated_at && ` · actualizado ${new Date(meta.generated_at).toLocaleString('es-AR', { hour: '2-digit', minute: '2-digit' })}`}
-        </span>
-      </h3>
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: space.sm, marginBottom: space.md }}>
+        <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: colors.textPrimary }}>
+          TGS — Síntesis operativa
+        </h3>
+        <div style={{ color: colors.textDim, fontSize: 12 }}>
+          Día operativo: <strong style={{ color: colors.textSecondary }}>{dateLabel}</strong>
+          {meta?.generated_at && (
+            <> · actualizado {new Date(meta.generated_at).toLocaleString('es-AR', { hour: '2-digit', minute: '2-digit' })}</>
+          )}
+        </div>
+      </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: space.md, marginTop: space.sm }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: space.md, padding: `${space.sm}px 0` }}>
+        {/* Columna 1: Linepack */}
         <Stat 
           label="Linepack TGS" 
-          value={lp != null ? `${lp.toFixed(2)} MMm³${useEst ? ' (est.)' : ''}` : '—'} 
-          sub={variacion != null ? `${variacion >= 0 ? '+' : ''}${variacion.toFixed(2)} vs anterior` : undefined} 
+          value={lp != null ? `${lp.toFixed(2)} MMm³` : '—'} 
+          sub={variacion != null ? `${variacion >= 0 ? '+' : ''}${variacion.toFixed(2)} vs anterior` : 'Volumen en el sistema'} 
         />
+
+        {/* Columna 2: Equilibrio (Nombre unificado) */}
         <Stat 
-          label="Linepack de equilibrio" 
+          label="Equilibrio" 
           value={`${(LINEPACK_EQUILIBRIO_M3 / 1_000_000).toFixed(2)} MMm³`} 
         />
+
+        {/* Columna 3: Estado (Bloque agregado) */}
+        <Stat label="Estado">
+          <EstadoBadge estado={estado} />
+        </Stat>
+
+        {/* Columna 4: Desbalance % */}
         <Stat 
           label="Desbalance %" 
           value={desbalancePct != null ? `${desbalancePct >= 0 ? '+' : ''}${desbalancePct.toFixed(2)}%` : '—'} 
           sub="(equilibrio − actual) / cap. transporte" 
         />
       </div>
-
-      {hasAlert && (
-        <div style={{
-          marginTop: space.md,
-          background: alertColor + '22',
-          border: `1px solid ${alertColor}`,
-          borderRadius: 6,
-          padding: `${space.sm}px ${space.md}px`,
-          color: alertColor,
-          fontSize: 13,
-          fontWeight: 600,
-        }}>
-          ⚠ {estado}{motivo ? ` · ${motivo}` : ''}
-        </div>
-      )}
-    </div>
-  )
-}
-
-function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
-  return (
-    <div>
-      <div style={{ color: colors.textDim, fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-        {label}
-      </div>
-      <div style={{ color: colors.textPrimary, fontSize: 18, fontWeight: 700, marginTop: 2 }}>
-        {value}
-      </div>
-      {sub && (
-        <div style={{ color: colors.textMuted, fontSize: 11, marginTop: 2 }}>
-          {sub}
-        </div>
-      )}
     </div>
   )
 }
