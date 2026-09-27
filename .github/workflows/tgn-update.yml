@@ -2,12 +2,8 @@ name: Update TGN data
 
 on:
   schedule:
-    # Argentina (UTC-3): el portal publica el cierre ~09:45 y corrige durante el
-    # día. Corríamos cada 3 h para seguir esas correcciones; desde 2026-08-06 va
-    # una sola pasada, la última, que es la que ve el día ya corregido. Se pierde
-    # la frescura intradiaria y se conserva el dato diario, que es lo que muestra
-    # el sitio. Para una corrida puntual, workflow_dispatch.
-    - cron: '45 21 * * *'  # 18:45 ART
+    # 09:45 ART equivale a 12:45 UTC
+    - cron: '45 12 * * *'  # 09:45 ART
   workflow_dispatch:
 
 permissions:
