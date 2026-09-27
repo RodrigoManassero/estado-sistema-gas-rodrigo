@@ -9,12 +9,16 @@ interface ETGSDataRow {
   motivo?: string | null
 }
 
-const LINEPACK_EQUILIBRIO_M3 = 224_486_000      // Linepack de equilibrio (224.49 MMm³)
+interface Props {
+  estByDate?: Map<string, number>
+}
+
+const LINEPACK_EQUILIBRIO_M3 = 224_486_000      // Linepack de equilibrio
 const CAPACIDAD_TRANSPORTE_TGS_M3 = 92_393_583  // Capacidad de Transporte TGS
 
 function EstadoBadge({ estado }: { estado: string }) {
   const up = estado.toUpperCase()
-  let color = colors.status.ok
+  let color: string = colors.status.ok
   if (up.includes('ALERT') || up.includes('ALERTA') || up.includes('ALTO')) color = colors.status.warn
   if (up.includes('EMERG') || up.includes('CRÍT') || up.includes('CRIT') || up.includes('BAJO')) color = colors.status.err
 
@@ -58,13 +62,13 @@ function Stat({ label, value, sub, children }: { label: string; value?: string; 
   )
 }
 
-export default function TGSPanel() {
+export default function TGSPanel(_props: Props) {
   const { data, meta } = useETGS()
   const rows: ETGSDataRow[] = (data as ETGSDataRow[]) ?? []
   
   if (rows.length === 0) return null
 
-  // Tomar siempre el último registro con dato real de ETGS (día n-1)
+  // Usar siempre el último dato real del día anterior
   const latest = rows[rows.length - 1]
 
   const lp = latest.linepack_tgs_dia_actual
@@ -99,25 +103,18 @@ export default function TGSPanel() {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: space.md, padding: `${space.sm}px 0` }}>
-        {/* Columna 1: Linepack */}
         <Stat 
           label="Linepack TGS" 
           value={lp != null ? `${lp.toFixed(2)} MMm³` : '—'} 
           sub={variacion != null ? `${variacion >= 0 ? '+' : ''}${variacion.toFixed(2)} vs anterior` : 'Volumen en el sistema'} 
         />
-
-        {/* Columna 2: Equilibrio (Nombre unificado) */}
         <Stat 
           label="Equilibrio" 
           value={`${(LINEPACK_EQUILIBRIO_M3 / 1_000_000).toFixed(2)} MMm³`} 
         />
-
-        {/* Columna 3: Estado (Bloque agregado) */}
         <Stat label="Estado">
           <EstadoBadge estado={estado} />
         </Stat>
-
-        {/* Columna 4: Desbalance % */}
         <Stat 
           label="Desbalance %" 
           value={desbalancePct != null ? `${desbalancePct >= 0 ? '+' : ''}${desbalancePct.toFixed(2)}%` : '—'} 
