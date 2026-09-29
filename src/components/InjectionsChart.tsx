@@ -10,7 +10,6 @@ interface Props {
 }
 
 export default function InjectionsChart({ data }: Props) {
-  // Usamos 'data' directamente en lugar de recortarlo con 'allDates'
   const rows = data || []
   const weekends = weekendSpans(rows.map((r) => r.fecha))
 
@@ -39,7 +38,15 @@ export default function InjectionsChart({ data }: Props) {
         <Legend wrapperStyle={{ fontSize: 12 }} />
 
         {weekends.map(([s, e], i) => (
-          <ReferenceArea key={`wk-${i}`} x1={s} x2={e} fill="#64748b" fillOpacity={0.08} strokeOpacity={0} ifOverflow="extendDomain" />
+          <ReferenceArea 
+            key={`wk-${i}`} 
+            x1={s} 
+            x2={e} 
+            fill="#64748b" 
+            fillOpacity={0.08} 
+            strokeOpacity={0} 
+            ifOverflow="extendDomain" 
+          />
         ))}
 
         <Area type="monotone" dataKey="iny_tgs" stackId="1" fill="#10b981" stroke="#10b981" name="TGS" fillOpacity={0.85} />
