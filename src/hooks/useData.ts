@@ -129,8 +129,8 @@ export function processInjectionsWithForecast(rows: DailyRow[]): DailyRow[] {
       return { ...row, isForecast: false }
     }
 
-    // Acceso seguro a campos de demanda para evitar errores de compilación TS si no están en la interfaz
-    const r = row as Record<string, number | undefined>
+    // Acceso seguro a campos de demanda resolviendo la incompatibilidad de tipos con doble cast
+    const r = row as unknown as Record<string, number | undefined>
     const estimatedDemand =
       (r.prioritaria || 0) +
       (r.industria || 0) +
