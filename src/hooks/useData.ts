@@ -84,9 +84,8 @@ export function useJson<T>(path: string): FetchState<T> {
 
 /**
  * Procesa las inyecciones tomando como ÚNICA FUENTE DE VERDAD histórica a enargas_ps.json.
- * Si un día no tiene registro válido en enargas_ps.json, se estima usando el promedio
- * absoluto de los últimos 3 días históricos válidos de enargas_ps.json.
- * Además, extiende la serie hasta completar el horizonte de proyección.
+ * Asegura que todas las propiedades tengan un valor numérico válido (evitando null)
+ * y extiende dinámicamente el horizonte de fechas si faltan días.
  */
 export function processInjectionsFromPS(
   dailyRows: DailyRow[],
@@ -94,7 +93,6 @@ export function processInjectionsFromPS(
 ): DailyRow[] {
   if (!dailyRows || dailyRows.length === 0) return []
 
-  // Map de rápido acceso para los datos reales extraídos exclusivamente de enargas_ps.json
   const psMap = new Map<string, EnargasPSRow>()
   if (psRows && Array.isArray(psRows)) {
     psRows.forEach((ps) => {
@@ -105,15 +103,13 @@ export function processInjectionsFromPS(
     })
   }
 
-  // Helper para validar si un registro de enargas_ps.json contiene inyección real
   const isValidPSRow = (ps: EnargasPSRow) => {
     const tgs = Number(ps.iny_tgs || 0)
     const tgn = Number(ps.iny_tgn || 0)
     const enarsa = Number(ps.iny_enarsa || ps.iny_gpm || 0)
-    return tgs + tgn + enarsa > 10 // Umbral de presencia real en MMm³/d
+    return tgs + tgn + enarsa > 10
   }
 
-  // Filtrar los últimos 3 días históricos válidos de enargas_ps.json para calcular la media
   const validPSHistorical = (psRows || []).filter(isValidPSRow).slice(-3)
 
   let avgTGS = 0,
@@ -159,7 +155,7 @@ export function processInjectionsFromPS(
     avgEscobar = Number((sum.escobar / count).toFixed(2))
   }
 
-  // Mapeo inicial sobre las filas existentes desglosando en propiedades 'real' y 'est'
+  // 1. Mapeo garantizando que NUNCA haya valores null/undefined
   const result: any[] = dailyRows.map((row) => {
     const psData = psMap.get(String(row.fecha).trim())
     const hasRealInjection = psData ? isValidPSRow(psData) : false
@@ -170,6 +166,7 @@ export function processInjectionsFromPS(
       const enarsa = Number(psData.iny_enarsa || psData.iny_gpm || 0)
       const bolivia = Number(psData.iny_bolivia || 0)
       const escobar = Number(psData.iny_escobar || 0)
+      const total = Number((tgs + tgn + enarsa + bolivia + escobar).toFixed(2))
 
       return {
         ...row,
@@ -179,19 +176,11 @@ export function processInjectionsFromPS(
         iny_enarsa: enarsa,
         iny_bolivia: bolivia,
         iny_escobar: escobar,
-        // Propiedades separadas para renderizado diferenciado en gráficos
-        iny_tgs_real: tgs,
-        iny_tgn_real: tgn,
-        iny_enarsa_real: enarsa,
-        iny_bolivia_real: bolivia,
-        iny_escobar_real: escobar,
-        iny_tgs_est: null,
-        iny_tgn_est: null,
-        iny_enarsa_est: null,
-        iny_bolivia_est: null,
-        iny_escobar_est: null,
+        iny_total: total,
       }
     }
+
+    const totalEst = Number((avgTGS + avgTGN + avgENARSA + avgBolivia + avgEscobar).toFixed(2))
 
     return {
       ...row,
@@ -201,49 +190,31 @@ export function processInjectionsFromPS(
       iny_enarsa: avgENARSA,
       iny_bolivia: avgBolivia,
       iny_escobar: avgEscobar,
-      // Propiedades separadas para renderizado diferenciado en gráficos
-      iny_tgs_real: null,
-      iny_tgn_real: null,
-      iny_enarsa_real: null,
-      iny_bolivia_real: null,
-      iny_escobar_real: null,
-      iny_tgs_est: avgTGS,
-      iny_tgn_est: avgTGN,
-      iny_enarsa_est: avgENARSA,
-      iny_bolivia_est: avgBolivia,
-      iny_escobar_est: avgEscobar,
+      iny_total: totalEst,
     }
   })
 
-  // Extensión de fechas: completa dinámicamente hasta 21 días (sincronizado con Demanda)
+  // 2. Extensión dinámica de fechas futuras si daily.json no llega al horizonte completo
   const TARGET_HORIZON_DAYS = 21
   if (result.length > 0 && result.length < TARGET_HORIZON_DAYS) {
-    const lastRow = result[result.length - 1]
-    let currentDate = new Date(lastRow.fecha + 'T00:00:00')
+    let lastDateStr = result[result.length - 1].fecha
+    const totalEst = Number((avgTGS + avgTGN + avgENARSA + avgBolivia + avgEscobar).toFixed(2))
 
     while (result.length < TARGET_HORIZON_DAYS) {
-      currentDate.setDate(currentDate.getDate() + 1)
-      const dateStr = currentDate.toISOString().split('T')[0]
+      const parts = lastDateStr.split('-').map(Number)
+      const d = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]))
+      d.setUTCDate(d.getUTCDate() + 1)
+      lastDateStr = d.toISOString().split('T')[0]
 
       result.push({
-        ...lastRow,
-        fecha: dateStr,
+        fecha: lastDateStr,
         isForecast: true,
         iny_tgs: avgTGS,
         iny_tgn: avgTGN,
         iny_enarsa: avgENARSA,
         iny_bolivia: avgBolivia,
         iny_escobar: avgEscobar,
-        iny_tgs_real: null,
-        iny_tgn_real: null,
-        iny_enarsa_real: null,
-        iny_bolivia_real: null,
-        iny_escobar_real: null,
-        iny_tgs_est: avgTGS,
-        iny_tgn_est: avgTGN,
-        iny_enarsa_est: avgENARSA,
-        iny_bolivia_est: avgBolivia,
-        iny_escobar_est: avgEscobar,
+        iny_total: totalEst,
       })
     }
   }
@@ -251,7 +222,7 @@ export function processInjectionsFromPS(
   return result
 }
 
-// Custom Hook actualizado para combinar daily.json con enargas_ps.json
+// Custom Hook para combinar daily.json con enargas_ps.json
 export const useDaily = () => {
   const dailyState = useJson<DailyRow[]>('./data/daily.json')
   const psState = useJson<EnargasPSRow[]>('./data/enargas_ps.json')
