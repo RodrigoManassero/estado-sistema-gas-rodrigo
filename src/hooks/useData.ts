@@ -28,15 +28,6 @@ export interface EnargasPSRow {
   [key: string]: unknown
 }
 
-interface InjectionSum {
-  tgs: number
-  tgn: number
-  enarsa: number
-  bolivia: number
-  escobar: number
-  total: number
-}
-
 /**
  * Loads a JSON file from /public/data/ and unwraps the {generated_at, data}
  * envelope produced by the Python pipeline. Legacy payloads (no envelope) are
@@ -92,8 +83,9 @@ export function useJson<T>(path: string): FetchState<T> {
 }
 
 /**
- * Procesa daily.json cruzando ÚNICAMENTE los datos de inyección con enargas_ps.json.
- * Rellena los días faltantes con la proyección estimada basada en los últimos días reales de PS.
+ * Procesa las inyecciones tomando como ÚNICA FUENTE DE VERDAD histórica a enargas_ps.json.
+ * Si un día no tiene registro válido en enargas_ps.json, se estima usando el promedio
+ * absoluto de los últimos 3 días históricos válidos de enargas_ps.json.
  */
 export function processInjectionsFromPS(
   dailyRows: DailyRow[],
@@ -101,7 +93,7 @@ export function processInjectionsFromPS(
 ): DailyRow[] {
   if (!dailyRows || dailyRows.length === 0) return []
 
-  // Map de rápido acceso para los datos reales de enargas_ps
+  // Map de rápido acceso para los datos reales extraídos exclusivamente de enargas_ps.json
   const psMap = new Map<string, EnargasPSRow>()
   if (psRows && Array.isArray(psRows)) {
     psRows.forEach((ps) => {
@@ -112,15 +104,15 @@ export function processInjectionsFromPS(
     })
   }
 
-  // Helper para verificar si una fila de PS tiene inyección real suficiente
+  // Helper para validar si un registro de enargas_ps.json contiene inyección real
   const isValidPSRow = (ps: EnargasPSRow) => {
     const tgs = Number(ps.iny_tgs || 0)
     const tgn = Number(ps.iny_tgn || 0)
     const enarsa = Number(ps.iny_enarsa || ps.iny_gpm || 0)
-    return tgs + tgn + enarsa > 10 // Umbral de presencia real
+    return tgs + tgn + enarsa > 10 // Umbral de presencia real en MMm³/d
   }
 
-  // Filtrar los últimos 3 días históricos válidos sacados puramente de enargas_ps.json
+  // Filtrar los últimos 3 días históricos válidos de enargas_ps.json para calcular la media
   const validPSHistorical = (psRows || []).filter(isValidPSRow).slice(-3)
 
   let avgTGS = 0,
@@ -128,50 +120,32 @@ export function processInjectionsFromPS(
     avgENARSA = 0,
     avgBolivia = 0,
     avgEscobar = 0
-  let avgTotalIny = 0
 
   if (validPSHistorical.length > 0) {
-    const initialSum: InjectionSum = {
-      tgs: 0,
-      tgn: 0,
-      enarsa: 0,
-      bolivia: 0,
-      escobar: 0,
-      total: 0,
-    }
+    const count = validPSHistorical.length
+    const sum = validPSHistorical.reduce(
+      (acc, r) => ({
+        tgs: acc.tgs + Number(r.iny_tgs || 0),
+        tgn: acc.tgn + Number(r.iny_tgn || 0),
+        enarsa: acc.enarsa + Number(r.iny_enarsa || r.iny_gpm || 0),
+        bolivia: acc.bolivia + Number(r.iny_bolivia || 0),
+        escobar: acc.escobar + Number(r.iny_escobar || 0),
+      }),
+      { tgs: 0, tgn: 0, enarsa: 0, bolivia: 0, escobar: 0 }
+    )
 
-    const sum = validPSHistorical.reduce<InjectionSum>((acc, r) => {
-      const tgs = Number(r.iny_tgs || 0)
-      const tgn = Number(r.iny_tgn || 0)
-      const enarsa = Number(r.iny_enarsa || r.iny_gpm || 0)
-      const bolivia = Number(r.iny_bolivia || 0)
-      const escobar = Number(r.iny_escobar || 0)
-      const total = tgs + tgn + enarsa + bolivia + escobar
-
-      return {
-        tgs: acc.tgs + tgs,
-        tgn: acc.tgn + tgn,
-        enarsa: acc.enarsa + enarsa,
-        bolivia: acc.bolivia + bolivia,
-        escobar: acc.escobar + escobar,
-        total: acc.total + total,
-      }
-    }, initialSum)
-
-    if (sum.total > 0) {
-      avgTGS = sum.tgs / sum.total
-      avgTGN = sum.tgn / sum.total
-      avgENARSA = sum.enarsa / sum.total
-      avgBolivia = sum.bolivia / sum.total
-      avgEscobar = sum.escobar / sum.total
-      avgTotalIny = sum.total / validPSHistorical.length
-    }
+    avgTGS = sum.tgs / count
+    avgTGN = sum.tgn / count
+    avgENARSA = sum.enarsa / count
+    avgBolivia = sum.bolivia / count
+    avgEscobar = sum.escobar / count
   }
 
   return dailyRows.map((row) => {
     const psData = psMap.get(String(row.fecha).trim())
     const hasRealInjection = psData ? isValidPSRow(psData) : false
 
+    // 1. Si existe en enargas_ps.json con datos reales -> Se usa directamente
     if (hasRealInjection && psData) {
       return {
         ...row,
@@ -184,26 +158,15 @@ export function processInjectionsFromPS(
       }
     }
 
-    // Estimación para días sin registro real en PS
-    const r = row as unknown as Record<string, number | undefined>
-    const estimatedDemand =
-      (r.prioritaria || 0) +
-      (r.industria || 0) +
-      (r.usinas || 0) +
-      (r.gnc || 0) +
-      (r.exp_tgn || 0) +
-      (r.exp_tgs || 0)
-
-    const targetSupply = estimatedDemand > 0 ? estimatedDemand : avgTotalIny
-
+    // 2. Si NO existe en enargas_ps.json -> Estimación pura basada en el promedio de enargas_ps
     return {
       ...row,
       isForecast: true,
-      iny_tgs: Number((targetSupply * avgTGS).toFixed(2)),
-      iny_tgn: Number((targetSupply * avgTGN).toFixed(2)),
-      iny_enarsa: Number((targetSupply * avgENARSA).toFixed(2)),
-      iny_bolivia: Number((targetSupply * avgBolivia).toFixed(2)),
-      iny_escobar: Number((targetSupply * avgEscobar).toFixed(2)),
+      iny_tgs: Number(avgTGS.toFixed(2)),
+      iny_tgn: Number(avgTGN.toFixed(2)),
+      iny_enarsa: Number(avgENARSA.toFixed(2)),
+      iny_bolivia: Number(avgBolivia.toFixed(2)),
+      iny_escobar: Number(avgEscobar.toFixed(2)),
     }
   })
 }
