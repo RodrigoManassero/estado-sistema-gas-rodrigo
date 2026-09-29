@@ -16,6 +16,18 @@ import type {
 // Re-exported so components that historically imported from this file still work.
 export type { ForecastDay, DemandForecastDay, DemandForecast } from '../types'
 
+export interface EnargasPSRow {
+  fecha?: string | null
+  'Día Operativo'?: string | null
+  iny_tgs?: number | null
+  iny_tgn?: number | null
+  iny_enarsa?: number | null
+  iny_gpm?: number | null
+  iny_bolivia?: number | null
+  iny_escobar?: number | null
+  [key: string]: unknown
+}
+
 /**
  * Loads a JSON file from /public/data/ and unwraps the {generated_at, data}
  * envelope produced by the Python pipeline. Legacy payloads (no envelope) are
@@ -71,17 +83,36 @@ export function useJson<T>(path: string): FetchState<T> {
 }
 
 /**
- * Función que toma los datos de daily.json y proyecta la inyección para
- * los días futuros sin datos reales, manteniendo la proporción sobre la demanda estimada.
+ * Procesa daily.json cruzando ÚNICAMENTE los datos de inyección con enargas_ps.json.
+ * Rellena los días faltantes con la proyección estimada basada en los últimos días reales de PS.
  */
-export function processInjectionsWithForecast(rows: DailyRow[]): DailyRow[] {
-  if (!rows || rows.length === 0) return []
+export function processInjectionsFromPS(
+  dailyRows: DailyRow[],
+  psRows: EnargasPSRow[] | null
+): DailyRow[] {
+  if (!dailyRows || dailyRows.length === 0) return []
 
-  // Identificar los últimos 3 días reales con datos de inyección válidos
-  const validHistorical = rows.filter(
-    (r) => r.iny_tgs !== undefined && r.iny_tgs !== null && r.iny_tgs > 0
-  )
-  const recent = validHistorical.slice(-3)
+  // Map de rápido acceso para los datos reales de enargas_ps
+  const psMap = new Map<string, EnargasPSRow>()
+  if (psRows && Array.isArray(psRows)) {
+    psRows.forEach((ps) => {
+      const fechaKey = ps.fecha || ps['Día Operativo']
+      if (fechaKey) {
+        psMap.set(String(fechaKey).trim(), ps)
+      }
+    })
+  }
+
+  // Helper para verificar si una fila de PS tiene inyección real suficiente
+  const isValidPSRow = (ps: EnargasPSRow) => {
+    const tgs = Number(ps.iny_tgs || 0)
+    const tgn = Number(ps.iny_tgn || 0)
+    const enarsa = Number(ps.iny_enarsa || ps.iny_gpm || 0)
+    return tgs + tgn + enarsa > 10 // Umbral de presencia real
+  }
+
+  // Filtrar los últimos 3 días históricos válidos sacados puramente de enargas_ps.json
+  const validPSHistorical = (psRows || []).filter(isValidPSRow).slice(-3)
 
   let avgTGS = 0,
     avgTGN = 0,
@@ -90,21 +121,22 @@ export function processInjectionsWithForecast(rows: DailyRow[]): DailyRow[] {
     avgEscobar = 0
   let avgTotalIny = 0
 
-  if (recent.length > 0) {
-    const sum = recent.reduce(
+  if (validPSHistorical.length > 0) {
+    const sum = validPSHistorical.reduce(
       (acc, r) => {
-        const total =
-          (r.iny_tgs || 0) +
-          (r.iny_tgn || 0) +
-          (r.iny_enarsa || 0) +
-          (r.iny_bolivia || 0) +
-          (r.iny_escobar || 0)
+        const tgs = Number(r.iny_tgs || 0)
+        const tgn = Number(r.iny_tgn || 0)
+        const enarsa = Number(r.iny_enarsa || r.iny_gpm || 0)
+        const bolivia = Number(r.iny_bolivia || 0)
+        const escobar = Number(r.iny_escobar || 0)
+        const total = tgs + tgn + enarsa + bolivia + escobar
+
         return {
-          tgs: acc.tgs + (r.iny_tgs || 0),
-          tgn: acc.tgn + (r.iny_tgn || 0),
-          enarsa: acc.enarsa + (r.iny_enarsa || 0),
-          bolivia: acc.bolivia + (r.iny_bolivia || 0),
-          escobar: acc.escobar + (r.iny_escobar || 0),
+          tgs: acc.tgs + tgs,
+          tgn: acc.tgn + tgn,
+          enarsa: acc.enarsa + enarsa,
+          bolivia: acc.bolivia + bolivia,
+          escobar: acc.escobar + escobar,
           total: acc.total + total,
         }
       },
@@ -117,19 +149,27 @@ export function processInjectionsWithForecast(rows: DailyRow[]): DailyRow[] {
       avgENARSA = sum.enarsa / sum.total
       avgBolivia = sum.bolivia / sum.total
       avgEscobar = sum.escobar / sum.total
-      avgTotalIny = sum.total / recent.length
+      avgTotalIny = sum.total / validPSHistorical.length
     }
   }
 
-  return rows.map((row) => {
-    const hasRealInjection =
-      row.iny_tgs !== undefined && row.iny_tgs !== null && row.iny_tgs > 0
+  return dailyRows.map((row) => {
+    const psData = psMap.get(String(row.fecha).trim())
+    const hasRealInjection = psData ? isValidPSRow(psData) : false
 
-    if (hasRealInjection) {
-      return { ...row, isForecast: false }
+    if (hasRealInjection && psData) {
+      return {
+        ...row,
+        isForecast: false,
+        iny_tgs: Number(psData.iny_tgs || 0),
+        iny_tgn: Number(psData.iny_tgn || 0),
+        iny_enarsa: Number(psData.iny_enarsa || psData.iny_gpm || 0),
+        iny_bolivia: Number(psData.iny_bolivia || 0),
+        iny_escobar: Number(psData.iny_escobar || 0),
+      }
     }
 
-    // Acceso seguro a campos de demanda resolviendo la incompatibilidad de tipos con doble cast
+    // Estimación para días sin registro real en PS
     const r = row as unknown as Record<string, number | undefined>
     const estimatedDemand =
       (r.prioritaria || 0) +
@@ -153,12 +193,24 @@ export function processInjectionsWithForecast(rows: DailyRow[]): DailyRow[] {
   })
 }
 
-// Custom Hook para obtener los datos de daily.json procesados con la proyección
+// Custom Hook actualizado para combinar daily.json con enargas_ps.json
 export const useDaily = () => {
-  const state = useJson<DailyRow[]>('./data/daily.json')
+  const dailyState = useJson<DailyRow[]>('./data/daily.json')
+  const psState = useJson<EnargasPSRow[]>('./data/enargas_ps.json')
+
+  const loading = dailyState.loading || psState.loading
+  const error = dailyState.error || psState.error
+
+  const processedData =
+    dailyState.data && !loading
+      ? processInjectionsFromPS(dailyState.data, psState.data)
+      : null
+
   return {
-    ...state,
-    data: state.data ? processInjectionsWithForecast(state.data) : null,
+    ...dailyState,
+    loading,
+    error,
+    data: processedData,
   }
 }
 
@@ -171,7 +223,7 @@ export const useEnargasRDS = () => useJson<EnargasRDSRow[]>('./data/enargas.json
 export const useEnargasING = () => useJson<EnargasINGRow[]>('./data/enargas_ing.json')
 
 // ENARGAS Proyección Semanal (PS)
-export const useEnargasPS = () => useJson<Record<string, number | string | null>[]>('./data/enargas_ps.json')
+export const useEnargasPS = () => useJson<EnargasPSRow[]>('./data/enargas_ps.json')
 export const useETGS = () => useJson<ETGSRow[]>('./data/etgs.json')
 export const useSMNAlerts = () => useJson<unknown[]>('./data/smn_alerts.json')
 
