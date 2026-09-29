@@ -129,14 +129,15 @@ export function processInjectionsWithForecast(rows: DailyRow[]): DailyRow[] {
       return { ...row, isForecast: false }
     }
 
-    // Demanda total estimada para ese día
+    // Acceso seguro a campos de demanda para evitar errores de compilación TS si no están en la interfaz
+    const r = row as Record<string, number | undefined>
     const estimatedDemand =
-      (row.prioritaria || 0) +
-      (row.industria || 0) +
-      (row.usinas || 0) +
-      (row.gnc || 0) +
-      (row.exp_tgn || 0) +
-      (row.exp_tgs || 0)
+      (r.prioritaria || 0) +
+      (r.industria || 0) +
+      (r.usinas || 0) +
+      (r.gnc || 0) +
+      (r.exp_tgn || 0) +
+      (r.exp_tgs || 0)
 
     const targetSupply = estimatedDemand > 0 ? estimatedDemand : avgTotalIny
 
