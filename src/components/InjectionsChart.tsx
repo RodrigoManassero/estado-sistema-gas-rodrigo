@@ -16,13 +16,6 @@ export default function InjectionsChart({ data, allDates }: Props) {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <AreaChart data={rows} syncId="outlook">
-        <defs>
-          {/* Patrón de tramado opcional para áreas estimadas */}
-          <pattern id="forecastPattern" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <line x1="0" y1="0" x2="0" y2="6" stroke="#94a3b8" strokeWidth="2" strokeOpacity="0.3" />
-          </pattern>
-        </defs>
-
         <XAxis dataKey="fecha" tickFormatter={fmt} tick={{ fill: '#64748b', fontSize: 11 }} interval="preserveStartEnd" />
         <YAxis tick={{ fill: '#64748b', fontSize: 11 }} />
         
@@ -33,7 +26,7 @@ export default function InjectionsChart({ data, allDates }: Props) {
           formatter={(value: any, name: any, item: any) => {
             if (value === null || value === undefined) return [null, null]
             const isFc = item.payload?.isForecast
-            return [`${value} MMM³/d ${isFc ? '(Est.)' : ''}`, name]
+            return [`${Number(value).toFixed(1)} MMM³/d ${isFc ? '(Est.)' : ''}`, name]
           }}
         />
         
@@ -44,113 +37,51 @@ export default function InjectionsChart({ data, allDates }: Props) {
           <ReferenceArea key={`wk-${i}`} x1={s} x2={e} fill="#64748b" fillOpacity={0.08} strokeOpacity={0} ifOverflow="extendDomain" />
         ))}
 
-        {/* ----------------- SERIES REALES / HISTÓRICAS (SÓLIDAS) ----------------- */}
+        {/* Capas apiladas continuas sin romper el stack ni dejar huecos */}
         <Area
           type="monotone"
-          dataKey="iny_tgs_real"
-          stackId="real"
+          dataKey="iny_tgs"
+          stackId="1"
           fill="#10b981"
           stroke="#10b981"
           name="TGS"
           fillOpacity={0.85}
-          connectNulls={false}
         />
         <Area
           type="monotone"
-          dataKey="iny_tgn_real"
-          stackId="real"
+          dataKey="iny_tgn"
+          stackId="1"
           fill="#3b82f6"
           stroke="#3b82f6"
           name="TGN"
           fillOpacity={0.85}
-          connectNulls={false}
         />
         <Area
           type="monotone"
-          dataKey="iny_enarsa_real"
-          stackId="real"
+          dataKey="iny_enarsa"
+          stackId="1"
           fill="#f59e0b"
           stroke="#f59e0b"
           name="ENARSA/GPM"
           fillOpacity={0.85}
-          connectNulls={false}
         />
         <Area
           type="monotone"
-          dataKey="iny_bolivia_real"
-          stackId="real"
+          dataKey="iny_bolivia"
+          stackId="1"
           fill="#ef4444"
           stroke="#ef4444"
           name="Bolivia"
           fillOpacity={0.85}
-          connectNulls={false}
         />
         <Area
           type="monotone"
-          dataKey="iny_escobar_real"
-          stackId="real"
+          dataKey="iny_escobar"
+          stackId="1"
           fill="#6b7280"
           stroke="#6b7280"
           name="Escobar"
           fillOpacity={0.85}
-          connectNulls={false}
-        />
-
-        {/* ----------------- SERIES ESTIMADAS / PROYECTADAS (PUNTEADAS) ----------------- */}
-        <Area
-          type="monotone"
-          dataKey="iny_tgs_est"
-          stackId="est"
-          fill="#10b981"
-          stroke="#10b981"
-          strokeDasharray="4 4"
-          name="TGS (Est.)"
-          fillOpacity={0.35}
-          connectNulls={false}
-        />
-        <Area
-          type="monotone"
-          dataKey="iny_tgn_est"
-          stackId="est"
-          fill="#3b82f6"
-          stroke="#3b82f6"
-          strokeDasharray="4 4"
-          name="TGN (Est.)"
-          fillOpacity={0.35}
-          connectNulls={false}
-        />
-        <Area
-          type="monotone"
-          dataKey="iny_enarsa_est"
-          stackId="est"
-          fill="#f59e0b"
-          stroke="#f59e0b"
-          strokeDasharray="4 4"
-          name="ENARSA/GPM (Est.)"
-          fillOpacity={0.35}
-          connectNulls={false}
-        />
-        <Area
-          type="monotone"
-          dataKey="iny_bolivia_est"
-          stackId="est"
-          fill="#ef4444"
-          stroke="#ef4444"
-          strokeDasharray="4 4"
-          name="Bolivia (Est.)"
-          fillOpacity={0.35}
-          connectNulls={false}
-        />
-        <Area
-          type="monotone"
-          dataKey="iny_escobar_est"
-          stackId="est"
-          fill="#6b7280"
-          stroke="#6b7280"
-          strokeDasharray="4 4"
-          name="Escobar (Est.)"
-          fillOpacity={0.35}
-          connectNulls={false}
         />
       </AreaChart>
     </ResponsiveContainer>
