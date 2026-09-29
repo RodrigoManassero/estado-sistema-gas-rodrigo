@@ -13,7 +13,6 @@ import type {
   WeatherPayload,
 } from '../types'
 
-// Re-exported so components that historically imported from this file still work.
 export type { ForecastDay, DemandForecastDay, DemandForecast } from '../types'
 
 export interface EnargasPSRow {
@@ -28,11 +27,6 @@ export interface EnargasPSRow {
   [key: string]: unknown
 }
 
-/**
- * Loads a JSON file from /public/data/ and unwraps the {generated_at, data}
- * envelope produced by the Python pipeline. Legacy payloads (no envelope) are
- * returned as-is.
- */
 export function useJson<T>(path: string): FetchState<T> {
   const [state, setState] = useState<FetchState<T>>({
     data: null,
@@ -84,14 +78,16 @@ export function useJson<T>(path: string): FetchState<T> {
 
 /**
  * Procesa las inyecciones tomando como ÚNICA FUENTE DE VERDAD histórica a enargas_ps.json.
- * Asegura que todas las propiedades tengan un valor numérico válido (evitando null)
- * y extiende dinámicamente el horizonte de fechas si faltan días.
+ * Recorta la historia a los últimos 30 días para evitar franjas horizontales gigantes a la izquierda.
  */
 export function processInjectionsFromPS(
   dailyRows: DailyRow[],
   psRows: EnargasPSRow[] | null
 ): DailyRow[] {
   if (!dailyRows || dailyRows.length === 0) return []
+
+  // 0. RECORTE HISTÓRICO: Tomamos solo los últimos 30 días
+  const recentDailyRows = dailyRows.slice(-30)
 
   const psMap = new Map<string, EnargasPSRow>()
   if (psRows && Array.isArray(psRows)) {
@@ -155,8 +151,8 @@ export function processInjectionsFromPS(
     avgEscobar = Number((sum.escobar / count).toFixed(2))
   }
 
-  // 1. Mapeo garantizando que NUNCA haya valores null/undefined
-  const result: any[] = dailyRows.map((row) => {
+  // 1. Mapeo sobre los datos recientes
+  const result: any[] = recentDailyRows.map((row) => {
     const psData = psMap.get(String(row.fecha).trim())
     const hasRealInjection = psData ? isValidPSRow(psData) : false
 
@@ -194,7 +190,7 @@ export function processInjectionsFromPS(
     }
   })
 
-  // 2. Extensión dinámica de fechas futuras si daily.json no llega al horizonte completo
+  // 2. Extensión dinámica de fechas futuras si faltan días para el horizonte de 21 días
   const TARGET_HORIZON_DAYS = 21
   if (result.length > 0 && result.length < TARGET_HORIZON_DAYS) {
     let lastDateStr = result[result.length - 1].fecha
@@ -222,7 +218,7 @@ export function processInjectionsFromPS(
   return result
 }
 
-// Custom Hook para combinar daily.json con enargas_ps.json
+// Custom Hook principal
 export const useDaily = () => {
   const dailyState = useJson<DailyRow[]>('./data/daily.json')
   const psState = useJson<EnargasPSRow[]>('./data/enargas_ps.json')
@@ -250,8 +246,6 @@ export const useLinepackForecast = () => useJson<LinepackForecast>('./data/linep
 export const useWeatherRegions = () => useJson<RegionCity[]>('./data/weather_regions.json')
 export const useEnargasRDS = () => useJson<EnargasRDSRow[]>('./data/enargas.json')
 export const useEnargasING = () => useJson<EnargasINGRow[]>('./data/enargas_ing.json')
-
-// ENARGAS Proyección Semanal (PS)
 export const useEnargasPS = () => useJson<EnargasPSRow[]>('./data/enargas_ps.json')
 export const useETGS = () => useJson<ETGSRow[]>('./data/etgs.json')
 export const useSMNAlerts = () => useJson<unknown[]>('./data/smn_alerts.json')
@@ -350,16 +344,16 @@ export interface MEGSAPayload {
 export const useMEGSA = () => useJson<MEGSAPayload>('./data/megsa.json')
 
 export interface ProduccionMes {
-  mes: string                  // YYYY-MM
-  area: string                 // areapermisoconcesion (bloque / concesión)
+  mes: string
+  area: string
   empresa: string
   cuenca: string
   provincia: string
-  prod_gas_mm3: number         // MMm³ (= million m³) acumulado del mes
-  prod_pet_m3: number          // m³
-  prod_agua_m3: number         // m³
-  pozos_activos: number        // wells with prod_gas>0 or prod_pet>0 in the month
-  pozos_no_conv: number        // wells where tipo_de_recurso != CONVENCIONAL
+  prod_gas_mm3: number
+  prod_pet_m3: number
+  prod_agua_m3: number
+  pozos_activos: number
+  pozos_no_conv: number
 }
 
 export const useProduccionNeuquina = () => useJson<ProduccionMes[]>('./data/produccion_neuquina.json')
@@ -367,10 +361,10 @@ export const useProduccionNeuquina = () => useJson<ProduccionMes[]>('./data/prod
 export interface ProduccionHistoricoRow {
   area: string
   empresa: string
-  gas_acumulado_mm3: number             // MMm³ desde el primer registro disponible
+  gas_acumulado_mm3: number
   pet_acumulado_m3: number
   agua_acumulada_m3: number
-  primer_mes: string | null             // YYYY-MM
+  primer_mes: string | null
   ultimo_mes: string | null
   meses_activos: number
   anios_cubiertos: number[]
@@ -379,15 +373,15 @@ export interface ProduccionHistoricoRow {
 export const useProduccionHistorico = () => useJson<ProduccionHistoricoRow[]>('./data/produccion_neuquina_historico.json')
 
 export interface PozoTerminadoMes {
-  mes: string                  // YYYY-MM
-  area: string                 // areapermisoconcesion (bloque / concesión)
+  mes: string
+  area: string
   cuenca: string
   provincia: string
-  pozos: number                // total pozos terminados en el mes
-  pozos_pet: number            // concepto "Productivos de Petróleo"
-  pozos_gas: number            // concepto "Productivos de Gas"
-  pozos_serv: number           // concepto "Servicio"
-  pozos_otros: number          // improductivos y otros
+  pozos: number
+  pozos_pet: number
+  pozos_gas: number
+  pozos_serv: number
+  pozos_otros: number
 }
 
 export const usePozosTerminados = () => useJson<PozoTerminadoMes[]>('./data/pozos_terminados.json')
@@ -396,8 +390,8 @@ export interface PlanDesarrollo {
   id: string
   operador: string
   titulo: string
-  fecha_anuncio: string                  // YYYY or YYYY-MM
-  horizonte: string | null               // e.g. "2024-2028"
+  fecha_anuncio: string
+  horizonte: string | null
   monto_usd_millones: number | null
   categoria: 'estrategia' | 'upstream' | 'midstream' | 'infraestructura' | 'M&A' | 'desinversión' | string
   comentario: string
