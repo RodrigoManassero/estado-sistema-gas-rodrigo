@@ -28,6 +28,15 @@ export interface EnargasPSRow {
   [key: string]: unknown
 }
 
+interface InjectionSum {
+  tgs: number
+  tgn: number
+  enarsa: number
+  bolivia: number
+  escobar: number
+  total: number
+}
+
 /**
  * Loads a JSON file from /public/data/ and unwraps the {generated_at, data}
  * envelope produced by the Python pipeline. Legacy payloads (no envelope) are
@@ -122,26 +131,32 @@ export function processInjectionsFromPS(
   let avgTotalIny = 0
 
   if (validPSHistorical.length > 0) {
-    const sum = validPSHistorical.reduce(
-      (acc, r) => {
-        const tgs = Number(r.iny_tgs || 0)
-        const tgn = Number(r.iny_tgn || 0)
-        const enarsa = Number(r.iny_enarsa || r.iny_gpm || 0)
-        const bolivia = Number(r.iny_bolivia || 0)
-        const escobar = Number(r.iny_escobar || 0)
-        const total = tgs + tgn + enarsa + bolivia + escobar
+    const initialSum: InjectionSum = {
+      tgs: 0,
+      tgn: 0,
+      enarsa: 0,
+      bolivia: 0,
+      escobar: 0,
+      total: 0,
+    }
 
-        return {
-          tgs: acc.tgs + tgs,
-          tgn: acc.tgn + tgn,
-          enarsa: acc.enarsa + enarsa,
-          bolivia: acc.bolivia + bolivia,
-          escobar: acc.escobar + escobar,
-          total: acc.total + total,
-        }
-      },
-      { tgs: 0, tgn: 0, enarsa: 0, bolivia: 0, escobar: 0, total: 0 }
-    )
+    const sum = validPSHistorical.reduce<InjectionSum>((acc, r) => {
+      const tgs = Number(r.iny_tgs || 0)
+      const tgn = Number(r.iny_tgn || 0)
+      const enarsa = Number(r.iny_enarsa || r.iny_gpm || 0)
+      const bolivia = Number(r.iny_bolivia || 0)
+      const escobar = Number(r.iny_escobar || 0)
+      const total = tgs + tgn + enarsa + bolivia + escobar
+
+      return {
+        tgs: acc.tgs + tgs,
+        tgn: acc.tgn + tgn,
+        enarsa: acc.enarsa + enarsa,
+        bolivia: acc.bolivia + bolivia,
+        escobar: acc.escobar + escobar,
+        total: acc.total + total,
+      }
+    }, initialSum)
 
     if (sum.total > 0) {
       avgTGS = sum.tgs / sum.total
