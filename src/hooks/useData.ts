@@ -123,7 +123,24 @@ export function processInjectionsFromPS(
 
   if (validPSHistorical.length > 0) {
     const count = validPSHistorical.length
-    const sum = validPSHistorical.reduce(
+
+    interface IngestionAccumulator {
+      tgs: number
+      tgn: number
+      enarsa: number
+      bolivia: number
+      escobar: number
+    }
+
+    const initialAcc: IngestionAccumulator = {
+      tgs: 0,
+      tgn: 0,
+      enarsa: 0,
+      bolivia: 0,
+      escobar: 0,
+    }
+
+    const sum = validPSHistorical.reduce<IngestionAccumulator>(
       (acc, r) => ({
         tgs: acc.tgs + Number(r.iny_tgs || 0),
         tgn: acc.tgn + Number(r.iny_tgn || 0),
@@ -131,7 +148,7 @@ export function processInjectionsFromPS(
         bolivia: acc.bolivia + Number(r.iny_bolivia || 0),
         escobar: acc.escobar + Number(r.iny_escobar || 0),
       }),
-      { tgs: 0, tgn: 0, enarsa: 0, bolivia: 0, escobar: 0 }
+      initialAcc
     )
 
     avgTGS = sum.tgs / count
