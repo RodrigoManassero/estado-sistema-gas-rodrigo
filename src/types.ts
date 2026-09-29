@@ -4,7 +4,10 @@ export interface DailyRow {
   prioritaria: number | null
   industria: number | null
   usinas: number | null
+  gnc?: number | null
   exportaciones: number | null
+  exp_tgn?: number | null
+  exp_tgs?: number | null
   iny_tgs: number | null
   iny_tgn: number | null
   iny_enarsa: number | null
@@ -35,6 +38,8 @@ export interface DailyRow {
   cammesa_fueloil: number | null
   cammesa_carbon: number | null
   cammesa_total: number | null
+  // Flag para identificar registros con inyección proyectada
+  isForecast?: boolean
   // Estado del sistema TGN (ABII): 'NORMAL' | 'ALERTA' por |desbalance %| vs ±7.
   estado_tgn?: string | null
   // Mezcla de combustibles PROYECTADA (CAMMESA Previsión semanal, repartida a
