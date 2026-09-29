@@ -70,8 +70,97 @@ export function useJson<T>(path: string): FetchState<T> {
   return state
 }
 
-// One wrapper per dataset — gives each a clear name + typed payload.
-export const useDaily = () => useJson<DailyRow[]>('./data/daily.json')
+/**
+ * Función que toma los datos de daily.json y proyecta la inyección para
+ * los días futuros sin datos reales, manteniendo la proporción sobre la demanda estimada.
+ */
+export function processInjectionsWithForecast(rows: DailyRow[]): DailyRow[] {
+  if (!rows || rows.length === 0) return []
+
+  // Identificar los últimos 3 días reales con datos de inyección válidos
+  const validHistorical = rows.filter(
+    (r) => r.iny_tgs !== undefined && r.iny_tgs !== null && r.iny_tgs > 0
+  )
+  const recent = validHistorical.slice(-3)
+
+  let avgTGS = 0,
+    avgTGN = 0,
+    avgENARSA = 0,
+    avgBolivia = 0,
+    avgEscobar = 0
+  let avgTotalIny = 0
+
+  if (recent.length > 0) {
+    const sum = recent.reduce(
+      (acc, r) => {
+        const total =
+          (r.iny_tgs || 0) +
+          (r.iny_tgn || 0) +
+          (r.iny_enarsa || 0) +
+          (r.iny_bolivia || 0) +
+          (r.iny_escobar || 0)
+        return {
+          tgs: acc.tgs + (r.iny_tgs || 0),
+          tgn: acc.tgn + (r.iny_tgn || 0),
+          enarsa: acc.enarsa + (r.iny_enarsa || 0),
+          bolivia: acc.bolivia + (r.iny_bolivia || 0),
+          escobar: acc.escobar + (r.iny_escobar || 0),
+          total: acc.total + total,
+        }
+      },
+      { tgs: 0, tgn: 0, enarsa: 0, bolivia: 0, escobar: 0, total: 0 }
+    )
+
+    if (sum.total > 0) {
+      avgTGS = sum.tgs / sum.total
+      avgTGN = sum.tgn / sum.total
+      avgENARSA = sum.enarsa / sum.total
+      avgBolivia = sum.bolivia / sum.total
+      avgEscobar = sum.escobar / sum.total
+      avgTotalIny = sum.total / recent.length
+    }
+  }
+
+  return rows.map((row) => {
+    const hasRealInjection =
+      row.iny_tgs !== undefined && row.iny_tgs !== null && row.iny_tgs > 0
+
+    if (hasRealInjection) {
+      return { ...row, isForecast: false }
+    }
+
+    // Demanda total estimada para ese día
+    const estimatedDemand =
+      (row.prioritaria || 0) +
+      (row.industria || 0) +
+      (row.usinas || 0) +
+      (row.gnc || 0) +
+      (row.exp_tgn || 0) +
+      (row.exp_tgs || 0)
+
+    const targetSupply = estimatedDemand > 0 ? estimatedDemand : avgTotalIny
+
+    return {
+      ...row,
+      isForecast: true,
+      iny_tgs: Number((targetSupply * avgTGS).toFixed(2)),
+      iny_tgn: Number((targetSupply * avgTGN).toFixed(2)),
+      iny_enarsa: Number((targetSupply * avgENARSA).toFixed(2)),
+      iny_bolivia: Number((targetSupply * avgBolivia).toFixed(2)),
+      iny_escobar: Number((targetSupply * avgEscobar).toFixed(2)),
+    }
+  })
+}
+
+// Custom Hook para obtener los datos de daily.json procesados con la proyección
+export const useDaily = () => {
+  const state = useJson<DailyRow[]>('./data/daily.json')
+  return {
+    ...state,
+    data: state.data ? processInjectionsWithForecast(state.data) : null,
+  }
+}
+
 export const useComments = () => useJson<Comments>('./data/comments.json')
 export const useWeather = () => useJson<WeatherPayload>('./data/weather.json')
 export const useDemandForecast = () => useJson<DemandForecast>('./data/demand_forecast.json')
@@ -79,11 +168,12 @@ export const useLinepackForecast = () => useJson<LinepackForecast>('./data/linep
 export const useWeatherRegions = () => useJson<RegionCity[]>('./data/weather_regions.json')
 export const useEnargasRDS = () => useJson<EnargasRDSRow[]>('./data/enargas.json')
 export const useEnargasING = () => useJson<EnargasINGRow[]>('./data/enargas_ing.json')
-// ENARGAS Proyección Semanal (PS) — REAL column actuals. Authority for linepack
-// TGN/TGS/total + límites that build_daily.py folds into daily.json.
+
+// ENARGAS Proyección Semanal (PS)
 export const useEnargasPS = () => useJson<Record<string, number | string | null>[]>('./data/enargas_ps.json')
 export const useETGS = () => useJson<ETGSRow[]>('./data/etgs.json')
 export const useSMNAlerts = () => useJson<unknown[]>('./data/smn_alerts.json')
+
 export interface CammesaWeek {
   week_num: string | null
   start_date: string | null
@@ -115,6 +205,7 @@ export interface CammesaWeeklyPayload {
 }
 
 export const useCammesaWeekly = () => useJson<CammesaWeeklyPayload>('./data/cammesa_weekly.json')
+
 export interface CammesaPPORow {
   fecha: string
   gas_mmm3: number | null
@@ -125,6 +216,7 @@ export interface CammesaPPORow {
   plants_counted?: number
   source?: string
 }
+
 export const useCammesaPPO = () => useJson<CammesaPPORow[]>('./data/cammesa_ppo.json')
 
 export interface BacktestPoint {
@@ -187,6 +279,7 @@ export interface ProduccionMes {
   pozos_activos: number        // wells with prod_gas>0 or prod_pet>0 in the month
   pozos_no_conv: number        // wells where tipo_de_recurso != CONVENCIONAL
 }
+
 export const useProduccionNeuquina = () => useJson<ProduccionMes[]>('./data/produccion_neuquina.json')
 
 export interface ProduccionHistoricoRow {
@@ -200,6 +293,7 @@ export interface ProduccionHistoricoRow {
   meses_activos: number
   anios_cubiertos: number[]
 }
+
 export const useProduccionHistorico = () => useJson<ProduccionHistoricoRow[]>('./data/produccion_neuquina_historico.json')
 
 export interface PozoTerminadoMes {
@@ -213,6 +307,7 @@ export interface PozoTerminadoMes {
   pozos_serv: number           // concepto "Servicio"
   pozos_otros: number          // improductivos y otros
 }
+
 export const usePozosTerminados = () => useJson<PozoTerminadoMes[]>('./data/pozos_terminados.json')
 
 export interface PlanDesarrollo {
@@ -226,6 +321,7 @@ export interface PlanDesarrollo {
   comentario: string
   fuente_url: string
 }
+
 export const usePlanesDesarrollo = () => useJson<PlanDesarrollo[]>('./data/planes_desarrollo.json')
 
 export interface ConcesionFeature {
@@ -240,26 +336,36 @@ export interface ConcesionFeature {
   }
   geometry: { type: 'MultiPolygon'; coordinates: number[][][][] }
 }
+
 export interface ConcesionesCollection {
   type: 'FeatureCollection'
   features: ConcesionFeature[]
   crs?: unknown
   metadata?: { source?: string; source_url?: string; filter?: string }
 }
-/** Concesiones GeoJSON: standard FeatureCollection, no envelope. Coordinates
- *  in EPSG:4326 (raw lon, lat in degrees) — projection happens in CuencaMap. */
+
 export function useConcesionesNeuquina() {
   const [state, setState] = useState<{
     data: ConcesionesCollection | null
     loading: boolean
     error: Error | null
   }>({ data: null, loading: true, error: null })
+
   useEffect(() => {
+    let cancelled = false
     fetch('./data/concesiones_neuquina.geojson', { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((d: ConcesionesCollection) => setState({ data: d, loading: false, error: null }))
-      .catch((e: Error) => setState({ data: null, loading: false, error: e }))
+      .then((d: ConcesionesCollection) => {
+        if (!cancelled) setState({ data: d, loading: false, error: null })
+      })
+      .catch((e: Error) => {
+        if (!cancelled) setState({ data: null, loading: false, error: e })
+      })
+    return () => {
+      cancelled = true
+    }
   }, [])
+
   return state
 }
 
@@ -271,6 +377,7 @@ export interface TramoRow {
   tgs_nqn_capacidad: number | null
   tgs_nqn_corte: number | null
 }
+
 export const useTramos = () => useJson<TramoRow[]>('./data/tramos.json')
 
 export interface GasoductoRow {
@@ -286,6 +393,7 @@ export interface GasoductoRow {
   distr_otros: number | null
   total: number | null
 }
+
 export interface CuencaRow {
   fecha: string
   tgn_neuquina: number | null
@@ -299,6 +407,7 @@ export interface CuencaRow {
   otros_origenes: number | null
   total: number | null
 }
+
 export interface GedRow {
   fecha: string
   metrogas?: number | null
@@ -311,11 +420,13 @@ export interface GedRow {
   gasnor?: number | null
   gasnea?: number | null
 }
+
 export interface EnargasMonthly {
   gas_recibido?: { cuenca: CuencaRow[]; gasoducto: GasoductoRow[] }
   contratos_firme?: Record<string, number | string>[]
   gas_entregado?: GedRow[]
 }
+
 export const useEnargasMonthly = () => useJson<EnargasMonthly>('./data/enargas_monthly.json')
 
 export interface GasNode {
@@ -328,6 +439,7 @@ export interface GasNode {
   roleProxy: 'source_proxy' | 'sink_proxy' | 'transit' | 'inactive' | 'unknown'
   hasCompressor?: boolean
 }
+
 export interface GasRoute {
   edgeId: string
   ruta: string
@@ -344,20 +456,24 @@ export interface GasRoute {
   latest_caudal?: number | null
   latest_utilization?: number | null
 }
+
 export interface GasNetwork {
   projection: string
   latestSnapshotDate?: string
   nodes: GasNode[]
   routes: GasRoute[]
 }
+
 export const useGasNetwork = () => useJson<GasNetwork>('./data/gas_network.json')
 
 export interface OutlineVertex { lon: number; lat: number; x: number; y: number }
+
 export interface CountryOutline {
   projection: string
   polygons: OutlineVertex[][]
   bounds: { minX: number; maxX: number; minY: number; maxY: number }
 }
+
 export const useOutline = () => useJson<CountryOutline>('./data/ar_outline.json')
 
 export interface DistribuidoraFeature {
@@ -365,19 +481,18 @@ export interface DistribuidoraFeature {
   properties: { id: string; name: string }
   geometry: { type: 'MultiPolygon'; coordinates: number[][][][] }
 }
+
 export interface DistribuidorasCollection {
   type: 'FeatureCollection'
   features: DistribuidoraFeature[]
   crs?: unknown
 }
-/** Gas entregado por provincia (ENARGAS GED.xlsx / cuadro 1.06). One row per
- *  month; keys beyond `fecha` are province slugs → dam³/mes (miles de m³).
- *  Tipo de servicio is collapsed (national-only split), so this is the province
- *  total — feeds the choropleth density + per-province trend. */
+
 export interface ProvinciaConsumoRow {
   fecha: string
   [provinciaSlug: string]: number | string | null
 }
+
 export const useEnargasProvincias = () =>
   useJson<ProvinciaConsumoRow[]>('./data/enargas_provincias.json')
 
@@ -386,28 +501,39 @@ export interface ProvinciaFeature {
   properties: { id: string; name: string; area_km2: number }
   geometry: { type: 'MultiPolygon'; coordinates: number[][][][] }
 }
+
 export interface ProvinciasCollection {
   type: 'FeatureCollection'
   features: ProvinciaFeature[]
   crs?: unknown
 }
-/** Provincias GeoJSON (EPSG:3857, like distribuidoras.geojson): raw
- *  FeatureCollection without the pipeline envelope, so fetch manually. */
+
 export function useProvincias() {
   const [state, setState] = useState<{ data: ProvinciasCollection | null; loading: boolean; error: Error | null }>({
-    data: null, loading: true, error: null,
+    data: null,
+    loading: true,
+    error: null,
   })
+
   useEffect(() => {
+    let cancelled = false
     fetch('./data/provincias.geojson', { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((d: ProvinciasCollection) => setState({ data: d, loading: false, error: null }))
-      .catch((e: Error) => setState({ data: null, loading: false, error: e }))
+      .then((d: ProvinciasCollection) => {
+        if (!cancelled) setState({ data: d, loading: false, error: null })
+      })
+      .catch((e: Error) => {
+        if (!cancelled) setState({ data: null, loading: false, error: e })
+      })
+    return () => {
+      cancelled = true
+    }
   }, [])
+
   return state
 }
 
 export interface TGNSystemStateRow {
-  /** YYYY-MM-DD normalised from the Java toString in 'Día Operativo'. */
   fecha?: string | null
   'Día Operativo': string
   'Actual': string
@@ -415,21 +541,31 @@ export interface TGNSystemStateRow {
   'Desbalance del sistema': string
   'Desbalance porcentual': string
 }
+
 export const useTGNSystemState = () =>
   useJson<TGNSystemStateRow[]>('./data/tgn_system_state.json')
 
-/** Distribuidoras GeoJSON: uses the GeoJSON envelope directly, no pipeline
- *  metadata wrapper — so we can't use useJson's envelope-unwrap. Fetch
- *  manually. */
 export function useDistribuidoras() {
   const [state, setState] = useState<{ data: DistribuidorasCollection | null; loading: boolean; error: Error | null }>({
-    data: null, loading: true, error: null,
+    data: null,
+    loading: true,
+    error: null,
   })
+
   useEffect(() => {
+    let cancelled = false
     fetch('./data/distribuidoras.geojson', { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((d: DistribuidorasCollection) => setState({ data: d, loading: false, error: null }))
-      .catch((e: Error) => setState({ data: null, loading: false, error: e }))
+      .then((d: DistribuidorasCollection) => {
+        if (!cancelled) setState({ data: d, loading: false, error: null })
+      })
+      .catch((e: Error) => {
+        if (!cancelled) setState({ data: null, loading: false, error: e })
+      })
+    return () => {
+      cancelled = true
+    }
   }, [])
+
   return state
 }
