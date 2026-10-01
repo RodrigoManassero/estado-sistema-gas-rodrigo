@@ -95,18 +95,37 @@ export const useInjectionsForecast = () =>
   useJson<InjectionsForecastRow[]>('./data/inyections_forecast.json')
 
 /**
- * Procesa las inyecciones alineándolas estrictamente al rango de fechas 
- * que utiliza el gráfico de demanda (pasado real + futuro proyectado).
+ * Genera un rango de fechas en formato YYYY-MM-DD
+ * desde (hoy - daysBack) hasta (hoy + daysAhead).
+ */
+function getDynamicDateRange(daysBack: number = 7, daysAhead: number = 13): string[] {
+  const dates: string[] = []
+  const today = new Date()
+
+  for (let i = -daysBack; i <= daysAhead; i++) {
+    const d = new Date(today)
+    d.setDate(today.getDate() + i)
+    const year = d.getFullYear()
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    dates.push(`${year}-${month}-${day}`)
+  }
+
+  return dates
+}
+
+/**
+ * Procesa las inyecciones usando enargas_ps.json para días pasados/reales
+ * e inyections_forecast.json para el día corriente y los 13 días hacia el futuro.
  */
 export function processInjectionsFromPS(
   dailyRows: DailyRow[],
   psRows: EnargasPSRow[] | null,
   injectionsForecastRows: InjectionsForecastRow[] | null,
-  targetDates?: string[]
+  daysBack: number = 7,
+  daysAhead: number = 13
 ): DailyRow[] {
-  if (!dailyRows || dailyRows.length === 0) return []
-
-  // 1. Mapeo de datos reales desde enargas_ps.json
+  // 1. Mapeo de partes diarios reales
   const psMap = new Map<string, EnargasPSRow>()
   if (psRows && Array.isArray(psRows)) {
     psRows.forEach((ps) => {
@@ -117,7 +136,7 @@ export function processInjectionsFromPS(
     })
   }
 
-  // 2. Mapeo de datos proyectados desde inyections_forecast.json
+  // 2. Mapeo de proyecciones futuras
   const forecastMap = new Map<string, InjectionsForecastRow>()
   if (injectionsForecastRows && Array.isArray(injectionsForecastRows)) {
     injectionsForecastRows.forEach((fc) => {
@@ -127,9 +146,11 @@ export function processInjectionsFromPS(
     })
   }
 
-  // 3. Map de dailyRows como fallback
+  // 3. Mapeo auxiliar de daily.json
   const dailyMap = new Map<string, DailyRow>()
-  dailyRows.forEach((r) => dailyMap.set(String(r.fecha).trim(), r))
+  if (dailyRows && Array.isArray(dailyRows)) {
+    dailyRows.forEach((r) => dailyMap.set(String(r.fecha).trim(), r))
+  }
 
   const isValidPSRow = (ps: EnargasPSRow) => {
     const tgs = Number(ps.iny_tgs || 0)
@@ -138,21 +159,16 @@ export function processInjectionsFromPS(
     return tgs + tgn + enarsa > 10
   }
 
-  // 4. Determinar la secuencia exacta de fechas a procesar
-  // Si tenemos las fechas del gráfico de demanda, usamos la lista completa (pasado + futuro).
-  // De lo contrario, fallback a los últimos 21 días de dailyRows.
-  const datesToProcess =
-    targetDates && targetDates.length > 0
-      ? targetDates
-      : dailyRows.map((r) => String(r.fecha).trim()).slice(-21)
+  // 4. Generamos el rango maestro alrededor de hoy()
+  const targetDates = getDynamicDateRange(daysBack, daysAhead)
 
-  // 5. Construimos la serie temporal punto por punto
-  return datesToProcess.map((dateKey) => {
+  // 5. Construimos el resultado asegurando los 13 días futuros + los días pasados
+  return targetDates.map((dateKey) => {
     const baseRow = dailyMap.get(dateKey) || ({ fecha: dateKey } as DailyRow)
     const psData = psMap.get(dateKey)
     const forecastData = forecastMap.get(dateKey)
 
-    // Hacia atrás / Real: Prioridad enargas_ps.json
+    // A) Si existe dato real válido en enargas_ps.json
     if (psData && isValidPSRow(psData)) {
       const tgs = Number(psData.iny_tgs || 0)
       const tgn = Number(psData.iny_tgn || 0)
@@ -173,7 +189,7 @@ export function processInjectionsFromPS(
       }
     }
 
-    // Hacia adelante / Proyectado: Prioridad inyections_forecast.json
+    // B) Si es futuro o falta dato real, tomamos de inyections_forecast.json
     if (forecastData) {
       return {
         ...baseRow,
@@ -188,7 +204,7 @@ export function processInjectionsFromPS(
       }
     }
 
-    // Si para esa fecha no hay ni dato real ni forecast
+    // C) Fallback
     return {
       ...baseRow,
       fecha: dateKey,
@@ -208,39 +224,18 @@ export const useDaily = () => {
   const dailyState = useJson<DailyRow[]>('./data/daily.json')
   const psState = useJson<EnargasPSRow[]>('./data/enargas_ps.json')
   const injectionsForecastState = useInjectionsForecast()
-  const demandForecastState = useDemandForecast()
 
-  const loading =
-    dailyState.loading ||
-    psState.loading ||
-    injectionsForecastState.loading ||
-    demandForecastState.loading
-
-  const error =
-    dailyState.error ||
-    psState.error ||
-    injectionsForecastState.error ||
-    demandForecastState.error
-
-  // Extraemos la secuencia completa de fechas que está usando el gráfico de demanda
-  const rawDemand = demandForecastState.data as unknown
-  let demandDates: string[] | undefined
-
-  if (Array.isArray(rawDemand)) {
-    demandDates = rawDemand.map((d: { fecha: string }) => d.fecha)
-  } else if (rawDemand && typeof rawDemand === 'object' && 'series' in rawDemand) {
-    demandDates = (rawDemand as { series: Array<{ fecha: string }> }).series?.map(
-      (d) => d.fecha
-    )
-  }
+  const loading = dailyState.loading || psState.loading || injectionsForecastState.loading
+  const error = dailyState.error || psState.error || injectionsForecastState.error
 
   const processedData =
-    dailyState.data && !loading
+    !loading && (dailyState.data || psState.data || injectionsForecastState.data)
       ? processInjectionsFromPS(
-          dailyState.data,
+          dailyState.data || [],
           psState.data,
           injectionsForecastState.data,
-          demandDates
+          7,  // 7 días hacia atrás desde hoy()
+          13  // 13 días hacia adelante desde hoy()
         )
       : null
 
