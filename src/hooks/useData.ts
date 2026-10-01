@@ -95,34 +95,36 @@ export const useInjectionsForecast = () =>
   useJson<InjectionsForecastRow[]>('./data/inyections_forecast.json')
 
 /**
- * Procesa las inyecciones usando enargas_ps.json para días con dato real
- * e inyections_forecast.json para días proyectados.
+ * Procesa las inyecciones alineando las fechas exactamente con la ventana de demanda.
  */
 export function processInjectionsFromPS(
   dailyRows: DailyRow[],
   psRows: EnargasPSRow[] | null,
-  injectionsForecastRows: InjectionsForecastRow[] | null
+  injectionsForecastRows: InjectionsForecastRow[] | null,
+  targetDates?: string[]
 ): DailyRow[] {
   if (!dailyRows || dailyRows.length === 0) return []
 
+  // 1. Mapa de enargas_ps (datos reales)
   const psMap = new Map<string, EnargasPSRow>()
   if (psRows && Array.isArray(psRows)) {
     psRows.forEach((ps) => {
       const fechaKey = ps.fecha || ps['Día Operativo']
-      if (fechaKey) {
-        psMap.set(String(fechaKey).trim(), ps)
-      }
+      if (fechaKey) psMap.set(String(fechaKey).trim(), ps)
     })
   }
 
+  // 2. Mapa de inyections_forecast (datos proyectados)
   const forecastMap = new Map<string, InjectionsForecastRow>()
   if (injectionsForecastRows && Array.isArray(injectionsForecastRows)) {
     injectionsForecastRows.forEach((fc) => {
-      if (fc.fecha) {
-        forecastMap.set(String(fc.fecha).trim(), fc)
-      }
+      if (fc.fecha) forecastMap.set(String(fc.fecha).trim(), fc)
     })
   }
+
+  // 3. Mapa auxiliar de daily.json
+  const dailyMap = new Map<string, DailyRow>()
+  dailyRows.forEach((r) => dailyMap.set(String(r.fecha).trim(), r))
 
   const isValidPSRow = (ps: EnargasPSRow) => {
     const tgs = Number(ps.iny_tgs || 0)
@@ -131,14 +133,26 @@ export function processInjectionsFromPS(
     return tgs + tgn + enarsa > 10
   }
 
-  const resultDataMap = new Map<string, DailyRow>()
+  // Determinamos el vector de fechas a usar:
+  // Si tenemos las fechas objetivo del gráfico de demanda, usamos exactamente esa lista.
+  // De lo contrario, unificamos las fechas disponibles de daily.json y forecast.
+  const datesToProcess =
+    targetDates && targetDates.length > 0
+      ? targetDates
+      : Array.from(
+          new Set([
+            ...dailyRows.slice(-21).map((r) => String(r.fecha).trim()),
+            ...(injectionsForecastRows || []).map((r) => String(r.fecha).trim()),
+          ])
+        ).sort()
 
-  // 1. Mapeo sobre las filas que vienen de daily.json
-  dailyRows.forEach((row) => {
-    const dateKey = String(row.fecha).trim()
+  // 4. Volcamos los datos iterando fecha por fecha sobre la lista fija
+  return datesToProcess.map((dateKey) => {
+    const baseRow = dailyMap.get(dateKey) || ({ fecha: dateKey } as DailyRow)
     const psData = psMap.get(dateKey)
     const forecastData = forecastMap.get(dateKey)
 
+    // A. Si existe registro real de PS válido
     if (psData && isValidPSRow(psData)) {
       const tgs = Number(psData.iny_tgs || 0)
       const tgn = Number(psData.iny_tgn || 0)
@@ -146,8 +160,8 @@ export function processInjectionsFromPS(
       const bolivia = Number(psData.iny_bolivia || 0)
       const escobar = Number(psData.iny_escobar || 0)
 
-      resultDataMap.set(dateKey, {
-        ...row,
+      return {
+        ...baseRow,
         fecha: dateKey,
         isForecast: false,
         iny_tgs: tgs,
@@ -156,49 +170,37 @@ export function processInjectionsFromPS(
         iny_bolivia: bolivia,
         iny_escobar: escobar,
         iny_total: Number((tgs + tgn + enarsa + bolivia + escobar).toFixed(2)),
-      })
-    } else if (forecastData) {
-      resultDataMap.set(dateKey, {
-        ...row,
+      }
+    }
+
+    // B. Si es fecha proyectada en forecast
+    if (forecastData) {
+      return {
+        ...baseRow,
         fecha: dateKey,
         isForecast: true,
-        iny_tgs: forecastData.iny_tgs,
-        iny_tgn: forecastData.iny_tgn,
-        iny_enarsa: forecastData.iny_gpm,
-        iny_bolivia: forecastData.iny_bolivia,
-        iny_escobar: forecastData.iny_escobar,
-        iny_total: forecastData.iny_total,
-      })
-    } else {
-      resultDataMap.set(dateKey, row)
+        iny_tgs: forecastData.iny_tgs ?? 0,
+        iny_tgn: forecastData.iny_tgn ?? 0,
+        iny_enarsa: forecastData.iny_gpm ?? 0,
+        iny_bolivia: forecastData.iny_bolivia ?? 0,
+        iny_escobar: forecastData.iny_escobar ?? 0,
+        iny_total: forecastData.iny_total ?? 0,
+      }
+    }
+
+    // C. Fallback para completar la fecha
+    return {
+      ...baseRow,
+      fecha: dateKey,
+      isForecast: true,
+      iny_tgs: 0,
+      iny_tgn: 0,
+      iny_enarsa: 0,
+      iny_bolivia: 0,
+      iny_escobar: 0,
+      iny_total: 0,
     }
   })
-
-  // 2. Extensión de días futuros si inyections_forecast.json tiene fechas que superan a daily.json
-  if (injectionsForecastRows && Array.isArray(injectionsForecastRows)) {
-    injectionsForecastRows.forEach((fc) => {
-      const dateKey = String(fc.fecha).trim()
-      if (!resultDataMap.has(dateKey)) {
-        resultDataMap.set(dateKey, {
-          fecha: dateKey,
-          isForecast: true,
-          iny_tgs: fc.iny_tgs,
-          iny_tgn: fc.iny_tgn,
-          iny_enarsa: fc.iny_gpm,
-          iny_bolivia: fc.iny_bolivia,
-          iny_escobar: fc.iny_escobar,
-          iny_total: fc.iny_total,
-        } as DailyRow)
-      }
-    })
-  }
-
-  // 3. Orden cronológico y recorte a los últimos 21 días (alineado al horizonte global 24/09 -> 14/10)
-  const finalRows = Array.from(resultDataMap.values()).sort((a, b) =>
-    a.fecha.localeCompare(b.fecha)
-  )
-
-  return finalRows.slice(-21)
 }
 
 // Custom Hook principal
@@ -206,16 +208,30 @@ export const useDaily = () => {
   const dailyState = useJson<DailyRow[]>('./data/daily.json')
   const psState = useJson<EnargasPSRow[]>('./data/enargas_ps.json')
   const injectionsForecastState = useInjectionsForecast()
+  const demandForecastState = useDemandForecast()
 
-  const loading = dailyState.loading || psState.loading || injectionsForecastState.loading
-  const error = dailyState.error || psState.error || injectionsForecastState.error
+  const loading =
+    dailyState.loading ||
+    psState.loading ||
+    injectionsForecastState.loading ||
+    demandForecastState.loading
+
+  const error =
+    dailyState.error ||
+    psState.error ||
+    injectionsForecastState.error ||
+    demandForecastState.error
+
+  // Extraemos las fechas de la serie del gráfico de demanda
+  const demandDates = demandForecastState.data?.series?.map((d) => d.fecha)
 
   const processedData =
     dailyState.data && !loading
       ? processInjectionsFromPS(
           dailyState.data,
           psState.data,
-          injectionsForecastState.data
+          injectionsForecastState.data,
+          demandDates
         )
       : null
 
@@ -568,7 +584,7 @@ export interface ProvinciaFeature {
 
 export interface ProvinciasCollection {
   type: 'FeatureCollection'
-  features: ProvinciaFeature[]
+  features: ProvinciasCollection[]
   crs?: unknown
 }
 
