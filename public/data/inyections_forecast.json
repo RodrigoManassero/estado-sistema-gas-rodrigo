@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-01T17:32:13Z",
+  "generated_at": "2026-10-01T18:03:23Z",
   "source": "Enargas PS + Demand Forecast Model",
-  "last_real_date": "2026-10-04",
+  "last_ps_date": "2026-10-04",
   "historical_weights": {
     "tgs": 0.5743,
     "tgn": 0.2578,
