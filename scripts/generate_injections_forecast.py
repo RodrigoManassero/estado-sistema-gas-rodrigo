@@ -1,21 +1,26 @@
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 def load_json(filepath):
     if not os.path.exists(filepath):
         print(f"Error: No se encontró el archivo {filepath}")
         return []
     with open(filepath, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-        if isinstance(data, dict):
-            if 'data' in data and isinstance(data['data'], list):
-                return data['data']
-            if 'rows' in data and isinstance(data['rows'], list):
-                return data['rows']
-            return [data]
-        elif isinstance(data, list):
-            return data
+        content = json.load(f)
+        if isinstance(content, dict):
+            # 1. Caso demand_forecast.json: {"data": {"forecast": [...]}}
+            if isinstance(content.get('data'), dict) and 'forecast' in content['data']:
+                return content['data']['forecast']
+            # 2. Caso estándar: {"data": [...]}
+            if 'data' in content and isinstance(content['data'], list):
+                return content['data']
+            # 3. Caso rows: {"rows": [...]}
+            if 'rows' in content and isinstance(content['rows'], list):
+                return content['rows']
+            return [content]
+        elif isinstance(content, list):
+            return content
         return []
 
 def save_json(filepath, payload):
@@ -69,7 +74,6 @@ def main():
         if not isinstance(row, dict):
             continue
 
-        # Probar múltiples campos de fecha comunes en enargas_ps.json
         raw_date = row.get('fecha') or row.get('source_date') or row.get('Día Operativo') or row.get('date')
         fecha = parse_to_standard_date(raw_date)
         if not fecha:
@@ -117,10 +121,6 @@ def main():
     # Paso 3: Iterar demand_forecast y filtrar posteriores a last_ps_date
     # ---------------------------------------------------------------------
     forecast_results = []
-    
-    # Imprimir un registro de muestra para depurar las claves reales
-    if demand_rows:
-        print("Muestra del primer registro de demand_forecast.json:", demand_rows[0])
 
     for d_row in demand_rows:
         if not isinstance(d_row, dict):
@@ -133,7 +133,6 @@ def main():
 
         # Fechas estrictamente posteriores a la última cargada en enargas_ps.json
         if d_fecha > last_ps_date_str:
-            # Búsqueda ampliada de la columna de demanda total
             target_demand = float(
                 d_row.get('demanda_total_est') or 
                 d_row.get('demanda_total') or 
@@ -144,10 +143,10 @@ def main():
 
             # Si no encontró demanda en un solo campo, intentar sumar los segmentos
             if target_demand == 0.0:
-                prio = float(d_row.get('prioritaria') or 0.0)
-                usi = float(d_row.get('usinas') or 0.0)
-                ind = float(d_row.get('industria') or 0.0)
-                gnc = float(d_row.get('gnc') or 0.0)
+                prio = float(d_row.get('prioritaria_est') or d_row.get('prioritaria') or 0.0)
+                usi = float(d_row.get('usinas_est') or d_row.get('usinas') or 0.0)
+                ind = float(d_row.get('industria_est') or d_row.get('industria') or 0.0)
+                gnc = float(d_row.get('gnc_est') or d_row.get('gnc') or 0.0)
                 target_demand = prio + usi + ind + gnc
 
             iny_tgs = round(target_demand * w_tgs, 2)
@@ -172,7 +171,7 @@ def main():
             })
 
     output_envelope = {
-        "generated_at": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+        "generated_at": datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
         "source": "Enargas PS + Demand Forecast Model",
         "last_ps_date": last_ps_date_str,
         "historical_weights": {
