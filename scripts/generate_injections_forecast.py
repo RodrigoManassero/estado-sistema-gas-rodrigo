@@ -1,15 +1,24 @@
 import json
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 
 def load_json(filepath):
     if not os.path.exists(filepath):
         print(f"Error: No se encontró el archivo {filepath}")
-        return None
+        return []
     with open(filepath, 'r', encoding='utf-8') as f:
         data = json.load(f)
-        # Soporte para formato envuelto {generated_at, data} o lista plana
-        return data.get('data', data) if isinstance(data, dict) else data
+        
+        # Si es un diccionario con clave 'data', extraemos la lista
+        if isinstance(data, dict):
+            if 'data' in data and isinstance(data['data'], list):
+                return data['data']
+            if 'rows' in data and isinstance(data['rows'], list):
+                return data['rows']
+            return [data]
+        elif isinstance(data, list):
+            return data
+        return []
 
 def save_json(filepath, payload):
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
@@ -21,8 +30,8 @@ def main():
     demand_path = 'public/data/demand_forecast.json'
     output_path = 'public/data/inyections_forecast.json'
 
-    ps_rows = load_json(ps_path) or []
-    demand_rows = load_json(demand_path) or []
+    ps_rows = load_json(ps_path)
+    demand_rows = load_json(demand_path)
 
     if not ps_rows or not demand_rows:
         print("No hay datos suficientes para generar el forecast.")
@@ -35,11 +44,12 @@ def main():
     keys_check = ['iny_tgs', 'iny_tgn', 'iny_gpm', 'iny_bolivia', 'iny_chile', 'iny_escobar', 'iny_enarsa']
 
     for row in ps_rows:
+        if not isinstance(row, dict):
+            continue
         fecha = row.get('fecha') or row.get('Día Operativo')
         if not fecha:
             continue
         
-        # Consideramos dato existente si alguna clave existe (incluso si vale 0)
         has_data = any(row.get(k) is not None for k in keys_check)
         if has_data:
             valid_ps_rows.append((str(fecha).strip(), row))
@@ -48,7 +58,6 @@ def main():
         print("No se encontraron filas válidas en enargas_ps.json.")
         return
 
-    # Ordenar por fecha y tomar la última fecha real
     valid_ps_rows.sort(key=lambda x: x[0])
     last_real_date_str = valid_ps_rows[-1][0]
     print(f"Última fecha con datos reales en PS: {last_real_date_str}")
@@ -68,7 +77,6 @@ def main():
     for _, r in last_10:
         sum_tgs += float(r.get('iny_tgs') or 0.0)
         sum_tgn += float(r.get('iny_tgn') or 0.0)
-        # GPM / ENARSA
         sum_gpm += float(r.get('iny_gpm') or r.get('iny_enarsa') or 0.0)
         sum_bolivia += float(r.get('iny_bolivia') or 0.0)
         sum_chile += float(r.get('iny_chile') or 0.0)
@@ -76,7 +84,6 @@ def main():
 
     total_historical = sum_tgs + sum_tgn + sum_gpm + sum_bolivia + sum_chile + sum_escobar
 
-    # Si por algún motivo el total da 0, asignamos proporciones fallback basadas en Neuquina/GBA
     if total_historical <= 0:
         w_tgs, w_tgn, w_gpm, w_bolivia, w_chile, w_escobar = 0.55, 0.25, 0.20, 0.0, 0.0, 0.0
     else:
@@ -95,15 +102,21 @@ def main():
     forecast_results = []
 
     for d_row in demand_rows:
-        d_fecha = str(d_row.get('fecha', '')).strip()
+        if not isinstance(d_row, dict):
+            continue
+
+        d_fecha = str(d_row.get('fecha') or d_row.get('date') or '').strip()
         if not d_fecha:
             continue
 
-        # Solo procesamos si es posterior a la última fecha real
         if d_fecha > last_real_date_str:
-            target_demand = float(d_row.get('demanda_total') or d_row.get('demand_mmm3d') or d_row.get('demanda') or 0.0)
+            target_demand = float(
+                d_row.get('demanda_total') or 
+                d_row.get('demand_mmm3d') or 
+                d_row.get('demanda') or 
+                d_row.get('demanda_estimada') or 0.0
+            )
 
-            # Calculamos la inyección para cubertura 100% (Desbalance 0)
             iny_tgs = round(target_demand * w_tgs, 2)
             iny_tgn = round(target_demand * w_tgn, 2)
             iny_gpm = round(target_demand * w_gpm, 2)
@@ -125,7 +138,6 @@ def main():
                 "iny_total": iny_total
             })
 
-    # Output final con sobre envelope
     output_envelope = {
         "generated_at": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
         "source": "Enargas PS + Demand Forecast Model",
