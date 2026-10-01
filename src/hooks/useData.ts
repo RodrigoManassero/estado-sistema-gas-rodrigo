@@ -27,6 +27,18 @@ export interface EnargasPSRow {
   [key: string]: unknown
 }
 
+export interface InjectionsForecastRow {
+  fecha: string
+  demanda_estimada: number
+  iny_tgs: number
+  iny_tgn: number
+  iny_gpm: number
+  iny_bolivia: number
+  iny_chile: number
+  iny_escobar: number
+  iny_total: number
+}
+
 export function useJson<T>(path: string): FetchState<T> {
   const [state, setState] = useState<FetchState<T>>({
     data: null,
@@ -77,24 +89,42 @@ export function useJson<T>(path: string): FetchState<T> {
 }
 
 /**
- * Procesa las inyecciones tomando como ÚNICA FUENTE DE VERDAD histórica a enargas_ps.json.
- * Recorta la historia a los últimos 30 días para evitar franjas horizontales gigantes a la izquierda.
+ * Hook para cargar las proyecciones de inyección derivadas del modelo de demanda.
+ */
+export const useInjectionsForecast = () =>
+  useJson<InjectionsForecastRow[]>('./data/inyections_forecast.json')
+
+/**
+ * Procesa las inyecciones combinando:
+ * 1. Historia real desde enargas_ps.json (hasta last_ps_date).
+ * 2. Proyecciones dinámicas desde inyections_forecast.json para fechas futuras.
  */
 export function processInjectionsFromPS(
   dailyRows: DailyRow[],
-  psRows: EnargasPSRow[] | null
+  psRows: EnargasPSRow[] | null,
+  injectionsForecastRows: InjectionsForecastRow[] | null
 ): DailyRow[] {
   if (!dailyRows || dailyRows.length === 0) return []
 
-  // 0. RECORTE HISTÓRICO: Tomamos solo los últimos 30 días
+  // 0. Recortar la historia de dailyRows a los últimos 30 días
   const recentDailyRows = dailyRows.slice(-30)
 
+  // Mapas de acceso rápido indexados por fecha (YYYY-MM-DD)
   const psMap = new Map<string, EnargasPSRow>()
   if (psRows && Array.isArray(psRows)) {
     psRows.forEach((ps) => {
       const fechaKey = ps.fecha || ps['Día Operativo']
       if (fechaKey) {
         psMap.set(String(fechaKey).trim(), ps)
+      }
+    })
+  }
+
+  const forecastMap = new Map<string, InjectionsForecastRow>()
+  if (injectionsForecastRows && Array.isArray(injectionsForecastRows)) {
+    injectionsForecastRows.forEach((fc) => {
+      if (fc.fecha) {
+        forecastMap.set(String(fc.fecha).trim(), fc)
       }
     })
   }
@@ -106,57 +136,14 @@ export function processInjectionsFromPS(
     return tgs + tgn + enarsa > 10
   }
 
-  const validPSHistorical = (psRows || []).filter(isValidPSRow).slice(-3)
-
-  let avgTGS = 0,
-    avgTGN = 0,
-    avgENARSA = 0,
-    avgBolivia = 0,
-    avgEscobar = 0
-
-  if (validPSHistorical.length > 0) {
-    const count = validPSHistorical.length
-
-    interface IngestionAccumulator {
-      tgs: number
-      tgn: number
-      enarsa: number
-      bolivia: number
-      escobar: number
-    }
-
-    const initialAcc: IngestionAccumulator = {
-      tgs: 0,
-      tgn: 0,
-      enarsa: 0,
-      bolivia: 0,
-      escobar: 0,
-    }
-
-    const sum = validPSHistorical.reduce<IngestionAccumulator>(
-      (acc, r) => ({
-        tgs: acc.tgs + Number(r.iny_tgs || 0),
-        tgn: acc.tgn + Number(r.iny_tgn || 0),
-        enarsa: acc.enarsa + Number(r.iny_enarsa || r.iny_gpm || 0),
-        bolivia: acc.bolivia + Number(r.iny_bolivia || 0),
-        escobar: acc.escobar + Number(r.iny_escobar || 0),
-      }),
-      initialAcc
-    )
-
-    avgTGS = Number((sum.tgs / count).toFixed(2))
-    avgTGN = Number((sum.tgn / count).toFixed(2))
-    avgENARSA = Number((sum.enarsa / count).toFixed(2))
-    avgBolivia = Number((sum.bolivia / count).toFixed(2))
-    avgEscobar = Number((sum.escobar / count).toFixed(2))
-  }
-
-  // 1. Mapeo sobre los datos recientes
+  // 1. Mapear sobre las filas de daily.json
   const result: any[] = recentDailyRows.map((row) => {
-    const psData = psMap.get(String(row.fecha).trim())
-    const hasRealInjection = psData ? isValidPSRow(psData) : false
+    const dateKey = String(row.fecha).trim()
+    const psData = psMap.get(dateKey)
+    const forecastData = forecastMap.get(dateKey)
 
-    if (hasRealInjection && psData) {
+    // A. Si existe dato medido histórico válido en enargas_ps.json
+    if (psData && isValidPSRow(psData)) {
       const tgs = Number(psData.iny_tgs || 0)
       const tgn = Number(psData.iny_tgn || 0)
       const enarsa = Number(psData.iny_enarsa || psData.iny_gpm || 0)
@@ -176,59 +163,72 @@ export function processInjectionsFromPS(
       }
     }
 
-    const totalEst = Number((avgTGS + avgTGN + avgENARSA + avgBolivia + avgEscobar).toFixed(2))
+    // B. Si es una fecha futura proyectada en inyections_forecast.json
+    if (forecastData) {
+      return {
+        ...row,
+        isForecast: true,
+        iny_tgs: forecastData.iny_tgs,
+        iny_tgn: forecastData.iny_tgn,
+        iny_enarsa: forecastData.iny_gpm,
+        iny_bolivia: forecastData.iny_bolivia,
+        iny_escobar: forecastData.iny_escobar,
+        iny_total: forecastData.iny_total,
+      }
+    }
 
+    // C. Fallback neutro en caso de no encontrarse en ninguno
     return {
       ...row,
       isForecast: true,
-      iny_tgs: avgTGS,
-      iny_tgn: avgTGN,
-      iny_enarsa: avgENARSA,
-      iny_bolivia: avgBolivia,
-      iny_escobar: avgEscobar,
-      iny_total: totalEst,
+      iny_tgs: 0,
+      iny_tgn: 0,
+      iny_enarsa: 0,
+      iny_bolivia: 0,
+      iny_escobar: 0,
+      iny_total: 0,
     }
   })
 
-  // 2. Extensión dinámica de fechas futuras si faltan días para el horizonte de 21 días
-  const TARGET_HORIZON_DAYS = 21
-  if (result.length > 0 && result.length < TARGET_HORIZON_DAYS) {
-    let lastDateStr = result[result.length - 1].fecha
-    const totalEst = Number((avgTGS + avgTGN + avgENARSA + avgBolivia + avgEscobar).toFixed(2))
+  // 2. Extensión dinámica de fechas futuras si daily.json finaliza antes que el forecast
+  if (injectionsForecastRows && Array.isArray(injectionsForecastRows)) {
+    const existingDates = new Set(result.map((r) => r.fecha))
 
-    while (result.length < TARGET_HORIZON_DAYS) {
-      const parts = lastDateStr.split('-').map(Number)
-      const d = new Date(Date.UTC(parts[0], parts[1] - 1, parts[2]))
-      d.setUTCDate(d.getUTCDate() + 1)
-      lastDateStr = d.toISOString().split('T')[0]
-
-      result.push({
-        fecha: lastDateStr,
-        isForecast: true,
-        iny_tgs: avgTGS,
-        iny_tgn: avgTGN,
-        iny_enarsa: avgENARSA,
-        iny_bolivia: avgBolivia,
-        iny_escobar: avgEscobar,
-        iny_total: totalEst,
-      })
-    }
+    injectionsForecastRows.forEach((fc) => {
+      if (!existingDates.has(fc.fecha)) {
+        result.push({
+          fecha: fc.fecha,
+          isForecast: true,
+          iny_tgs: fc.iny_tgs,
+          iny_tgn: fc.iny_tgn,
+          iny_enarsa: fc.iny_gpm,
+          iny_bolivia: fc.iny_bolivia,
+          iny_escobar: fc.iny_escobar,
+          iny_total: fc.iny_total,
+        })
+      }
+    })
   }
 
   return result
 }
 
-// Custom Hook principal
+// Hook principal combinado
 export const useDaily = () => {
   const dailyState = useJson<DailyRow[]>('./data/daily.json')
   const psState = useJson<EnargasPSRow[]>('./data/enargas_ps.json')
+  const injectionsForecastState = useInjectionsForecast()
 
-  const loading = dailyState.loading || psState.loading
-  const error = dailyState.error || psState.error
+  const loading = dailyState.loading || psState.loading || injectionsForecastState.loading
+  const error = dailyState.error || psState.error || injectionsForecastState.error
 
   const processedData =
     dailyState.data && !loading
-      ? processInjectionsFromPS(dailyState.data, psState.data)
+      ? processInjectionsFromPS(
+          dailyState.data,
+          psState.data,
+          injectionsForecastState.data
+        )
       : null
 
   return {
