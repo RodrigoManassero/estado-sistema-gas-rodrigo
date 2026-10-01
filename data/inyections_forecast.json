@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-01T18:37:25Z",
+  "generated_at": "2026-10-01T18:54:48Z",
   "source": "Enargas PS + Demand Forecast Model",
   "last_ps_date": "2026-10-04",
   "historical_weights": {
@@ -13,6 +13,17 @@
   "data": [
     {
       "fecha": "2026-10-05",
+      "demanda_estimada": 125.4,
+      "iny_tgs": 72.02,
+      "iny_tgn": 32.32,
+      "iny_gpm": 21.06,
+      "iny_bolivia": 0.0,
+      "iny_chile": 0.0,
+      "iny_escobar": 0.0,
+      "iny_total": 125.4
+    },
+    {
+      "fecha": "2026-10-06",
       "demanda_estimada": 126.5,
       "iny_tgs": 72.65,
       "iny_tgn": 32.61,
@@ -23,103 +34,92 @@
       "iny_total": 126.51
     },
     {
-      "fecha": "2026-10-06",
-      "demanda_estimada": 127.3,
-      "iny_tgs": 73.11,
-      "iny_tgn": 32.81,
-      "iny_gpm": 21.38,
-      "iny_bolivia": 0.0,
-      "iny_chile": 0.0,
-      "iny_escobar": 0.0,
-      "iny_total": 127.3
-    },
-    {
       "fecha": "2026-10-07",
-      "demanda_estimada": 119.8,
-      "iny_tgs": 68.8,
-      "iny_tgn": 30.88,
-      "iny_gpm": 20.12,
+      "demanda_estimada": 119.3,
+      "iny_tgs": 68.51,
+      "iny_tgn": 30.75,
+      "iny_gpm": 20.04,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 119.8
+      "iny_total": 119.3
     },
     {
       "fecha": "2026-10-08",
-      "demanda_estimada": 118.9,
-      "iny_tgs": 68.28,
-      "iny_tgn": 30.65,
-      "iny_gpm": 19.97,
+      "demanda_estimada": 118.7,
+      "iny_tgs": 68.17,
+      "iny_tgn": 30.6,
+      "iny_gpm": 19.94,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 118.9
+      "iny_total": 118.71
     },
     {
       "fecha": "2026-10-09",
-      "demanda_estimada": 120.5,
-      "iny_tgs": 69.2,
-      "iny_tgn": 31.06,
-      "iny_gpm": 20.24,
+      "demanda_estimada": 120.0,
+      "iny_tgs": 68.91,
+      "iny_tgn": 30.93,
+      "iny_gpm": 20.15,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 120.5
+      "iny_total": 119.99
     },
     {
       "fecha": "2026-10-10",
-      "demanda_estimada": 112.6,
-      "iny_tgs": 64.66,
-      "iny_tgn": 29.02,
-      "iny_gpm": 18.91,
+      "demanda_estimada": 111.8,
+      "iny_tgs": 64.21,
+      "iny_tgn": 28.82,
+      "iny_gpm": 18.78,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 112.59
+      "iny_total": 111.81
     },
     {
       "fecha": "2026-10-11",
-      "demanda_estimada": 105.1,
-      "iny_tgs": 60.36,
-      "iny_tgn": 27.09,
-      "iny_gpm": 17.65,
+      "demanda_estimada": 104.2,
+      "iny_tgs": 59.84,
+      "iny_tgn": 26.86,
+      "iny_gpm": 17.5,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 105.1
+      "iny_total": 104.2
     },
     {
       "fecha": "2026-10-12",
-      "demanda_estimada": 117.0,
-      "iny_tgs": 67.19,
-      "iny_tgn": 30.16,
-      "iny_gpm": 19.65,
+      "demanda_estimada": 116.3,
+      "iny_tgs": 66.79,
+      "iny_tgn": 29.98,
+      "iny_gpm": 19.53,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 117.0
+      "iny_total": 116.3
     },
     {
       "fecha": "2026-10-13",
-      "demanda_estimada": 120.2,
-      "iny_tgs": 69.03,
-      "iny_tgn": 30.98,
-      "iny_gpm": 20.19,
+      "demanda_estimada": 119.7,
+      "iny_tgs": 68.74,
+      "iny_tgn": 30.85,
+      "iny_gpm": 20.1,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 120.2
+      "iny_total": 119.69
     },
     {
       "fecha": "2026-10-14",
-      "demanda_estimada": 120.8,
-      "iny_tgs": 69.37,
-      "iny_tgn": 31.14,
-      "iny_gpm": 20.29,
+      "demanda_estimada": 120.4,
+      "iny_tgs": 69.14,
+      "iny_tgn": 31.03,
+      "iny_gpm": 20.22,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 120.8
+      "iny_total": 120.39
     }
   ]
 }
