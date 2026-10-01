@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-01T18:23:22Z",
+  "generated_at": "2026-10-01T18:37:25Z",
   "source": "Enargas PS + Demand Forecast Model",
   "last_ps_date": "2026-10-04",
   "historical_weights": {
@@ -13,113 +13,113 @@
   "data": [
     {
       "fecha": "2026-10-05",
-      "demanda_estimada": 122.1,
-      "iny_tgs": 70.12,
-      "iny_tgn": 31.47,
-      "iny_gpm": 20.51,
+      "demanda_estimada": 126.5,
+      "iny_tgs": 72.65,
+      "iny_tgn": 32.61,
+      "iny_gpm": 21.25,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 122.1
+      "iny_total": 126.51
     },
     {
       "fecha": "2026-10-06",
-      "demanda_estimada": 120.9,
-      "iny_tgs": 69.43,
-      "iny_tgn": 31.16,
-      "iny_gpm": 20.31,
+      "demanda_estimada": 127.3,
+      "iny_tgs": 73.11,
+      "iny_tgn": 32.81,
+      "iny_gpm": 21.38,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 120.9
+      "iny_total": 127.3
     },
     {
       "fecha": "2026-10-07",
-      "demanda_estimada": 117.1,
-      "iny_tgs": 67.25,
-      "iny_tgn": 30.18,
-      "iny_gpm": 19.67,
+      "demanda_estimada": 119.8,
+      "iny_tgs": 68.8,
+      "iny_tgn": 30.88,
+      "iny_gpm": 20.12,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 117.1
+      "iny_total": 119.8
     },
     {
       "fecha": "2026-10-08",
-      "demanda_estimada": 121.9,
-      "iny_tgs": 70.01,
-      "iny_tgn": 31.42,
-      "iny_gpm": 20.47,
+      "demanda_estimada": 118.9,
+      "iny_tgs": 68.28,
+      "iny_tgn": 30.65,
+      "iny_gpm": 19.97,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 121.9
+      "iny_total": 118.9
     },
     {
       "fecha": "2026-10-09",
-      "demanda_estimada": 127.0,
-      "iny_tgs": 72.93,
-      "iny_tgn": 32.74,
-      "iny_gpm": 21.33,
+      "demanda_estimada": 120.5,
+      "iny_tgs": 69.2,
+      "iny_tgn": 31.06,
+      "iny_gpm": 20.24,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 127.0
+      "iny_total": 120.5
     },
     {
       "fecha": "2026-10-10",
-      "demanda_estimada": 118.7,
-      "iny_tgs": 68.17,
-      "iny_tgn": 30.6,
-      "iny_gpm": 19.94,
+      "demanda_estimada": 112.6,
+      "iny_tgs": 64.66,
+      "iny_tgn": 29.02,
+      "iny_gpm": 18.91,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 118.71
+      "iny_total": 112.59
     },
     {
       "fecha": "2026-10-11",
-      "demanda_estimada": 113.0,
-      "iny_tgs": 64.89,
-      "iny_tgn": 29.13,
-      "iny_gpm": 18.98,
+      "demanda_estimada": 105.1,
+      "iny_tgs": 60.36,
+      "iny_tgn": 27.09,
+      "iny_gpm": 17.65,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 113.0
+      "iny_total": 105.1
     },
     {
       "fecha": "2026-10-12",
-      "demanda_estimada": 123.8,
-      "iny_tgs": 71.1,
-      "iny_tgn": 31.91,
-      "iny_gpm": 20.79,
+      "demanda_estimada": 117.0,
+      "iny_tgs": 67.19,
+      "iny_tgn": 30.16,
+      "iny_gpm": 19.65,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 123.8
+      "iny_total": 117.0
     },
     {
       "fecha": "2026-10-13",
-      "demanda_estimada": 121.0,
-      "iny_tgs": 69.49,
-      "iny_tgn": 31.19,
-      "iny_gpm": 20.32,
+      "demanda_estimada": 120.2,
+      "iny_tgs": 69.03,
+      "iny_tgn": 30.98,
+      "iny_gpm": 20.19,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 121.0
+      "iny_total": 120.2
     },
     {
       "fecha": "2026-10-14",
-      "demanda_estimada": 124.0,
-      "iny_tgs": 71.21,
-      "iny_tgn": 31.96,
-      "iny_gpm": 20.83,
+      "demanda_estimada": 120.8,
+      "iny_tgs": 69.37,
+      "iny_tgn": 31.14,
+      "iny_gpm": 20.29,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 124.0
+      "iny_total": 120.8
     }
   ]
 }
