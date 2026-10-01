@@ -23,12 +23,26 @@ def save_json(filepath, payload):
     with open(filepath, 'w', encoding='utf-8') as f:
         json.dump(payload, f, indent=2, ensure_ascii=False)
 
-def clean_date(val):
+def parse_to_standard_date(val):
+    """ Convierte cualquier fecha (DD/MM/YYYY o ISO YYYY-MM-DD) a YYYY-MM-DD """
     if not val:
         return ''
-    s = str(val).strip()
-    if 'T' in s:
-        s = s.split('T')[0]
+    s = str(val).strip().split('T')[0]
+    
+    # Manejar formato DD/MM/YYYY
+    if '/' in s:
+        parts = s.split('/')
+        if len(parts) == 3:
+            day, month, year = parts
+            return f"{year.zfill(4)}-{month.zfill(2)}-{day.zfill(2)}"
+            
+    # Manejar formato YYYY-MM-DD
+    if '-' in s:
+        parts = s.split('-')
+        if len(parts) == 3:
+            year, month, day = parts
+            return f"{year.zfill(4)}-{month.zfill(2)}-{day.zfill(2)}"
+            
     return s[:10]
 
 def main():
@@ -39,8 +53,10 @@ def main():
     ps_rows = load_json(ps_path)
     demand_rows = load_json(demand_path)
 
+    print(f"Filas cargadas -> PS: {len(ps_rows)}, Demand: {len(demand_rows)}")
+
     if not ps_rows or not demand_rows:
-        print("No hay datos suficientes para generar el forecast.")
+        print("Error: No hay datos suficientes para generar el forecast.")
         return
 
     # ---------------------------------------------------------------------
@@ -53,7 +69,9 @@ def main():
         if not isinstance(row, dict):
             continue
 
-        fecha = clean_date(row.get('fecha') or row.get('Día Operativo'))
+        # Probar múltiples campos de fecha comunes en enargas_ps.json
+        raw_date = row.get('fecha') or row.get('source_date') or row.get('Día Operativo') or row.get('date')
+        fecha = parse_to_standard_date(raw_date)
         if not fecha:
             continue
         
@@ -62,12 +80,12 @@ def main():
             valid_ps_rows.append((fecha, row))
 
     if not valid_ps_rows:
-        print("No se encontraron filas válidas en enargas_ps.json.")
+        print("Error: No se encontraron filas válidas en enargas_ps.json.")
         return
 
     valid_ps_rows.sort(key=lambda x: x[0])
     last_ps_date_str = valid_ps_rows[-1][0]
-    print(f"Última fecha en enargas_ps.json: {last_ps_date_str}")
+    print(f"Última fecha detectada en enargas_ps.json: '{last_ps_date_str}'")
 
     # ---------------------------------------------------------------------
     # Paso 2: Obtener los últimos 10 días de PS para calcular el % de mix
@@ -96,26 +114,41 @@ def main():
     print(f"Mix histórico (10d): TGS={w_tgs:.1%}, TGN={w_tgn:.1%}, GPM={w_gpm:.1%}, Escobar={w_escobar:.1%}")
 
     # ---------------------------------------------------------------------
-    # Paso 3: Rango de fechas (última fecha demand_forecast - última fecha enargas_ps)
+    # Paso 3: Iterar demand_forecast y filtrar posteriores a last_ps_date
     # ---------------------------------------------------------------------
     forecast_results = []
+    
+    # Imprimir un registro de muestra para depurar las claves reales
+    if demand_rows:
+        print("Muestra del primer registro de demand_forecast.json:", demand_rows[0])
 
     for d_row in demand_rows:
         if not isinstance(d_row, dict):
             continue
 
-        d_fecha = clean_date(d_row.get('fecha') or d_row.get('date'))
+        raw_d_fecha = d_row.get('fecha') or d_row.get('date') or d_row.get('Date')
+        d_fecha = parse_to_standard_date(raw_d_fecha)
         if not d_fecha:
             continue
 
-        # Fechas posteriores a la última cargada en enargas_ps.json
+        # Fechas estrictamente posteriores a la última cargada en enargas_ps.json
         if d_fecha > last_ps_date_str:
+            # Búsqueda ampliada de la columna de demanda total
             target_demand = float(
                 d_row.get('demanda_total_est') or 
                 d_row.get('demanda_total') or 
                 d_row.get('demand_mmm3d') or 
-                d_row.get('demanda') or 0.0
+                d_row.get('demanda') or 
+                d_row.get('total') or 0.0
             )
+
+            # Si no encontró demanda en un solo campo, intentar sumar los segmentos
+            if target_demand == 0.0:
+                prio = float(d_row.get('prioritaria') or 0.0)
+                usi = float(d_row.get('usinas') or 0.0)
+                ind = float(d_row.get('industria') or 0.0)
+                gnc = float(d_row.get('gnc') or 0.0)
+                target_demand = prio + usi + ind + gnc
 
             iny_tgs = round(target_demand * w_tgs, 2)
             iny_tgn = round(target_demand * w_tgn, 2)
