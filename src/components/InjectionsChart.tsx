@@ -24,31 +24,31 @@ export default function InjectionsChart({ data }: Props) {
   const rows = data || []
   const weekends = weekendSpans(rows.map((r) => r.fecha))
 
-  // Fecha actual (Hoy) para trazar la referencia vertical
+  // Obtenemos la fecha de hoy para trazar la línea vertical
   const todayStr = new Date().toISOString().split('T')[0]
 
-  // Procesa los datos separando en campos _hist y _fc
+  // Procesa las filas para duplicar el punto de empalme entre histórico y forecast
   const chartData = useMemo(() => {
     if (!rows || rows.length === 0) return []
 
     return rows.map((r, idx) => {
       const isFc = Boolean(r.isForecast)
-      const prevIsFc = idx > 0 ? Boolean(rows[idx - 1].isForecast) : isFc
       const nextIsFc = idx < rows.length - 1 ? Boolean(rows[idx + 1].isForecast) : isFc
+      const prevIsFc = idx > 0 ? Boolean(rows[idx - 1].isForecast) : isFc
 
-      // Puntos de frontera para conectar las áreas
+      // Es punto de frontera si pasa de histórico a forecast o viceversa
       const isBoundary = (!isFc && nextIsFc) || (isFc && !prevIsFc)
 
       return {
         ...r,
-        // Datos Históricos (se pintan sólidos si !isForecast o en el límite)
+        // Serie Histórica (Sólida)
         iny_tgs_hist: !isFc || isBoundary ? r.iny_tgs ?? 0 : null,
         iny_tgn_hist: !isFc || isBoundary ? r.iny_tgn ?? 0 : null,
         iny_enarsa_hist: !isFc || isBoundary ? r.iny_enarsa ?? 0 : null,
         iny_bolivia_hist: !isFc || isBoundary ? r.iny_bolivia ?? 0 : null,
         iny_escobar_hist: !isFc || isBoundary ? r.iny_escobar ?? 0 : null,
 
-        // Datos Proyectados / Forecast (se pintan más tenues y punteados)
+        // Serie Forecast (Tenue y punteada)
         iny_tgs_fc: isFc || isBoundary ? r.iny_tgs ?? 0 : null,
         iny_tgn_fc: isFc || isBoundary ? r.iny_tgn ?? 0 : null,
         iny_enarsa_fc: isFc || isBoundary ? r.iny_enarsa ?? 0 : null,
@@ -79,7 +79,6 @@ export default function InjectionsChart({ data }: Props) {
           labelFormatter={formatTooltipDate}
           formatter={(value: any, name: any, item: any) => {
             if (value === null || value === undefined) return [null, null]
-            // Limpia sufijos de la leyenda en el tooltip
             const cleanName = String(name).replace(' (Fc)', '')
             const isFc = item.payload?.isForecast
             return [
@@ -94,7 +93,7 @@ export default function InjectionsChart({ data }: Props) {
           formatter={(value: string) => value.replace(' (Fc)', '')}
         />
 
-        {/* Fondeo para fines de semana */}
+        {/* Marcadores de fines de semana */}
         {weekends.map(([s, e], i) => (
           <ReferenceArea
             key={`wk-${i}`}
@@ -107,7 +106,7 @@ export default function InjectionsChart({ data }: Props) {
           />
         ))}
 
-        {/* Línea de referencia de "Hoy" */}
+        {/* Línea vertical de Hoy si cae dentro del rango */}
         {rows.some((r) => r.fecha === todayStr) && (
           <ReferenceLine
             x={todayStr}
@@ -122,7 +121,7 @@ export default function InjectionsChart({ data }: Props) {
           />
         )}
 
-        {/* --- ÁREAS HISTÓRICAS (Sólidas y con Opacidad Completa) --- */}
+        {/* --- HISTÓRICO: Opacidad completa (0.85) y contorno sólido --- */}
         <Area
           type="monotone"
           dataKey="iny_tgs_hist"
@@ -174,7 +173,7 @@ export default function InjectionsChart({ data }: Props) {
           strokeWidth={1.5}
         />
 
-        {/* --- ÁREAS PROYECTADAS / FORECAST (Más Tenues y con Bordes Punteados) --- */}
+        {/* --- FORECAST: Opacidad tenue (0.3) y contorno punteado --- */}
         <Area
           type="monotone"
           dataKey="iny_tgs_fc"
