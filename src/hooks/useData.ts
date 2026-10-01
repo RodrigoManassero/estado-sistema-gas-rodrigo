@@ -95,7 +95,8 @@ export const useInjectionsForecast = () =>
   useJson<InjectionsForecastRow[]>('./data/inyections_forecast.json')
 
 /**
- * Procesa las inyecciones alineando las fechas exactamente con la ventana de demanda.
+ * Procesa las inyecciones alineándolas estrictamente al rango de fechas 
+ * que utiliza el gráfico de demanda (pasado real + futuro proyectado).
  */
 export function processInjectionsFromPS(
   dailyRows: DailyRow[],
@@ -105,24 +106,28 @@ export function processInjectionsFromPS(
 ): DailyRow[] {
   if (!dailyRows || dailyRows.length === 0) return []
 
-  // 1. Mapa de enargas_ps (datos reales)
+  // 1. Mapeo de datos reales desde enargas_ps.json
   const psMap = new Map<string, EnargasPSRow>()
   if (psRows && Array.isArray(psRows)) {
     psRows.forEach((ps) => {
       const fechaKey = ps.fecha || ps['Día Operativo']
-      if (fechaKey) psMap.set(String(fechaKey).trim(), ps)
+      if (fechaKey) {
+        psMap.set(String(fechaKey).trim(), ps)
+      }
     })
   }
 
-  // 2. Mapa de inyections_forecast (datos proyectados)
+  // 2. Mapeo de datos proyectados desde inyections_forecast.json
   const forecastMap = new Map<string, InjectionsForecastRow>()
   if (injectionsForecastRows && Array.isArray(injectionsForecastRows)) {
     injectionsForecastRows.forEach((fc) => {
-      if (fc.fecha) forecastMap.set(String(fc.fecha).trim(), fc)
+      if (fc.fecha) {
+        forecastMap.set(String(fc.fecha).trim(), fc)
+      }
     })
   }
 
-  // 3. Mapa auxiliar de daily.json
+  // 3. Map de dailyRows como fallback
   const dailyMap = new Map<string, DailyRow>()
   dailyRows.forEach((r) => dailyMap.set(String(r.fecha).trim(), r))
 
@@ -133,26 +138,21 @@ export function processInjectionsFromPS(
     return tgs + tgn + enarsa > 10
   }
 
-  // Determinamos el vector de fechas a usar:
-  // Si tenemos las fechas objetivo del gráfico de demanda, usamos exactamente esa lista.
-  // De lo contrario, unificamos las fechas disponibles de daily.json y forecast.
+  // 4. Determinar la secuencia exacta de fechas a procesar
+  // Si tenemos las fechas del gráfico de demanda, usamos la lista completa (pasado + futuro).
+  // De lo contrario, fallback a los últimos 21 días de dailyRows.
   const datesToProcess =
     targetDates && targetDates.length > 0
       ? targetDates
-      : Array.from(
-          new Set([
-            ...dailyRows.slice(-21).map((r) => String(r.fecha).trim()),
-            ...(injectionsForecastRows || []).map((r) => String(r.fecha).trim()),
-          ])
-        ).sort()
+      : dailyRows.map((r) => String(r.fecha).trim()).slice(-21)
 
-  // 4. Volcamos los datos iterando fecha por fecha sobre la lista fija
+  // 5. Construimos la serie temporal punto por punto
   return datesToProcess.map((dateKey) => {
     const baseRow = dailyMap.get(dateKey) || ({ fecha: dateKey } as DailyRow)
     const psData = psMap.get(dateKey)
     const forecastData = forecastMap.get(dateKey)
 
-    // A. Si existe registro real de PS válido
+    // Hacia atrás / Real: Prioridad enargas_ps.json
     if (psData && isValidPSRow(psData)) {
       const tgs = Number(psData.iny_tgs || 0)
       const tgn = Number(psData.iny_tgn || 0)
@@ -173,7 +173,7 @@ export function processInjectionsFromPS(
       }
     }
 
-    // B. Si es fecha proyectada en forecast
+    // Hacia adelante / Proyectado: Prioridad inyections_forecast.json
     if (forecastData) {
       return {
         ...baseRow,
@@ -188,7 +188,7 @@ export function processInjectionsFromPS(
       }
     }
 
-    // C. Fallback para completar la fecha
+    // Si para esa fecha no hay ni dato real ni forecast
     return {
       ...baseRow,
       fecha: dateKey,
@@ -222,8 +222,17 @@ export const useDaily = () => {
     injectionsForecastState.error ||
     demandForecastState.error
 
-  // Extraemos las fechas de la serie del gráfico de demanda
-  const demandDates = demandForecastState.data?.series?.map((d) => d.fecha)
+  // Extraemos la secuencia completa de fechas que está usando el gráfico de demanda
+  const rawDemand = demandForecastState.data as unknown
+  let demandDates: string[] | undefined
+
+  if (Array.isArray(rawDemand)) {
+    demandDates = rawDemand.map((d: { fecha: string }) => d.fecha)
+  } else if (rawDemand && typeof rawDemand === 'object' && 'series' in rawDemand) {
+    demandDates = (rawDemand as { series: Array<{ fecha: string }> }).series?.map(
+      (d) => d.fecha
+    )
+  }
 
   const processedData =
     dailyState.data && !loading
@@ -584,7 +593,7 @@ export interface ProvinciaFeature {
 
 export interface ProvinciasCollection {
   type: 'FeatureCollection'
-  features: ProvinciasCollection[]
+  features: ProvinciaFeature[]
   crs?: unknown
 }
 
