@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-01T19:38:45+00:00",
+  "generated_at": "2026-10-01T21:36:50+00:00",
   "source": "Open-Meteo API (multi-ciudad)",
   "source_date": "2026-10-01",
   "data": [
@@ -839,9 +839,100 @@
           "temp_prom": 16.2
         }
       ]
+    },
+    {
+      "id": "tucuman",
+      "label": "Tucumán",
+      "lat": -26.8083,
+      "lon": -65.2176,
+      "region": "noa",
+      "forecast": [
+        {
+          "fecha": "2026-10-01",
+          "temp_max": 18.6,
+          "temp_min": 15.8,
+          "temp_prom": 17.2
+        },
+        {
+          "fecha": "2026-10-02",
+          "temp_max": 22.7,
+          "temp_min": 15.3,
+          "temp_prom": 19.0
+        },
+        {
+          "fecha": "2026-10-03",
+          "temp_max": 27.7,
+          "temp_min": 14.2,
+          "temp_prom": 20.9
+        },
+        {
+          "fecha": "2026-10-04",
+          "temp_max": 21.8,
+          "temp_min": 16.2,
+          "temp_prom": 19.0
+        },
+        {
+          "fecha": "2026-10-05",
+          "temp_max": 17.6,
+          "temp_min": 14.9,
+          "temp_prom": 16.2
+        },
+        {
+          "fecha": "2026-10-06",
+          "temp_max": 21.1,
+          "temp_min": 14.9,
+          "temp_prom": 18.0
+        },
+        {
+          "fecha": "2026-10-07",
+          "temp_max": 23.5,
+          "temp_min": 15.0,
+          "temp_prom": 19.2
+        },
+        {
+          "fecha": "2026-10-08",
+          "temp_max": 20.9,
+          "temp_min": 18.1,
+          "temp_prom": 19.5
+        },
+        {
+          "fecha": "2026-10-09",
+          "temp_max": 19.9,
+          "temp_min": 15.7,
+          "temp_prom": 17.8
+        },
+        {
+          "fecha": "2026-10-10",
+          "temp_max": 22.8,
+          "temp_min": 13.5,
+          "temp_prom": 18.1
+        },
+        {
+          "fecha": "2026-10-11",
+          "temp_max": 23.0,
+          "temp_min": 17.1,
+          "temp_prom": 20.1
+        },
+        {
+          "fecha": "2026-10-12",
+          "temp_max": 23.3,
+          "temp_min": 17.7,
+          "temp_prom": 20.5
+        },
+        {
+          "fecha": "2026-10-13",
+          "temp_max": 20.2,
+          "temp_min": 16.5,
+          "temp_prom": 18.4
+        },
+        {
+          "fecha": "2026-10-14",
+          "temp_max": 23.2,
+          "temp_min": 16.2,
+          "temp_prom": 19.7
+        }
+      ]
     }
   ],
-  "failures": [
-    "tucuman: HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=15)"
-  ]
+  "failures": []
 }
