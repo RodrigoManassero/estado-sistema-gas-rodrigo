@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-10-01T17:32:13Z",
+  "source": "Enargas PS + Demand Forecast Model",
+  "last_real_date": "2026-10-04",
+  "historical_weights": {
+    "tgs": 0.5743,
+    "tgn": 0.2578,
+    "gpm": 0.168,
+    "bolivia": 0.0,
+    "chile": 0.0,
+    "escobar": 0.0
+  },
+  "data": []
+}
