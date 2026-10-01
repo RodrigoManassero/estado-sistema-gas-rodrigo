@@ -8,8 +8,6 @@ def load_json(filepath):
         return []
     with open(filepath, 'r', encoding='utf-8') as f:
         data = json.load(f)
-        
-        # Si es un diccionario con clave 'data', extraemos la lista
         if isinstance(data, dict):
             if 'data' in data and isinstance(data['data'], list):
                 return data['data']
@@ -25,6 +23,14 @@ def save_json(filepath, payload):
     with open(filepath, 'w', encoding='utf-8') as f:
         json.dump(payload, f, indent=2, ensure_ascii=False)
 
+def clean_date(val):
+    if not val:
+        return ''
+    s = str(val).strip()
+    if 'T' in s:
+        s = s.split('T')[0]
+    return s[:10]
+
 def main():
     ps_path = 'public/data/enargas_ps.json'
     demand_path = 'public/data/demand_forecast.json'
@@ -38,7 +44,7 @@ def main():
         return
 
     # ---------------------------------------------------------------------
-    # Paso 1: Encontrar la última fecha con datos reales válidos en PS
+    # Paso 1: Encontrar la última fecha en enargas_ps.json
     # ---------------------------------------------------------------------
     valid_ps_rows = []
     keys_check = ['iny_tgs', 'iny_tgn', 'iny_gpm', 'iny_bolivia', 'iny_chile', 'iny_escobar', 'iny_enarsa']
@@ -46,41 +52,34 @@ def main():
     for row in ps_rows:
         if not isinstance(row, dict):
             continue
-        fecha = row.get('fecha') or row.get('Día Operativo')
+
+        fecha = clean_date(row.get('fecha') or row.get('Día Operativo'))
         if not fecha:
             continue
         
         has_data = any(row.get(k) is not None for k in keys_check)
         if has_data:
-            valid_ps_rows.append((str(fecha).strip(), row))
+            valid_ps_rows.append((fecha, row))
 
     if not valid_ps_rows:
         print("No se encontraron filas válidas en enargas_ps.json.")
         return
 
     valid_ps_rows.sort(key=lambda x: x[0])
-    last_real_date_str = valid_ps_rows[-1][0]
-    print(f"Última fecha con datos reales en PS: {last_real_date_str}")
+    last_ps_date_str = valid_ps_rows[-1][0]
+    print(f"Última fecha en enargas_ps.json: {last_ps_date_str}")
 
     # ---------------------------------------------------------------------
-    # Paso 2: Obtener los últimos 10 días reales para calcular el % de mix
+    # Paso 2: Obtener los últimos 10 días de PS para calcular el % de mix
     # ---------------------------------------------------------------------
     last_10 = valid_ps_rows[-10:]
     
-    sum_tgs = 0.0
-    sum_tgn = 0.0
-    sum_gpm = 0.0
-    sum_bolivia = 0.0
-    sum_chile = 0.0
-    sum_escobar = 0.0
-
-    for _, r in last_10:
-        sum_tgs += float(r.get('iny_tgs') or 0.0)
-        sum_tgn += float(r.get('iny_tgn') or 0.0)
-        sum_gpm += float(r.get('iny_gpm') or r.get('iny_enarsa') or 0.0)
-        sum_bolivia += float(r.get('iny_bolivia') or 0.0)
-        sum_chile += float(r.get('iny_chile') or 0.0)
-        sum_escobar += float(r.get('iny_escobar') or 0.0)
+    sum_tgs = sum(float(r.get('iny_tgs') or 0.0) for _, r in last_10)
+    sum_tgn = sum(float(r.get('iny_tgn') or 0.0) for _, r in last_10)
+    sum_gpm = sum(float(r.get('iny_gpm') or r.get('iny_enarsa') or 0.0) for _, r in last_10)
+    sum_bolivia = sum(float(r.get('iny_bolivia') or 0.0) for _, r in last_10)
+    sum_chile = sum(float(r.get('iny_chile') or 0.0) for _, r in last_10)
+    sum_escobar = sum(float(r.get('iny_escobar') or 0.0) for _, r in last_10)
 
     total_historical = sum_tgs + sum_tgn + sum_gpm + sum_bolivia + sum_chile + sum_escobar
 
@@ -94,10 +93,10 @@ def main():
         w_chile = sum_chile / total_historical
         w_escobar = sum_escobar / total_historical
 
-    print(f"Mix de inyección (10d): TGS={w_tgs:.1%}, TGN={w_tgn:.1%}, GPM={w_gpm:.1%}, Escobar={w_escobar:.1%}")
+    print(f"Mix histórico (10d): TGS={w_tgs:.1%}, TGN={w_tgn:.1%}, GPM={w_gpm:.1%}, Escobar={w_escobar:.1%}")
 
     # ---------------------------------------------------------------------
-    # Paso 3: Filtrar fechas proyectadas en demand_forecast (> last_real_date)
+    # Paso 3: Rango de fechas (última fecha demand_forecast - última fecha enargas_ps)
     # ---------------------------------------------------------------------
     forecast_results = []
 
@@ -105,16 +104,17 @@ def main():
         if not isinstance(d_row, dict):
             continue
 
-        d_fecha = str(d_row.get('fecha') or d_row.get('date') or '').strip()
+        d_fecha = clean_date(d_row.get('fecha') or d_row.get('date'))
         if not d_fecha:
             continue
 
-        if d_fecha > last_real_date_str:
+        # Fechas posteriores a la última cargada en enargas_ps.json
+        if d_fecha > last_ps_date_str:
             target_demand = float(
+                d_row.get('demanda_total_est') or 
                 d_row.get('demanda_total') or 
                 d_row.get('demand_mmm3d') or 
-                d_row.get('demanda') or 
-                d_row.get('demanda_estimada') or 0.0
+                d_row.get('demanda') or 0.0
             )
 
             iny_tgs = round(target_demand * w_tgs, 2)
@@ -141,7 +141,7 @@ def main():
     output_envelope = {
         "generated_at": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
         "source": "Enargas PS + Demand Forecast Model",
-        "last_real_date": last_real_date_str,
+        "last_ps_date": last_ps_date_str,
         "historical_weights": {
             "tgs": round(w_tgs, 4),
             "tgn": round(w_tgn, 4),
