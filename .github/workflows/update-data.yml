@@ -1,84 +1,87 @@
-name: Update data and deploy
+name: Update data and deploy[cite: 8]
 
-on:
-  schedule:
-    - cron: '0 13 * * *'  # 10:00 Argentina (UTC-3) — tras las 09:45 ya llegó el correo ETGS
-  workflow_dispatch:  # Manual trigger
+on:[cite: 8]
+  schedule:[cite: 8]
+    - cron: '0 13 * * *'  # 10:00 Argentina (UTC-3) — tras las 09:45 ya llegó el correo ETGS[cite: 8]
+  workflow_dispatch:  # Manual trigger[cite: 8]
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
+permissions:[cite: 8]
+  contents: write[cite: 8]
+  pages: write[cite: 8]
+  id-token: write[cite: 8]
 
-jobs:
-  update-and-deploy:
-    runs-on: ubuntu-latest
-    timeout-minutes: 22
-    steps:
-      - uses: actions/checkout@v4
+jobs:[cite: 8]
+  update-and-deploy:[cite: 8]
+    runs-on: ubuntu-latest[cite: 8]
+    timeout-minutes: 22[cite: 8]
+    steps:[cite: 8]
+      - uses: actions/checkout@v4[cite: 8]
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
+      - name: Setup Python[cite: 8]
+        uses: actions/setup-python@v5[cite: 8]
+        with:[cite: 8]
+          python-version: '3.12'[cite: 8]
 
-      - name: Install Python dependencies
-        run: pip install -r requirements.txt
+      - name: Install Python dependencies[cite: 8]
+        run: pip install -r requirements.txt[cite: 8]
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+      - name: Setup Node[cite: 8]
+        uses: actions/setup-node@v4[cite: 8]
+        with:[cite: 8]
+          node-version: '20'[cite: 8]
 
-      - name: Install npm dependencies
-        run: npm ci
+      - name: Install npm dependencies[cite: 8]
+        run: npm ci[cite: 8]
 
-      - name: Run data pipeline
-        timeout-minutes: 13
-        env:
-          GMAIL_USER: ${{ secrets.GMAIL_USER }}
-          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
-        run: python scripts/build_data.py
+      - name: Run data pipeline[cite: 8]
+        timeout-minutes: 13[cite: 8]
+        env:[cite: 8]
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}[cite: 8]
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}[cite: 8]
+        run: python scripts/build_data.py[cite: 8]
 
-      - name: Generate Injections Forecast
-        run: python scripts/generate_injections_forecast.py
+      - name: Generate Injections Forecast[cite: 8]
+        run: python scripts/generate_injections_forecast.py[cite: 8]
 
-      - name: Type check
-        run: npx tsc --noEmit
+      - name: Generate Injections Daily
+        run: node scripts/generate_injections_daily.js
 
-      - name: Build dashboard
-        run: npm run build
+      - name: Type check[cite: 8]
+        run: npx tsc --noEmit[cite: 8]
 
-      - name: Install course dependencies
-        working-directory: ./curso
-        run: npm ci
+      - name: Build dashboard[cite: 8]
+        run: npm run build[cite: 8]
 
-      - name: Build course site
-        working-directory: ./curso
-        run: npm run build
+      - name: Install course dependencies[cite: 8]
+        working-directory: ./curso[cite: 8]
+        run: npm ci[cite: 8]
 
-      - name: Place course under dist/curso
-        run: |
-          mkdir -p dist/curso
-          cp -r curso/dist/. dist/curso/
+      - name: Build course site[cite: 8]
+        working-directory: ./curso[cite: 8]
+        run: npm run build[cite: 8]
 
-      - name: Commit updated data
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git add public/data/
-          if ! git diff --staged --quiet; then
-            git commit -m "Auto-update data $(date -u +%Y-%m-%d)"
-            # Intento de push seguro con rebase autoresuelto
-            git pull --rebase -X ours origin main || (git rebase --abort && git pull --no-rebase origin main -s recursive -X ours)
-            git push origin main
-          else
-            echo "No data changes to commit"
-          fi
+      - name: Place course under dist/curso[cite: 8]
+        run: |[cite: 8]
+          mkdir -p dist/curso[cite: 8]
+          cp -r curso/dist/. dist/curso/[cite: 8]
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+      - name: Commit updated data[cite: 8]
+        run: |[cite: 8]
+          git config user.name "github-actions[bot]"[cite: 8]
+          git config user.email "github-actions[bot]@users.noreply.github.com"[cite: 8]
+          git fetch origin main[cite: 8]
+          git add public/data/[cite: 8]
+          if ! git diff --staged --quiet; then[cite: 8]
+            git commit -m "Auto-update data $(date -u +%Y-%m-%d)"[cite: 8]
+            # Intento de push seguro con rebase autoresuelto[cite: 8]
+            git pull --rebase -X ours origin main || (git rebase --abort && git pull --no-rebase origin main -s recursive -X ours)[cite: 8]
+            git push origin main[cite: 8]
+          else[cite: 8]
+            echo "No data changes to commit"[cite: 8]
+          fi[cite: 8]
+
+      - name: Deploy to GitHub Pages[cite: 8]
+        uses: peaceiris/actions-gh-pages@v4[cite: 8]
+        with:[cite: 8]
+          github_token: ${{ secrets.GITHUB_TOKEN }}[cite: 8]
+          publish_dir: ./dist[cite: 8]
