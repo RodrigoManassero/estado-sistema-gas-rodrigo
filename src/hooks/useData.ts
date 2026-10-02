@@ -71,7 +71,7 @@ export function useJson<T>(path: string): FetchState<T> {
 }
 
 /**
- * Función que toma los datos de daily.json y proyecta la inyección para
+ * Función que toma los datos diarios y proyecta la inyección para
  * los días futuros sin datos reales, manteniendo la proporción sobre la demanda estimada.
  */
 export function processInjectionsWithForecast(rows: DailyRow[]): DailyRow[] {
@@ -153,9 +153,18 @@ export function processInjectionsWithForecast(rows: DailyRow[]): DailyRow[] {
   })
 }
 
-// Custom Hook para obtener los datos de daily.json procesados con la proyección
+// Custom Hook tradicional para obtener los datos de daily.json (utilizado por el resto de los gráficos)
 export const useDaily = () => {
   const state = useJson<DailyRow[]>('./data/daily.json')
+  return {
+    ...state,
+    data: state.data ? processInjectionsWithForecast(state.data) : null,
+  }
+}
+
+// NUEVO: Custom Hook dedicado exclusivamente para alimentar a InjectionsChart desde injections_daily.json
+export const useInjectionsDaily = () => {
+  const state = useJson<DailyRow[]>('./data/injections_daily.json')
   return {
     ...state,
     data: state.data ? processInjectionsWithForecast(state.data) : null,
