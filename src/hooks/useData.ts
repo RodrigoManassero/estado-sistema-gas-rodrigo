@@ -13,32 +13,14 @@ import type {
   WeatherPayload,
 } from '../types'
 
+// Re-exported so components that historically imported from this file still work.
 export type { ForecastDay, DemandForecastDay, DemandForecast } from '../types'
 
-export interface EnargasPSRow {
-  fecha?: string | null
-  'Día Operativo'?: string | null
-  iny_tgs?: number | null
-  iny_tgn?: number | null
-  iny_enarsa?: number | null
-  iny_gpm?: number | null
-  iny_bolivia?: number | null
-  iny_escobar?: number | null
-  [key: string]: unknown
-}
-
-export interface InjectionsForecastRow {
-  fecha: string
-  demanda_estimada: number
-  iny_tgs: number
-  iny_tgn: number
-  iny_gpm: number
-  iny_bolivia: number
-  iny_chile: number
-  iny_escobar: number
-  iny_total: number
-}
-
+/**
+ * Loads a JSON file from /public/data/ and unwraps the {generated_at, data}
+ * envelope produced by the Python pipeline. Legacy payloads (no envelope) are
+ * returned as-is.
+ */
 export function useJson<T>(path: string): FetchState<T> {
   const [state, setState] = useState<FetchState<T>>({
     data: null,
@@ -89,161 +71,94 @@ export function useJson<T>(path: string): FetchState<T> {
 }
 
 /**
- * Hook para cargar el forecast de inyecciones proyectado.
+ * Función que toma los datos de daily.json y proyecta la inyección para
+ * los días futuros sin datos reales, manteniendo la proporción sobre la demanda estimada.
  */
-export const useInjectionsForecast = () =>
-  useJson<InjectionsForecastRow[]>('./data/inyections_forecast.json')
+export function processInjectionsWithForecast(rows: DailyRow[]): DailyRow[] {
+  if (!rows || rows.length === 0) return []
 
-/**
- * Genera un rango de fechas en formato YYYY-MM-DD
- * desde (hoy - daysBack) hasta (hoy + daysAhead).
- */
-function getDynamicDateRange(daysBack: number = 7, daysAhead: number = 13): string[] {
-  const dates: string[] = []
-  const today = new Date()
+  // Identificar los últimos 3 días reales con datos de inyección válidos
+  const validHistorical = rows.filter(
+    (r) => r.iny_tgs !== undefined && r.iny_tgs !== null && r.iny_tgs > 0
+  )
+  const recent = validHistorical.slice(-3)
 
-  for (let i = -daysBack; i <= daysAhead; i++) {
-    const d = new Date(today)
-    d.setDate(today.getDate() + i)
-    const year = d.getFullYear()
-    const month = String(d.getMonth() + 1).padStart(2, '0')
-    const day = String(d.getDate()).padStart(2, '0')
-    dates.push(`${year}-${month}-${day}`)
+  let avgTGS = 0,
+    avgTGN = 0,
+    avgENARSA = 0,
+    avgBolivia = 0,
+    avgEscobar = 0
+  let avgTotalIny = 0
+
+  if (recent.length > 0) {
+    const sum = recent.reduce(
+      (acc, r) => {
+        const total =
+          (r.iny_tgs || 0) +
+          (r.iny_tgn || 0) +
+          (r.iny_enarsa || 0) +
+          (r.iny_bolivia || 0) +
+          (r.iny_escobar || 0)
+        return {
+          tgs: acc.tgs + (r.iny_tgs || 0),
+          tgn: acc.tgn + (r.iny_tgn || 0),
+          enarsa: acc.enarsa + (r.iny_enarsa || 0),
+          bolivia: acc.bolivia + (r.iny_bolivia || 0),
+          escobar: acc.escobar + (r.iny_escobar || 0),
+          total: acc.total + total,
+        }
+      },
+      { tgs: 0, tgn: 0, enarsa: 0, bolivia: 0, escobar: 0, total: 0 }
+    )
+
+    if (sum.total > 0) {
+      avgTGS = sum.tgs / sum.total
+      avgTGN = sum.tgn / sum.total
+      avgENARSA = sum.enarsa / sum.total
+      avgBolivia = sum.bolivia / sum.total
+      avgEscobar = sum.escobar / sum.total
+      avgTotalIny = sum.total / recent.length
+    }
   }
 
-  return dates
-}
+  return rows.map((row) => {
+    const hasRealInjection =
+      row.iny_tgs !== undefined && row.iny_tgs !== null && row.iny_tgs > 0
 
-/**
- * Procesa las inyecciones usando enargas_ps.json para días pasados/reales
- * e inyections_forecast.json para el día corriente y los 13 días hacia el futuro.
- */
-export function processInjectionsFromPS(
-  dailyRows: DailyRow[],
-  psRows: EnargasPSRow[] | null,
-  injectionsForecastRows: InjectionsForecastRow[] | null,
-  daysBack: number = 7,
-  daysAhead: number = 13
-): DailyRow[] {
-  // 1. Mapeo de partes diarios reales
-  const psMap = new Map<string, EnargasPSRow>()
-  if (psRows && Array.isArray(psRows)) {
-    psRows.forEach((ps) => {
-      const fechaKey = ps.fecha || ps['Día Operativo']
-      if (fechaKey) {
-        psMap.set(String(fechaKey).trim(), ps)
-      }
-    })
-  }
-
-  // 2. Mapeo de proyecciones futuras
-  const forecastMap = new Map<string, InjectionsForecastRow>()
-  if (injectionsForecastRows && Array.isArray(injectionsForecastRows)) {
-    injectionsForecastRows.forEach((fc) => {
-      if (fc.fecha) {
-        forecastMap.set(String(fc.fecha).trim(), fc)
-      }
-    })
-  }
-
-  // 3. Mapeo auxiliar de daily.json
-  const dailyMap = new Map<string, DailyRow>()
-  if (dailyRows && Array.isArray(dailyRows)) {
-    dailyRows.forEach((r) => dailyMap.set(String(r.fecha).trim(), r))
-  }
-
-  const isValidPSRow = (ps: EnargasPSRow) => {
-    const tgs = Number(ps.iny_tgs || 0)
-    const tgn = Number(ps.iny_tgn || 0)
-    const enarsa = Number(ps.iny_enarsa || ps.iny_gpm || 0)
-    return tgs + tgn + enarsa > 10
-  }
-
-  // 4. Generamos el rango maestro alrededor de hoy()
-  const targetDates = getDynamicDateRange(daysBack, daysAhead)
-
-  // 5. Construimos el resultado asegurando los 13 días futuros + los días pasados
-  return targetDates.map((dateKey) => {
-    const baseRow = dailyMap.get(dateKey) || ({ fecha: dateKey } as DailyRow)
-    const psData = psMap.get(dateKey)
-    const forecastData = forecastMap.get(dateKey)
-
-    // A) Si existe dato real válido en enargas_ps.json
-    if (psData && isValidPSRow(psData)) {
-      const tgs = Number(psData.iny_tgs || 0)
-      const tgn = Number(psData.iny_tgn || 0)
-      const enarsa = Number(psData.iny_enarsa || psData.iny_gpm || 0)
-      const bolivia = Number(psData.iny_bolivia || 0)
-      const escobar = Number(psData.iny_escobar || 0)
-
-      return {
-        ...baseRow,
-        fecha: dateKey,
-        isForecast: false,
-        iny_tgs: tgs,
-        iny_tgn: tgn,
-        iny_enarsa: enarsa,
-        iny_bolivia: bolivia,
-        iny_escobar: escobar,
-        iny_total: Number((tgs + tgn + enarsa + bolivia + escobar).toFixed(2)),
-      }
+    if (hasRealInjection) {
+      return { ...row, isForecast: false }
     }
 
-    // B) Si es futuro o falta dato real, tomamos de inyections_forecast.json
-    if (forecastData) {
-      return {
-        ...baseRow,
-        fecha: dateKey,
-        isForecast: true,
-        iny_tgs: forecastData.iny_tgs ?? 0,
-        iny_tgn: forecastData.iny_tgn ?? 0,
-        iny_enarsa: forecastData.iny_gpm ?? 0,
-        iny_bolivia: forecastData.iny_bolivia ?? 0,
-        iny_escobar: forecastData.iny_escobar ?? 0,
-        iny_total: forecastData.iny_total ?? 0,
-      }
-    }
+    // Acceso seguro a campos de demanda para evitar errores de compilación TS si no están en la interfaz
+    const r = row as Record<string, number | undefined>
+    const estimatedDemand =
+      (r.prioritaria || 0) +
+      (r.industria || 0) +
+      (r.usinas || 0) +
+      (r.gnc || 0) +
+      (r.exp_tgn || 0) +
+      (r.exp_tgs || 0)
 
-    // C) Fallback
+    const targetSupply = estimatedDemand > 0 ? estimatedDemand : avgTotalIny
+
     return {
-      ...baseRow,
-      fecha: dateKey,
+      ...row,
       isForecast: true,
-      iny_tgs: 0,
-      iny_tgn: 0,
-      iny_enarsa: 0,
-      iny_bolivia: 0,
-      iny_escobar: 0,
-      iny_total: 0,
+      iny_tgs: Number((targetSupply * avgTGS).toFixed(2)),
+      iny_tgn: Number((targetSupply * avgTGN).toFixed(2)),
+      iny_enarsa: Number((targetSupply * avgENARSA).toFixed(2)),
+      iny_bolivia: Number((targetSupply * avgBolivia).toFixed(2)),
+      iny_escobar: Number((targetSupply * avgEscobar).toFixed(2)),
     }
   })
 }
 
-// Custom Hook principal
+// Custom Hook para obtener los datos de daily.json procesados con la proyección
 export const useDaily = () => {
-  const dailyState = useJson<DailyRow[]>('./data/daily.json')
-  const psState = useJson<EnargasPSRow[]>('./data/enargas_ps.json')
-  const injectionsForecastState = useInjectionsForecast()
-
-  const loading = dailyState.loading || psState.loading || injectionsForecastState.loading
-  const error = dailyState.error || psState.error || injectionsForecastState.error
-
-  const processedData =
-    !loading && (dailyState.data || psState.data || injectionsForecastState.data)
-      ? processInjectionsFromPS(
-          dailyState.data || [],
-          psState.data,
-          injectionsForecastState.data,
-          7,  // 7 días hacia atrás desde hoy()
-          13  // 13 días hacia adelante desde hoy()
-        )
-      : null
-
+  const state = useJson<DailyRow[]>('./data/daily.json')
   return {
-    ...dailyState,
-    loading,
-    error,
-    data: processedData,
+    ...state,
+    data: state.data ? processInjectionsWithForecast(state.data) : null,
   }
 }
 
@@ -254,7 +169,9 @@ export const useLinepackForecast = () => useJson<LinepackForecast>('./data/linep
 export const useWeatherRegions = () => useJson<RegionCity[]>('./data/weather_regions.json')
 export const useEnargasRDS = () => useJson<EnargasRDSRow[]>('./data/enargas.json')
 export const useEnargasING = () => useJson<EnargasINGRow[]>('./data/enargas_ing.json')
-export const useEnargasPS = () => useJson<EnargasPSRow[]>('./data/enargas_ps.json')
+
+// ENARGAS Proyección Semanal (PS)
+export const useEnargasPS = () => useJson<Record<string, number | string | null>[]>('./data/enargas_ps.json')
 export const useETGS = () => useJson<ETGSRow[]>('./data/etgs.json')
 export const useSMNAlerts = () => useJson<unknown[]>('./data/smn_alerts.json')
 
@@ -352,16 +269,16 @@ export interface MEGSAPayload {
 export const useMEGSA = () => useJson<MEGSAPayload>('./data/megsa.json')
 
 export interface ProduccionMes {
-  mes: string
-  area: string
+  mes: string                  // YYYY-MM
+  area: string                 // areapermisoconcesion (bloque / concesión)
   empresa: string
   cuenca: string
   provincia: string
-  prod_gas_mm3: number
-  prod_pet_m3: number
-  prod_agua_m3: number
-  pozos_activos: number
-  pozos_no_conv: number
+  prod_gas_mm3: number         // MMm³ (= million m³) acumulado del mes
+  prod_pet_m3: number          // m³
+  prod_agua_m3: number         // m³
+  pozos_activos: number        // wells with prod_gas>0 or prod_pet>0 in the month
+  pozos_no_conv: number        // wells where tipo_de_recurso != CONVENCIONAL
 }
 
 export const useProduccionNeuquina = () => useJson<ProduccionMes[]>('./data/produccion_neuquina.json')
@@ -369,10 +286,10 @@ export const useProduccionNeuquina = () => useJson<ProduccionMes[]>('./data/prod
 export interface ProduccionHistoricoRow {
   area: string
   empresa: string
-  gas_acumulado_mm3: number
+  gas_acumulado_mm3: number             // MMm³ desde el primer registro disponible
   pet_acumulado_m3: number
   agua_acumulada_m3: number
-  primer_mes: string | null
+  primer_mes: string | null             // YYYY-MM
   ultimo_mes: string | null
   meses_activos: number
   anios_cubiertos: number[]
@@ -381,15 +298,15 @@ export interface ProduccionHistoricoRow {
 export const useProduccionHistorico = () => useJson<ProduccionHistoricoRow[]>('./data/produccion_neuquina_historico.json')
 
 export interface PozoTerminadoMes {
-  mes: string
-  area: string
+  mes: string                  // YYYY-MM
+  area: string                 // areapermisoconcesion (bloque / concesión)
   cuenca: string
   provincia: string
-  pozos: number
-  pozos_pet: number
-  pozos_gas: number
-  pozos_serv: number
-  pozos_otros: number
+  pozos: number                // total pozos terminados en el mes
+  pozos_pet: number            // concepto "Productivos de Petróleo"
+  pozos_gas: number            // concepto "Productivos de Gas"
+  pozos_serv: number           // concepto "Servicio"
+  pozos_otros: number          // improductivos y otros
 }
 
 export const usePozosTerminados = () => useJson<PozoTerminadoMes[]>('./data/pozos_terminados.json')
@@ -398,8 +315,8 @@ export interface PlanDesarrollo {
   id: string
   operador: string
   titulo: string
-  fecha_anuncio: string
-  horizonte: string | null
+  fecha_anuncio: string                  // YYYY or YYYY-MM
+  horizonte: string | null               // e.g. "2024-2028"
   monto_usd_millones: number | null
   categoria: 'estrategia' | 'upstream' | 'midstream' | 'infraestructura' | 'M&A' | 'desinversión' | string
   comentario: string
