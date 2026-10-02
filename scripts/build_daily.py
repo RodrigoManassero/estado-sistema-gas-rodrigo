@@ -88,6 +88,7 @@ def main():
         'estado_tgs',        # Compatibilidad
         'var_linepack_tgs',  # Variación explícita
         'estado_tgn',        # Mapeo para TGN
+        'iny_chile',         # Inyección desde Chile / Gasoductos Norandino/GasAtacama
         'cammesa_gas_est',
         'cammesa_gasoil_est',
         'cammesa_fueloil_est',
@@ -207,6 +208,8 @@ def main():
                 row['iny_gpm'] = r.get('iny_gpm')
             if r.get('iny_bolivia') is not None:
                 row['iny_bolivia'] = r.get('iny_bolivia')
+            if r.get('iny_chile') is not None:
+                row['iny_chile'] = r.get('iny_chile')
             if r.get('iny_escobar') is not None:
                 row['iny_escobar'] = r.get('iny_escobar')
             row['origen_dato'] = 'PS_PROYECCION'
@@ -250,6 +253,8 @@ def main():
         if imp_prog:
             if imp_prog.get('bolivia') is not None:
                 row['iny_bolivia'] = imp_prog.get('bolivia')
+            if imp_prog.get('chile') is not None:
+                row['iny_chile'] = imp_prog.get('chile')
             if imp_prog.get('escobar') is not None:
                 row['iny_escobar'] = imp_prog.get('escobar')
             if imp_prog.get('bahia_blanca') is not None:
@@ -303,6 +308,8 @@ def main():
                 row['iny_gpm'] = r.get('iny_gpm')
             if r.get('iny_bolivia') is not None:
                 row['iny_bolivia'] = r.get('iny_bolivia')
+            if r.get('iny_chile') is not None:
+                row['iny_chile'] = r.get('iny_chile')
             if r.get('iny_escobar') is not None:
                 row['iny_escobar'] = r.get('iny_escobar')
 
@@ -409,6 +416,7 @@ def main():
         avg_tgs = sum(r['iny_tgs'] for r in recent_ps) / len(recent_ps)
         avg_tgn = sum(r['iny_tgn'] for r in recent_ps) / len(recent_ps)
         avg_bolivia = sum(r.get('iny_bolivia') or 0 for r in recent_ps) / len(recent_ps)
+        avg_chile = sum(r.get('iny_chile') or 0 for r in recent_ps) / len(recent_ps)
         avg_escobar = sum(r.get('iny_escobar') or 0 for r in recent_ps) / len(recent_ps)
         avg_enarsa = sum(r.get('iny_enarsa') or 0 for r in recent_ps) / len(recent_ps)
 
@@ -419,12 +427,13 @@ def main():
         for row in rows:
             if row.get('demanda_total') is not None:
                 row['iny_bolivia'] = fill(row.get('iny_bolivia'), round(avg_bolivia, 1))
+                row['iny_chile'] = fill(row.get('iny_chile'), round(avg_chile, 1))
                 row['iny_escobar'] = fill(row.get('iny_escobar'), round(avg_escobar, 1))
                 row['iny_enarsa'] = fill(row.get('iny_enarsa'), round(avg_enarsa, 1))
 
                 if row.get('iny_tgs') is None or row.get('iny_tgn') is None or row.get('iny_tgs') == 0:
                     dem = row['demanda_total']
-                    imp = (row['iny_bolivia'] or 0) + (row['iny_escobar'] or 0) + (row['iny_enarsa'] or 0)
+                    imp = (row['iny_bolivia'] or 0) + (row['iny_chile'] or 0) + (row['iny_escobar'] or 0) + (row['iny_enarsa'] or 0)
                     req_nac = max(dem - imp, 0)
 
                     row['iny_tgs'] = round(req_nac * share_tgs, 1)
@@ -432,7 +441,7 @@ def main():
                     row['iny_total'] = round(dem, 1)
 
     # SANITIZACIÓN FINAL PARA RECHARTS
-    INJECTION_FIELDS = ['iny_tgs', 'iny_tgn', 'iny_enarsa', 'iny_gpm', 'iny_bolivia', 'iny_escobar', 'iny_total']
+    INJECTION_FIELDS = ['iny_tgs', 'iny_tgn', 'iny_enarsa', 'iny_gpm', 'iny_bolivia', 'iny_chile', 'iny_escobar', 'iny_total']
     for row in rows:
         for fld in INJECTION_FIELDS:
             if row.get(fld) is None:
