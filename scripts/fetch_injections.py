@@ -2,8 +2,8 @@ async function buildInjectionsDaily() {
   try {
     // 1. Carga en paralelo de ambos archivos JSON
     const [resPS, resForecast] = await Promise.all([
-      fetch('enargas_ps (2).json'),
-      fetch('inyections_forecast (2).json')
+      fetch('enargas_ps.json'),
+      fetch('inyections_forecast.json')
     ]);
 
     if (!resPS.ok || !resForecast.ok) {
