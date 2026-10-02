@@ -14,6 +14,7 @@ export interface DailyRow {
   iny_gpm: number | null
   iny_bolivia: number | null
   iny_escobar: number | null
+  iny_chile?: number | null
   iny_total: number | null
   linepack_tgs: number | null
   var_linepack_tgs: number | null
