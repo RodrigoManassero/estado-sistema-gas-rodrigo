@@ -1,100 +1,109 @@
-async function buildInjectionsDaily() {
-  try {
-    // 1. Carga en paralelo de ambos archivos JSON
-    const [resPS, resForecast] = await Promise.all([
-      fetch('enargas_ps.json'),
-      fetch('inyections_forecast.json')
-    ]);
+#!/usr/bin/env python3
+import json
+import os
+from datetime import datetime, timezone
 
-    if (!resPS.ok || !resForecast.ok) {
-      throw new Error('Error al cargar uno de los archivos JSON');
-    }
+def load_json(filepath):
+    if not os.path.exists(filepath):
+        print(f"Error: No se encontró el archivo {filepath}")
+        return {}
+    with open(filepath, 'r', encoding='utf-8') as f:
+        return json.load(f)
 
-    const dataPS = await resPS.json();
-    const dataForecast = await resForecast.json();
+def save_json(filepath, payload):
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    with open(filepath, 'w', encoding='utf-8') as f:
+        json.dump(payload, f, indent=2, ensure_ascii=False)
 
-    // Mapa auxiliar para agrupar y fusionar los datos por fecha
-    const dailyMap = new Map();
+def build_injections_daily():
+    ps_path = 'public/data/enargas_ps.json'
+    forecast_path = 'public/data/inyections_forecast.json'
+    output_path = 'public/data/injections_daily.json'
 
-    // 2. Procesar datos Históricos/Reales/Programados de ENARGAS PS
-    if (Array.isArray(dataPS.data)) {
-      dataPS.data.forEach((item) => {
-        if (!item.fecha) return;
+    data_ps = load_json(ps_path)
+    data_forecast = load_json(forecast_path)
 
-        // Determinar origen del registro
-        const isReal = item.tipo === 'R';
-        const isProgrammed = item.tipo === 'P';
+    if not data_ps or not data_forecast:
+        print("Error: No se pudieron cargar los datos de entrada.")
+        return
 
-        dailyMap.set(item.fecha, {
-          fecha: item.fecha,
-          origen: isReal ? 'ENARGAS_PS_REAL' : isProgrammed ? 'ENARGAS_PS_PROGRAMADO' : 'ENARGAS_PS',
-          tipo: item.tipo || null,
-          temp_prom_ba: item.temp_prom_ba ?? null,
-          demanda_total: item.demanda_total ?? null,
-          iny_total: item.iny_total ?? null,
-          iny_tgs: item.iny_tgs ?? null,
-          iny_tgn: item.iny_tgn ?? null,
-          iny_gpm: item.iny_gpm ?? null,
-          iny_bolivia: item.iny_bolivia ?? null,
-          iny_chile: item.iny_chile ?? null,
-          iny_escobar: item.iny_escobar ?? null,
-          linepack_total: item.linepack_total ?? null,
-          source_file: item.source ?? null
-        });
-      });
-    }
+    daily_map = {}
 
-    // 3. Procesar o sobreescribir/complementar con las Proyecciones (Forecast)
-    if (Array.isArray(dataForecast.data)) {
-      dataForecast.data.forEach((item) => {
-        if (!item.fecha) return;
+    # 1. Procesar datos históricos de ENARGAS PS
+    ps_rows = data_ps.get('data', []) if isinstance(data_ps, dict) else data_ps
+    for item in ps_rows:
+        if not isinstance(item, dict):
+            continue
+        fecha = item.get('fecha')
+        if not fecha:
+            continue
 
-        // Si ya existe el día y es de tipo REAL, priorizamos el dato real.
-        // Si no existe o era un dato programado/proyectado previo, guardamos el modelo forecast.
-        const existing = dailyMap.get(item.fecha);
-        
-        if (!existing || existing.tipo !== 'R') {
-          dailyMap.set(item.fecha, {
-            fecha: item.fecha,
-            origen: 'MODELO_FORECAST',
-            tipo: 'F',
-            temp_prom_ba: existing?.temp_prom_ba ?? null,
-            demanda_total: item.demanda_estimada ?? null,
-            iny_total: item.iny_total ?? null,
-            iny_tgs: item.iny_tgs ?? null,
-            iny_tgn: item.iny_tgn ?? null,
-            iny_gpm: item.iny_gpm ?? null,
-            iny_bolivia: item.iny_bolivia ?? 0.0,
-            iny_chile: item.iny_chile ?? 0.0,
-            iny_escobar: item.iny_escobar ?? 0.0,
-            linepack_total: existing?.linepack_total ?? null,
-            source_file: dataForecast.source ?? 'Forecast Model'
-          });
+        tipo = item.get('tipo')
+        is_real = tipo == 'R'
+        is_programmed = tipo == 'P'
+
+        origen = 'ENARGAS_PS_REAL' if is_real else ('ENARGAS_PS_PROGRAMADO' if is_programmed else 'ENARGAS_PS')
+
+        daily_map[fecha] = {
+            "fecha": fecha,
+            "origen": origen,
+            "tipo": tipo,
+            "temp_prom_ba": item.get('temp_prom_ba'),
+            "demanda_total": item.get('demanda_total'),
+            "iny_total": item.get('iny_total'),
+            "iny_tgs": item.get('iny_tgs'),
+            "iny_tgn": item.get('iny_tgn'),
+            "iny_gpm": item.get('iny_gpm'),
+            "iny_bolivia": item.get('iny_bolivia'),
+            "iny_chile": item.get('iny_chile'),
+            "iny_escobar": item.get('iny_escobar'),
+            "linepack_total": item.get('linepack_total'),
+            "source_file": item.get('source')
         }
-      });
+
+    # 2. Complementar/sobreescribir con el Forecast
+    forecast_rows = data_forecast.get('data', []) if isinstance(data_forecast, dict) else data_forecast
+    for item in forecast_rows:
+        if not isinstance(item, dict):
+            continue
+        fecha = item.get('fecha')
+        if not fecha:
+            continue
+
+        existing = daily_map.get(fecha)
+
+        # Si no existe o si el dato existente no es de tipo REAL ('R'), tomamos el forecast
+        if not existing or existing.get('tipo') != 'R':
+            daily_map[fecha] = {
+                "fecha": fecha,
+                "origen": "MODELO_FORECAST",
+                "tipo": "F",
+                "temp_prom_ba": existing.get('temp_prom_ba') if existing else None,
+                "demanda_total": item.get('demanda_total') or item.get('demanda_estimada'),
+                "iny_total": item.get('iny_total'),
+                "iny_tgs": item.get('iny_tgs'),
+                "iny_tgn": item.get('iny_tgn'),
+                "iny_gpm": item.get('iny_gpm'),
+                "iny_bolivia": item.get('iny_bolivia', 0.0),
+                "iny_chile": item.get('iny_chile', 0.0),
+                "iny_escobar": item.get('iny_escobar', 0.0),
+                "linepack_total": existing.get('linepack_total') if existing else None,
+                "source_file": data_forecast.get('source', 'Forecast Model')
+            }
+
+    # 3. Ordenar cronológicamente
+    daily_series = [daily_map[k] for k in sorted(daily_map.keys())]
+
+    output_payload = {
+        "generated_at": datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+        "description": "Serie diaria unificada de inyecciones y demanda (Histórico ENARGAS + Proyección Modelada)",
+        "last_ps_date": data_forecast.get('last_ps_date') or data_ps.get('source_date'),
+        "total_records": len(daily_series),
+        "data": daily_series
     }
 
-    // 4. Ordenar la serie cronológicamente por fecha
-    const dailySeries = Array.from(dailyMap.values()).sort(
-      (a, b) => new Date(a.fecha) - new Date(b.fecha)
-    );
+    save_json(output_path, output_payload)
+    print(f"¡Éxito! Unificados {len(daily_series)} registros en {output_path}")
 
-    // 5. Armar la estructura final de `injections_daily.json`
-    const injectionsDailyJSON = {
-      generated_at: new Date().toISOString(),
-      description: "Serie diaria unificada de inyecciones y demanda (Histórico ENARGAS + Proyección Modelada)",
-      last_ps_date: dataForecast.last_ps_date || dataPS.source_date || null,
-      total_records: dailySeries.length,
-      data: dailySeries
-    };
-
-    console.log("JSON Injections Daily generado exitosamente:", injectionsDailyJSON);
-    return injectionsDailyJSON;
-
-  } catch (error) {
-    console.error("Error al generar injections_daily.json:", error);
-  }
-}
-
-// Ejecución
-buildInjectionsDaily();
+if __name__ == '__main__':
+    build_injections_daily()
