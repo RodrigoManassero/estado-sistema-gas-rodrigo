@@ -43,6 +43,9 @@ jobs:
       - name: Generate Injections Forecast
         run: python scripts/generate_injections_forecast.py
 
+      - name: Unify Injections Daily
+        run: python scripts/fetch_injections.py
+
       - name: Type check
         run: npx tsc --noEmit
 
