@@ -65,10 +65,13 @@ def main():
         return
 
     # ---------------------------------------------------------------------
-    # Paso 1: Encontrar la última fecha en enargas_ps.json
+    # Paso 1: Mapear y procesar datos válidos de enargas_ps.json
     # ---------------------------------------------------------------------
     valid_ps_rows = []
     keys_check = ['iny_tgs', 'iny_tgn', 'iny_gpm', 'iny_bolivia', 'iny_chile', 'iny_escobar', 'iny_enarsa']
+
+    # Diccionario para agrupar históricamente por fecha
+    unified_map = {}
 
     for row in ps_rows:
         if not isinstance(row, dict):
@@ -82,6 +85,26 @@ def main():
         has_data = any(row.get(k) is not None for k in keys_check)
         if has_data:
             valid_ps_rows.append((fecha, row))
+
+            # Tipo de registro (R: Real, P: Programado)
+            tipo = row.get('tipo', None)
+            is_real = tipo == 'R'
+
+            unified_map[fecha] = {
+                "fecha": fecha,
+                "origen": "ENARGAS_PS_REAL" if is_real else "ENARGAS_PS_PROGRAMADO",
+                "tipo": tipo,
+                "temp_prom_ba": row.get('temp_prom_ba', None),
+                "demanda_total": row.get('demanda_total', None),
+                "iny_tgs": row.get('iny_tgs', None),
+                "iny_tgn": row.get('iny_tgn', None),
+                "iny_gpm": row.get('iny_gpm') or row.get('iny_enarsa'),
+                "iny_bolivia": row.get('iny_bolivia', 0.0),
+                "iny_chile": row.get('iny_chile', 0.0),
+                "iny_escobar": row.get('iny_escobar', 0.0),
+                "iny_total": row.get('iny_total', None),
+                "linepack_total": row.get('linepack_total', None)
+            }
 
     if not valid_ps_rows:
         print("Error: No se encontraron filas válidas en enargas_ps.json.")
@@ -118,10 +141,8 @@ def main():
     print(f"Mix histórico (10d): TGS={w_tgs:.1%}, TGN={w_tgn:.1%}, GPM={w_gpm:.1%}, Escobar={w_escobar:.1%}")
 
     # ---------------------------------------------------------------------
-    # Paso 3: Iterar demand_forecast y filtrar posteriores a last_ps_date
+    # Paso 3: Iterar demand_forecast y agregar proyecciones futuras
     # ---------------------------------------------------------------------
-    forecast_results = []
-
     for d_row in demand_rows:
         if not isinstance(d_row, dict):
             continue
@@ -141,7 +162,6 @@ def main():
                 d_row.get('total') or 0.0
             )
 
-            # Si no encontró demanda en un solo campo, intentar sumar los segmentos
             if target_demand == 0.0:
                 prio = float(d_row.get('prioritaria_est') or d_row.get('prioritaria') or 0.0)
                 usi = float(d_row.get('usinas_est') or d_row.get('usinas') or 0.0)
@@ -158,17 +178,24 @@ def main():
 
             iny_total = round(iny_tgs + iny_tgn + iny_gpm + iny_bolivia + iny_chile + iny_escobar, 2)
 
-            forecast_results.append({
+            unified_map[d_fecha] = {
                 "fecha": d_fecha,
-                "demanda_estimada": target_demand,
+                "origen": "MODELO_FORECAST",
+                "tipo": "F",
+                "temp_prom_ba": None,
+                "demanda_total": target_demand,
                 "iny_tgs": iny_tgs,
                 "iny_tgn": iny_tgn,
                 "iny_gpm": iny_gpm,
                 "iny_bolivia": iny_bolivia,
                 "iny_chile": iny_chile,
                 "iny_escobar": iny_escobar,
-                "iny_total": iny_total
-            })
+                "iny_total": iny_total,
+                "linepack_total": None
+            }
+
+    # Ordenar la lista resultante por fecha
+    sorted_data = [unified_map[k] for k in sorted(unified_map.keys())]
 
     output_envelope = {
         "generated_at": datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -182,11 +209,12 @@ def main():
             "chile": round(w_chile, 4),
             "escobar": round(w_escobar, 4)
         },
-        "data": forecast_results
+        "total_records": len(sorted_data),
+        "data": sorted_data
     }
 
     save_json(output_path, output_envelope)
-    print(f"¡Éxito! Generadas {len(forecast_results)} filas proyectadas en {output_path}")
+    print(f"¡Éxito! Generadas {len(sorted_data)} filas unificadas (histórico + proyección) en {output_path}")
 
 if __name__ == '__main__':
     main()
