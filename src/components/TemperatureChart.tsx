@@ -11,7 +11,7 @@ import {
   ReferenceLine,
   ReferenceArea,
 } from 'recharts'
-import type { DailyRow, ForecastDay, RegionCity } from '../types'
+import type { DailyRow, ForecastDay, RegionCity, WeatherHistoryRecord } from '../types'
 import { colors } from '../theme'
 import {
   padToDates,
@@ -25,6 +25,7 @@ const fmt = (d: string) => d.slice(5)
 
 interface Props {
   data: DailyRow[]
+  historyData?: WeatherHistoryRecord | WeatherHistoryRecord[] | null
   forecast?: ForecastDay[]
   regions?: RegionCity[]
   selectedCityId?: string
@@ -34,6 +35,7 @@ interface Props {
 
 export default function TemperatureChart({
   data,
+  historyData,
   forecast = [],
   regions,
   selectedCityId = 'ba',
@@ -42,15 +44,36 @@ export default function TemperatureChart({
 }: Props) {
   const city = regions?.find((r) => r.id === selectedCityId)
 
-  const histKey = {
+  // 1. Intentar obtener la serie histórica desde weather_history.json
+  const cityHistoryList = useMemo(() => {
+    if (!historyData) return []
+    const records = Array.isArray(historyData) ? historyData : [historyData]
+    const match = records.find(
+      (r) => r.id === selectedCityId || r.region?.toLowerCase() === selectedCityId.toLowerCase()
+    )
+    return match?.history ?? []
+  }, [historyData, selectedCityId])
+
+  // Map rápido fecha -> datos históricos de weather_history.json
+  const historyMap = useMemo(() => {
+    const map = new Map<string, { temp_prom: number; temp_min: number; temp_max: number }>()
+    for (const item of cityHistoryList) {
+      map.set(item.fecha, {
+        temp_prom: item.temp_prom ?? 0,
+        temp_min: item.temp_min ?? 0,
+        temp_max: item.temp_max ?? 0,
+      })
+    }
+    return map
+  }, [cityHistoryList])
+
+  // Fallback para legacy keys en daily.json
+  const legacyHistKey = {
     ba: 'temp_prom_ba',
     esquel: 'temp_prom_esquel',
   }[selectedCityId as 'ba' | 'esquel'] as keyof DailyRow | undefined
 
-  const { rows, hasForecast, weekends } = useMemo(() => {
-    // 1. Obtener última fecha que realmente tiene datos en el histórico
-    const lastDateWithData = histKey ? getLastDateWithData(data, histKey) : ''
-
+  const { rows, hasForecast, weekends, hasHistoricalData } = useMemo(() => {
     const byDate = new Map<string, {
       fecha: string
       temp_prom_real?: number | null
@@ -59,20 +82,39 @@ export default function TemperatureChart({
       temp_range_fc?: [number | null, number | null] | null
     }>()
 
-    // 2. Cargar histórico
-    if (histKey) {
-      const minKey = histKey.replace('prom', 'min') as keyof DailyRow
-      const maxKey = histKey.replace('prom', 'max') as keyof DailyRow
-      for (const d of data) {
-        const min = d[minKey] as number | null
-        const max = d[maxKey] as number | null
-        byDate.set(d.fecha, {
-          fecha: d.fecha,
-          temp_prom_real: d[histKey] as number | null,
-          temp_range_real: min != null && max != null ? [min, max] : null,
+    let hasHistoricalData = false
+
+    // 2. Cargar histórico primario desde weather_history.json
+    if (historyMap.size > 0) {
+      hasHistoricalData = true
+      for (const [fecha, values] of historyMap.entries()) {
+        byDate.set(fecha, {
+          fecha,
+          temp_prom_real: values.temp_prom,
+          temp_range_real: [values.temp_min, values.temp_max],
         })
       }
+    } else if (legacyHistKey) {
+      // Fallback a daily.json
+      const minKey = legacyHistKey.replace('prom', 'min') as keyof DailyRow
+      const maxKey = legacyHistKey.replace('prom', 'max') as keyof DailyRow
+      for (const d of data) {
+        const min = (d[minKey] as number | null) ?? 0
+        const max = (d[maxKey] as number | null) ?? 0
+        const prom = d[legacyHistKey] as number | null
+        if (prom != null) {
+          hasHistoricalData = true
+          byDate.set(d.fecha, {
+            fecha: d.fecha,
+            temp_prom_real: prom,
+            temp_range_real: [min, max],
+          })
+        }
+      }
     }
+
+    // Identificar última fecha con datos reales
+    const lastDateWithData = legacyHistKey ? getLastDateWithData(data, legacyHistKey) : ''
 
     // 3. Empalmar Forecast sin dejar brechas
     const fcSource: ForecastDay[] = city?.forecast ?? forecast
@@ -83,8 +125,8 @@ export default function TemperatureChart({
         hasForecast = true
         byDate.set(f.fecha, {
           ...(existing ?? { fecha: f.fecha }),
-          temp_prom_fc: f.temp_prom,
-          temp_range_fc: f.temp_min != null && f.temp_max != null ? [f.temp_min, f.temp_max] : null,
+          temp_prom_fc: f.temp_prom ?? 0,
+          temp_range_fc: [f.temp_min ?? 0, f.temp_max ?? 0],
         })
       }
     }
@@ -93,8 +135,8 @@ export default function TemperatureChart({
     const padded = allDates ? padToDates(merged, allDates) : merged
     const weekends = weekendSpans(padded.map((r) => r.fecha))
 
-    return { rows: padded, hasForecast, weekends }
-  }, [data, forecast, city, histKey, allDates])
+    return { rows: padded, hasForecast, weekends, hasHistoricalData }
+  }, [data, historyMap, legacyHistKey, forecast, city, allDates])
 
   const todayIso = getTodayIso()
 
@@ -121,7 +163,7 @@ export default function TemperatureChart({
               </option>
             ))}
           </select>
-          {!histKey && (
+          {!hasHistoricalData && (
             <span style={{ color: colors.textDim, fontSize: 11 }}>
               (solo forecast — sin serie histórica local)
             </span>
