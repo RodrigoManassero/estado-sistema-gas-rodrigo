@@ -53,15 +53,12 @@ export default function DemandChart({
     }
   }
 
-  // Mapa auxiliar para acceder rápidamente a las filas del forecast por fecha
   const forecastMap = new Map(forecast.map((f) => [f.fecha, f]))
 
-  // 2. Unificar historial y proyección con punto de solapamiento en lastHistorical
+  // 2. Mapear datos reales
   const combinedRows = data.map((d) => {
     const isHistorical = !lastHistorical || d.fecha <= lastHistorical
-    const isOverlap = d.fecha === lastHistorical
 
-    // Valores históricos
     const prio = isHistorical ? d.prioritaria ?? null : null
     const ind = isHistorical ? d.industria ?? null : null
     const usi = isHistorical ? d.usinas ?? null : null
@@ -75,33 +72,10 @@ export default function DemandChart({
         ? Math.max(0, d.demanda_total - explicit)
         : null
 
-    // Valores estimados: se asignan si la fecha es posterior a lastHistorical
-    // o si es exactamente la fecha de empalme (lastHistorical)
     const f = forecastMap.get(d.fecha)
-    const isForecast = !lastHistorical || d.fecha >= lastHistorical
-
-    let prioEst: number | null = null
-    let indEst: number | null = null
-    let usiEst: number | null = null
-    let expEst: number | null = null
-    let otrosEst: number | null = null
-
-    if (isForecast) {
-      if (isOverlap) {
-        // En el empalme usamos los valores reales históricos como punto de partida
-        prioEst = prio
-        indEst = ind
-        usiEst = usi
-        expEst = exp
-        otrosEst = otros
-      } else if (f) {
-        prioEst = f.prioritaria_est ?? null
-        indEst = f.industria_est ?? null
-        usiEst = f.usinas_est ?? null
-        expEst = f.exportaciones_est ?? exportacionesBaseline ?? null
-        otrosEst = sumNotNull(f.gnc_est, f.combustible_est)
-      }
-    }
+    // Para la fecha de unificación (lastHistorical) asignamos null a los _est.
+    // connectNulls={true} conectará la curva desde la primera fecha estimada sin duplicar el Tooltip.
+    const isForecastStrict = !lastHistorical || d.fecha > lastHistorical
 
     return {
       fecha: d.fecha,
@@ -110,15 +84,15 @@ export default function DemandChart({
       usinas: usi,
       exportaciones: exp,
       otros,
-      prioritaria_est: prioEst,
-      industria_est: indEst,
-      usinas_est: usiEst,
-      exportaciones_est: expEst,
-      otros_est: otrosEst,
+      prioritaria_est: isForecastStrict && f ? f.prioritaria_est ?? null : null,
+      industria_est: isForecastStrict && f ? f.industria_est ?? null : null,
+      usinas_est: isForecastStrict && f ? f.usinas_est ?? null : null,
+      exportaciones_est: isForecastStrict && f ? f.exportaciones_est ?? exportacionesBaseline ?? null : null,
+      otros_est: isForecastStrict && f ? sumNotNull(f.gnc_est, f.combustible_est) : null,
     }
   })
 
-  // Agregar los días futuros de forecast que no estén presentes en data
+  // 3. Agregar fechas futuras que solo existan en el forecast
   forecast.forEach((f) => {
     if (!combinedRows.some((r) => r.fecha === f.fecha)) {
       combinedRows.push({
@@ -137,7 +111,6 @@ export default function DemandChart({
     }
   })
 
-  // Ordenar por fecha
   combinedRows.sort((a, b) => a.fecha.localeCompare(b.fecha))
 
   const rows = allDates ? padToDates(combinedRows, allDates) : combinedRows
@@ -160,7 +133,6 @@ export default function DemandChart({
           <ReferenceArea key={`wk-${i}`} x1={s} x2={e} fill="#64748b" fillOpacity={0.08} strokeOpacity={0} ifOverflow="extendDomain" />
         ))}
 
-        {/* Línea "Hoy" dinámica basada en la fecha del sistema */}
         <ReferenceLine
           x={todayIso}
           stroke="#64748b"
@@ -175,12 +147,12 @@ export default function DemandChart({
         <Area type="monotone" dataKey="otros" stackId="real" fill={COLORS.otros} stroke={COLORS.otros} name="GNC + combustible" isAnimationActive={false} />
         <Area type="monotone" dataKey="exportaciones" stackId="real" fill={COLORS.exportaciones} stroke={COLORS.exportaciones} name="Exportaciones" isAnimationActive={false} />
 
-        {/* Capa Forecast (translúcida / punteada) */}
-        <Area type="monotone" dataKey="prioritaria_est" stackId="est" fill={COLORS.prioritaria} fillOpacity={0.15} stroke={COLORS.prioritaria} strokeWidth={1} strokeDasharray="4 3" name="Prioritaria est." legendType="none" isAnimationActive={false} />
-        <Area type="monotone" dataKey="industria_est" stackId="est" fill={COLORS.industria} fillOpacity={0.15} stroke={COLORS.industria} strokeWidth={1} strokeDasharray="4 3" name="Industria est." legendType="none" isAnimationActive={false} />
-        <Area type="monotone" dataKey="usinas_est" stackId="est" fill={COLORS.usinas} fillOpacity={0.15} stroke={COLORS.usinas} strokeWidth={1} strokeDasharray="4 3" name="Usinas est." legendType="none" isAnimationActive={false} />
-        <Area type="monotone" dataKey="otros_est" stackId="est" fill={COLORS.otros} fillOpacity={0.15} stroke={COLORS.otros} strokeWidth={1} strokeDasharray="4 3" name="GNC+Comb est." legendType="none" isAnimationActive={false} />
-        <Area type="monotone" dataKey="exportaciones_est" stackId="est" fill={COLORS.exportaciones} fillOpacity={0.15} stroke={COLORS.exportaciones} strokeWidth={1} strokeDasharray="4 3" name="Exportaciones est." legendType="none" isAnimationActive={false} />
+        {/* Capa Forecast (translúcida / punteada) con connectNulls={true} */}
+        <Area type="monotone" dataKey="prioritaria_est" stackId="est" fill={COLORS.prioritaria} fillOpacity={0.15} stroke={COLORS.prioritaria} strokeWidth={1} strokeDasharray="4 3" name="Prioritaria est." legendType="none" isAnimationActive={false} connectNulls={true} />
+        <Area type="monotone" dataKey="industria_est" stackId="est" fill={COLORS.industria} fillOpacity={0.15} stroke={COLORS.industria} strokeWidth={1} strokeDasharray="4 3" name="Industria est." legendType="none" isAnimationActive={false} connectNulls={true} />
+        <Area type="monotone" dataKey="usinas_est" stackId="est" fill={COLORS.usinas} fillOpacity={0.15} stroke={COLORS.usinas} strokeWidth={1} strokeDasharray="4 3" name="Usinas est." legendType="none" isAnimationActive={false} connectNulls={true} />
+        <Area type="monotone" dataKey="otros_est" stackId="est" fill={COLORS.otros} fillOpacity={0.15} stroke={COLORS.otros} strokeWidth={1} strokeDasharray="4 3" name="GNC+Comb est." legendType="none" isAnimationActive={false} connectNulls={true} />
+        <Area type="monotone" dataKey="exportaciones_est" stackId="est" fill={COLORS.exportaciones} fillOpacity={0.15} stroke={COLORS.exportaciones} strokeWidth={1} strokeDasharray="4 3" name="Exportaciones est." legendType="none" isAnimationActive={false} connectNulls={true} />
       </AreaChart>
     </ResponsiveContainer>
   )
