@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-03T01:39:39+00:00",
+  "generated_at": "2026-10-03T14:20:59+00:00",
   "source": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
-  "source_date": "2026-08",
+  "source_date": "2026-09",
   "data": [
     {
       "mes": "2025-01",
@@ -49,7 +49,7 @@
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 20703.58,
       "pozos_activos": 44,
-      "pozos_no_conv": 47
+      "pozos_no_conv": 48
     },
     {
       "mes": "2025-01",
@@ -2437,7 +2437,7 @@
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 17736.33,
       "pozos_activos": 44,
-      "pozos_no_conv": 47
+      "pozos_no_conv": 48
     },
     {
       "mes": "2025-02",
@@ -4813,7 +4813,7 @@
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 23342.48,
       "pozos_activos": 44,
-      "pozos_no_conv": 51
+      "pozos_no_conv": 52
     },
     {
       "mes": "2025-03",
@@ -7177,7 +7177,7 @@
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 36697.88,
       "pozos_activos": 50,
-      "pozos_no_conv": 53
+      "pozos_no_conv": 54
     },
     {
       "mes": "2025-04",
@@ -9553,7 +9553,7 @@
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 31380.21,
       "pozos_activos": 50,
-      "pozos_no_conv": 53
+      "pozos_no_conv": 54
     },
     {
       "mes": "2025-05",
@@ -11941,7 +11941,7 @@
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 34620.47,
       "pozos_activos": 50,
-      "pozos_no_conv": 53
+      "pozos_no_conv": 54
     },
     {
       "mes": "2025-06",
@@ -14329,7 +14329,7 @@
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 33387.3,
       "pozos_activos": 50,
-      "pozos_no_conv": 53
+      "pozos_no_conv": 54
     },
     {
       "mes": "2025-07",
@@ -16705,7 +16705,7 @@
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 31019.24,
       "pozos_activos": 50,
-      "pozos_no_conv": 53
+      "pozos_no_conv": 54
     },
     {
       "mes": "2025-08",
@@ -19057,7 +19057,7 @@
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 22597.69,
       "pozos_activos": 50,
-      "pozos_no_conv": 53
+      "pozos_no_conv": 54
     },
     {
       "mes": "2025-09",
@@ -21457,7 +21457,7 @@
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 14018.08,
       "pozos_activos": 37,
-      "pozos_no_conv": 53
+      "pozos_no_conv": 54
     },
     {
       "mes": "2025-10",
@@ -23821,7 +23821,7 @@
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 11418.48,
       "pozos_activos": 43,
-      "pozos_no_conv": 53
+      "pozos_no_conv": 54
     },
     {
       "mes": "2025-11",
@@ -26209,7 +26209,7 @@
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 19790.84,
       "pozos_activos": 47,
-      "pozos_no_conv": 53
+      "pozos_no_conv": 54
     },
     {
       "mes": "2025-12",
@@ -28571,7 +28571,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 283.63,
       "prod_pet_m3": 119816.86,
-      "prod_agua_m3": 135272.63,
+      "prod_agua_m3": 135272.64,
       "pozos_activos": 95,
       "pozos_no_conv": 128
     },
@@ -30599,7 +30599,7 @@
       "provincia": "Mendoza",
       "prod_gas_mm3": 0.0,
       "prod_pet_m3": 5366.61,
-      "prod_agua_m3": 16795.91,
+      "prod_agua_m3": 16795.9,
       "pozos_activos": 20,
       "pozos_no_conv": 0
     },
@@ -34594,7 +34594,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Mendoza",
       "prod_gas_mm3": 0.25,
-      "prod_pet_m3": 2905.05,
+      "prod_pet_m3": 2905.06,
       "prod_agua_m3": 8530.8,
       "pozos_activos": 12,
       "pozos_no_conv": 1
@@ -45153,7 +45153,7 @@
       "empresa": "YPF S.A.",
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
-      "prod_gas_mm3": 6.51,
+      "prod_gas_mm3": 6.52,
       "prod_pet_m3": 39540.08,
       "prod_agua_m3": 55624.95,
       "pozos_activos": 22,
@@ -46921,6 +46921,42 @@
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 0.0,
       "pozos_activos": 0,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-09",
+      "area": "RINCONADA PUESTO MORALES RN",
+      "empresa": "GEOPETROL DRILLING S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Rio Negro",
+      "prod_gas_mm3": 0.75,
+      "prod_pet_m3": 819.39,
+      "prod_agua_m3": 8213.18,
+      "pozos_activos": 27,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-09",
+      "area": "MEDIANERA",
+      "empresa": "GEOPETROL DRILLING S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Rio Negro",
+      "prod_gas_mm3": 0.06,
+      "prod_pet_m3": 292.11,
+      "prod_agua_m3": 2597.52,
+      "pozos_activos": 6,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-09",
+      "area": "PUESTO MORALES ESTE",
+      "empresa": "GEOPETROL DRILLING S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Rio Negro",
+      "prod_gas_mm3": 0.01,
+      "prod_pet_m3": 84.32,
+      "prod_agua_m3": 0.5,
+      "pozos_activos": 1,
       "pozos_no_conv": 0
     }
   ],
