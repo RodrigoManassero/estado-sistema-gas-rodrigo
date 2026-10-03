@@ -11,7 +11,7 @@ import {
   ReferenceLine,
 } from 'recharts'
 import type { DailyRow } from '../types'
-import { formatTooltipDate, weekendSpans } from '../utils/charts'
+import { formatTooltipDate, weekendSpans, getTodayIso } from '../utils/charts'
 
 const fmt = (d: string) => (d && d.length >= 10 ? d.slice(5, 10) : d)
 
@@ -30,57 +30,52 @@ const COLORS = {
 
 export default function InjectionsChart({ data, allDates }: Props) {
   const rawRows = data || []
+  const todayIso = getTodayIso() // Obtenemos la fecha actual real (YYYY-MM-DD)
 
-  // 1. Identificar el último día con dato histórico real
+  // 1. Identificar si una fila es forecast
+  const isForecastRow = (r: any) =>
+    r.origen === 'MODELO_FORECAST' || r.tipo === 'F' || Boolean(r.isForecast)
+
+  // 2. Encontrar el corte histórico para separar las series visuales
   const lastHistorical = useMemo(() => {
-    const realRows = rawRows.filter((r) => !r.isForecast)
+    const realRows = rawRows.filter((r) => !isForecastRow(r))
     return realRows.length > 0 ? realRows[realRows.length - 1].fecha : ''
   }, [rawRows])
 
-  // 2. Mapear y separar datos entre capa Real y capa Estimada
+  // 3. Separar los datos en capa Real y Forecast
   const rows = useMemo(() => {
     const dateSet = allDates && allDates.length > 0 ? new Set(allDates) : null
     const filtered = dateSet ? rawRows.filter((r) => dateSet.has(r.fecha)) : rawRows
 
     return filtered.map((r) => {
-      const gpmVal = (r as any).iny_gpm ?? r.iny_enarsa ?? 0
+      const gpmVal = (r as any).iny_gpm ?? (r as any).iny_enarsa ?? 0
+      const isFc = isForecastRow(r)
       const isHistorical = !lastHistorical || r.fecha <= lastHistorical
-      const isForecast = !lastHistorical || r.fecha >= lastHistorical
       const isOverlap = r.fecha === lastHistorical
 
-      // Datos reales (solo hasta lastHistorical)
       const tgs = isHistorical ? r.iny_tgs ?? null : null
       const tgn = isHistorical ? r.iny_tgn ?? null : null
       const gpm = isHistorical ? gpmVal : null
       const bolivia = isHistorical ? r.iny_bolivia ?? null : null
       const escobar = isHistorical ? r.iny_escobar ?? null : null
 
-      // Datos estimados (desde lastHistorical en adelante)
       let tgsEst: number | null = null
       let tgnEst: number | null = null
       let gpmEst: number | null = null
       let boliviaEst: number | null = null
       let escobarEst: number | null = null
 
-      if (isForecast) {
-        if (isOverlap) {
-          // Asignar valores del punto de empalme para continuidad gráfica
-          tgsEst = r.iny_tgs ?? null
-          tgnEst = r.iny_tgn ?? null
-          gpmEst = gpmVal
-          boliviaEst = r.iny_bolivia ?? null
-          escobarEst = r.iny_escobar ?? null
-        } else {
-          tgsEst = r.iny_tgs ?? null
-          tgnEst = r.iny_tgn ?? null
-          gpmEst = gpmVal
-          boliviaEst = r.iny_bolivia ?? null
-          escobarEst = r.iny_escobar ?? null
-        }
+      if (isFc || isOverlap) {
+        tgsEst = r.iny_tgs ?? null
+        tgnEst = r.iny_tgn ?? null
+        gpmEst = gpmVal
+        boliviaEst = r.iny_bolivia ?? null
+        escobarEst = r.iny_escobar ?? null
       }
 
       return {
         ...r,
+        isForecast: isFc,
         iny_tgs: tgs,
         iny_tgn: tgn,
         iny_gpm: gpm,
@@ -117,7 +112,6 @@ export default function InjectionsChart({ data, allDates }: Props) {
           labelStyle={{ color: '#94a3b8' }}
           labelFormatter={(label: any) => formatTooltipDate(label)}
           formatter={(value: any, name: any, item: any) => {
-            // Ocultar métricas duplicadas de la serie estimada en el día de empalme
             if (item.payload.fecha === lastHistorical && String(item.dataKey).endsWith('_est')) {
               return [null, null]
             }
@@ -140,19 +134,18 @@ export default function InjectionsChart({ data, allDates }: Props) {
           />
         ))}
 
-        {lastHistorical && (
-          <ReferenceLine
-            x={lastHistorical}
-            stroke="#64748b"
-            strokeDasharray="3 3"
-            label={{
-              value: 'Hoy',
-              fill: '#64748b',
-              fontSize: 10,
-              position: 'center',
-            }}
-          />
-        )}
+        {/* Línea vertical referenciada a la FECHA REAL DE HOY del sistema */}
+        <ReferenceLine
+          x={todayIso}
+          stroke="#64748b"
+          strokeDasharray="3 3"
+          label={{
+            value: 'Hoy',
+            fill: '#64748b',
+            fontSize: 10,
+            position: 'center',
+          }}
+        />
 
         {/* Capa Histórica (Sólida) */}
         <Area type="monotone" dataKey="iny_tgs" stackId="real" fill={COLORS.tgs} stroke={COLORS.tgs} fillOpacity={0.85} name="TGS" isAnimationActive={false} />
