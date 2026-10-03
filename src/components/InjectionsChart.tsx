@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import {
   AreaChart,
   Area,
@@ -19,8 +20,16 @@ interface Props {
   allDates?: string[]
 }
 
-export default function InjectionsChart({ data }: Props) {
-  const rows = data || []
+export default function InjectionsChart({ data, allDates }: Props) {
+  const rawRows = data || []
+
+  // Filtramos los datos recibidos según el rango de fechas activas (visibleDates de OperacionPage)
+  const rows = useMemo(() => {
+    if (!allDates || allDates.length === 0) return rawRows
+    const set = new Set(allDates)
+    return rawRows.filter((r) => set.has(r.fecha))
+  }, [rawRows, allDates])
+
   const weekends = weekendSpans(rows.map((r) => r.fecha))
 
   // Detectamos el primer día que sea forecast para trazar la línea divisoria
