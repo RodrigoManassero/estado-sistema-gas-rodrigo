@@ -151,6 +151,20 @@ export interface RegionCity {
   forecast: ForecastDay[]
 }
 
+export interface WeatherHistoryDay {
+  fecha: string
+  temp_prom?: number | null
+  temp_min?: number | null
+  temp_max?: number | null
+}
+
+export interface WeatherHistoryRecord {
+  id: string
+  label?: string
+  region?: string
+  history: WeatherHistoryDay[]
+}
+
 export interface DemandForecastDay {
   fecha: string
   temp_prom: number | null
