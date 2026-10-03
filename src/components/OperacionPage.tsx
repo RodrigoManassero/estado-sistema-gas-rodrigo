@@ -313,12 +313,6 @@ export default function OperacionPage() {
         <div style={card}>
           <h3 style={sectionTitle}>Inyecciones por fuente (MMm³/día)</h3>
           <InjectionsChart data={injectionsData} allDates={visibleDates} />
-          <p style={{ color: colors.textDim, fontSize: 11, marginTop: 8 }}>
-            ENARSA/GPM es una sola importación (el PS la reporta con dos etiquetas iguales).
-            Fines de semana: ENARGAS no publica el desglose de importación y queda consolidado
-            dentro de TGS (por eso las cuñas de import desaparecen y el TGS sube). La cola reciente
-            puede faltar por lag del reporte.
-          </p>
         </div>
         <div style={card}>
           <h3 style={sectionTitle}>Linepack TGS + TGN (MMm³)</h3>
