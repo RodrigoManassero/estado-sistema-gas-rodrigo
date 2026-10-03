@@ -44,8 +44,7 @@ export default function DemandChart({
   allDates,
   yDomain,
 }: Props) {
-  // 1. Encontrar la última fecha que tiene la información HISTÓRICA COMPLETA (ENARGAS)
-  // Requerimos que 'prioritaria' e 'industria' NO sean null.
+  // 1. Encontrar la última fecha que tiene la información HISTÓRICA COMPLETA
   let lastHistorical = ''
   for (let i = data.length - 1; i >= 0; i--) {
     if (data[i].prioritaria != null && data[i].industria != null) {
@@ -54,59 +53,95 @@ export default function DemandChart({
     }
   }
 
-  // 2. Capa Histórica: Únicamente filas hasta la última fecha con datos completos
-  const historical = data
-    .filter((d) => !lastHistorical || d.fecha <= lastHistorical)
-    .map((d) => {
-      const prio = d.prioritaria ?? null
-      const ind = d.industria ?? null
-      const usi = d.usinas ?? null
-      const exp = d.exportaciones ?? null
+  // Mapa auxiliar para acceder rápidamente a las filas del forecast por fecha
+  const forecastMap = new Map(forecast.map((f) => [f.fecha, f]))
 
-      const hasAnySector = prio != null || ind != null || usi != null || exp != null
-      const explicit = (prio ?? 0) + (ind ?? 0) + (usi ?? 0) + (exp ?? 0)
+  // 2. Unificar historial y proyección con punto de solapamiento en lastHistorical
+  const combinedRows = data.map((d) => {
+    const isHistorical = !lastHistorical || d.fecha <= lastHistorical
+    const isOverlap = d.fecha === lastHistorical
 
-      const otros =
-        d.demanda_total != null && hasAnySector
-          ? Math.max(0, d.demanda_total - explicit)
-          : null
+    // Valores históricos
+    const prio = isHistorical ? d.prioritaria ?? null : null
+    const ind = isHistorical ? d.industria ?? null : null
+    const usi = isHistorical ? d.usinas ?? null : null
+    const exp = isHistorical ? d.exportaciones ?? null : null
 
-      return {
-        fecha: d.fecha,
-        prioritaria: prio,
-        industria: ind,
-        usinas: usi,
-        exportaciones: exp,
-        otros,
-        prioritaria_est: null as number | null,
-        industria_est: null as number | null,
-        usinas_est: null as number | null,
-        exportaciones_est: null as number | null,
-        otros_est: null as number | null,
+    const hasAnySector = prio != null || ind != null || usi != null || exp != null
+    const explicit = (prio ?? 0) + (ind ?? 0) + (usi ?? 0) + (exp ?? 0)
+
+    const otros =
+      isHistorical && d.demanda_total != null && hasAnySector
+        ? Math.max(0, d.demanda_total - explicit)
+        : null
+
+    // Valores estimados: se asignan si la fecha es posterior a lastHistorical
+    // o si es exactamente la fecha de empalme (lastHistorical)
+    const f = forecastMap.get(d.fecha)
+    const isForecast = !lastHistorical || d.fecha >= lastHistorical
+
+    let prioEst: number | null = null
+    let indEst: number | null = null
+    let usiEst: number | null = null
+    let expEst: number | null = null
+    let otrosEst: number | null = null
+
+    if (isForecast) {
+      if (isOverlap) {
+        // En el empalme usamos los valores reales históricos como punto de partida
+        prioEst = prio
+        indEst = ind
+        usiEst = usi
+        expEst = exp
+        otrosEst = otros
+      } else if (f) {
+        prioEst = f.prioritaria_est ?? null
+        indEst = f.industria_est ?? null
+        usiEst = f.usinas_est ?? null
+        expEst = f.exportaciones_est ?? exportacionesBaseline ?? null
+        otrosEst = sumNotNull(f.gnc_est, f.combustible_est)
       }
-    })
+    }
 
-  // 3. Capa Proyección: Arranca EXACTAMENTE en el primer día faltante (en este caso el 26/09)
-  const forecastRows = forecast
-    .filter((f) => !lastHistorical || f.fecha > lastHistorical)
-    .map((f) => ({
-      fecha: f.fecha,
-      prioritaria: null as number | null,
-      industria: null as number | null,
-      usinas: null as number | null,
-      exportaciones: null as number | null,
-      otros: null as number | null,
-      prioritaria_est: f.prioritaria_est,
-      industria_est: f.industria_est ?? null,
-      usinas_est: f.usinas_est,
-      exportaciones_est: f.exportaciones_est ?? exportacionesBaseline ?? null,
-      otros_est: sumNotNull(f.gnc_est, f.combustible_est),
-    }))
+    return {
+      fecha: d.fecha,
+      prioritaria: prio,
+      industria: ind,
+      usinas: usi,
+      exportaciones: exp,
+      otros,
+      prioritaria_est: prioEst,
+      industria_est: indEst,
+      usinas_est: usiEst,
+      exportaciones_est: expEst,
+      otros_est: otrosEst,
+    }
+  })
 
-  const base = [...historical, ...forecastRows]
-  const rows = allDates ? padToDates(base, allDates) : base
+  // Agregar los días futuros de forecast que no estén presentes en data
+  forecast.forEach((f) => {
+    if (!combinedRows.some((r) => r.fecha === f.fecha)) {
+      combinedRows.push({
+        fecha: f.fecha,
+        prioritaria: null,
+        industria: null,
+        usinas: null,
+        exportaciones: null,
+        otros: null,
+        prioritaria_est: f.prioritaria_est ?? null,
+        industria_est: f.industria_est ?? null,
+        usinas_est: f.usinas_est ?? null,
+        exportaciones_est: f.exportaciones_est ?? exportacionesBaseline ?? null,
+        otros_est: sumNotNull(f.gnc_est, f.combustible_est),
+      })
+    }
+  })
+
+  // Ordenar por fecha
+  combinedRows.sort((a, b) => a.fecha.localeCompare(b.fecha))
+
+  const rows = allDates ? padToDates(combinedRows, allDates) : combinedRows
   const weekends = weekendSpans(rows.map((r) => r.fecha))
-
   const todayIso = getTodayIso()
 
   return (
