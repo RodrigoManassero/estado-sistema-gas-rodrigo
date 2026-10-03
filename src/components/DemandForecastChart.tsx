@@ -13,7 +13,6 @@ interface Props {
 
 export default function DemandForecastChart({ data, forecast, allDates, yDomain }: Props) {
   // 1. Buscamos el último día con dato histórico REAL CERRADO de ENARGAS.
-  // Ignoramos días donde prioritaria o industria vengan nulas o incompletas.
   let lastHistorical = ''
   for (let i = data.length - 1; i >= 0; i--) {
     if (data[i].prioritaria != null && data[i].industria != null) {
@@ -22,6 +21,9 @@ export default function DemandForecastChart({ data, forecast, allDates, yDomain 
     }
   }
 
+  const forecastMap = new Map(forecast.map((f) => [f.fecha, f]))
+
+  // 2. Mapeamos datos unificando en el punto de empalme (lastHistorical)
   const byDate = new Map<string, {
     fecha: string
     prioritaria_real?: number | null
@@ -30,27 +32,36 @@ export default function DemandForecastChart({ data, forecast, allDates, yDomain 
     demanda_est?: number | null
   }>()
 
-  // 2. Cargamos datos reales únicamente hasta lastHistorical
+  // Cargamos datos reales hasta lastHistorical
   for (const d of data) {
     if (lastHistorical && d.fecha > lastHistorical) continue
 
+    const isOverlap = d.fecha === lastHistorical
+
     byDate.set(d.fecha, {
       fecha: d.fecha,
-      prioritaria_real: d.prioritaria,
-      demanda_real: d.demanda_total,
+      prioritaria_real: d.prioritaria ?? null,
+      demanda_real: d.demanda_total ?? null,
+      // (1) En el punto de empalme asignamos el valor real a la serie estimada para unificar los gráficos
+      prioritaria_est: isOverlap ? (d.prioritaria ?? null) : null,
+      demanda_est: isOverlap ? (d.demanda_total ?? null) : null,
     })
   }
 
-  // 3. Cargamos la estimación/forecast para todos los días posteriores a lastHistorical
+  // Cargamos el forecast para días posteriores
   for (const f of forecast) {
-    if (lastHistorical && f.fecha <= lastHistorical) continue
+    if (lastHistorical && f.fecha < lastHistorical) continue
 
+    const isOverlap = f.fecha === lastHistorical
     const existing = byDate.get(f.fecha) ?? { fecha: f.fecha }
-    byDate.set(f.fecha, {
-      ...existing,
-      prioritaria_est: f.prioritaria_est,
-      demanda_est: f.demanda_total_est,
-    })
+
+    if (!isOverlap) {
+      byDate.set(f.fecha, {
+        ...existing,
+        prioritaria_est: f.prioritaria_est ?? null,
+        demanda_est: f.demanda_total_est ?? null,
+      })
+    }
   }
 
   const merged = [...byDate.values()].sort((a, b) => a.fecha.localeCompare(b.fecha))
@@ -68,14 +79,21 @@ export default function DemandForecastChart({ data, forecast, allDates, yDomain 
           contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 8 }}
           labelStyle={{ color: '#94a3b8' }}
           labelFormatter={formatTooltipDate}
-          formatter={(v: number, name: string) => (typeof v === 'number' ? [`${v.toFixed(1)} MMm3/d`, name] : ['-', name])}
+          formatter={(v: any, name: any, item: any) => {
+            // (1) Ocultamos las métricas estimadas (_est) en la fecha de unificación para evitar duplicados en el tooltip
+            if (item.payload.fecha === lastHistorical && String(item.dataKey).endsWith('_est')) {
+              return [null, null]
+            }
+            // (2) Quitamos el 'MMm3/d' del valor devuelto
+            return typeof v === 'number' ? [v.toFixed(1), name] : ['-', name]
+          }}
         />
         <Legend wrapperStyle={{ fontSize: 12 }} />
         {weekends.map(([s, e], i) => (
           <ReferenceArea key={`wk-${i}`} x1={s} x2={e} fill="#64748b" fillOpacity={0.08} strokeOpacity={0} ifOverflow="extendDomain" />
         ))}
 
-        {/* Línea vertical de HOY apuntando a la fecha actual del sistema */}
+        {/* Línea vertical de HOY */}
         <ReferenceLine
           x={todayIso}
           stroke="#64748b"
@@ -83,14 +101,15 @@ export default function DemandForecastChart({ data, forecast, allDates, yDomain 
           label={{ value: 'Hoy', fill: '#64748b', fontSize: 10 }}
         />
 
-        {/* Series Reales */}
-        <Line type="monotone" dataKey="demanda_real" stroke="#3b82f6" strokeWidth={2} dot={false} name="Demanda total (real)" connectNulls />
-        <Line type="monotone" dataKey="prioritaria_real" stroke="#10b981" strokeWidth={2} dot={false} name="Prioritaria (real)" connectNulls />
+        {/* (4) Series Reales (se quitó '(real)' del nombre) */}
+        <Line type="monotone" dataKey="demanda_real" stroke="#3b82f6" strokeWidth={2} dot={false} name="Demanda total" connectNulls />
+        <Line type="monotone" dataKey="prioritaria_real" stroke="#10b981" strokeWidth={2} dot={false} name="Prioritaria" connectNulls />
 
-        {/* Series Estimadas / Forecast */}
-        <Line type="monotone" dataKey="demanda_est" stroke="#3b82f6" strokeWidth={2} strokeDasharray="5 5" dot={false} name="Demanda total (est.)" connectNulls />
-        <Line type="monotone" dataKey="prioritaria_est" stroke="#10b981" strokeWidth={2} strokeDasharray="5 5" dot={false} name="Prioritaria (est.)" connectNulls />
+        {/* (3) Series Estimadas / Forecast (se modificó '(est.)' por 'est.') */}
+        <Line type="monotone" dataKey="demanda_est" stroke="#3b82f6" strokeWidth={2} strokeDasharray="5 5" dot={false} name="Demanda total est." connectNulls />
+        <Line type="monotone" dataKey="prioritaria_est" stroke="#10b981" strokeWidth={2} strokeDasharray="5 5" dot={false} name="Prioritaria est." connectNulls />
       </LineChart>
     </ResponsiveContainer>
+    // (5) Se eliminó la etiqueta/leyenda inferior con la descripción del modelo
   )
 }
