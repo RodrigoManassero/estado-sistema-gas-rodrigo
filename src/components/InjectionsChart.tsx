@@ -64,7 +64,7 @@ export default function InjectionsChart({ data, allDates }: Props) {
           }}
           formatter={(value: any, name: any) => {
             if (value === null || value === undefined) return [null, null]
-            return [`${Number(value).toFixed(1)} MMM³/d`, name]
+            return [`${Number(value).toFixed(1)}`, name]
           }}
         />
 
