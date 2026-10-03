@@ -4,6 +4,7 @@ import {
   useInjectionsDaily,
   useComments,
   useWeather,
+  useWeatherHistory,
   useDemandForecast,
   useWeatherRegions,
   useEnargasRDS,
@@ -70,6 +71,7 @@ export default function OperacionPage() {
   const injectionsDailyState = useInjectionsDaily()
   const commentsState = useComments()
   const weatherState = useWeather()
+  const weatherHistoryState = useWeatherHistory()
   const forecastState = useDemandForecast()
   const regionsState = useWeatherRegions()
   const rdsState = useEnargasRDS()
@@ -88,6 +90,7 @@ export default function OperacionPage() {
   // otherwise React complains about "rendered more hooks than the previous
   // render" when loading flips from true to false.
   const weatherForecast = weatherState.data?.forecast ?? []
+  const weatherHistoryData = weatherHistoryState.data
   const demandFc = forecastState.data
 
   // daily.json is built self-sufficient by the pipeline (build_daily.py merges
@@ -141,6 +144,7 @@ export default function OperacionPage() {
   const freshness = [
     { label: 'Base', generatedAt: dailyState.meta.generated_at },
     { label: 'Clima', generatedAt: weatherState.meta.generated_at },
+    { label: 'Hist. Clima', generatedAt: weatherHistoryState.meta.generated_at },
     { label: 'ENARGAS', generatedAt: rdsState.meta.generated_at },
     { label: 'Proy. ENARGAS', generatedAt: psState.meta.generated_at },
     { label: 'MEGSA', generatedAt: megsaState.meta.generated_at },
@@ -251,6 +255,7 @@ export default function OperacionPage() {
           <h3 style={sectionTitle}>Temperatura (real + forecast)</h3>
           <TemperatureChart
             data={valid}
+            historyData={weatherHistoryData}
             forecast={weatherForecast}
             regions={regions}
             selectedCityId={selectedCity}
