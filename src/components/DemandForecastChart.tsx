@@ -11,6 +11,12 @@ interface Props {
   yDomain?: [number, number]
 }
 
+// Colores alineados con DemandChart.tsx
+const COLORS = {
+  demandaTotal: '#15803d', // Verde oscuro para Demanda Total
+  prioritaria: '#3b82f6',  // Azul (#3b82f6) asignado a Prioritaria
+}
+
 export default function DemandForecastChart({ data, forecast, allDates, yDomain }: Props) {
   // 1. Buscamos el último día con dato histórico REAL CERRADO de ENARGAS.
   let lastHistorical = ''
@@ -42,7 +48,6 @@ export default function DemandForecastChart({ data, forecast, allDates, yDomain 
       fecha: d.fecha,
       prioritaria_real: d.prioritaria ?? null,
       demanda_real: d.demanda_total ?? null,
-      // (1) En el punto de empalme asignamos el valor real a la serie estimada para unificar los gráficos
       prioritaria_est: isOverlap ? (d.prioritaria ?? null) : null,
       demanda_est: isOverlap ? (d.demanda_total ?? null) : null,
     })
@@ -80,11 +85,10 @@ export default function DemandForecastChart({ data, forecast, allDates, yDomain 
           labelStyle={{ color: '#94a3b8' }}
           labelFormatter={formatTooltipDate}
           formatter={(v: any, name: any, item: any) => {
-            // (1) Ocultamos las métricas estimadas (_est) en la fecha de unificación para evitar duplicados en el tooltip
+            // Ocultamos las métricas estimadas (_est) en la fecha de unificación para evitar duplicados
             if (item.payload.fecha === lastHistorical && String(item.dataKey).endsWith('_est')) {
               return [null, null]
             }
-            // (2) Quitamos el 'MMm3/d' del valor devuelto
             return typeof v === 'number' ? [v.toFixed(1), name] : ['-', name]
           }}
         />
@@ -101,15 +105,14 @@ export default function DemandForecastChart({ data, forecast, allDates, yDomain 
           label={{ value: 'Hoy', fill: '#64748b', fontSize: 10 }}
         />
 
-        {/* (4) Series Reales (se quitó '(real)' del nombre) */}
-        <Line type="monotone" dataKey="demanda_real" stroke="#3b82f6" strokeWidth={2} dot={false} name="Demanda total" connectNulls />
-        <Line type="monotone" dataKey="prioritaria_real" stroke="#10b981" strokeWidth={2} dot={false} name="Prioritaria" connectNulls />
+        {/* Series Reales */}
+        <Line type="monotone" dataKey="demanda_real" stroke={COLORS.demandaTotal} strokeWidth={2} dot={false} name="Demanda total" connectNulls />
+        <Line type="monotone" dataKey="prioritaria_real" stroke={COLORS.prioritaria} strokeWidth={2} dot={false} name="Prioritaria" connectNulls />
 
-        {/* (3) Series Estimadas / Forecast (se modificó '(est.)' por 'est.') */}
-        <Line type="monotone" dataKey="demanda_est" stroke="#3b82f6" strokeWidth={2} strokeDasharray="5 5" dot={false} name="Demanda total est." connectNulls />
-        <Line type="monotone" dataKey="prioritaria_est" stroke="#10b981" strokeWidth={2} strokeDasharray="5 5" dot={false} name="Prioritaria est." connectNulls />
+        {/* Series Estimadas / Forecast */}
+        <Line type="monotone" dataKey="demanda_est" stroke={COLORS.demandaTotal} strokeWidth={2} strokeDasharray="5 5" dot={false} name="Demanda total est." connectNulls />
+        <Line type="monotone" dataKey="prioritaria_est" stroke={COLORS.prioritaria} strokeWidth={2} strokeDasharray="5 5" dot={false} name="Prioritaria est." connectNulls />
       </LineChart>
     </ResponsiveContainer>
-    // (5) Se eliminó la etiqueta/leyenda inferior con la descripción del modelo
   )
 }
