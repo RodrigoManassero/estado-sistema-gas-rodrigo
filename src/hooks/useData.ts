@@ -173,6 +173,45 @@ export const useInjectionsDaily = () => {
 
 export const useComments = () => useJson<Comments>('./data/comments.json')
 export const useWeather = () => useJson<WeatherPayload>('./data/weather.json')
+
+// Interfaces para el historial de clima de weather_history.json
+export interface WeatherHistoryItem {
+  fecha: string
+  temp_max: number
+  temp_min: number
+  temp_prom: number
+}
+
+export interface WeatherHistoryRecord {
+  id: string
+  region: string
+  lat: number
+  lon: number
+  history: WeatherHistoryItem[]
+}
+
+// Custom Hook para consumir weather_history.json asegurando fallback a 0 si faltan datos
+export const useWeatherHistory = () => {
+  const state = useJson<WeatherHistoryRecord | WeatherHistoryRecord[]>('./data/weather_history.json')
+
+  const processedData = state.data
+    ? (Array.isArray(state.data) ? state.data : [state.data]).map((record) => ({
+        ...record,
+        history: (record.history ?? []).map((item) => ({
+          fecha: item.fecha ?? '',
+          temp_max: item.temp_max ?? 0,
+          temp_min: item.temp_min ?? 0,
+          temp_prom: item.temp_prom ?? 0,
+        })),
+      }))
+    : null
+
+  return {
+    ...state,
+    data: processedData,
+  }
+}
+
 export const useDemandForecast = () => useJson<DemandForecast>('./data/demand_forecast.json')
 export const useLinepackForecast = () => useJson<LinepackForecast>('./data/linepack_forecast.json')
 export const useWeatherRegions = () => useJson<RegionCity[]>('./data/weather_regions.json')
