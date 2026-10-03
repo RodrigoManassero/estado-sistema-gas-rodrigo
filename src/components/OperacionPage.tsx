@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import {
   useDaily,
+  useInjectionsDaily,
   useComments,
   useWeather,
   useDemandForecast,
@@ -66,6 +67,7 @@ function OperacionLoading() {
 
 export default function OperacionPage() {
   const dailyState = useDaily()
+  const injectionsDailyState = useInjectionsDaily()
   const commentsState = useComments()
   const weatherState = useWeather()
   const forecastState = useDemandForecast()
@@ -93,6 +95,10 @@ export default function OperacionPage() {
   // — no client-side merge.
   const data = useMemo(() => dailyState.data ?? [], [dailyState.data])
   const valid = useMemo(() => data.filter((d) => d.demanda_total != null), [data])
+  
+  // Extraemos la serie de datos específica para InjectionsChart de injections_daily.json
+  const injectionsData = useMemo(() => injectionsDailyState.data ?? [], [injectionsDailyState.data])
+
   const allDates = useMemo(
     () => collectDates(data, demandFc?.forecast ?? [], weatherForecast),
     [data, demandFc, weatherForecast],
@@ -306,7 +312,7 @@ export default function OperacionPage() {
       <ChartGroup title="Oferta + estado del sistema">
         <div style={card}>
           <h3 style={sectionTitle}>Inyecciones por fuente (MMm³/día)</h3>
-          <InjectionsChart data={valid} allDates={visibleDates} />
+          <InjectionsChart data={injectionsData} allDates={visibleDates} />
           <p style={{ color: colors.textDim, fontSize: 11, marginTop: 8 }}>
             ENARSA/GPM es una sola importación (el PS la reporta con dos etiquetas iguales).
             Fines de semana: ENARGAS no publica el desglose de importación y queda consolidado
