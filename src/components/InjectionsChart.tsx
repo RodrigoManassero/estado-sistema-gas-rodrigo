@@ -13,31 +13,89 @@ import {
 import type { DailyRow } from '../types'
 import { formatTooltipDate, weekendSpans } from '../utils/charts'
 
-const fmt = (d: string) => d.slice(5)
+const fmt = (d: string) => (d && d.length >= 10 ? d.slice(5, 10) : d)
 
 interface Props {
   data: DailyRow[]
   allDates?: string[]
 }
 
+const COLORS = {
+  tgs: '#10b981',
+  tgn: '#3b82f6',
+  gpm: '#f59e0b',
+  bolivia: '#ef4444',
+  escobar: '#6b7280',
+}
+
 export default function InjectionsChart({ data, allDates }: Props) {
   const rawRows = data || []
 
+  // 1. Identificar el último día con dato histórico real
+  const lastHistorical = useMemo(() => {
+    const realRows = rawRows.filter((r) => !r.isForecast)
+    return realRows.length > 0 ? realRows[realRows.length - 1].fecha : ''
+  }, [rawRows])
+
+  // 2. Mapear y separar datos entre capa Real y capa Estimada
   const rows = useMemo(() => {
     const dateSet = allDates && allDates.length > 0 ? new Set(allDates) : null
     const filtered = dateSet ? rawRows.filter((r) => dateSet.has(r.fecha)) : rawRows
 
-    return filtered.map((r) => ({
-      ...r,
-      // Toma iny_gpm por defecto, o cae en iny_enarsa si viene de datos históricos antiguos
-      iny_gpm: (r as any).iny_gpm ?? r.iny_enarsa ?? 0,
-    }))
-  }, [rawRows, allDates])
+    return filtered.map((r) => {
+      const gpmVal = (r as any).iny_gpm ?? r.iny_enarsa ?? 0
+      const isHistorical = !lastHistorical || r.fecha <= lastHistorical
+      const isForecast = !lastHistorical || r.fecha >= lastHistorical
+      const isOverlap = r.fecha === lastHistorical
+
+      // Datos reales (solo hasta lastHistorical)
+      const tgs = isHistorical ? r.iny_tgs ?? null : null
+      const tgn = isHistorical ? r.iny_tgn ?? null : null
+      const gpm = isHistorical ? gpmVal : null
+      const bolivia = isHistorical ? r.iny_bolivia ?? null : null
+      const escobar = isHistorical ? r.iny_escobar ?? null : null
+
+      // Datos estimados (desde lastHistorical en adelante)
+      let tgsEst: number | null = null
+      let tgnEst: number | null = null
+      let gpmEst: number | null = null
+      let boliviaEst: number | null = null
+      let escobarEst: number | null = null
+
+      if (isForecast) {
+        if (isOverlap) {
+          // Asignar valores del punto de empalme para continuidad gráfica
+          tgsEst = r.iny_tgs ?? null
+          tgnEst = r.iny_tgn ?? null
+          gpmEst = gpmVal
+          boliviaEst = r.iny_bolivia ?? null
+          escobarEst = r.iny_escobar ?? null
+        } else {
+          tgsEst = r.iny_tgs ?? null
+          tgnEst = r.iny_tgn ?? null
+          gpmEst = gpmVal
+          boliviaEst = r.iny_bolivia ?? null
+          escobarEst = r.iny_escobar ?? null
+        }
+      }
+
+      return {
+        ...r,
+        iny_tgs: tgs,
+        iny_tgn: tgn,
+        iny_gpm: gpm,
+        iny_bolivia: bolivia,
+        iny_escobar: escobar,
+        iny_tgs_est: tgsEst,
+        iny_tgn_est: tgnEst,
+        iny_gpm_est: gpmEst,
+        iny_bolivia_est: boliviaEst,
+        iny_escobar_est: escobarEst,
+      }
+    })
+  }, [rawRows, allDates, lastHistorical])
 
   const weekends = weekendSpans(rows.map((r) => r.fecha))
-
-  const firstForecastRow = rows.find((r) => r.isForecast)
-  const forecastStartDate = firstForecastRow?.fecha
 
   return (
     <ResponsiveContainer width="100%" height={300}>
@@ -57,12 +115,12 @@ export default function InjectionsChart({ data, allDates }: Props) {
             borderRadius: 8,
           }}
           labelStyle={{ color: '#94a3b8' }}
-          labelFormatter={(label: any, payload: any[]) => {
-            const dateStr = formatTooltipDate(label)
-            const isFc = payload && payload[0]?.payload?.isForecast
-            return isFc ? `${dateStr} (Estimado)` : dateStr
-          }}
-          formatter={(value: any, name: any) => {
+          labelFormatter={(label: any) => formatTooltipDate(label)}
+          formatter={(value: any, name: any, item: any) => {
+            // Ocultar métricas duplicadas de la serie estimada en el día de empalme
+            if (item.payload.fecha === lastHistorical && String(item.dataKey).endsWith('_est')) {
+              return [null, null]
+            }
             if (value === null || value === undefined) return [null, null]
             return [`${Number(value).toFixed(1)}`, name]
           }}
@@ -82,65 +140,33 @@ export default function InjectionsChart({ data, allDates }: Props) {
           />
         ))}
 
-        {forecastStartDate && (
+        {lastHistorical && (
           <ReferenceLine
-            x={forecastStartDate}
-            stroke="#94a3b8"
+            x={lastHistorical}
+            stroke="#64748b"
             strokeDasharray="3 3"
             label={{
-              value: 'Proyección',
-              position: 'insideTopLeft',
-              fill: '#94a3b8',
+              value: 'Hoy',
+              fill: '#64748b',
               fontSize: 10,
+              position: 'center',
             }}
           />
         )}
 
-        <Area
-          type="monotone"
-          dataKey="iny_tgs"
-          stackId="1"
-          fill="#10b981"
-          stroke="#10b981"
-          name="TGS"
-          fillOpacity={0.85}
-        />
-        <Area
-          type="monotone"
-          dataKey="iny_tgn"
-          stackId="1"
-          fill="#3b82f6"
-          stroke="#3b82f6"
-          name="TGN"
-          fillOpacity={0.85}
-        />
-        <Area
-          type="monotone"
-          dataKey="iny_gpm"
-          stackId="1"
-          fill="#f59e0b"
-          stroke="#f59e0b"
-          name="GPM"
-          fillOpacity={0.85}
-        />
-        <Area
-          type="monotone"
-          dataKey="iny_bolivia"
-          stackId="1"
-          fill="#ef4444"
-          stroke="#ef4444"
-          name="Bolivia"
-          fillOpacity={0.85}
-        />
-        <Area
-          type="monotone"
-          dataKey="iny_escobar"
-          stackId="1"
-          fill="#6b7280"
-          stroke="#6b7280"
-          name="Escobar"
-          fillOpacity={0.85}
-        />
+        {/* Capa Histórica (Sólida) */}
+        <Area type="monotone" dataKey="iny_tgs" stackId="real" fill={COLORS.tgs} stroke={COLORS.tgs} fillOpacity={0.85} name="TGS" isAnimationActive={false} />
+        <Area type="monotone" dataKey="iny_tgn" stackId="real" fill={COLORS.tgn} stroke={COLORS.tgn} fillOpacity={0.85} name="TGN" isAnimationActive={false} />
+        <Area type="monotone" dataKey="iny_gpm" stackId="real" fill={COLORS.gpm} stroke={COLORS.gpm} fillOpacity={0.85} name="GPM" isAnimationActive={false} />
+        <Area type="monotone" dataKey="iny_bolivia" stackId="real" fill={COLORS.bolivia} stroke={COLORS.bolivia} fillOpacity={0.85} name="Bolivia" isAnimationActive={false} />
+        <Area type="monotone" dataKey="iny_escobar" stackId="real" fill={COLORS.escobar} stroke={COLORS.escobar} fillOpacity={0.85} name="Escobar" isAnimationActive={false} />
+
+        {/* Capa Forecast (Translúcida + Punteada) */}
+        <Area type="monotone" dataKey="iny_tgs_est" stackId="est" fill={COLORS.tgs} stroke={COLORS.tgs} fillOpacity={0.15} strokeWidth={1} strokeDasharray="4 3" name="TGS est." legendType="none" isAnimationActive={false} />
+        <Area type="monotone" dataKey="iny_tgn_est" stackId="est" fill={COLORS.tgn} stroke={COLORS.tgn} fillOpacity={0.15} strokeWidth={1} strokeDasharray="4 3" name="TGN est." legendType="none" isAnimationActive={false} />
+        <Area type="monotone" dataKey="iny_gpm_est" stackId="est" fill={COLORS.gpm} stroke={COLORS.gpm} fillOpacity={0.15} strokeWidth={1} strokeDasharray="4 3" name="GPM est." legendType="none" isAnimationActive={false} />
+        <Area type="monotone" dataKey="iny_bolivia_est" stackId="est" fill={COLORS.bolivia} stroke={COLORS.bolivia} fillOpacity={0.15} strokeWidth={1} strokeDasharray="4 3" name="Bolivia est." legendType="none" isAnimationActive={false} />
+        <Area type="monotone" dataKey="iny_escobar_est" stackId="est" fill={COLORS.escobar} stroke={COLORS.escobar} fillOpacity={0.15} strokeWidth={1} strokeDasharray="4 3" name="Escobar est." legendType="none" isAnimationActive={false} />
       </AreaChart>
     </ResponsiveContainer>
   )
