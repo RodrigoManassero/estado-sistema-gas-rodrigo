@@ -285,16 +285,6 @@ export default function OperacionPage() {
               allDates={visibleDates}
               yDomain={demandY}
             />
-            <p style={{ color: colors.textDim, fontSize: 11, marginTop: 8 }}>
-              Modelo: temp BA + día de semana sobre {demandFc.regression.n_points} días RDS.
-              R² prioritaria {demandFc.regression.prioritaria.r2?.toFixed(2) ?? '?'} ·
-              usinas {demandFc.regression.usinas?.r2?.toFixed(2) ?? '?'} ·
-              total {demandFc.regression.demanda_total.r2?.toFixed(2) ?? '?'}
-              {demandFc.regression.demanda_total.r2 != null &&
-                demandFc.regression.demanda_total.r2 < 0.4 && (
-                  <span style={{ color: colors.status.warn }}> — total indicativo.</span>
-                )}
-            </p>
           </div>
         )}
         <div style={card}>
