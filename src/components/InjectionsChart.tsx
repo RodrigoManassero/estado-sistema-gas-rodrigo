@@ -23,16 +23,19 @@ interface Props {
 export default function InjectionsChart({ data, allDates }: Props) {
   const rawRows = data || []
 
-  // Filtramos los datos recibidos según el rango de fechas activas (visibleDates de OperacionPage)
   const rows = useMemo(() => {
-    if (!allDates || allDates.length === 0) return rawRows
-    const set = new Set(allDates)
-    return rawRows.filter((r) => set.has(r.fecha))
+    const dateSet = allDates && allDates.length > 0 ? new Set(allDates) : null
+    const filtered = dateSet ? rawRows.filter((r) => dateSet.has(r.fecha)) : rawRows
+
+    return filtered.map((r) => ({
+      ...r,
+      // Toma iny_gpm por defecto, o cae en iny_enarsa si viene de datos históricos antiguos
+      iny_gpm: (r as any).iny_gpm ?? r.iny_enarsa ?? 0,
+    }))
   }, [rawRows, allDates])
 
   const weekends = weekendSpans(rows.map((r) => r.fecha))
 
-  // Detectamos el primer día que sea forecast para trazar la línea divisoria
   const firstForecastRow = rows.find((r) => r.isForecast)
   const forecastStartDate = firstForecastRow?.fecha
 
@@ -67,7 +70,6 @@ export default function InjectionsChart({ data, allDates }: Props) {
 
         <Legend wrapperStyle={{ fontSize: 12 }} />
 
-        {/* Sombreado de fines de semana */}
         {weekends.map(([s, e], i) => (
           <ReferenceArea
             key={`wk-${i}`}
@@ -80,7 +82,6 @@ export default function InjectionsChart({ data, allDates }: Props) {
           />
         ))}
 
-        {/* Línea divisoria que marca el inicio de la proyección */}
         {forecastStartDate && (
           <ReferenceLine
             x={forecastStartDate}
@@ -115,11 +116,11 @@ export default function InjectionsChart({ data, allDates }: Props) {
         />
         <Area
           type="monotone"
-          dataKey="iny_enarsa"
+          dataKey="iny_gpm"
           stackId="1"
           fill="#f59e0b"
           stroke="#f59e0b"
-          name="ENARSA/GPM"
+          name="GPM"
           fillOpacity={0.85}
         />
         <Area
