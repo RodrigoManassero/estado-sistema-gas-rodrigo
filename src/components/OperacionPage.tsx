@@ -313,11 +313,6 @@ export default function OperacionPage() {
             forecast={linepackForecast}
             allDates={visibleDates}
           />
-          <p style={{ color: colors.textDim, fontSize: 11, marginTop: 8 }}>
-            Línea punteada: proyección de linepack por reversión a la media reciente (factor
-            elegido por backtest). El mismo modelo rellena los días sin cierre marcados
-            "(est.)" en los paneles. Ver Guía para la metodología.
-          </p>
         </div>
         {rdsReports.length > 0 && (
           <div style={card}>
