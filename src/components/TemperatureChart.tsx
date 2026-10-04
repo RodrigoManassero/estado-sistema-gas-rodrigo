@@ -129,7 +129,7 @@ export default function TemperatureChart({
       }
     }
 
-    // 3. Forzar el punto de empalme usando los datos REALES exactos
+    // 3. Empalme: asignar punto real como inicio de forecast
     if (lastRealDate && lastRealProm != null) {
       const existing = byDate.get(lastRealDate)
       byDate.set(lastRealDate, {
@@ -139,7 +139,7 @@ export default function TemperatureChart({
       })
     }
 
-    // 4. Cargar el resto del Forecast a partir del día siguiente al último real
+    // 4. Cargar el resto de los días del Forecast
     const fcSource: ForecastDay[] = city?.forecast ?? forecast
     let hasForecast = fcSource.length > 0
 
@@ -198,22 +198,25 @@ export default function TemperatureChart({
           <XAxis dataKey="fecha" tickFormatter={fmt} tick={{ fill: '#64748b', fontSize: 11 }} interval="preserveStartEnd" />
           <YAxis tick={{ fill: '#64748b', fontSize: 11 }} unit="°" />
           <Tooltip
+            filterNull={true}
             contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 8 }}
             labelStyle={{ color: '#94a3b8' }}
             labelFormatter={formatTooltipDate}
-            filterNull={false}
-            formatter={(v: number | number[], name: string, item: any) => {
-              // Si el dato es nulo, no mostrar la fila en el tooltip
-              if (v == null) return [null, null]
+            formatter={(v: any, name: string, item: any) => {
+              // Si no existe valor o es nulo
+              if (v == null) return [undefined, undefined]
 
-              // Ocultar la duplicación del forecast en la fecha exacta de empalme
+              // Ocultar forecast duplicado únicamente en el día de empalme exacto
               if (item?.payload?.fecha === lastRealDate && name.toLowerCase().includes('forecast')) {
-                return [null, null]
+                return [undefined, undefined]
               }
 
               if (Array.isArray(v)) {
-                return [`${v[0]?.toFixed(0)}° – ${v[1]?.toFixed(0)}°`, name]
+                // Verificar que el rango contenga valores válidos
+                if (v[0] == null || v[1] == null) return [undefined, undefined]
+                return [`${v[0].toFixed(0)}° – ${v[1].toFixed(0)}°`, name]
               }
+
               return [`${v}°C`, name]
             }}
           />
