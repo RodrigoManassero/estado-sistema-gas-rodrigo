@@ -83,10 +83,16 @@ export default function TemperatureChart({
     }>()
 
     let hasHistoricalData = false
+    let lastRealDate = ''
+    let lastRealProm: number | null = null
+    let lastRealRange: [number | null, number | null] | null = null
 
     // 2. Cargar histórico primario desde weather_history.json
     if (historyMap.size > 0) {
       hasHistoricalData = true
+      const sortedHistoryDates = [...historyMap.keys()].sort()
+      lastRealDate = sortedHistoryDates[sortedHistoryDates.length - 1] ?? ''
+
       for (const [fecha, values] of historyMap.entries()) {
         byDate.set(fecha, {
           fecha,
@@ -94,8 +100,17 @@ export default function TemperatureChart({
           temp_range_real: [values.temp_min, values.temp_max],
         })
       }
+
+      if (lastRealDate) {
+        const lastVal = historyMap.get(lastRealDate)
+        if (lastVal) {
+          lastRealProm = lastVal.temp_prom
+          lastRealRange = [lastVal.temp_min, lastVal.temp_max]
+        }
+      }
     } else if (legacyHistKey) {
       // Fallback a daily.json
+      lastRealDate = getLastDateWithData(data, legacyHistKey)
       const minKey = legacyHistKey.replace('prom', 'min') as keyof DailyRow
       const maxKey = legacyHistKey.replace('prom', 'max') as keyof DailyRow
       for (const d of data) {
@@ -109,24 +124,26 @@ export default function TemperatureChart({
             temp_prom_real: prom,
             temp_range_real: [min, max],
           })
+          if (d.fecha === lastRealDate) {
+            lastRealProm = prom
+            lastRealRange = [min, max]
+          }
         }
       }
     }
 
-    // Identificar última fecha con datos reales
-    const lastDateWithData = legacyHistKey ? getLastDateWithData(data, legacyHistKey) : ''
-
-    // 3. Empalmar Forecast sin dejar brechas
+    // 3. Empalmar Forecast sin dejar brechas (conectando desde la última fecha real)
     const fcSource: ForecastDay[] = city?.forecast ?? forecast
     let hasForecast = false
     for (const f of fcSource) {
       const existing = byDate.get(f.fecha)
-      if (f.fecha > lastDateWithData || !existing?.temp_prom_real) {
+      if (f.fecha >= lastRealDate) {
         hasForecast = true
+        const isOverlap = f.fecha === lastRealDate && lastRealProm != null
         byDate.set(f.fecha, {
           ...(existing ?? { fecha: f.fecha }),
-          temp_prom_fc: f.temp_prom ?? 0,
-          temp_range_fc: [f.temp_min ?? 0, f.temp_max ?? 0],
+          temp_prom_fc: isOverlap ? lastRealProm : (f.temp_prom ?? 0),
+          temp_range_fc: isOverlap ? lastRealRange : [f.temp_min ?? 0, f.temp_max ?? 0],
         })
       }
     }
