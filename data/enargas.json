@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-03T20:01:39+00:00",
+  "generated_at": "2026-10-04T15:06:58+00:00",
   "source": "ENARGAS Reporte Diario del Sistema (RDS)",
-  "source_date": "2026-10-03",
+  "source_date": "2026-10-04",
   "data": [
     {
       "fecha": "2024-04-20",
@@ -43898,8 +43898,59 @@
     },
     {
       "fecha": "2026-10-03",
+      "source": "RDS_20261003.pdf",
       "linepack_total": 354.6,
       "linepack_delta": -2.6,
+      "consumo_total_estimado": 110.6,
+      "temperatura_ba": {
+        "min": 14.0,
+        "max": 16.0,
+        "tm": 15.0
+      },
+      "importaciones": {
+        "bolivia": {
+          "programa": 0.0
+        },
+        "chile": {
+          "programa": 0.0
+        },
+        "escobar": {
+          "programa": 0.0
+        },
+        "bahia_blanca": {
+          "programa": 0.0
+        }
+      },
+      "consumos": {
+        "prioritaria": {
+          "programa": 42.8
+        },
+        "usinas": {
+          "programa": 19.6
+        },
+        "industria": {
+          "programa": 35.0
+        },
+        "gnc": {
+          "programa": 5.8
+        },
+        "combustible": {
+          "programa": 3.3
+        }
+      },
+      "exportaciones": {
+        "tgn": {
+          "vol_exportar": 2.0
+        },
+        "tgs": {
+          "vol_exportar": 2.0
+        }
+      }
+    },
+    {
+      "fecha": "2026-10-04",
+      "linepack_total": 358.7,
+      "linepack_delta": 4.2,
       "importaciones": {
         "bolivia": {
           "programa": 0.0,
@@ -43930,56 +43981,50 @@
         "tgn": {
           "vol_exportar": 2.0,
           "prom_mes_2025": 4.8,
-          "misma_semana_2025": 3.9
+          "misma_semana_2025": 4.6
         },
         "tgs": {
           "vol_exportar": 2.0,
           "prom_mes_2025": 2.3,
-          "misma_semana_2025": 1.5
+          "misma_semana_2025": 2.3
         }
       },
       "consumos": {
         "prioritaria": {
-          "programa": 42.8,
+          "programa": 37.9,
           "prom_mes_2025": 28.0,
-          "misma_semana_2025": 29.1
+          "misma_semana_2025": 28.7
         },
         "usinas": {
-          "programa": 19.6,
+          "programa": 16.4,
           "prom_mes_2025": 24.7,
-          "misma_semana_2025": 24.2
+          "misma_semana_2025": 23.4
         },
         "industria": {
-          "programa": 35.0,
+          "programa": 34.4,
           "prom_mes_2025": 34.2,
-          "misma_semana_2025": 34.3
+          "misma_semana_2025": 34.8
         },
         "gnc": {
-          "programa": 5.8,
+          "programa": 5.2,
           "prom_mes_2025": 5.4,
-          "misma_semana_2025": 5.3
+          "misma_semana_2025": 5.4
         },
         "combustible": {
           "programa": 3.3,
           "prom_mes_2025": 3.1,
-          "misma_semana_2025": 3.2
+          "misma_semana_2025": 2.9
         }
       },
-      "consumo_total_estimado": 110.6,
+      "consumo_total_estimado": 101.2,
       "temperatura_ba": {
-        "min": 14.0,
-        "max": 16.0,
-        "tm": 15.0,
+        "min": 11.0,
+        "max": 21.0,
+        "tm": 16.0,
         "tm_2025": 19.2,
-        "tm_misma_semana": 20.0
+        "tm_misma_semana": 19.2
       },
       "forecast_temp_ba": [
-        {
-          "fecha": "2026-10-04",
-          "min": 10.0,
-          "max": 20.0,
-          "tm": 15.0
-        },
         {
           "fecha": "2026-10-05",
           "min": 14.0,
@@ -44009,9 +44054,15 @@
           "min": 15.0,
           "max": 19.0,
           "tm": 17.0
+        },
+        {
+          "fecha": "2026-10-10",
+          "min": 13.0,
+          "max": 19.0,
+          "tm": 16.0
         }
       ],
-      "source": "RDS_20261003.pdf"
+      "source": "RDS_20261004.pdf"
     }
   ],
   "issues": []
