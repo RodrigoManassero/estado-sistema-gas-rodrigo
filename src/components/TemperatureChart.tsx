@@ -44,7 +44,7 @@ export default function TemperatureChart({
 }: Props) {
   const city = regions?.find((r) => r.id === selectedCityId)
 
-  // 1. Intentar obtener la serie histórica desde weather_history.json
+  // 1. Obtener serie histórica
   const cityHistoryList = useMemo(() => {
     if (!historyData) return []
     const records = Array.isArray(historyData) ? historyData : [historyData]
@@ -54,7 +54,6 @@ export default function TemperatureChart({
     return match?.history ?? []
   }, [historyData, selectedCityId])
 
-  // Map rápido fecha -> datos históricos de weather_history.json
   const historyMap = useMemo(() => {
     const map = new Map<string, { temp_prom: number; temp_min: number; temp_max: number }>()
     for (const item of cityHistoryList) {
@@ -67,7 +66,6 @@ export default function TemperatureChart({
     return map
   }, [cityHistoryList])
 
-  // Fallback para legacy keys en daily.json
   const legacyHistKey = {
     ba: 'temp_prom_ba',
     esquel: 'temp_prom_esquel',
@@ -87,7 +85,7 @@ export default function TemperatureChart({
     let lastRealProm: number | null = null
     let lastRealRange: [number | null, number | null] | null = null
 
-    // 2. Cargar histórico primario desde weather_history.json
+    // 2. Cargar histórico
     if (historyMap.size > 0) {
       hasHistoricalData = true
       const sortedHistoryDates = [...historyMap.keys()].sort()
@@ -109,7 +107,6 @@ export default function TemperatureChart({
         }
       }
     } else if (legacyHistKey) {
-      // Fallback a daily.json
       lastRealDate = getLastDateWithData(data, legacyHistKey)
       const minKey = legacyHistKey.replace('prom', 'min') as keyof DailyRow
       const maxKey = legacyHistKey.replace('prom', 'max') as keyof DailyRow
@@ -132,18 +129,27 @@ export default function TemperatureChart({
       }
     }
 
-    // 3. Empalmar Forecast sin dejar brechas (conectando desde la última fecha real)
+    // 3. Forzar el punto de empalme en la última fecha real disponible
+    if (lastRealDate && lastRealProm != null) {
+      const existing = byDate.get(lastRealDate)
+      byDate.set(lastRealDate, {
+        ...(existing ?? { fecha: lastRealDate }),
+        temp_prom_fc: lastRealProm,
+        temp_range_fc: lastRealRange,
+      })
+    }
+
+    // 4. Cargar el resto de los días del Forecast
     const fcSource: ForecastDay[] = city?.forecast ?? forecast
-    let hasForecast = false
+    let hasForecast = fcSource.length > 0
+
     for (const f of fcSource) {
-      const existing = byDate.get(f.fecha)
-      if (f.fecha >= lastRealDate) {
-        hasForecast = true
-        const isOverlap = f.fecha === lastRealDate && lastRealProm != null
+      if (f.fecha > lastRealDate) {
+        const existing = byDate.get(f.fecha)
         byDate.set(f.fecha, {
           ...(existing ?? { fecha: f.fecha }),
-          temp_prom_fc: isOverlap ? lastRealProm : (f.temp_prom ?? 0),
-          temp_range_fc: isOverlap ? lastRealRange : [f.temp_min ?? 0, f.temp_max ?? 0],
+          temp_prom_fc: f.temp_prom ?? 0,
+          temp_range_fc: [f.temp_min ?? 0, f.temp_max ?? 0],
         })
       }
     }
@@ -207,7 +213,6 @@ export default function TemperatureChart({
             <ReferenceArea key={`wk-${i}`} x1={s} x2={e} fill="#64748b" fillOpacity={0.08} strokeOpacity={0} ifOverflow="extendDomain" />
           ))}
           
-          {/* Línea "Hoy" dinámica basada en la fecha del reloj */}
           {hasForecast && (
             <ReferenceLine
               x={todayIso}
@@ -256,7 +261,7 @@ export default function TemperatureChart({
             strokeDasharray="5 5"
             dot={false}
             name="Prom forecast"
-            connectNulls={false}
+            connectNulls
             isAnimationActive={false}
           />
         </ComposedChart>
