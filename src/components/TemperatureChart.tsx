@@ -71,7 +71,7 @@ export default function TemperatureChart({
     esquel: 'temp_prom_esquel',
   }[selectedCityId as 'ba' | 'esquel'] as keyof DailyRow | undefined
 
-  const { rows, hasForecast, weekends, hasHistoricalData } = useMemo(() => {
+  const { rows, hasForecast, weekends, hasHistoricalData, lastRealDate } = useMemo(() => {
     const byDate = new Map<string, {
       fecha: string
       temp_prom_real?: number | null
@@ -129,7 +129,7 @@ export default function TemperatureChart({
       }
     }
 
-    // 3. Forzar el punto de empalme en la última fecha real disponible
+    // 3. Forzar el punto de empalme usando los datos REALES exactos
     if (lastRealDate && lastRealProm != null) {
       const existing = byDate.get(lastRealDate)
       byDate.set(lastRealDate, {
@@ -139,7 +139,7 @@ export default function TemperatureChart({
       })
     }
 
-    // 4. Cargar el resto de los días del Forecast
+    // 4. Cargar el resto del Forecast a partir del día siguiente al último real
     const fcSource: ForecastDay[] = city?.forecast ?? forecast
     let hasForecast = fcSource.length > 0
 
@@ -158,7 +158,7 @@ export default function TemperatureChart({
     const padded = allDates ? padToDates(merged, allDates) : merged
     const weekends = weekendSpans(padded.map((r) => r.fecha))
 
-    return { rows: padded, hasForecast, weekends, hasHistoricalData }
+    return { rows: padded, hasForecast, weekends, hasHistoricalData, lastRealDate }
   }, [data, historyMap, legacyHistKey, forecast, city, allDates])
 
   const todayIso = getTodayIso()
@@ -201,11 +201,20 @@ export default function TemperatureChart({
             contentStyle={{ background: '#1e293b', border: '1px solid #334155', borderRadius: 8 }}
             labelStyle={{ color: '#94a3b8' }}
             labelFormatter={formatTooltipDate}
-            formatter={(v: number | number[], name: string) => {
+            filterNull={false}
+            formatter={(v: number | number[], name: string, item: any) => {
+              // Si el dato es nulo, no mostrar la fila en el tooltip
+              if (v == null) return [null, null]
+
+              // Ocultar la duplicación del forecast en la fecha exacta de empalme
+              if (item?.payload?.fecha === lastRealDate && name.toLowerCase().includes('forecast')) {
+                return [null, null]
+              }
+
               if (Array.isArray(v)) {
                 return [`${v[0]?.toFixed(0)}° – ${v[1]?.toFixed(0)}°`, name]
               }
-              return v != null ? [`${v}°C`, name] : ['-', name]
+              return [`${v}°C`, name]
             }}
           />
           <Legend wrapperStyle={{ fontSize: 12 }} />
