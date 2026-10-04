@@ -271,12 +271,6 @@ export default function OperacionPage() {
             demandForecast={demandFc?.forecast ?? []}
             allDates={visibleDates}
           />
-          <p style={{ color: colors.textDim, fontSize: 11, marginTop: 8 }}>
-            Cerrado: PPO de CAMMESA (gas-equivalente). Proyectado (translúcido): gas del modelo
-            de demanda (usinas, 14 d), re-nivelado al cierre reciente de CAMMESA (PPO) para
-            continuar la tendencia; Fuel/Gas Oil y carbón de la Previsión semanal de CAMMESA
-            (~2 sem). Ver Guía para la metodología.
-          </p>
         </div>
       </ChartGroup>
 
