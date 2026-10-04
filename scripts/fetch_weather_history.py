@@ -20,7 +20,7 @@ from fetch_weather import CITIES  # noqa: E402
 OUT_DIR = os.path.join(os.path.dirname(__file__), '..', 'public', 'data')
 ARCHIVE_URL = 'https://archive-api.open-meteo.com/v1/archive'
 FORECAST_URL = 'https://api.open-meteo.com/v1/forecast'
-DAYS_BACK = 60
+DAYS_BACK = 30
 
 
 def load_existing_history(file_path):
