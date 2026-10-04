@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-04T15:53:08+00:00",
+  "generated_at": "2026-10-04T18:21:06+00:00",
   "source": "Cascada 6 niveles: PS_REAL > RDS > PS_PROJ > CAMMESA_WEEKLY > MODELO > WEATHER_HISTORY",
   "source_date": "2026-10-11",
   "data": [
@@ -49422,7 +49422,7 @@
       "var_linepack_tgs": null,
       "lim_inf_tgs": null,
       "lim_sup_tgs": null,
-      "linepack_tgn": null,
+      "linepack_tgn": 131.98,
       "var_linepack_tgn": null,
       "lim_inf_tgn": null,
       "lim_sup_tgn": null,
@@ -49453,7 +49453,7 @@
       "origen_dato": "PS_PROYECCION",
       "estado": null,
       "estado_tgs": null,
-      "estado_tgn": null,
+      "estado_tgn": "NORMAL",
       "iny_chile": 0.0,
       "cammesa_gas_est": 24.44,
       "cammesa_gasoil_est": 0.084,
