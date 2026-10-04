@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-04T15:53:08+00:00",
+  "generated_at": "2026-10-04T18:25:19+00:00",
   "source": "ENARGAS RDS regression (temp + day-of-week)",
   "source_date": "2026-10-04",
   "data": {
@@ -198,21 +198,21 @@
       "baseline_exportaciones": 6.9,
       "prioritaria": {
         "label": "Prioritaria",
-        "slope": 5.954,
+        "slope": 5.947,
         "intercept": 22.7,
-        "r2": 0.83,
-        "r2_temp_only": 0.82,
+        "r2": 0.829,
+        "r2_temp_only": 0.819,
         "n_points": 825,
         "dow_offsets": {
           "0": -0.08,
-          "1": 1.37,
-          "2": 2.55,
+          "1": 1.38,
+          "2": 2.57,
           "3": 1.66,
-          "4": 1.45,
-          "5": -2.32,
-          "6": -4.57
+          "4": 1.46,
+          "5": -2.34,
+          "6": -4.59
         },
-        "mean_abs_residual": 7.94,
+        "mean_abs_residual": 7.95,
         "x_feature": "HDD(18°C · media 10 ciudades)"
       },
       "usinas": {
@@ -294,7 +294,7 @@
       "demanda_total": {
         "slope": null,
         "intercept": null,
-        "r2": 0.664,
+        "r2": 0.663,
         "method": "suma de segmentos"
       }
     }
