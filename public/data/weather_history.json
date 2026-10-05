@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-04T22:16:05+00:00",
-  "source": "Open-Meteo API (window 2026-09-04 to 2026-10-03 merged with local history)",
-  "source_date": "2026-10-03",
+  "generated_at": "2026-10-05T13:20:45+00:00",
+  "source": "Open-Meteo API (window 2026-09-05 to 2026-10-04 merged with local history)",
+  "source_date": "2026-10-04",
   "data": [
     {
       "id": "ba",
@@ -17724,6 +17724,12 @@
           "temp_max": 22.4,
           "temp_min": 14.7,
           "temp_prom": 18.5
+        },
+        {
+          "fecha": "2026-10-04",
+          "temp_max": 21.1,
+          "temp_min": 12.4,
+          "temp_prom": 16.8
         }
       ]
     },
@@ -17913,6 +17919,12 @@
           "temp_max": 21.9,
           "temp_min": 13.8,
           "temp_prom": 17.9
+        },
+        {
+          "fecha": "2026-10-04",
+          "temp_max": 22.3,
+          "temp_min": 11.9,
+          "temp_prom": 17.1
         }
       ]
     },
@@ -18102,6 +18114,12 @@
           "temp_max": 18.6,
           "temp_min": 6.8,
           "temp_prom": 12.7
+        },
+        {
+          "fecha": "2026-10-04",
+          "temp_max": 19.8,
+          "temp_min": 9.4,
+          "temp_prom": 14.6
         }
       ]
     },
@@ -22533,6 +22551,12 @@
           "temp_max": 20.1,
           "temp_min": 11.5,
           "temp_prom": 15.8
+        },
+        {
+          "fecha": "2026-10-04",
+          "temp_max": 21.2,
+          "temp_min": 11.1,
+          "temp_prom": 16.1
         }
       ]
     },
@@ -26964,6 +26988,12 @@
           "temp_max": 10.3,
           "temp_min": 2.4,
           "temp_prom": 6.4
+        },
+        {
+          "fecha": "2026-10-04",
+          "temp_max": 9.4,
+          "temp_min": 2.8,
+          "temp_prom": 6.1
         }
       ]
     },
@@ -31395,6 +31425,12 @@
           "temp_max": 29.3,
           "temp_min": 10.7,
           "temp_prom": 20.0
+        },
+        {
+          "fecha": "2026-10-04",
+          "temp_max": 18.9,
+          "temp_min": 11.6,
+          "temp_prom": 15.2
         }
       ]
     },
