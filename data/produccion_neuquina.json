@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-05T13:21:55+00:00",
+  "generated_at": "2026-10-06T13:17:29+00:00",
   "source": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
   "source_date": "2026-09",
   "data": [
@@ -29170,7 +29170,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 3.12,
-      "prod_pet_m3": 50043.79,
+      "prod_pet_m3": 50043.78,
       "prod_agua_m3": 2953.06,
       "pozos_activos": 28,
       "pozos_no_conv": 31
@@ -34594,7 +34594,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Mendoza",
       "prod_gas_mm3": 0.25,
-      "prod_pet_m3": 2905.06,
+      "prod_pet_m3": 2905.05,
       "prod_agua_m3": 8530.8,
       "pozos_activos": 12,
       "pozos_no_conv": 1
@@ -37834,7 +37834,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "La Pampa",
       "prod_gas_mm3": 0.0,
-      "prod_pet_m3": 111.33,
+      "prod_pet_m3": 111.34,
       "prod_agua_m3": 221.35,
       "pozos_activos": 4,
       "pozos_no_conv": 0
@@ -40703,7 +40703,7 @@
       "provincia": "Mendoza",
       "prod_gas_mm3": 6.02,
       "prod_pet_m3": 557.65,
-      "prod_agua_m3": 20807.82,
+      "prod_agua_m3": 20807.83,
       "pozos_activos": 19,
       "pozos_no_conv": 0
     },
@@ -45153,7 +45153,7 @@
       "empresa": "YPF S.A.",
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
-      "prod_gas_mm3": 6.52,
+      "prod_gas_mm3": 6.51,
       "prod_pet_m3": 39540.08,
       "prod_agua_m3": 55624.95,
       "pozos_activos": 22,
@@ -45370,7 +45370,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 3.39,
-      "prod_pet_m3": 29747.83,
+      "prod_pet_m3": 29747.82,
       "prod_agua_m3": 9506.18,
       "pozos_activos": 27,
       "pozos_no_conv": 30
@@ -45851,7 +45851,7 @@
       "provincia": "Mendoza",
       "prod_gas_mm3": 0.62,
       "prod_pet_m3": 18328.63,
-      "prod_agua_m3": 185591.65,
+      "prod_agua_m3": 185591.66,
       "pozos_activos": 105,
       "pozos_no_conv": 43
     },
@@ -46925,6 +46925,18 @@
     },
     {
       "mes": "2026-09",
+      "area": "CENTENARIO CENTRO",
+      "empresa": "FLXS OGE S.A",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 27.04,
+      "prod_pet_m3": 2051.69,
+      "prod_agua_m3": 10097.71,
+      "pozos_activos": 287,
+      "pozos_no_conv": 138
+    },
+    {
+      "mes": "2026-09",
       "area": "RINCONADA PUESTO MORALES RN",
       "empresa": "GEOPETROL DRILLING S.A.",
       "cuenca": "NEUQUINA",
@@ -46957,6 +46969,42 @@
       "prod_pet_m3": 84.32,
       "prod_agua_m3": 0.5,
       "pozos_activos": 1,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-09",
+      "area": "CENTENARIO",
+      "empresa": "FLXS OGE S.A",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 0,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-09",
+      "area": "LA PENDIENTE",
+      "empresa": "INGENIERIA SIMA S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 0,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-09",
+      "area": "PASO AGUERRE",
+      "empresa": "INGENIERIA SIMA S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 0,
       "pozos_no_conv": 0
     }
   ],
