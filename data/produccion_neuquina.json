@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-06T13:17:29+00:00",
+  "generated_at": "2026-10-07T13:20:36+00:00",
   "source": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
   "source_date": "2026-09",
   "data": [
@@ -29170,7 +29170,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 3.12,
-      "prod_pet_m3": 50043.78,
+      "prod_pet_m3": 50043.79,
       "prod_agua_m3": 2953.06,
       "pozos_activos": 28,
       "pozos_no_conv": 31
@@ -34570,7 +34570,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "La Pampa",
       "prod_gas_mm3": 0.29,
-      "prod_pet_m3": 18971.24,
+      "prod_pet_m3": 18971.23,
       "prod_agua_m3": 309791.03,
       "pozos_activos": 205,
       "pozos_no_conv": 42
@@ -40703,7 +40703,7 @@
       "provincia": "Mendoza",
       "prod_gas_mm3": 6.02,
       "prod_pet_m3": 557.65,
-      "prod_agua_m3": 20807.83,
+      "prod_agua_m3": 20807.82,
       "pozos_activos": 19,
       "pozos_no_conv": 0
     },
@@ -45370,7 +45370,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 3.39,
-      "prod_pet_m3": 29747.82,
+      "prod_pet_m3": 29747.83,
       "prod_agua_m3": 9506.18,
       "pozos_activos": 27,
       "pozos_no_conv": 30
@@ -45563,7 +45563,7 @@
       "provincia": "Rio Negro",
       "prod_gas_mm3": 1.99,
       "prod_pet_m3": 5317.49,
-      "prod_agua_m3": 189595.07,
+      "prod_agua_m3": 189595.08,
       "pozos_activos": 112,
       "pozos_no_conv": 0
     },
@@ -46946,6 +46946,18 @@
       "prod_agua_m3": 8213.18,
       "pozos_activos": 27,
       "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-09",
+      "area": "AGUADA DEL CHIVATO - AGUADA BOCAREY",
+      "empresa": "PATAGONIA ENERGY S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 0.41,
+      "prod_pet_m3": 543.08,
+      "prod_agua_m3": 641.1,
+      "pozos_activos": 7,
+      "pozos_no_conv": 2
     },
     {
       "mes": "2026-09",
