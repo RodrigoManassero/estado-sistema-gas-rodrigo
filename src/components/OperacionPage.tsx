@@ -15,7 +15,7 @@ import {
   useCammesaPPO,
   useTGNSystemState,
   useLinepackForecast,
-  useSystemStatus, // 1. Importado
+  useSystemStatus,
 } from '../hooks/useData'
 import { card, colors, radius, sectionTitle, space } from '../theme'
 import Header from './Header'
@@ -59,7 +59,7 @@ export default function OperacionPage() {
   const cammesaPpoState = useCammesaPPO()
   const tgnSystemState = useTGNSystemState()
   const linepackFcState = useLinepackForecast()
-  const systemStatusState = useSystemStatus() // 2. Invocado
+  const systemStatusState = useSystemStatus()
 
   const [scale, setScale] = useState<'30d' | '90d' | 'ytd' | 'all'>('30d')
 
@@ -109,7 +109,7 @@ export default function OperacionPage() {
       {rdsReports.length > 0 && (
         <PulseCard 
           rows={rdsReports as never} 
-          systemStatus={systemStatusState.data} // 3. Pasado por prop
+          systemStatus={systemStatusState.data}
         />
       )}
 
@@ -119,7 +119,7 @@ export default function OperacionPage() {
         <ScaleSelector current={scale} onChange={scale => setScale(scale)} />
       </div>
 
-      <ChartGroup title=\"Demanda y Temperatura\">
+      <ChartGroup title="Demanda y Temperatura">
         <div style={card}>
           <h3 style={sectionTitle}>Demanda Total de Gas (MMm³/día) y Componentes</h3>
           <DemandChart data={valid} allDates={visibleDates} yDomain={demandY} />
@@ -135,7 +135,7 @@ export default function OperacionPage() {
         </div>
       </ChartGroup>
 
-      <ChartGroup title=\"Oferta + estado del sistema\">
+      <ChartGroup title="Oferta + estado del sistema">
         <div style={card}>
           <h3 style={sectionTitle}>Inyecciones por fuente (MMm³/día)</h3>
           <InjectionsChart data={injectionsData} allDates={visibleDates} />
