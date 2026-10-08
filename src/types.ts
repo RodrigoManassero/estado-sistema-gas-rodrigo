@@ -21,8 +21,6 @@ export interface DailyRow {
   lim_inf_tgs: number | null
   lim_sup_tgs: number | null
   linepack_tgn: number | null
-  tgn: number | null
-  tgs: number | null
   var_linepack_tgn: number | null
   lim_inf_tgn: number | null
   lim_sup_tgn: number | null
@@ -52,6 +50,12 @@ export interface DailyRow {
   cammesa_gasoil_est?: number | null
   cammesa_fueloil_est?: number | null
   cammesa_carbon_est?: number | null
+}
+
+export interface SystemStatus {
+  fecha?: string | null
+  tgn?: string | null
+  tgs?: string | null
 }
 
 // One row of the parsed ENARGAS RDS. Historical rows are "slim" (only a
