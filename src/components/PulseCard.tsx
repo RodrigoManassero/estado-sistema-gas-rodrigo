@@ -1,9 +1,27 @@
 import { colors, radius, space } from '../theme'
 
-interface SystemStatus {
+interface Importacion {
+  programa?: number | null
+  proximo_barco?: string | null
+}
+
+interface RDSRow {
   fecha?: string
-  tgn?: string
-  tgs?: string
+  linepack_total?: number | null
+  linepack_delta?: number | null
+  consumo_total_estimado?: number | null
+  temperatura_ba?: { tm?: number | null } | null
+  importaciones?: {
+    escobar?: Importacion
+    bahia_blanca?: Importacion
+  }
+  [k: string]: unknown
+}
+
+interface SystemStatus {
+  fecha?: string | null
+  tgn?: string | null
+  tgs?: string | null
 }
 
 interface Props {
@@ -11,8 +29,8 @@ interface Props {
   systemStatus?: SystemStatus | null
 }
 
-// Función helper para mapear los colores según la gravedad del estado
-function getStatusColor(status?: string): string {
+// Función helper para mapear los colores según el estado del sistema
+function getStatusColor(status?: string | null): string {
   if (!status) return colors.textPrimary
   const s = status.toUpperCase()
   if (s === 'NORMAL') return colors.status.ok // Verde
@@ -29,26 +47,27 @@ export default function PulseCard({ rows, systemStatus }: Props) {
   const yesterday = rows.length > 1 ? rows[rows.length - 2] : null
   const mmdd = today.fecha.slice(5)
 
-  const mmddPriorValues = { consumo: [] as number[], temp: [] as number[] }
+  // Recopilar valores históricos del mismo MMDD para el rango histórico de temperatura
+  const mmddPriorValues = { temp: [] as number[] }
 
   for (const row of rows) {
     if (!row.fecha || row.fecha.length < 10) continue
     if (row.fecha === today.fecha) continue
     if (row.fecha.slice(5) !== mmdd) continue
-    if (typeof row.consumo_total_estimado === 'number') mmddPriorValues.consumo.push(row.consumo_total_estimado)
     const t = row.temperatura_ba?.tm
     if (typeof t === 'number') mmddPriorValues.temp.push(t)
   }
 
   const bullets: { label: string; value: string; sub?: string; color?: string }[] = []
 
-  // 1. CONSUMO TOTAL (vs ayer)
+  // 1. CONSUMO TOTAL (vs día anterior)
   if (today.consumo_total_estimado != null) {
     let subConsumo: string | undefined
     if (yesterday && yesterday.consumo_total_estimado != null && yesterday.consumo_total_estimado > 0) {
       const diff = today.consumo_total_estimado - yesterday.consumo_total_estimado
       const pct = (diff / yesterday.consumo_total_estimado) * 100
-      subConsumo = `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}% vs ayer`
+      const sign = pct >= 0 ? '+' : ''
+      subConsumo = `${sign}${pct.toFixed(1)}% vs ayer`
     }
 
     bullets.push({
@@ -59,7 +78,7 @@ export default function PulseCard({ rows, systemStatus }: Props) {
     })
   }
 
-  // 2. TEMP BA (vs ayer)
+  // 2. TEMP BA (vs día anterior)
   const tempToday = today.temperatura_ba?.tm
   if (typeof tempToday === 'number') {
     let subTemp: string | undefined
@@ -67,13 +86,17 @@ export default function PulseCard({ rows, systemStatus }: Props) {
 
     if (typeof tempYesterday === 'number') {
       const diff = tempToday - tempYesterday
-      subTemp = `${diff >= 0 ? '+' : ''}${diff.toFixed(1)}°C vs ayer`
+      const sign = diff >= 0 ? '+' : ''
+      subTemp = `${sign}${diff.toFixed(1)}°C vs ayer`
 
       if (mmddPriorValues.temp.length >= 2) {
         const min = Math.min(...mmddPriorValues.temp)
         const max = Math.max(...mmddPriorValues.temp)
-        if (tempToday < min) subTemp += ` · bajo rango hist (${min.toFixed(1)})`
-        else if (tempToday > max) subTemp += ` · sobre rango hist (${max.toFixed(1)})`
+        if (tempToday < min) {
+          subTemp += ` · bajo rango hist (${min.toFixed(1)})`
+        } else if (tempToday > max) {
+          subTemp += ` · sobre rango hist (${max.toFixed(1)})`
+        }
       }
     }
 
@@ -85,7 +108,7 @@ export default function PulseCard({ rows, systemStatus }: Props) {
     })
   }
 
-  // 3. ESTADO SISTEMA TGN (Nuevo)
+  // 3. ESTADO SISTEMA TGN
   if (systemStatus?.tgn) {
     bullets.push({
       label: 'Estado Sistema TGN',
@@ -94,7 +117,7 @@ export default function PulseCard({ rows, systemStatus }: Props) {
     })
   }
 
-  // 4. ESTADO SISTEMA TGS (Nuevo)
+  // 4. ESTADO SISTEMA TGS
   if (systemStatus?.tgs) {
     bullets.push({
       label: 'Estado Sistema TGS',
@@ -110,6 +133,22 @@ export default function PulseCard({ rows, systemStatus }: Props) {
       label: 'Δ Linepack ayer→hoy',
       value: `${today.linepack_delta >= 0 ? '+' : ''}${today.linepack_delta.toFixed(1)} MMm³`,
       color: deltaColor,
+    })
+  }
+
+  // 6. REGASIFICACIÓN / BARCOS GNL (si aplica)
+  const regasEsc = today.importaciones?.escobar?.programa ?? 0
+  const regasBB = today.importaciones?.bahia_blanca?.programa ?? 0
+  const regasTotal = regasEsc + regasBB
+  if (regasTotal > 0) {
+    bullets.push({
+      label: 'Regasificación LNG hoy',
+      value: `${regasTotal.toFixed(1)} MMm³/d`,
+      sub: [
+        regasEsc > 0 ? `Escobar ${regasEsc.toFixed(1)}` : null,
+        regasBB > 0 ? `B.Blanca ${regasBB.toFixed(1)}` : null,
+      ].filter(Boolean).join(' · '),
+      color: colors.accent.purple,
     })
   }
 
