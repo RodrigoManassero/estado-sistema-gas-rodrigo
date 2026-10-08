@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-08T21:06:59+00:00",
+  "generated_at": "2026-10-08T21:18:35+00:00",
   "source": "MEGSA public API (megsa.ar/api)",
   "source_date": null,
   "data": {
@@ -16,7 +16,7 @@
         "previousPeriod": null,
         "nominalDifference": -0.08,
         "percentageDifference": -2.49,
-        "lastUpdated": "2026-10-08T18:00:07.9206819",
+        "lastUpdated": "2026-10-08T18:10:08.2085943",
         "marketType": "Gas",
         "displayName": "NAT GAS"
       },
@@ -32,7 +32,7 @@
         "previousPeriod": null,
         "nominalDifference": -1.32,
         "percentageDifference": -1.68,
-        "lastUpdated": "2026-10-08T18:00:08.493896",
+        "lastUpdated": "2026-10-08T18:10:08.6308372",
         "marketType": "Gas",
         "displayName": "TTF GAS Fut"
       },
@@ -42,13 +42,13 @@
         "series": "BRENT_CRUDE_USD",
         "seriesDescription": "spot_price",
         "units": "USD/bbl",
-        "currentPrice": 103.72,
+        "currentPrice": 103.88,
         "currentPeriod": "2026-10-08T00:00:00",
-        "previousPrice": 101.02,
+        "previousPrice": 100.92,
         "previousPeriod": null,
-        "nominalDifference": 2.7,
-        "percentageDifference": 2.67,
-        "lastUpdated": "2026-10-08T18:00:07.1700728",
+        "nominalDifference": 2.96,
+        "percentageDifference": 2.93,
+        "lastUpdated": "2026-10-08T18:10:07.6982254",
         "marketType": "Oil",
         "displayName": "BRENT"
       },
@@ -58,13 +58,13 @@
         "series": "WTI_USD",
         "seriesDescription": "spot_price",
         "units": "USD/bbl",
-        "currentPrice": 90.81,
+        "currentPrice": 91.02,
         "currentPeriod": "2026-10-08T00:00:00",
-        "previousPrice": 88.98,
+        "previousPrice": 88.99,
         "previousPeriod": null,
-        "nominalDifference": 1.83,
-        "percentageDifference": 2.06,
-        "lastUpdated": "2026-10-08T18:00:06.659571",
+        "nominalDifference": 2.03,
+        "percentageDifference": 2.28,
+        "lastUpdated": "2026-10-08T18:10:07.1663219",
         "marketType": "Oil",
         "displayName": "WTI"
       }
@@ -83,7 +83,7 @@
       "displayName": "DOLAR"
     },
     "rondas": [],
-    "fetched_at": "2026-10-08T21:06:59+00:00"
+    "fetched_at": "2026-10-08T21:18:35+00:00"
   },
   "errors": null
 }
