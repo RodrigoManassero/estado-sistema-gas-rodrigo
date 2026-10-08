@@ -39,89 +39,151 @@ def _iter_rows(payload):
     if isinstance(payload, list):
         return len(payload)
     if isinstance(payload, dict):
-        for k in ('forecast', 'days', 'daily', 'weekly', 'rows', 'data'):
-            if isinstance(payload.get(k), list):
-                return len(payload[k])
+        for key in ('forecast', 'days', 'daily', 'weekly'):
+            if isinstance(payload.get(key), list):
+                return len(payload[key])
+        return 1 if payload else 0
     return 0
 
 
-def _extract_latest_date(payload):
-    """Try to find the newest ISO date string in the payload."""
-    candidates = []
-
-    def _walk(obj):
-        if isinstance(obj, dict):
-            for k, v in obj.items():
-                if k in ('fecha', 'date', 'day') and isinstance(v, str) and len(v) >= 10:
-                    candidates.append(v[:10])
-                else:
-                    _walk(v)
-        elif isinstance(obj, list):
-            for item in obj:
-                _walk(item)
-
-    _walk(payload)
-    return max(candidates) if candidates else None
-
-
 def validate_outputs():
-    """Fail hard if core files are missing, empty, or severely outdated."""
+    """Run sanity checks on the produced JSONs. Returns number of failures."""
     failures = []
     now = datetime.now(timezone.utc)
 
-    for fname, reqs in REQUIRED_OUTPUTS.items():
-        path = os.path.join(DATA_DIR, fname)
-
+    for name, spec in REQUIRED_OUTPUTS.items():
+        path = os.path.join(DATA_DIR, name)
         if not os.path.exists(path):
-            failures.append(f"{fname}: File missing")
+            failures.append(f"{name}: file missing")
             continue
-
         try:
-            with open(path, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-        except Exception as e:
-            failures.append(f"{fname}: Invalid JSON ({e})")
+            with open(path, encoding='utf-8') as f:
+                envelope = json.load(f)
+        except (OSError, json.JSONDecodeError) as e:
+            failures.append(f"{name}: unreadable ({e})")
             continue
 
-        rows = _iter_rows(data)
-        if rows < reqs['min_rows']:
-            failures.append(
-                f"{fname}: Insufficient rows ({rows} < {reqs['min_rows']})"
-            )
+        if not isinstance(envelope, dict) or 'generated_at' not in envelope:
+            failures.append(f"{name}: missing envelope metadata")
+            continue
 
-        latest_date_str = _extract_latest_date(data)
-        if latest_date_str:
-            try:
-                latest_dt = datetime.strptime(latest_date_str, '%Y-%m-%d').replace(
-                    tzinfo=timezone.utc
-                )
-                age_days = (now - latest_dt).total_seconds() / 86400.0
-                if age_days > reqs['max_age_days']:
-                    failures.append(
-                        f"{fname}: Stale data (latest date {latest_date_str} is {age_days:.1f} days old, max allowed {reqs['max_age_days']})"
-                    )
-            except ValueError:
-                pass
+        # Age check (file mtime is a safe approximation when generated_at is fresh).
+        try:
+            generated = datetime.fromisoformat(envelope['generated_at'])
+        except ValueError:
+            failures.append(f"{name}: bad generated_at value")
+            continue
+        if generated.tzinfo is None:
+            generated = generated.replace(tzinfo=timezone.utc)
+        age_days = (now - generated).total_seconds() / 86400
+        if age_days > spec['max_age_days']:
+            failures.append(f"{name}: stale ({age_days:.1f} days old, limit {spec['max_age_days']})")
 
-    return failures
+        rows = _iter_rows(envelope.get('data'))
+        if rows < spec['min_rows']:
+            failures.append(f"{name}: only {rows} rows (min {spec['min_rows']})")
+
+        # Every required tabular JSON should have a sibling CSV for download
+        # from the Fuentes page. Missing CSV => audit story broken.
+        csv_path = path[:-5] + '.csv'  # .json -> .csv
+        if not os.path.exists(csv_path):
+            failures.append(f"{name}: sibling CSV missing ({os.path.basename(csv_path)})")
+
+    if failures:
+        print("\nValidation FAILED:", file=sys.stderr)
+        for msg in failures:
+            print(f"  - {msg}", file=sys.stderr)
+    else:
+        print("\nValidation OK: all required outputs present and fresh")
+
+    return len(failures)
 
 
 def main():
+    print("Estado del Sistema - Data Build Pipeline")
+    print('='*60)
+
     errors = 0
 
-    # Phase 1: Fetch/Parse raw data from external sources
-    errors += run('fetch_enargas.py')
-    errors += run('parse_enargas.py')
-    errors += run('fetch_cammesa.py')
-    errors += run('fetch_smn.py')
-    errors += run('fetch_megsa.py')
-    errors += run('fetch_weather.py')
-    errors += run('parse_etgs.py')
-    errors += run('parse_tgn_system_state.py')
-    errors += run('parse_estado_sistema.py')  # <-- NUEVO PARSER AGREGADO AQUÍ
+    # Phase 0: Pull email attachments (no-op if GMAIL_APP_PASSWORD unset),
+    # then route raw/incoming/ -> raw/.
+    errors += run('fetch_inbox.py')
+    errors += run('ingest_incoming.py')
 
-    # Phase 2: Unify daily historical series
-    # Must run AFTER the parsers above since it consumes their JSON outputs.
+    # Phase 1: Fetch new data
+    errors += run('fetch_enargas.py')
+    errors += run('fetch_enargas_ing.py')
+    errors += run('fetch_enargas_ps.py')
+    errors += run('fetch_cammesa_ppo.py')
+    errors += run('fetch_cammesa_weekly.py')
+    errors += run('fetch_weather.py')
+    # 2-year temperature archive (Open-Meteo). Cheap (10 cities), and keeping it
+    # fresh feeds both the forecast training and the Datos carga sheet (Tucumán /
+    # Esquel actuals). The archive lags ~5 days, so the latest days stay blank.
+    errors += run('fetch_weather_history.py')
+    errors += run('fetch_smn_alerts.py')
+    errors += run('fetch_megsa.py')
+    errors += run('fetch_enargas_estadisticas.py')
+    errors += run('fetch_enargas_provincias.py')
+    # Keep the PPO fetcher to a short window on daily runs; backfills are
+    # done manually via `fetch_cammesa_ppo.py --days N --force`.
+    errors += run('fetch_cammesa_ppo.py')
+    # Cap IV (Secretaría de Energía) — monthly upstream production by block.
+    # Streams current + previous year CSVs and skips download if Last-Modified
+    # hasn't changed, so daily runs are cheap.
+    errors += run('fetch_capiv.py')
+    # Pozos terminados (Secretaría de Energía) — monthly completed-well counts
+    # per block, the public proxy for drilling activity. Single all-history CSV;
+    # skips the ~190 MB download when the resource's Last-Modified is unchanged.
+    errors += run('fetch_pozos_terminados.py')
+
+    # Phase 2: Parse all sources.
+    # The manual Excel (parse_base_excel.py) is retired: daily.json is now built
+    # by build_daily.py from the automatic feeds, with the Excel-era manual rows
+    # frozen once in daily_history.json. Run parse_base_excel.py by hand only to
+    # re-import historical Excel rows into that snapshot.
+    errors += run('parse_linepack.py')
+    errors += run('parse_enargas.py')
+    errors += run('parse_enargas_ing.py')
+    errors += run('parse_enargas_ps.py')
+    errors += run('parse_etgs.py')
+    errors += run('parse_estado_sistema.py')
+    # Merge the automatic feeds (+ frozen history) into daily.json. Must run
+    # after the parsers above since it consumes their JSON outputs.
     errors += run('build_daily.py')
     # Paste-ready 'Datos' sheet for the legacy Excel — maps the automatic feeds
     # onto the analyst's manual-entry sheet. Runs after build_daily (consumes
+    # daily.json + enargas_ps.json + cammesa_ppo.json + weather_history.json).
+    errors += run('generate_datos_sheet.py')
+
+    # Phase 3: Generate forecast + auto-comments
+    errors += run('generate_forecast.py')
+    # Phase 3b: Rolling backtest for forecast credibility.
+    errors += run('backtest_forecast.py')
+    # Phase 3c: Linepack projection + gap-fill (lee daily.json + weather.json;
+    # archivo separado para no realimentar daily.json).
+    errors += run('generate_linepack_forecast.py')
+
+    # Phase 4: Validate outputs — this decides exit code.
+    validation_failures = validate_outputs()
+
+    print(f"\n{'='*60}")
+    if errors:
+        print(f"Sub-scripts reported {errors} non-zero exit codes (may be recoverable).")
+
+    if os.path.exists(DATA_DIR):
+        for f in sorted(os.listdir(DATA_DIR)):
+            size = os.path.getsize(os.path.join(DATA_DIR, f))
+            print(f"  {f}: {size:,} bytes")
+
+    if validation_failures:
+        print(f"\nPipeline FAILED: {validation_failures} required outputs did not pass validation",
+              file=sys.stderr)
+        return 1
+
+    print("\nPipeline finished OK — JSONs in public/data/ are ready for the dashboard")
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())
