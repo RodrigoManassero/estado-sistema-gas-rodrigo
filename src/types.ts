@@ -45,37 +45,11 @@ export interface DailyRow {
   estado_tgn?: string | null
   // Mezcla de combustibles PROYECTADA (CAMMESA Previsión semanal, repartida a
   // día y en MMm³ gas-equivalente). Sólo poblada en la ventana de pronóstico.
+  // Mezcla de combustibles PROYECTADA (CAMMESA semanal)
   cammesa_gas_est?: number | null
   cammesa_gasoil_est?: number | null
   cammesa_fueloil_est?: number | null
   cammesa_carbon_est?: number | null
-}
-
-// NUEVO: Interfaz para el estado de los sistemas TGN y TGS
-export interface SystemStatus {
-  fecha?: string | null
-  tgn?: string | null
-  tgs?: string | null
-}
-
-// Estructuras de importación y filas RDS utilizadas por PulseCard y otros paneles
-export interface Importacion {
-  programa?: number | null
-  proximo_barco?: string | null
-}
-
-export interface RDSRow {
-  fecha?: string
-  linepack_total?: number | null
-  linepack_delta?: number | null
-  consumo_total_estimado?: number | null
-  temperatura_ba?: { tm?: number | null } | null
-  forecast_temp_ba?: Array<{ fecha: string; min?: number | null; max?: number | null; tm?: number | null }> | null
-  importaciones?: {
-    escobar?: Importacion
-    bahia_blanca?: Importacion
-  }
-  [k: string]: unknown
 }
 
 // One row of the parsed ENARGAS RDS. Historical rows are "slim" (only a
@@ -94,7 +68,7 @@ export interface EnargasRDSImport {
   misma_semana_prev_year?: number | null
 }
 
-export interface EnargasRDSRowData {
+export interface EnargasRDSRow {
   fecha?: string
   source?: string
   linepack_total?: number | null
