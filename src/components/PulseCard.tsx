@@ -23,22 +23,19 @@ interface Props {
   rows: RDSRow[]
 }
 
-/**
- * "What's the story today?" — top-of-dashboard one-liner summary with
- * historical context. Uses the backfilled RDS history to say things like
- * "linepack hoy: 355 (+2% vs 2025-mismo-día, en rango normal)".
- */
 export default function PulseCard({ rows }: Props) {
   if (!rows || rows.length === 0) return null
   const today = rows[rows.length - 1]
   if (!today.fecha) return null
 
+  const yesterday = rows.length > 1 ? rows[rows.length - 2] : null
+
   const mmdd = today.fecha.slice(5)
   const currentYear = today.fecha.slice(0, 4)
 
-  // Same-date prior-year lookups.
+  // Same-date prior-year lookups para temperatura y otros datos históricos.
   const priorByYear = new Map<string, RDSRow>()
-  const mmddPriorValues = { linepack: [] as number[], consumo: [] as number[], temp: [] as number[] }
+  const mmddPriorValues = { consumo: [] as number[], temp: [] as number[] }
 
   for (const row of rows) {
     if (!row.fecha || row.fecha.length < 10) continue
@@ -46,7 +43,6 @@ export default function PulseCard({ rows }: Props) {
     const rowMmdd = row.fecha.slice(5)
     if (rowMmdd !== mmdd) continue
     priorByYear.set(row.fecha.slice(0, 4), row)
-    if (typeof row.linepack_total === 'number') mmddPriorValues.linepack.push(row.linepack_total)
     if (typeof row.consumo_total_estimado === 'number') mmddPriorValues.consumo.push(row.consumo_total_estimado)
     const t = row.temperatura_ba?.tm
     if (typeof t === 'number') mmddPriorValues.temp.push(t)
@@ -54,7 +50,7 @@ export default function PulseCard({ rows }: Props) {
 
   const lastYear = priorByYear.get(String(Number(currentYear) - 1))
 
-  // Cold peak in the 6-day forecast (ENARGAS bakes this into each daily RDS).
+  // Pico de frío en los próximos 6 días.
   const peak = (today.forecast_temp_ba ?? []).reduce<{ fecha: string; min: number } | null>(
     (acc, d) => (d.min != null && (!acc || d.min < acc.min) ? { fecha: d.fecha, min: d.min } : acc),
     null,
@@ -62,24 +58,25 @@ export default function PulseCard({ rows }: Props) {
 
   const bullets: { label: string; value: string; sub?: string; color?: string }[] = []
 
-  if (today.linepack_total != null) {
-    bullets.push({
-      label: 'Linepack total',
-      value: `${today.linepack_total.toFixed(1)} MMm³`,
-      sub: deltaVsPrior('linepack', today.linepack_total, lastYear?.linepack_total, mmddPriorValues.linepack),
-      color: colors.accent.blue,
-    })
-  }
-
+  // 1. CONSUMO TOTAL (vs día anterior)
   if (today.consumo_total_estimado != null) {
+    let subConsumo: string | undefined
+    if (yesterday && yesterday.consumo_total_estimado != null && yesterday.consumo_total_estimado > 0) {
+      const diff = today.consumo_total_estimado - yesterday.consumo_total_estimado
+      const pct = (diff / yesterday.consumo_total_estimado) * 100
+      const sign = pct >= 0 ? '+' : ''
+      subConsumo = `${sign}${pct.toFixed(1)}% vs ayer`
+    }
+
     bullets.push({
       label: 'Consumo total',
       value: `${today.consumo_total_estimado.toFixed(1)} MMm³/d`,
-      sub: deltaVsPrior('consumo', today.consumo_total_estimado, lastYear?.consumo_total_estimado, mmddPriorValues.consumo),
+      sub: subConsumo,
       color: colors.accent.orange,
     })
   }
 
+  // 2. TEMP BA
   const tempToday = today.temperatura_ba?.tm
   if (typeof tempToday === 'number') {
     bullets.push({
@@ -90,6 +87,7 @@ export default function PulseCard({ rows }: Props) {
     })
   }
 
+  // 3. PRÓXIMO PICO DE FRÍO (6d)
   if (peak) {
     const peakDate = new Date(peak.fecha + 'T12:00:00')
     const days = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb']
@@ -101,6 +99,7 @@ export default function PulseCard({ rows }: Props) {
     })
   }
 
+  // 4. Δ LINEPACK AYER → HOY
   if (today.linepack_delta != null) {
     const deltaColor = today.linepack_delta >= 0 ? colors.status.ok : colors.status.err
     bullets.push({
@@ -110,7 +109,7 @@ export default function PulseCard({ rows }: Props) {
     })
   }
 
-  // Regasificación activa hoy + fecha del próximo cargamento si está programado.
+  // 5. REGASIFICACIÓN / BARCOS GNL (si aplica)
   const regasEsc = today.importaciones?.escobar?.programa ?? 0
   const regasBB = today.importaciones?.bahia_blanca?.programa ?? 0
   const regasTotal = regasEsc + regasBB
@@ -140,6 +139,8 @@ export default function PulseCard({ rows }: Props) {
 
   if (bullets.length === 0) return null
 
+  const dateLabel = formatDate(today.fecha)
+
   return (
     <div
       style={{
@@ -151,17 +152,25 @@ export default function PulseCard({ rows }: Props) {
         marginTop: space.lg,
       }}
     >
-      <div
-        style={{
-          color: colors.textMuted,
-          fontSize: 11,
-          textTransform: 'uppercase',
-          letterSpacing: 1.2,
-          marginBottom: space.sm,
-        }}
-      >
-        Hoy en 30 segundos
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', flexWrap: 'wrap', gap: space.md, marginBottom: space.md }}>
+        <div>
+          <div
+            style={{
+              color: colors.accent.blue,
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: 1.2,
+              textTransform: 'uppercase',
+            }}
+          >
+            HOY
+          </div>
+          <div style={{ color: colors.textPrimary, fontSize: 18, fontWeight: 700, marginTop: 2 }}>
+            {dateLabel}
+          </div>
+        </div>
       </div>
+
       <div
         style={{
           display: 'grid',
@@ -171,7 +180,9 @@ export default function PulseCard({ rows }: Props) {
       >
         {bullets.map((b) => (
           <div key={b.label}>
-            <div style={{ color: colors.textDim, fontSize: 11 }}>{b.label}</div>
+            <div style={{ color: colors.textDim, fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>
+              {b.label}
+            </div>
             <div style={{ color: b.color ?? colors.textPrimary, fontSize: 22, fontWeight: 700, marginTop: 2 }}>
               {b.value}
             </div>
@@ -184,7 +195,7 @@ export default function PulseCard({ rows }: Props) {
 }
 
 function deltaVsPrior(
-  kind: 'linepack' | 'consumo' | 'temp',
+  kind: 'consumo' | 'temp',
   current: number,
   lastYear: number | null | undefined,
   historical: number[],
@@ -213,4 +224,10 @@ function deltaVsPrior(
   }
 
   return parts.length > 0 ? parts.join(' · ') : undefined
+}
+
+function formatDate(iso: string): string {
+  const d = new Date(iso + 'T12:00:00')
+  const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+  return `${days[d.getDay()]} ${d.getDate()}/${d.getMonth() + 1}`
 }
