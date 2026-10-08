@@ -35,21 +35,29 @@ export interface DailyRow {
   temp_max_esquel: number | null
   temp_prom_esquel: number | null
   cammesa_gas: number | null
-  cammesa_gasoil: number | null
   cammesa_fueloil: number | null
+  cammesa_gasoil: number | null
   cammesa_carbon: number | null
-  cammesa_total: number | null
-  // Flag para identificar registros con inyección proyectada
-  isForecast?: boolean
-  // Estado del sistema TGN (ABII): 'NORMAL' | 'ALERTA' por |desbalance %| vs ±7.
-  estado_tgn?: string | null
-  // Mezcla de combustibles PROYECTADA (CAMMESA Previsión semanal, repartida a
-  // día y en MMm³ gas-equivalente). Sólo poblada en la ventana de pronóstico.
-  // Mezcla de combustibles PROYECTADA (CAMMESA semanal)
-  cammesa_gas_est?: number | null
-  cammesa_gasoil_est?: number | null
-  cammesa_fueloil_est?: number | null
-  cammesa_carbon_est?: number | null
+  [key: string]: unknown
+}
+
+export interface Importacion {
+  programa?: number | null
+  proximo_barco?: string | null
+}
+
+export interface RDSRow {
+  fecha?: string
+  linepack_total?: number | null
+  linepack_delta?: number | null
+  consumo_total_estimado?: number | null
+  temperatura_ba?: { tm?: number | null } | null
+  forecast_temp_ba?: Array<{ fecha: string; min?: number | null; max?: number | null; tm?: number | null }> | null
+  importaciones?: {
+    escobar?: Importacion
+    bahia_blanca?: Importacion
+  }
+  [k: string]: unknown
 }
 
 export interface SystemStatus {
@@ -58,147 +66,65 @@ export interface SystemStatus {
   tgs?: string | null
 }
 
-// One row of the parsed ENARGAS RDS. Historical rows are "slim" (only a
-// subset of fields); the most recent row keeps the full payload including
-// prev-year comparisons and the 6-day temperature forecast.
-export interface EnargasRDSConsumo {
-  programa: number | null
-  prom_mes_2025?: number | null
-  misma_semana_2025?: number | null
-}
-
-export interface EnargasRDSImport {
-  programa?: number | null
-  proximo_barco?: string | null
-  prom_mes_prev_year?: number | null
-  misma_semana_prev_year?: number | null
-}
-
 export interface EnargasRDSRow {
   fecha?: string
-  source?: string
-  linepack_total?: number | null
-  linepack_delta?: number | null
-  consumo_total_estimado?: number | null
-  consumos?: Record<string, EnargasRDSConsumo>
-  importaciones?: Record<string, EnargasRDSImport>
-  exportaciones?: Record<string, { vol_exportar?: number | null }>
-  temperatura_ba?: {
-    min?: number | null
-    max?: number | null
-    tm?: number | null
-    tm_2025?: number | null
-    tm_misma_semana?: number | null
-  }
-  forecast_temp_ba?: { fecha: string; min: number | null; max: number | null; tm: number | null }[]
+  [key: string]: unknown
 }
 
-// One row of the ENARGAS Inyección Nacional por Gasoducto (ING) PDF parser.
-// Each row is one fecha; `tipo` is "R" (real) or "P" (programado). Six gas
-// pipelines are tracked: san_martin, neuba_1, neuba_2, gpfm (Perito Moreno),
-// centro_oeste, norte. `tgs` and `tgn` are derived sums per transportista.
+export interface EnargasPSRow {
+  fecha?: string
+  [key: string]: unknown
+}
+
 export interface EnargasINGRow {
-  fecha: string
-  tipo: 'R' | 'P' | null
-  san_martin: number | null
-  neuba_1: number | null
-  neuba_2: number | null
-  gpfm: number | null
-  centro_oeste: number | null
-  norte: number | null
-  total: number | null
-  tgs: number | null
-  tgn: number | null
-  source?: string
+  fecha?: string
+  [key: string]: unknown
 }
 
-// One row of the daily TGS "Síntesis del Estado Operativo" report (ETGS),
-// arrived via email-ingest. Linepack values are in MMm³ (stock, not delta).
-// PCS values are Kcal integers.
 export interface ETGSRow {
-  fecha: string
-  source?: string
-  generado_at?: string
-  linepack_tgs_dia_anterior: number | null
-  linepack_tgs_dia_actual: number | null
-  linepack_tgs_variacion: number | null
-  alerta_estado: string | null
-  alerta_motivo: string | null
-  pcs_san_martin: number | null
-  pcs_neuba_1: number | null
-  pcs_neuba_2: number | null
-  pcs_troncal: number | null
-  pcs_paralelo: number | null
+  fecha?: string
+  [key: string]: unknown
 }
 
 export interface Comments {
-  daily: string[]
-  weekly: string[]
-  note?: string
+  [fecha: string]: string
 }
 
-export interface ForecastDay {
-  fecha: string
-  temp_max: number | null
-  temp_min: number | null
-  temp_prom: number | null
+export interface WeatherDay {
+  fecha?: string
+  temp_min?: number | null
+  temp_max?: number | null
+  temp_prom?: number | null
+  [key: string]: unknown
 }
 
 export interface WeatherPayload {
-  forecast: ForecastDay[]
+  days: WeatherDay[]
+  forecast?: WeatherDay[]
+  [key: string]: unknown
 }
 
 export interface RegionCity {
-  id: string
-  label: string
-  lat: number
-  lon: number
+  nombre: string
   region: string
-  forecast: ForecastDay[]
-}
-
-export interface WeatherHistoryDay {
-  fecha: string
-  temp_prom?: number | null
-  temp_min?: number | null
-  temp_max?: number | null
-}
-
-export interface WeatherHistoryRecord {
-  id: string
-  label?: string
-  region?: string
-  history: WeatherHistoryDay[]
+  [key: string]: unknown
 }
 
 export interface DemandForecastDay {
   fecha: string
-  temp_prom: number | null
-  prioritaria_est: number | null
-  demanda_total_est: number | null
-  usinas_est: number | null
-  industria_est?: number | null
-  gnc_est?: number | null
-  combustible_est?: number | null
-  exportaciones_est?: number | null
+  demanda_total_est?: number | null
+  [key: string]: unknown
 }
 
 export interface RegressionLine {
-  slope: number | null
-  intercept: number | null
-  r2: number | null
-  r2_temp_only?: number | null
-  label?: string
-  n_points?: number
-  dow_offsets?: Record<string, number>
-  mean_abs_residual?: number | null
-  method?: string
+  slope?: number
+  intercept?: number
+  r2?: number
+  [key: string]: unknown
 }
 
-// Proyección de linepack (reversión a la media; ver generate_linepack_forecast.py).
 export interface LinepackForecastDay {
   fecha: string
-  temp_prom?: number | null
   linepack_total_est?: number | null
   linepack_tgn_est?: number | null
   linepack_tgs_est?: number | null
@@ -256,5 +182,11 @@ export interface FetchState<T> {
   data: T | null
   loading: boolean
   error: Error | null
-  meta: { generated_at: string | null; source: string | null; source_date: string | null }
+  meta: {
+    generated_at: string | null
+    source: string | null
+    source_date: string | null
+  }
 }
+
+export type { ForecastDay } from './types' // Dummy export if needed or can be omitted
