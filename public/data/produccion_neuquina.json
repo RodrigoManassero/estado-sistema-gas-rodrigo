@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-08T01:00:34+00:00",
+  "generated_at": "2026-10-08T13:23:44+00:00",
   "source": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
   "source_date": "2026-09",
   "data": [
@@ -34570,7 +34570,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "La Pampa",
       "prod_gas_mm3": 0.29,
-      "prod_pet_m3": 18971.23,
+      "prod_pet_m3": 18971.24,
       "prod_agua_m3": 309791.03,
       "pozos_activos": 205,
       "pozos_no_conv": 42
@@ -37834,7 +37834,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "La Pampa",
       "prod_gas_mm3": 0.0,
-      "prod_pet_m3": 111.34,
+      "prod_pet_m3": 111.33,
       "prod_agua_m3": 221.35,
       "pozos_activos": 4,
       "pozos_no_conv": 0
@@ -45153,7 +45153,7 @@
       "empresa": "YPF S.A.",
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
-      "prod_gas_mm3": 6.51,
+      "prod_gas_mm3": 6.52,
       "prod_pet_m3": 39540.08,
       "prod_agua_m3": 55624.95,
       "pozos_activos": 22,
@@ -45370,7 +45370,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 3.39,
-      "prod_pet_m3": 29747.83,
+      "prod_pet_m3": 29747.82,
       "prod_agua_m3": 9506.18,
       "pozos_activos": 27,
       "pozos_no_conv": 30
@@ -45563,7 +45563,7 @@
       "provincia": "Rio Negro",
       "prod_gas_mm3": 1.99,
       "prod_pet_m3": 5317.49,
-      "prod_agua_m3": 189595.08,
+      "prod_agua_m3": 189595.07,
       "pozos_activos": 112,
       "pozos_no_conv": 0
     },
@@ -46937,6 +46937,18 @@
     },
     {
       "mes": "2026-09",
+      "area": "LOMA JARILLOSA ESTE",
+      "empresa": "GEOPARK ARGENTINA S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 1.05,
+      "prod_pet_m3": 18754.58,
+      "prod_agua_m3": 16919.94,
+      "pozos_activos": 11,
+      "pozos_no_conv": 14
+    },
+    {
+      "mes": "2026-09",
       "area": "RINCONADA PUESTO MORALES RN",
       "empresa": "GEOPETROL DRILLING S.A.",
       "cuenca": "NEUQUINA",
@@ -46961,6 +46973,18 @@
     },
     {
       "mes": "2026-09",
+      "area": "PUESTO FLORES - ESTANCIA VIEJA",
+      "empresa": "EDHIPSA",
+      "cuenca": "NEUQUINA",
+      "provincia": "Rio Negro",
+      "prod_gas_mm3": 0.11,
+      "prod_pet_m3": 2425.87,
+      "prod_agua_m3": 62092.03,
+      "pozos_activos": 25,
+      "pozos_no_conv": 2
+    },
+    {
+      "mes": "2026-09",
       "area": "MEDIANERA",
       "empresa": "GEOPETROL DRILLING S.A.",
       "cuenca": "NEUQUINA",
@@ -46981,6 +47005,18 @@
       "prod_pet_m3": 84.32,
       "prod_agua_m3": 0.5,
       "pozos_activos": 1,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-09",
+      "area": "PUESTO PRADO",
+      "empresa": "EDHIPSA",
+      "cuenca": "NEUQUINA",
+      "provincia": "Rio Negro",
+      "prod_gas_mm3": 0.01,
+      "prod_pet_m3": 236.07,
+      "prod_agua_m3": 392.03,
+      "pozos_activos": 9,
       "pozos_no_conv": 0
     },
     {
@@ -47018,6 +47054,18 @@
       "prod_agua_m3": 0.0,
       "pozos_activos": 0,
       "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-09",
+      "area": "PUESTO SILVA OESTE",
+      "empresa": "GEOPARK ARGENTINA S.A.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 172.21,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 3,
+      "pozos_no_conv": 4
     }
   ],
   "years_fetched": [
