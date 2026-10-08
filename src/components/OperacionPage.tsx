@@ -15,7 +15,6 @@ import {
   useCammesaPPO,
   useTGNSystemState,
   useLinepackForecast,
-  useSystemStatus,
 } from '../hooks/useData'
 import { card, colors, radius, sectionTitle, space } from '../theme'
 import Header from './Header'
@@ -43,6 +42,8 @@ import { ChartGroup, ScaleSelector } from './_layout'
 import { collectDates, demandYDomain, filterDatesByScale, type TimeScale } from '../utils/charts'
 import { linepackAlerts } from '../utils/alerts'
 
+// Operational view: last 1-2 weeks of history + 5-7 days of forecast.
+// Long-horizon analysis lives in Histórico, the network map in Mapa.
 function OperacionLoading() {
   return (
     <>
@@ -81,18 +82,24 @@ export default function OperacionPage() {
   const ppoState = useCammesaPPO()
   const tgnSystemState = useTGNSystemState()
   const linepackFcState = useLinepackForecast()
-  const systemStatusState = useSystemStatus() // <-- Agregado
 
   const [selectedCity, setSelectedCity] = useState('ba')
   const [scale, setScale] = useState<TimeScale>('7d')
 
+  // All hooks must run on every render — keep them above any early return,
+  // otherwise React complains about "rendered more hooks than the previous
+  // render" when loading flips from true to false.
   const weatherForecast = weatherState.data?.forecast ?? []
   const weatherHistoryData = weatherHistoryState.data
   const demandFc = forecastState.data
 
+  // daily.json is built self-sufficient by the pipeline (build_daily.py merges
+  // RDS + PS + ING + ETGS + PPO over the frozen history), so we read it straight
+  // — no client-side merge.
   const data = useMemo(() => dailyState.data ?? [], [dailyState.data])
   const valid = useMemo(() => data.filter((d) => d.demanda_total != null), [data])
   
+  // Extraemos la serie de datos específica para InjectionsChart de injections_daily.json
   const injectionsData = useMemo(() => injectionsDailyState.data ?? [], [injectionsDailyState.data])
 
   const allDates = useMemo(
@@ -105,6 +112,8 @@ export default function OperacionPage() {
     [valid, demandFc],
   )
 
+  // Proyección de linepack → mapas fecha→estimación por sistema, para el
+  // relleno "(est.)" en tablas/KPIs y la línea punteada del gráfico.
   const linepackForecast = useMemo(() => linepackFcState.data?.forecast ?? [], [linepackFcState.data])
   const tgnEstByDate = useMemo(() => {
     const m = new Map<string, number>()
@@ -142,7 +151,6 @@ export default function OperacionPage() {
     { label: 'TGN', generatedAt: tgnSystemState.meta.generated_at },
     { label: 'Forecast', generatedAt: forecastState.meta.generated_at },
     { label: 'Proy. linepack', generatedAt: linepackFcState.meta.generated_at },
-    { label: 'Estado Sistema', generatedAt: systemStatusState.meta.generated_at },
   ]
 
   return (
@@ -166,10 +174,7 @@ export default function OperacionPage() {
       )}
       <KPICards latest={latest} />
 
-      <PulseCard 
-        rows={rdsReports as never} 
-        systemStatus={systemStatusState.data} // <-- Pasado al componente
-      />
+      <PulseCard rows={rdsReports as never} />
 
       <div style={{ ...card, marginTop: space.xl }}>
         <CommentsSection comments={comments} />
