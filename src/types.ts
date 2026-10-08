@@ -21,6 +21,8 @@ export interface DailyRow {
   lim_inf_tgs: number | null
   lim_sup_tgs: number | null
   linepack_tgn: number | null
+  tgn: number | null
+  tgs: number | null
   var_linepack_tgn: number | null
   lim_inf_tgn: number | null
   lim_sup_tgn: number | null
