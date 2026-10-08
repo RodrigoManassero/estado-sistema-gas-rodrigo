@@ -1,39 +1,55 @@
 import { colors, radius, space } from '../theme'
-import type { RDSRow, SystemStatus } from '../types'
+
+interface Importacion {
+  programa?: number | null
+  proximo_barco?: string | null
+}
+
+interface RDSRow {
+  fecha?: string
+  linepack_total?: number | null
+  linepack_delta?: number | null
+  consumo_total_estimado?: number | null
+  temperatura_ba?: { tm?: number | null } | null
+  forecast_temp_ba?: Array<{ fecha: string; min?: number | null; max?: number | null; tm?: number | null }> | null
+  importaciones?: {
+    escobar?: Importacion
+    bahia_blanca?: Importacion
+  }
+  [k: string]: unknown
+}
 
 interface Props {
   rows: RDSRow[]
-  systemStatus?: SystemStatus | null
 }
 
-// Función helper para mapear los colores según la gravedad del estado
-function getStatusColor(status?: string | null): string {
-  if (!status) return colors.textPrimary
-  const s = status.toUpperCase()
-  if (s === 'NORMAL') return colors.status.ok // Verde
-  if (s === 'ALERTA') return colors.status.warn // Amarillo / Naranja
-  if (s === 'CRITICO' || s === 'EMERGENCIA') return colors.status.err // Rojo
-  return colors.textPrimary
-}
-
-export default function PulseCard({ rows, systemStatus }: Props) {
+export default function PulseCard({ rows }: Props) {
   if (!rows || rows.length === 0) return null
   const today = rows[rows.length - 1]
   if (!today.fecha) return null
 
   const yesterday = rows.length > 1 ? rows[rows.length - 2] : null
+
   const mmdd = today.fecha.slice(5)
 
-  // Recopilar valores históricos del mismo MMDD para el rango histórico de temperatura
-  const mmddPriorValues = { temp: [] as number[] }
+  // Recopilar valores históricos del mismo MMDD para el rango histórico
+  const mmddPriorValues = { consumo: [] as number[], temp: [] as number[] }
 
   for (const row of rows) {
     if (!row.fecha || row.fecha.length < 10) continue
     if (row.fecha === today.fecha) continue
-    if (row.fecha.slice(5) !== mmdd) continue
+    const rowMmdd = row.fecha.slice(5)
+    if (rowMmdd !== mmdd) continue
+    if (typeof row.consumo_total_estimado === 'number') mmddPriorValues.consumo.push(row.consumo_total_estimado)
     const t = row.temperatura_ba?.tm
     if (typeof t === 'number') mmddPriorValues.temp.push(t)
   }
+
+  // Pico de frío en los próximos 6 días
+  const peak = (today.forecast_temp_ba ?? []).reduce<{ fecha: string; min: number } | null>(
+    (acc, d) => (d.min != null && (!acc || d.min < acc.min) ? { fecha: d.fecha, min: d.min } : acc),
+    null,
+  )
 
   const bullets: { label: string; value: string; sub?: string; color?: string }[] = []
 
@@ -85,25 +101,19 @@ export default function PulseCard({ rows, systemStatus }: Props) {
     })
   }
 
-  // 3. ESTADO SISTEMA TGN
-  if (systemStatus?.tgn) {
+  // 3. PRÓXIMO PICO DE FRÍO (6d)
+  if (peak) {
+    const peakDate = new Date(peak.fecha + 'T12:00:00')
+    const days = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb']
     bullets.push({
-      label: 'Estado Sistema TGN',
-      value: systemStatus.tgn.toUpperCase(),
-      color: getStatusColor(systemStatus.tgn),
+      label: 'Próximo pico de frío (6d)',
+      value: `${peak.min.toFixed(0)}°C`,
+      sub: `${days[peakDate.getDay()]} ${peakDate.getDate()}/${peakDate.getMonth() + 1}`,
+      color: colors.status.warn,
     })
   }
 
-  // 4. ESTADO SISTEMA TGS
-  if (systemStatus?.tgs) {
-    bullets.push({
-      label: 'Estado Sistema TGS',
-      value: systemStatus.tgs.toUpperCase(),
-      color: getStatusColor(systemStatus.tgs),
-    })
-  }
-
-  // 5. Δ LINEPACK AYER → HOY
+  // 4. Δ LINEPACK AYER → HOY
   if (today.linepack_delta != null) {
     const deltaColor = today.linepack_delta >= 0 ? colors.status.ok : colors.status.err
     bullets.push({
@@ -113,7 +123,7 @@ export default function PulseCard({ rows, systemStatus }: Props) {
     })
   }
 
-  // 6. REGASIFICACIÓN / BARCOS GNL (si aplica)
+  // 5. REGASIFICACIÓN / BARCOS GNL (si aplica)
   const regasEsc = today.importaciones?.escobar?.programa ?? 0
   const regasBB = today.importaciones?.bahia_blanca?.programa ?? 0
   const regasTotal = regasEsc + regasBB
@@ -126,6 +136,18 @@ export default function PulseCard({ rows, systemStatus }: Props) {
         regasBB > 0 ? `B.Blanca ${regasBB.toFixed(1)}` : null,
       ].filter(Boolean).join(' · '),
       color: colors.accent.purple,
+    })
+  }
+  const nextEsc = today.importaciones?.escobar?.proximo_barco
+  const nextBB = today.importaciones?.bahia_blanca?.proximo_barco
+  if (nextEsc || nextBB) {
+    bullets.push({
+      label: 'Próximo barco GNL',
+      value: [
+        nextEsc ? `Escobar ${nextEsc}` : null,
+        nextBB ? `B.Blanca ${nextBB}` : null,
+      ].filter(Boolean).join(' · '),
+      color: colors.accent.orange,
     })
   }
 
