@@ -29,7 +29,7 @@ interface Props {
   systemStatus?: SystemStatus | null
 }
 
-// Función helper para mapear los colores según el estado del sistema
+// Función helper para mapear los colores según la gravedad del estado
 function getStatusColor(status?: string | null): string {
   if (!status) return colors.textPrimary
   const s = status.toUpperCase()
