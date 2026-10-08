@@ -31,10 +31,8 @@ export default function PulseCard({ rows }: Props) {
   const yesterday = rows.length > 1 ? rows[rows.length - 2] : null
 
   const mmdd = today.fecha.slice(5)
-  const currentYear = today.fecha.slice(0, 4)
 
-  // Same-date prior-year lookups para temperatura y otros datos históricos.
-  const priorByYear = new Map<string, RDSRow>()
+  // Recopilar valores históricos del mismo MMDD para el rango histórico
   const mmddPriorValues = { consumo: [] as number[], temp: [] as number[] }
 
   for (const row of rows) {
@@ -42,15 +40,12 @@ export default function PulseCard({ rows }: Props) {
     if (row.fecha === today.fecha) continue
     const rowMmdd = row.fecha.slice(5)
     if (rowMmdd !== mmdd) continue
-    priorByYear.set(row.fecha.slice(0, 4), row)
     if (typeof row.consumo_total_estimado === 'number') mmddPriorValues.consumo.push(row.consumo_total_estimado)
     const t = row.temperatura_ba?.tm
     if (typeof t === 'number') mmddPriorValues.temp.push(t)
   }
 
-  const lastYear = priorByYear.get(String(Number(currentYear) - 1))
-
-  // Pico de frío en los próximos 6 días.
+  // Pico de frío en los próximos 6 días
   const peak = (today.forecast_temp_ba ?? []).reduce<{ fecha: string; min: number } | null>(
     (acc, d) => (d.min != null && (!acc || d.min < acc.min) ? { fecha: d.fecha, min: d.min } : acc),
     null,
@@ -76,13 +71,32 @@ export default function PulseCard({ rows }: Props) {
     })
   }
 
-  // 2. TEMP BA
+  // 2. TEMP BA (vs día anterior)
   const tempToday = today.temperatura_ba?.tm
   if (typeof tempToday === 'number') {
+    let subTemp: string | undefined
+    const tempYesterday = yesterday?.temperatura_ba?.tm
+
+    if (typeof tempYesterday === 'number') {
+      const diff = tempToday - tempYesterday
+      const sign = diff >= 0 ? '+' : ''
+      subTemp = `${sign}${diff.toFixed(1)}°C vs ayer`
+
+      if (mmddPriorValues.temp.length >= 2) {
+        const min = Math.min(...mmddPriorValues.temp)
+        const max = Math.max(...mmddPriorValues.temp)
+        if (tempToday < min) {
+          subTemp += ` · bajo rango hist (${min.toFixed(1)})`
+        } else if (tempToday > max) {
+          subTemp += ` · sobre rango hist (${max.toFixed(1)})`
+        }
+      }
+    }
+
     bullets.push({
       label: 'Temp BA',
       value: `${tempToday.toFixed(0)}°C`,
-      sub: deltaVsPrior('temp', tempToday, lastYear?.temperatura_ba?.tm ?? null, mmddPriorValues.temp, '°C'),
+      sub: subTemp,
       color: colors.accent.purple,
     })
   }
@@ -192,38 +206,6 @@ export default function PulseCard({ rows }: Props) {
       </div>
     </div>
   )
-}
-
-function deltaVsPrior(
-  kind: 'consumo' | 'temp',
-  current: number,
-  lastYear: number | null | undefined,
-  historical: number[],
-  unit = '',
-): string | undefined {
-  const parts: string[] = []
-
-  if (typeof lastYear === 'number') {
-    const diff = current - lastYear
-    const pct = (diff / lastYear) * 100
-    const sign = diff >= 0 ? '+' : ''
-    if (kind === 'temp') {
-      parts.push(`${sign}${diff.toFixed(1)}${unit} vs 2025`)
-    } else {
-      parts.push(`${sign}${pct.toFixed(1)}% vs 2025`)
-    }
-  }
-
-  if (historical.length >= 2) {
-    const min = Math.min(...historical)
-    const max = Math.max(...historical)
-    const inRange = current >= min && current <= max
-    if (!inRange) {
-      parts.push(current > max ? `sobre rango hist (${max.toFixed(1)})` : `bajo rango hist (${min.toFixed(1)})`)
-    }
-  }
-
-  return parts.length > 0 ? parts.join(' · ') : undefined
 }
 
 function formatDate(iso: string): string {
