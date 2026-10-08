@@ -1,28 +1,5 @@
 import { colors, radius, space } from '../theme'
-
-interface Importacion {
-  programa?: number | null
-  proximo_barco?: string | null
-}
-
-interface RDSRow {
-  fecha?: string
-  linepack_total?: number | null
-  linepack_delta?: number | null
-  consumo_total_estimado?: number | null
-  temperatura_ba?: { tm?: number | null } | null
-  importaciones?: {
-    escobar?: Importacion
-    bahia_blanca?: Importacion
-  }
-  [k: string]: unknown
-}
-
-interface SystemStatus {
-  fecha?: string | null
-  tgn?: string | null
-  tgs?: string | null
-}
+import type { RDSRow, SystemStatus } from '../types'
 
 interface Props {
   rows: RDSRow[]
