@@ -26,11 +26,21 @@ def parse_fecha(val):
 
 
 def main():
-    print(f"Buscando archivo en: {RAW_FILE}", flush=True)
+    print(f"=== DEBUG INFO PIPELINE ===", flush=True)
+    print(f"Directorio actual del script (__file__): {os.path.abspath(__file__)}", flush=True)
+    print(f"BASE_DIR calculado: {BASE_DIR}", flush=True)
+    print(f"Buscando archivo en RAW_FILE: {RAW_FILE}", flush=True)
+    print(f"¿Existe el archivo exactamente ahí?: {os.path.exists(RAW_FILE)}", flush=True)
+    
+    parent_dir = os.path.dirname(BASE_DIR)
+    if os.path.exists(parent_dir):
+        print(f"Contenido de la carpeta raíz/padre ({parent_dir}): {os.listdir(parent_dir)}", flush=True)
+    if os.path.exists(BASE_DIR):
+        print(f"Contenido de BASE_DIR ({BASE_DIR}): {os.listdir(BASE_DIR)}", flush=True)
+    print(f"===========================", flush=True)
 
     if not os.path.exists(RAW_FILE):
         print(f"ERROR CRÍTICO: No se encontró el archivo en {RAW_FILE}", flush=True)
-        # Forzar error si no está en la nube para depurar con certeza
         sys.exit(1)
 
     try:
