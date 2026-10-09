@@ -1,8 +1,26 @@
 import { colors, radius, space } from '../theme'
-import type { DailyRow } from '../types'
+
+interface Importacion {
+  programa?: number | null
+  proximo_barco?: string | null
+}
+
+interface RDSRow {
+  fecha?: string
+  linepack_total?: number | null
+  linepack_delta?: number | null
+  consumo_total_estimado?: number | null
+  temperatura_ba?: { tm?: number | null } | null
+  forecast_temp_ba?: Array<{ fecha: string; min?: number | null; max?: number | null; tm?: number | null }> | null
+  importaciones?: {
+    escobar?: Importacion
+    bahia_blanca?: Importacion
+  }
+  [k: string]: unknown
+}
 
 interface Props {
-  rows: DailyRow[]
+  rows: RDSRow[]
 }
 
 export default function PulseCard({ rows }: Props) {
@@ -22,54 +40,42 @@ export default function PulseCard({ rows }: Props) {
     if (row.fecha === today.fecha) continue
     const rowMmdd = row.fecha.slice(5)
     if (rowMmdd !== mmdd) continue
-    if (typeof row.demanda_total === 'number') mmddPriorValues.consumo.push(row.demanda_total)
-    const t = row.temp_prom_ba
+    if (typeof row.consumo_total_estimado === 'number') mmddPriorValues.consumo.push(row.consumo_total_estimado)
+    const t = row.temperatura_ba?.tm
     if (typeof t === 'number') mmddPriorValues.temp.push(t)
   }
 
+  // Pico de frío en los próximos 6 días
+  const peak = (today.forecast_temp_ba ?? []).reduce<{ fecha: string; min: number } | null>(
+    (acc, d) => (d.min != null && (!acc || d.min < acc.min) ? { fecha: d.fecha, min: d.min } : acc),
+    null,
+  )
+
   const bullets: { label: string; value: string; sub?: string; color?: string }[] = []
 
-  // 0. ESTADO TGN & ESTADO TGS (Tomados directamente de daily.json)
-  const estadoTgn = today.estado_tgn ?? 'NORMAL'
-  const estadoTgs = today.estado_tgs ?? 'NORMAL'
-
-  bullets.push({
-    label: 'ESTADO TGN',
-    value: estadoTgn,
-    sub: 'Sistema TGN',
-    color: getStateColor(estadoTgn),
-  })
-
-  bullets.push({
-    label: 'ESTADO TGS',
-    value: estadoTgs,
-    sub: 'Sistema TGS',
-    color: getStateColor(estadoTgs),
-  })
-
   // 1. CONSUMO TOTAL (vs día anterior)
-  if (today.demanda_total != null) {
+  if (today.consumo_total_estimado != null) {
     let subConsumo: string | undefined
-    if (yesterday && yesterday.demanda_total != null && yesterday.demanda_total > 0) {
-      const diff = today.demanda_total - yesterday.demanda_total
-      const pct = (diff / yesterday.demanda_total) * 100
+    if (yesterday && yesterday.consumo_total_estimado != null && yesterday.consumo_total_estimado > 0) {
+      const diff = today.consumo_total_estimado - yesterday.consumo_total_estimado
+      const pct = (diff / yesterday.consumo_total_estimado) * 100
       const sign = pct >= 0 ? '+' : ''
       subConsumo = `${sign}${pct.toFixed(1)}% vs ayer`
     }
 
     bullets.push({
       label: 'Consumo total',
-      value: `${today.demanda_total.toFixed(1)} MMm³/d`,
+      value: `${today.consumo_total_estimado.toFixed(1)} MMm³/d`,
       sub: subConsumo,
       color: colors.accent.orange,
     })
   }
 
   // 2. TEMP BA (vs día anterior)
-  const tempToday = today.temp_prom_ba
+  const tempToday = today.temperatura_ba?.tm
   if (typeof tempToday === 'number') {
     let subTemp: string | undefined
-    const tempYesterday = yesterday?.temp_prom_ba
+    const tempYesterday = yesterday?.temperatura_ba?.tm
 
     if (typeof tempYesterday === 'number') {
       const diff = tempToday - tempYesterday
@@ -95,13 +101,53 @@ export default function PulseCard({ rows }: Props) {
     })
   }
 
-  // 3. Δ LINEPACK TOTAL AYER → HOY
-  if (today.var_linepack_total != null) {
-    const deltaColor = today.var_linepack_total >= 0 ? colors.status.ok : colors.status.err
+  // 3. PRÓXIMO PICO DE FRÍO (6d)
+  if (peak) {
+    const peakDate = new Date(peak.fecha + 'T12:00:00')
+    const days = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb']
     bullets.push({
-      label: 'Δ Linepack total',
-      value: `${today.var_linepack_total >= 0 ? '+' : ''}${today.var_linepack_total.toFixed(1)} MMm³`,
+      label: 'Próximo pico de frío (6d)',
+      value: `${peak.min.toFixed(0)}°C`,
+      sub: `${days[peakDate.getDay()]} ${peakDate.getDate()}/${peakDate.getMonth() + 1}`,
+      color: colors.status.warn,
+    })
+  }
+
+  // 4. Δ LINEPACK AYER → HOY
+  if (today.linepack_delta != null) {
+    const deltaColor = today.linepack_delta >= 0 ? colors.status.ok : colors.status.err
+    bullets.push({
+      label: 'Δ Linepack ayer→hoy',
+      value: `${today.linepack_delta >= 0 ? '+' : ''}${today.linepack_delta.toFixed(1)} MMm³`,
       color: deltaColor,
+    })
+  }
+
+  // 5. REGASIFICACIÓN / BARCOS GNL (si aplica)
+  const regasEsc = today.importaciones?.escobar?.programa ?? 0
+  const regasBB = today.importaciones?.bahia_blanca?.programa ?? 0
+  const regasTotal = regasEsc + regasBB
+  if (regasTotal > 0) {
+    bullets.push({
+      label: 'Regasificación LNG hoy',
+      value: `${regasTotal.toFixed(1)} MMm³/d`,
+      sub: [
+        regasEsc > 0 ? `Escobar ${regasEsc.toFixed(1)}` : null,
+        regasBB > 0 ? `B.Blanca ${regasBB.toFixed(1)}` : null,
+      ].filter(Boolean).join(' · '),
+      color: colors.accent.purple,
+    })
+  }
+  const nextEsc = today.importaciones?.escobar?.proximo_barco
+  const nextBB = today.importaciones?.bahia_blanca?.proximo_barco
+  if (nextEsc || nextBB) {
+    bullets.push({
+      label: 'Próximo barco GNL',
+      value: [
+        nextEsc ? `Escobar ${nextEsc}` : null,
+        nextBB ? `B.Blanca ${nextBB}` : null,
+      ].filter(Boolean).join(' · '),
+      color: colors.accent.orange,
     })
   }
 
@@ -160,13 +206,6 @@ export default function PulseCard({ rows }: Props) {
       </div>
     </div>
   )
-}
-
-function getStateColor(state: string): string {
-  const upper = (state ?? '').toUpperCase()
-  if (upper.includes('NORMAL')) return colors.status.ok // Verde
-  if (upper.includes('ALERTA') || upper.includes('RESTRINGIDO')) return colors.status.err // Rojo/Naranja
-  return colors.accent.orange
 }
 
 function formatDate(iso: string): string {
