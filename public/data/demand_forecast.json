@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09T13:00:26+00:00",
+  "generated_at": "2026-10-09T13:23:32+00:00",
   "source": "ENARGAS RDS regression (temp + day-of-week)",
   "source_date": "2026-10-09",
   "data": {
@@ -178,13 +178,13 @@
         "temp_prom": 16.4,
         "temp_max": 20.9,
         "temp_min": 11.8,
-        "prioritaria_est": 60.5,
+        "prioritaria_est": 60.6,
         "usinas_est": 35.3,
         "industria_est": 34.0,
         "gnc_est": 5.6,
         "combustible_est": 3.7,
         "exportaciones_est": 6.9,
-        "demanda_total_est": 146.0
+        "demanda_total_est": 146.1
       }
     ],
     "regression": {
@@ -206,8 +206,8 @@
         "dow_offsets": {
           "0": -0.05,
           "1": 1.42,
-          "2": 2.65,
-          "3": 1.59,
+          "2": 2.64,
+          "3": 1.6,
           "4": 1.41,
           "5": -2.37,
           "6": -4.63
