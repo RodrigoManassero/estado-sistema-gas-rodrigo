@@ -168,6 +168,7 @@ def main():
             if not row:
                 continue
 
+            # Mapeo y suma de exportaciones (exp_tgn + exp_tgs)
             exp_proj = None
             if r.get('exp_tgn') is not None or r.get('exp_tgs') is not None:
                 exp_proj = (r.get('exp_tgn') or 0) + (r.get('exp_tgs') or 0)
@@ -392,30 +393,6 @@ def main():
                 row['estado_tgn'] = est_tgn
 
     # -------------------------------------------------------------
-    # ESTADOS DIRECTOS DESDE sistema_estado.json (Prioridad de actualización)
-    # -------------------------------------------------------------
-    sistema_estado, _ = _load('sistema_estado.json')
-    # Permite soportar tanto si el json es una lista directa como si viene envuelto en un dict {"data": {...}}
-    if isinstance(sistema_estado, dict):
-        sistema_estado_items = [sistema_estado]
-    elif isinstance(sistema_estado, list):
-        sistema_estado_items = sistema_estado
-    else:
-        sistema_estado_items = []
-
-    for r in sistema_estado_items:
-        # Si el item tiene una estructura interna tipo {"data": {"fecha": ..., "estado_tgn": ...}}
-        data_block = r.get('data') if isinstance(r.get('data'), dict) else r
-        f_clean = clean_fecha(data_block.get('fecha'))
-        row = row_for(f_clean)
-        if row:
-            if data_block.get('estado_tgn') is not None:
-                row['estado_tgn'] = data_block.get('estado_tgn')
-            if data_block.get('estado_tgs') is not None:
-                row['estado_tgs'] = data_block.get('estado_tgs')
-                row['estado'] = data_block.get('estado_tgs')
-
-    # -------------------------------------------------------------
     # PASO 5: ENRIQUECIMIENTO DE TEMPERATURAS DESDE WEATHER_HISTORY
     # -------------------------------------------------------------
     history_weather, _ = _load('weather_history.json')
@@ -471,7 +448,7 @@ def main():
                 row[fld] = 0.0
 
     real_dates = [r['fecha'] for r in rows if r.get('fecha') and (
-        r.get('demanda_total') is not None or r.get('linepack_total'] is not None)]
+        r.get('demanda_total') is not None or r.get('linepack_total') is not None)]
     latest = max(real_dates) if real_dates else (rows[-1]['fecha'] if rows else None)
 
     write_json(
