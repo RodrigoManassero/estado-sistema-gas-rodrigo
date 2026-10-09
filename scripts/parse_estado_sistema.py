@@ -5,9 +5,9 @@ import sys
 from datetime import datetime, timezone
 import pandas as pd
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-RAW_FILE = os.path.join(BASE_DIR, "..", "raw", "EstadoSistema.xlsx")
-OUT_FILE = os.path.join(BASE_DIR, "..", "public", "data", "sistema_estado.json")
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+RAW_FILE = os.path.join(BASE_DIR, "raw", "EstadoSistema.xlsx")
+OUT_FILE = os.path.join(BASE_DIR, "public", "data", "sistema_estado.json")
 
 
 def parse_fecha(val):
