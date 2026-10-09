@@ -2,6 +2,6 @@
   "data": {
     "fecha": "2026-10-09",
     "estado_tgn": "NORMAL",
-    "estado_tgs": "NORMAL"
+    "estado_tgs": "ALERTA"
   }
 }
