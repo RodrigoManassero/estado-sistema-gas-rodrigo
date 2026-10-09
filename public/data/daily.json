@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09T20:52:44+00:00",
+  "generated_at": "2026-10-09T21:43:15+00:00",
   "source": "Cascada 6 niveles: PS_REAL > RDS > PS_PROJ > CAMMESA_WEEKLY > MODELO > WEATHER_HISTORY",
   "source_date": "2026-10-11",
   "data": [
@@ -49788,8 +49788,8 @@
       "ajuste": null,
       "origen_dato": "PS_PROYECCION",
       "estado": null,
-      "estado_tgs": "Normal",
-      "estado_tgn": "Alerta",
+      "estado_tgs": null,
+      "estado_tgn": null,
       "iny_chile": 0.0,
       "cammesa_gas_est": 28.38,
       "cammesa_gasoil_est": 0.146,
