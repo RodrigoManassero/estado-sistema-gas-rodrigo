@@ -41,8 +41,9 @@ export interface DailyRow {
   cammesa_total: number | null
   // Flag para identificar registros con inyección proyectada
   isForecast?: boolean
-  // Estado del sistema TGN (ABII): 'NORMAL' | 'ALERTA' por |desbalance %| vs ±7.
+  // Estado del sistema: 'NORMAL' | 'ALERTA' por |desbalance %| vs ±7.
   estado_tgn?: string | null
+  estado_tgs?: string | null
   // Mezcla de combustibles PROYECTADA (CAMMESA Previsión semanal, repartida a
   // día y en MMm³ gas-equivalente). Sólo poblada en la ventana de pronóstico.
   // Mezcla de combustibles PROYECTADA (CAMMESA semanal)
