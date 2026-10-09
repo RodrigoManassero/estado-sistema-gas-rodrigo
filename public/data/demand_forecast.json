@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-09T13:23:32+00:00",
+  "generated_at": "2026-10-09T19:19:40+00:00",
   "source": "ENARGAS RDS regression (temp + day-of-week)",
   "source_date": "2026-10-09",
   "data": {
@@ -205,12 +205,12 @@
         "n_points": 830,
         "dow_offsets": {
           "0": -0.05,
-          "1": 1.42,
+          "1": 1.41,
           "2": 2.64,
-          "3": 1.6,
+          "3": 1.62,
           "4": 1.41,
-          "5": -2.37,
-          "6": -4.63
+          "5": -2.38,
+          "6": -4.64
         },
         "mean_abs_residual": 7.95,
         "x_feature": "HDD(18°C · media 10 ciudades)"
