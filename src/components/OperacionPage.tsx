@@ -174,8 +174,7 @@ export default function OperacionPage() {
       )}
       <KPICards latest={latest} />
 
-      {/* Actualizado: pasamos 'valid' (daily.json) para que PulseCard lea directamente los estados de TGN y TGS */}
-      <PulseCard rows={valid} />
+      <PulseCard rows={rdsReports as never} />
 
       <div style={{ ...card, marginTop: space.xl }}>
         <CommentsSection comments={comments} />
