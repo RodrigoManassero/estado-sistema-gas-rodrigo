@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 import pandas as pd
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-RAW_FILE = os.path.join(BASE_DIR, "..", "raw", "EstadoSistema.xlsx")
+RAW_FILE = os.path.join(BASE_DIR, "..", "data", "raw", "EstadoSistema.xlsx")
 OUT_FILE = os.path.join(BASE_DIR, "..", "public", "data", "sistema_estado.json")
 
 
@@ -29,24 +29,25 @@ def main():
     print(f"Buscando archivo en: {RAW_FILE}", flush=True)
 
     if not os.path.exists(RAW_FILE):
-        print(f"ADVERTENCIA: No se encontró el archivo {RAW_FILE}. Usando valores por defecto.", flush=True)
-        inner_data = {"fecha": None, "tgn": "NORMAL", "tgs": "NORMAL"}
-    else:
-        try:
-            df = pd.read_excel(RAW_FILE, header=None)
-            records = dict(zip(df.iloc[:, 0], df.iloc[:, 1]))
-            
-            raw_fecha = records.get('DIA', '')
-            fecha_str = parse_fecha(raw_fecha) if pd.notna(raw_fecha) else None
+        print(f"ERROR CRÍTICO: No se encontró el archivo en {RAW_FILE}", flush=True)
+        # Forzar error si no está en la nube para depurar con certeza
+        sys.exit(1)
 
-            inner_data = {
-                "fecha": fecha_str,
-                "tgn": str(records.get('ESTADO SISTEMA TGN', 'NORMAL')).strip().upper(),
-                "tgs": str(records.get('ESTADO SISTEMA TGS', 'NORMAL')).strip().upper()
-            }
-        except Exception as e:
-            print(f"EXCEPCIÓN al procesar el Excel: {e}", flush=True)
-            inner_data = {"fecha": None, "tgn": "NORMAL", "tgs": "NORMAL"}
+    try:
+        df = pd.read_excel(RAW_FILE, header=None)
+        records = dict(zip(df.iloc[:, 0], df.iloc[:, 1]))
+        
+        raw_fecha = records.get('DIA', '')
+        fecha_str = parse_fecha(raw_fecha) if pd.notna(raw_fecha) else None
+
+        inner_data = {
+            "fecha": fecha_str,
+            "tgn": str(records.get('ESTADO SISTEMA TGN', 'NORMAL')).strip().upper(),
+            "tgs": str(records.get('ESTADO SISTEMA TGS', 'NORMAL')).strip().upper()
+        }
+    except Exception as e:
+        print(f"EXCEPCIÓN al procesar el Excel: {e}", flush=True)
+        sys.exit(1)
 
     # Estructura con sobre (envelope) estándar del dashboard
     envelope = {
