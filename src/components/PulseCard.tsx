@@ -48,20 +48,24 @@ export default function PulseCard({ rows, estadoTgn, estadoTgs }: Props) {
 
   const bullets: { label: string; value: string; sub?: string; color?: string }[] = []
 
+  // Helper para determinar el color del estado
+  const getStatusColor = (val?: string | null) => {
+    if (!val || val === '-') return colors.textDim
+    return val.toLowerCase() === 'normal' ? colors.status.ok : colors.status.err
+  }
+
   // 1. ESTADO TGN
   bullets.push({
     label: 'Estado TGN',
     value: estadoTgn || '-',
-    sub: 'Sistema TGN',
-    color: (estadoTgn || '').toLowerCase() === 'normal' ? colors.status.ok : colors.status.warn,
+    color: getStatusColor(estadoTgn),
   })
 
   // 2. ESTADO TGS
   bullets.push({
     label: 'Estado TGS',
     value: estadoTgs || '-',
-    sub: 'Sistema TGS',
-    color: (estadoTgs || '').toLowerCase() === 'normal' ? colors.status.ok : colors.status.warn,
+    color: getStatusColor(estadoTgs),
   })
 
   // 3. CONSUMO TOTAL (vs día anterior)
@@ -78,7 +82,7 @@ export default function PulseCard({ rows, estadoTgn, estadoTgs }: Props) {
       label: 'Consumo total',
       value: `${today.consumo_total_estimado.toFixed(1)} MMm³/d`,
       sub: subConsumo,
-      color: colors.accent.orange,
+      color: colors.textPrimary, // Blanco
     })
   } else {
     bullets.push({
@@ -114,7 +118,7 @@ export default function PulseCard({ rows, estadoTgn, estadoTgs }: Props) {
       label: 'Temp BA',
       value: `${tempToday.toFixed(0)}°C`,
       sub: subTemp,
-      color: colors.accent.purple,
+      color: colors.textPrimary, // Blanco
     })
   } else {
     bullets.push({
