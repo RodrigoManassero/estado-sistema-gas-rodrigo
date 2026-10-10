@@ -103,27 +103,43 @@ export default function App() {
         @media print {
           @page {
             size: A4;
-            margin: 12mm;
+            margin: 8mm;
           }
           body {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             background-color: #0f172a !important;
             color: #f1f5f9 !important;
-            font-size: 10pt;
+            font-size: 9pt;
           }
+          /* Ocultar botones, selectores, navegación y MEGSA al imprimir */
           button, 
           .scale-selector,
           nav,
-          div[style*="overflow-x: auto"] {
+          div[style*="overflow-x: auto"],
+          div[style*="border-top: 3px solid #10b981"] {
             display: none !important;
           }
+
+          /* Reducir un 25% textos, tablas y paneles informativos (excluyendo gráficos) */
+          div:not(.recharts-wrapper), table, p, span, h3, h4 {
+            font-size: 82% !important;
+          }
+
+          /* Reducir paddings y márgenes para mayor densidad de contenido */
+          div[style*="background"] {
+            padding: 6px !important;
+            margin-bottom: 6px !important;
+          }
+
           div, section, article, table {
             break-inside: avoid;
             page-break-inside: avoid;
           }
+
+          /* Mantener altura controlada para los gráficos */
           .recharts-responsive-container {
-            height: 200px !important;
+            height: 160px !important;
             width: 100% !important;
           }
         }
