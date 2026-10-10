@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-10T19:57:51+00:00",
+  "generated_at": "2026-10-10T20:19:06+00:00",
   "source": "ENARGAS RDS regression (temp + day-of-week)",
   "source_date": "2026-10-10",
   "data": {
@@ -100,9 +100,9 @@
         "temp_prom": 15.2,
         "temp_max": 16.8,
         "temp_min": 13.5,
-        "prioritaria_est": 37.3,
+        "prioritaria_est": 37.2,
         "usinas_est": 31.0,
-        "industria_est": 32.8,
+        "industria_est": 32.9,
         "gnc_est": 5.6,
         "combustible_est": 3.7,
         "exportaciones_est": 6.9,
@@ -188,7 +188,7 @@
       }
     ],
     "regression": {
-      "n_points": 830,
+      "n_points": 831,
       "features": [
         "temp_BA",
         "day_of_week"
@@ -198,19 +198,19 @@
       "baseline_exportaciones": 6.9,
       "prioritaria": {
         "label": "Prioritaria",
-        "slope": 5.942,
+        "slope": 5.94,
         "intercept": 22.7,
         "r2": 0.829,
         "r2_temp_only": 0.818,
-        "n_points": 830,
+        "n_points": 831,
         "dow_offsets": {
-          "0": -0.04,
-          "1": 1.42,
-          "2": 2.65,
-          "3": 1.63,
-          "4": 1.36,
-          "5": -2.37,
-          "6": -4.63
+          "0": -0.03,
+          "1": 1.43,
+          "2": 2.66,
+          "3": 1.64,
+          "4": 1.37,
+          "5": -2.4,
+          "6": -4.62
         },
         "mean_abs_residual": 7.95,
         "x_feature": "HDD(18°C · media 10 ciudades)"
@@ -238,19 +238,19 @@
         "label": "Industria",
         "slope": 0.203,
         "intercept": 30.4,
-        "r2": 0.229,
-        "r2_temp_only": 0.198,
-        "n_points": 884,
+        "r2": 0.227,
+        "r2_temp_only": 0.197,
+        "n_points": 885,
         "dow_offsets": {
           "0": 0.35,
           "1": 0.32,
           "2": 0.35,
-          "3": 0.31,
+          "3": 0.3,
           "4": 0.16,
-          "5": -0.66,
-          "6": -0.82
+          "5": -0.63,
+          "6": -0.83
         },
-        "mean_abs_residual": 1.87,
+        "mean_abs_residual": 1.88,
         "x_feature": "temp"
       },
       "gnc": {
@@ -258,16 +258,16 @@
         "slope": -0.007,
         "intercept": 5.6,
         "r2": 0.589,
-        "r2_temp_only": 0.012,
-        "n_points": 884,
+        "r2_temp_only": 0.013,
+        "n_points": 885,
         "dow_offsets": {
           "0": -0.01,
           "1": 0.02,
           "2": 0.02,
           "3": 0.12,
-          "4": 0.36,
+          "4": 0.35,
           "5": 0.1,
-          "6": -0.59
+          "6": -0.6
         },
         "mean_abs_residual": 0.27,
         "x_feature": "temp"
@@ -276,16 +276,16 @@
         "label": "Combustible",
         "slope": -0.017,
         "intercept": 4.0,
-        "r2": 0.048,
-        "r2_temp_only": 0.046,
-        "n_points": 884,
+        "r2": 0.047,
+        "r2_temp_only": 0.045,
+        "n_points": 885,
         "dow_offsets": {
           "0": -0.03,
           "1": -0.01,
           "2": -0.01,
           "3": 0.02,
           "4": 0.03,
-          "5": -0.0,
+          "5": -0.01,
           "6": -0.0
         },
         "mean_abs_residual": 0.32,
