@@ -183,9 +183,12 @@ export default function OperacionPage() {
         estadoTgs={estadosSysState.data?.estado_tgs}
       />
 
+      {/* Comentarios Operativos ocultados */}
+      {/* 
       <div style={{ ...card, marginTop: space.xl }}>
         <CommentsSection comments={comments} />
-      </div>
+      </div> 
+      */}
 
       {rdsReports.length > 0 && (
         <div style={{ ...card, marginTop: space.xl }}>
