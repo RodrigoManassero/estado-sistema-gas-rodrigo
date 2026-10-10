@@ -15,6 +15,7 @@ import {
   useCammesaPPO,
   useTGNSystemState,
   useLinepackForecast,
+  useEstadosSistemas, // <--- 1. IMPORTADO AQUÍ
 } from '../hooks/useData'
 import { card, colors, radius, sectionTitle, space } from '../theme'
 import Header from './Header'
@@ -82,6 +83,7 @@ export default function OperacionPage() {
   const ppoState = useCammesaPPO()
   const tgnSystemState = useTGNSystemState()
   const linepackFcState = useLinepackForecast()
+  const estadosSysState = useEstadosSistemas() // <--- 2. INVOCADO AQUÍ
 
   const [selectedCity, setSelectedCity] = useState('ba')
   const [scale, setScale] = useState<TimeScale>('7d')
@@ -174,7 +176,12 @@ export default function OperacionPage() {
       )}
       <KPICards latest={latest} />
 
-      <PulseCard rows={rdsReports as never} />
+      {/* 3. PASADO DE ESTADOS A PULSECARD */}
+      <PulseCard
+        rows={rdsReports as never}
+        estadoTgn={estadosSysState.data?.estado_tgn}
+        estadoTgs={estadosSysState.data?.estado_tgs}
+      />
 
       <div style={{ ...card, marginTop: space.xl }}>
         <CommentsSection comments={comments} />
