@@ -21,9 +21,11 @@ interface RDSRow {
 
 interface Props {
   rows: RDSRow[]
+  estadoTgn?: string | null
+  estadoTgs?: string | null
 }
 
-export default function PulseCard({ rows }: Props) {
+export default function PulseCard({ rows, estadoTgn, estadoTgs }: Props) {
   if (!rows || rows.length === 0) return null
   const today = rows[rows.length - 1]
   if (!today.fecha) return null
@@ -52,6 +54,24 @@ export default function PulseCard({ rows }: Props) {
   )
 
   const bullets: { label: string; value: string; sub?: string; color?: string }[] = []
+
+  // 0. ESTADO TGN & ESTADO TGS (Nuevos campos solicitados)
+  const tgnVal = estadoTgn ?? 'NORMAL'
+  const tgsVal = estadoTgs ?? 'NORMAL'
+
+  bullets.push({
+    label: 'ESTADO TGN',
+    value: tgnVal,
+    sub: 'Sistema TGN',
+    color: getStateColor(tgnVal),
+  })
+
+  bullets.push({
+    label: 'ESTADO TGS',
+    value: tgsVal,
+    sub: 'Sistema TGS',
+    color: getStateColor(tgsVal),
+  })
 
   // 1. CONSUMO TOTAL (vs día anterior)
   if (today.consumo_total_estimado != null) {
@@ -206,6 +226,13 @@ export default function PulseCard({ rows }: Props) {
       </div>
     </div>
   )
+}
+
+function getStateColor(state: string): string {
+  const upper = (state ?? '').toUpperCase()
+  if (upper.includes('NORMAL')) return colors.status.ok // Verde
+  if (upper.includes('ALERTA') || upper.includes('RESTRINGIDO')) return colors.status.err // Rojo/Naranja
+  return colors.accent.orange
 }
 
 function formatDate(iso: string): string {
