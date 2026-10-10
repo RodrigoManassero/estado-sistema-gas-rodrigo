@@ -103,14 +103,14 @@ export default function App() {
         @media print {
           @page {
             size: A4;
-            margin: 8mm;
+            margin: 10mm;
           }
           body {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             background-color: #0f172a !important;
             color: #f1f5f9 !important;
-            font-size: 9pt;
+            font-size: 10pt;
           }
           /* Ocultar botones, selectores, navegación y MEGSA al imprimir */
           button, 
@@ -121,15 +121,21 @@ export default function App() {
             display: none !important;
           }
 
-          /* Reducir un 25% textos, tablas y paneles informativos (excluyendo gráficos) */
-          div:not(.recharts-wrapper), table, p, span, h3, h4 {
-            font-size: 82% !important;
+          /* Reducción controlada y suave solo para textos y tablas (~25%) */
+          p, span, td, th, li {
+            font-size: 9pt !important;
+          }
+          h3 {
+            font-size: 11pt !important;
+          }
+          h4 {
+            font-size: 10pt !important;
           }
 
-          /* Reducir paddings y márgenes para mayor densidad de contenido */
+          /* Padding compacto para tarjetas para ganar densidad óptima */
           div[style*="background"] {
-            padding: 6px !important;
-            margin-bottom: 6px !important;
+            padding: 10px !important;
+            margin-bottom: 10px !important;
           }
 
           div, section, article, table {
@@ -137,9 +143,9 @@ export default function App() {
             page-break-inside: avoid;
           }
 
-          /* Mantener altura controlada para los gráficos */
+          /* Mantener gráficos en un tamaño perfectamente legible */
           .recharts-responsive-container {
-            height: 160px !important;
+            height: 200px !important;
             width: 100% !important;
           }
         }
