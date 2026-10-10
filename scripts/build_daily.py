@@ -11,7 +11,6 @@
 import json
 import os
 import sys
-import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _meta import write_json, write_csv, json_to_csv_path
@@ -169,6 +168,7 @@ def main():
             if not row:
                 continue
 
+            # Mapeo y suma de exportaciones (exp_tgn + exp_tgs)
             exp_proj = None
             if r.get('exp_tgn') is not None or r.get('exp_tgs') is not None:
                 exp_proj = (r.get('exp_tgn') or 0) + (r.get('exp_tgs') or 0)
@@ -407,21 +407,6 @@ def main():
                     row['temp_prom_ba'] = fill(row.get('temp_prom_ba'), wh.get('temp_prom'))
                     row['temp_min_ba'] = fill(row.get('temp_min_ba'), wh.get('temp_min'))
                     row['temp_max_ba'] = fill(row.get('temp_max_ba'), wh.get('temp_max'))
-
-    # -------------------------------------------------------------
-    # PASO 6: INYECCIÓN DE ESTADOS MANUALES PARA HOY (desde estados_sistemas.json)
-    # -------------------------------------------------------------
-    hoy_str = datetime.date.today().strftime('%Y-%m-%d')
-    estados_manuales, _ = _load('estados_sistemas.json')
-    if estados_manuales and isinstance(estados_manuales, dict):
-        fecha_json = estados_manuales.get('fecha')
-        if not fecha_json or fecha_json == hoy_str:
-            row_hoy = by_date.get(hoy_str)
-            if row_hoy:
-                if estados_manuales.get('estado_tgn'):
-                    row_hoy['estado_tgn'] = estados_manuales.get('estado_tgn')
-                if estados_manuales.get('estado_tgs'):
-                    row_hoy['estado_tgs'] = estados_manuales.get('estado_tgs')
 
     rows = sorted(by_date.values(), key=lambda r: r.get('fecha') or '')
 
