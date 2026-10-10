@@ -15,11 +15,10 @@ import {
   useCammesaPPO,
   useTGNSystemState,
   useLinepackForecast,
-  useEstadosSistemas, // <--- 1. IMPORTADO AQUÍ
+  useEstadosSistemas,
 } from '../hooks/useData'
 import { card, colors, radius, sectionTitle, space } from '../theme'
 import Header from './Header'
-import KPICards from './KPICards'
 import SystemPanel from './SystemPanel'
 import DemandChart from './DemandChart'
 import DemandForecastChart from './DemandForecastChart'
@@ -34,7 +33,6 @@ import MEGSAPanel from './MEGSAPanel'
 import SystemFlowPanel from './SystemFlowPanel'
 import PulseCard from './PulseCard'
 import LNGArrivalsChart from './LNGArrivalsChart'
-import TomorrowCard from './TomorrowCard'
 import AlertBanner from './AlertBanner'
 import TGSPanel from './TGSPanel'
 import TGNSystemStatePanel from './TGNSystemStatePanel'
@@ -83,7 +81,7 @@ export default function OperacionPage() {
   const ppoState = useCammesaPPO()
   const tgnSystemState = useTGNSystemState()
   const linepackFcState = useLinepackForecast()
-  const estadosSysState = useEstadosSistemas() // <--- 2. INVOCADO AQUÍ
+  const estadosSysState = useEstadosSistemas()
 
   const [selectedCity, setSelectedCity] = useState('ba')
   const [scale, setScale] = useState<TimeScale>('7d')
@@ -159,7 +157,11 @@ export default function OperacionPage() {
     <>
       <Header lastDate={latest?.fecha} freshness={freshness} />
       <AlertBanner alerts={linepackAlerts(latest)} />
-      <TomorrowCard />
+      
+      {/* Componentes ocultados */}
+      {/* <TomorrowCard /> */}
+      {/* <KPICards latest={latest} /> */}
+
       {smnState.data && smnState.data.length > 0 && (
         <div style={{
           marginTop: space.md,
@@ -174,9 +176,8 @@ export default function OperacionPage() {
           ⚠ {smnState.data.length} alerta{smnState.data.length === 1 ? '' : 's'} meteorológica{smnState.data.length === 1 ? '' : 's'} activa{smnState.data.length === 1 ? '' : 's'} del SMN — ver pestaña Fuentes para detalle.
         </div>
       )}
-      <KPICards latest={latest} />
 
-      {/* 3. PASADO DE ESTADOS A PULSECARD */}
+      {/* PulseCard principal con los estados TGN/TGS leídos del hook */}
       <PulseCard
         rows={rdsReports as never}
         estadoTgn={estadosSysState.data?.estado_tgn}
@@ -270,68 +271,3 @@ export default function OperacionPage() {
             allDates={visibleDates}
           />
         </div>
-        <div style={card}>
-          <h3 style={sectionTitle}>Despacho eléctrico — Combustibles</h3>
-          <FuelMixChart
-            data={data}
-            ppoRows={ppoState.data ?? []}
-            demandForecast={demandFc?.forecast ?? []}
-            allDates={visibleDates}
-          />
-        </div>
-      </ChartGroup>
-
-      <ChartGroup title="Demanda de gas">
-        {demandFc && demandFc.forecast.length > 0 && (
-          <div style={card}>
-            <h3 style={sectionTitle}>Forecast de demanda (real + estimada)</h3>
-            <DemandForecastChart
-              data={valid}
-              forecast={demandFc.forecast}
-              allDates={visibleDates}
-              yDomain={demandY}
-            />
-          </div>
-        )}
-        <div style={card}>
-          <h3 style={sectionTitle}>Demanda por sector (MMm³/día)</h3>
-          <DemandChart
-            data={valid}
-            forecast={demandFc?.forecast ?? []}
-            exportacionesBaseline={demandFc?.regression.baseline_exportaciones ?? undefined}
-            allDates={visibleDates}
-            yDomain={demandY}
-          />
-        </div>
-      </ChartGroup>
-
-      <ChartGroup title="Oferta + estado del sistema">
-        <div style={card}>
-          <h3 style={sectionTitle}>Inyecciones por fuente (MMm³/día)</h3>
-          <InjectionsChart data={injectionsData} allDates={visibleDates} />
-        </div>
-        <div style={card}>
-          <h3 style={sectionTitle}>Linepack TGS + TGN (MMm³)</h3>
-          <LinepackChart
-            data={valid}
-            etgsRows={etgsState.data ?? []}
-            tgnRows={tgnSystemState.data ?? []}
-            forecast={linepackForecast}
-            allDates={visibleDates}
-          />
-        </div>
-        {rdsReports.length > 0 && (
-          <div style={card}>
-            <h3 style={sectionTitle}>Próximos barcos GNL (MMm³/día programados)</h3>
-            <LNGArrivalsChart rows={rdsReports as never} />
-            <p style={{ color: colors.textDim, fontSize: 11, marginTop: 8 }}>
-              Volumen programado de regasificación en Escobar. Fuente: ENARGAS RDS diario.
-              Línea punteada: proyección que sostiene el último programa (~7 d); los cargamentos
-              futuros pueden variar. Cargamentos estacionales — concentrados en invierno (mayo-agosto).
-            </p>
-          </div>
-        )}
-      </ChartGroup>
-    </>
-  )
-}
