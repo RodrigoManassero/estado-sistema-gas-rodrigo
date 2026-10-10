@@ -85,7 +85,6 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           nav,
           div[style*="overflow-x: auto"],
           div[style*="border-top: 3px solid #10b981"],
-          /* Ocultar el contenedor de los badges de frescura en el header */
           div[style*="justify-content: flex-end"][style*="flex-wrap: wrap"] {
             display: none !important;
           }
@@ -99,6 +98,12 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
           }
           h4 {
             font-size: 10pt !important;
+          }
+
+          /* Achicar un 25% adicional los textos y elementos exclusivamente del banner principal (PulseCard) */
+          div[style*="border-top: 3px solid"], 
+          div[style*="border-top: 3px solid"] * {
+            font-size: 75% !important;
           }
 
           /* Padding compacto para tarjetas para ganar densidad óptima */
