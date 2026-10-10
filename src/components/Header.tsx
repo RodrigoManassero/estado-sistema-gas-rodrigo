@@ -33,23 +33,40 @@ export default function Header({ title = 'Reporte Estado del Sistema', freshness
         </p>
       </div>
       <div style={{ textAlign: 'right', minWidth: 0 }}>
-        <button
-          onClick={() => window.location.reload()}
-          title="Recargar para traer la última actualización publicada (cada 3 h)"
-          style={{
-            background: colors.surfaceAlt,
-            color: colors.textSecondary,
-            border: `1px solid ${colors.border}`,
-            borderRadius: radius.sm,
-            padding: '4px 10px',
-            fontSize: 12,
-            fontWeight: 600,
-            cursor: 'pointer',
-            marginBottom: 6,
-          }}
-        >
-          ↻ Actualizar
-        </button>
+        <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end', marginBottom: 6 }}>
+          <button
+            onClick={() => window.print()}
+            title="Exportar o imprimir la pantalla en PDF"
+            style={{
+              background: colors.surfaceAlt,
+              color: colors.textSecondary,
+              border: `1px solid ${colors.border}`,
+              borderRadius: radius.sm,
+              padding: '4px 10px',
+              fontSize: 12,
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
+          >
+            🖨 Imprimir PDF
+          </button>
+          <button
+            onClick={() => window.location.reload()}
+            title="Recargar para traer la última actualización publicada (cada 3 h)"
+            style={{
+              background: colors.surfaceAlt,
+              color: colors.textSecondary,
+              border: `1px solid ${colors.border}`,
+              borderRadius: radius.sm,
+              padding: '4px 10px',
+              fontSize: 12,
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
+          >
+            ↻ Actualizar
+          </button>
+        </div>
         {freshness.length > 0 && (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 6, justifyContent: 'flex-end' }}>
             {freshness.map((f) => (
