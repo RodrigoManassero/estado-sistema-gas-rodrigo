@@ -311,7 +311,7 @@ export default function OperacionPage() {
           <InjectionsChart data={injectionsData} allDates={visibleDates} />
         </div>
         <div style={card}>
-          <h3 style={sectionTime}>Linepack TGS + TGN (MMm³)</h3>
+          <h3 style={sectionTitle}>Linepack TGS + TGN (MMm³)</h3>
           <LinepackChart
             data={valid}
             etgsRows={etgsState.data ?? []}
