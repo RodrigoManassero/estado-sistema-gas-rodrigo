@@ -100,7 +100,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             font-size: 10pt !important;
           }
 
-          /* Achicar un 25% adicional los textos y elementos exclusivamente del banner principal (PulseCard) */
+          /* Achicar un 25% adicional los textos y elementos del banner principal (PulseCard) */
           div[style*="border-top: 3px solid"], 
           div[style*="border-top: 3px solid"] * {
             font-size: 75% !important;
@@ -112,7 +112,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             margin-bottom: 10px !important;
           }
 
-          div, section, article, table {
+          /* Permitir que la mayoría de los elementos fluyan naturalmente para evitar espacios vacíos gigantes */
+          div, section, article {
+            break-inside: auto;
+            page-break-inside: auto;
+          }
+
+          /* Proteger únicamente los gráficos y tablas para que no se partan feo */
+          table, .recharts-responsive-container {
             break-inside: avoid;
             page-break-inside: avoid;
           }
