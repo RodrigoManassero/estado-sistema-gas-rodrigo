@@ -98,6 +98,37 @@ export default function App() {
 
   return (
     <ErrorBoundary>
+      {/* Estilos globales inyectados para impresión en PDF prolija */}
+      <style>{`
+        @media print {
+          @page {
+            size: A4;
+            margin: 12mm;
+          }
+          body {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            background-color: #0f172a !important;
+            color: #f1f5f9 !important;
+            font-size: 10pt;
+          }
+          button, 
+          .scale-selector,
+          nav,
+          div[style*="overflow-x: auto"] {
+            display: none !important;
+          }
+          div, section, article, table {
+            break-inside: avoid;
+            page-break-inside: avoid;
+          }
+          .recharts-responsive-container {
+            height: 200px !important;
+            width: 100% !important;
+          }
+        }
+      `}</style>
+
       <div style={{ maxWidth: 1400, margin: '0 auto', padding: `${space.xl}px ${space.lg}px` }}>
         <Nav page={page} setPage={setPage} />
         {page === 'operacion' && <OperacionPage />}
