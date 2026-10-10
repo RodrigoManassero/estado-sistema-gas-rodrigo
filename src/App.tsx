@@ -112,16 +112,13 @@ export default function App() {
             color: #f1f5f9 !important;
             font-size: 10pt;
           }
-          /* Ocultar botones, selectores, navegación, badges de frescura y panel MEGSA al imprimir */
+          /* Ocultar botones, selectores, navegación, MEGSA y los badges de frescura al imprimir */
           button, 
           .scale-selector,
           nav,
           div[style*="overflow-x: auto"],
-          div[style*="justify-content: flex-end"][style*="flex-wrap: wrap"],
-          /* Ocultar panel MEGSA y Benchmarks */
-          div:has(> div > h3:contains("MEGSA")),
-          div:has(h3:contains("MEGSA")),
-          div[style*="border-top: 3px solid #10b981"] {
+          div[style*="border-top: 3px solid #10b981"],
+          div[style*="justify-content: flex-end"][style*="flex-wrap: wrap"] {
             display: none !important;
           }
 
@@ -136,26 +133,25 @@ export default function App() {
             font-size: 10pt !important;
           }
 
-          /* Reducir aún más el tamaño y padding del banner principal (PulseCard) al imprimir */
-          div[style*="border-top: 3px solid #3b82f6"],
+          /* Achicar un 25% los textos y elementos exclusivamente del banner principal (PulseCard que usa borde azul #3b82f6) */
+          div[style*="border-top: 3px solid #3b82f6"], 
           div[style*="border-top: 3px solid #3b82f6"] * {
-            font-size: 70% !important;
-            padding: 4px !important;
+            font-size: 75% !important;
           }
 
           /* Padding compacto para tarjetas para ganar densidad óptima */
           div[style*="background"] {
-            padding: 8px !important;
-            margin-bottom: 8px !important;
+            padding: 10px !important;
+            margin-bottom: 10px !important;
           }
 
-          /* Permitir flujo natural para evitar espacios vacíos gigantes */
+          /* Permitir que la mayoría de los elementos fluyan naturalmente para evitar espacios vacíos gigantes */
           div, section, article {
             break-inside: auto;
             page-break-inside: auto;
           }
 
-          /* Proteger únicamente gráficos y tablas para que no se partan feo */
+          /* Proteger únicamente los gráficos y tablas para que no se partan feo */
           table, .recharts-responsive-container {
             break-inside: avoid;
             page-break-inside: avoid;
@@ -163,7 +159,7 @@ export default function App() {
 
           /* Mantener gráficos en un tamaño perfectamente legible */
           .recharts-responsive-container {
-            height: 180px !important;
+            height: 200px !important;
             width: 100% !important;
           }
         }
