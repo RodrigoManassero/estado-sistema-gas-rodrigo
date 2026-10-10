@@ -7,20 +7,12 @@ interface FreshnessItem {
 }
 
 interface Props {
+  title?: string
   lastDate?: string
   freshness?: FreshnessItem[]
 }
 
-export default function Header({ lastDate, freshness = [] }: Props) {
-  const formatted = lastDate
-    ? new Date(lastDate + 'T12:00:00').toLocaleDateString('es-AR', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-      })
-    : '...'
-
+export default function Header({ title = 'Reporte Estado del Sistema', freshness = [] }: Props) {
   return (
     <div
       style={{
@@ -34,7 +26,7 @@ export default function Header({ lastDate, freshness = [] }: Props) {
     >
       <div>
         <h1 style={{ fontSize: 'clamp(20px, 3.5vw, 28px)', fontWeight: 700, color: colors.textPrimary }}>
-          Estado del Sistema
+          {title}
         </h1>
         <p style={{ color: colors.textDim, fontSize: 14, marginTop: 4 }}>
           Red de transporte de gas - Argentina
@@ -58,8 +50,6 @@ export default function Header({ lastDate, freshness = [] }: Props) {
         >
           ↻ Actualizar
         </button>
-        <p style={{ color: colors.textDim, fontSize: 12 }}>Ultimo dato</p>
-        <p style={{ color: colors.textSecondary, fontSize: 14, fontWeight: 600 }}>{formatted}</p>
         {freshness.length > 0 && (
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 6, justifyContent: 'flex-end' }}>
             {freshness.map((f) => (
