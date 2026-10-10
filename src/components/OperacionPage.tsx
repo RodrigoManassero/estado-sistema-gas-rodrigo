@@ -99,6 +99,9 @@ export default function OperacionPage() {
   const data = useMemo(() => dailyState.data ?? [], [dailyState.data])
   const valid = useMemo(() => data.filter((d) => d.demanda_total != null), [data])
   
+  // Extraemos el último registro válido de daily.json para obtener estado_tgn y estado_tgs
+  const latestValidDaily = useMemo(() => valid[valid.length - 1] ?? null, [valid])
+
   // Extraemos la serie de datos específica para InjectionsChart de injections_daily.json
   const injectionsData = useMemo(() => injectionsDailyState.data ?? [], [injectionsDailyState.data])
 
@@ -174,7 +177,11 @@ export default function OperacionPage() {
       )}
       <KPICards latest={latest} />
 
-      <PulseCard rows={rdsReports as never} />
+      <PulseCard
+        rows={rdsReports as never}
+        estadoTgn={latestValidDaily?.estado_tgn}
+        estadoTgs={latestValidDaily?.estado_tgs}
+      />
 
       <div style={{ ...card, marginTop: space.xl }}>
         <CommentsSection comments={comments} />
@@ -304,7 +311,7 @@ export default function OperacionPage() {
           <InjectionsChart data={injectionsData} allDates={visibleDates} />
         </div>
         <div style={card}>
-          <h3 style={sectionTitle}>Linepack TGS + TGN (MMm³)</h3>
+          <h3 style={sectionTime}>Linepack TGS + TGN (MMm³)</h3>
           <LinepackChart
             data={valid}
             etgsRows={etgsState.data ?? []}
