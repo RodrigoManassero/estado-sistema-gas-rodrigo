@@ -171,6 +171,17 @@ export const useInjectionsDaily = () => {
   }
 }
 
+// -----------------------------------------------------------------
+// NUEVO: Hook para leer estados_sistemas.json
+// -----------------------------------------------------------------
+export interface EstadosSistemas {
+  fecha?: string | null
+  estado_tgs?: string | null
+  estado_tgn?: string | null
+}
+
+export const useEstadosSistemas = () => useJson<EstadosSistemas>('./data/estados_sistemas.json')
+
 export const useComments = () => useJson<Comments>('./data/comments.json')
 export const useWeather = () => useJson<WeatherPayload>('./data/weather.json')
 
