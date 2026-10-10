@@ -79,12 +79,14 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
             color: #f1f5f9 !important;
             font-size: 10pt;
           }
-          /* Ocultar botones, selectores, navegación y MEGSA al imprimir */
+          /* Ocultar botones, selectores, navegación, MEGSA y los badges de frescura al imprimir */
           button, 
           .scale-selector,
           nav,
           div[style*="overflow-x: auto"],
-          div[style*="border-top: 3px solid #10b981"] {
+          div[style*="border-top: 3px solid #10b981"],
+          /* Ocultar el contenedor de los badges de frescura en el header */
+          div[style*="justify-content: flex-end"][style*="flex-wrap: wrap"] {
             display: none !important;
           }
 

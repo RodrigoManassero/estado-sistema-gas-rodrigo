@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-10T18:42:58+00:00",
+  "generated_at": "2026-10-10T18:56:48+00:00",
   "source": "MEGSA public API (megsa.ar/api)",
   "source_date": null,
   "data": {
@@ -83,7 +83,7 @@
       "displayName": "DOLAR"
     },
     "rondas": [],
-    "fetched_at": "2026-10-10T18:42:58+00:00"
+    "fetched_at": "2026-10-10T18:56:48+00:00"
   },
   "errors": null
 }
