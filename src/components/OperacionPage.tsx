@@ -19,7 +19,6 @@ import {
 } from '../hooks/useData'
 import { card, colors, radius, sectionTitle, space } from '../theme'
 import Header from './Header'
-import KPICards from './KPICards'
 import SystemPanel from './SystemPanel'
 import DemandChart from './DemandChart'
 import DemandForecastChart from './DemandForecastChart'
@@ -28,13 +27,11 @@ import TemperatureChart from './TemperatureChart'
 import FuelMixChart from './FuelMixChart'
 import InjectionsChart from './InjectionsChart'
 import WeeklyComparison from './WeeklyComparison'
-import CommentsSection from './CommentsSection'
 import ColdRanking from './ColdRanking'
 import MEGSAPanel from './MEGSAPanel'
 import SystemFlowPanel from './SystemFlowPanel'
 import PulseCard from './PulseCard'
 import LNGArrivalsChart from './LNGArrivalsChart'
-import TomorrowCard from './TomorrowCard'
 import AlertBanner from './AlertBanner'
 import TGSPanel from './TGSPanel'
 import TGNSystemStatePanel from './TGNSystemStatePanel'
@@ -43,8 +40,6 @@ import { ChartGroup, ScaleSelector } from './_layout'
 import { collectDates, demandYDomain, filterDatesByScale, type TimeScale } from '../utils/charts'
 import { linepackAlerts } from '../utils/alerts'
 
-// Operational view: last 1-2 weeks of history + 5-7 days of forecast.
-// Long-horizon analysis lives in Histórico, the network map in Mapa.
 function OperacionLoading() {
   return (
     <>
@@ -88,20 +83,13 @@ export default function OperacionPage() {
   const [selectedCity, setSelectedCity] = useState('ba')
   const [scale, setScale] = useState<TimeScale>('7d')
 
-  // All hooks must run on every render — keep them above any early return,
-  // otherwise React complains about "rendered more hooks than the previous
-  // render" when loading flips from true to false.
   const weatherForecast = weatherState.data?.forecast ?? []
   const weatherHistoryData = weatherHistoryState.data
   const demandFc = forecastState.data
 
-  // daily.json is built self-sufficient by the pipeline (build_daily.py merges
-  // RDS + PS + ING + ETGS + PPO over the frozen history), so we read it straight
-  // — no client-side merge.
   const data = useMemo(() => dailyState.data ?? [], [dailyState.data])
   const valid = useMemo(() => data.filter((d) => d.demanda_total != null), [data])
   
-  // Extraemos la serie de datos específica para InjectionsChart de injections_daily.json
   const injectionsData = useMemo(() => injectionsDailyState.data ?? [], [injectionsDailyState.data])
 
   const allDates = useMemo(
@@ -114,8 +102,6 @@ export default function OperacionPage() {
     [valid, demandFc],
   )
 
-  // Proyección de linepack → mapas fecha→estimación por sistema, para el
-  // relleno "(est.)" en tablas/KPIs y la línea punteada del gráfico.
   const linepackForecast = useMemo(() => linepackFcState.data?.forecast ?? [], [linepackFcState.data])
   const tgnEstByDate = useMemo(() => {
     const m = new Map<string, number>()
@@ -139,7 +125,6 @@ export default function OperacionPage() {
   }
 
   const latest = valid[valid.length - 1]
-  const comments = commentsState.data ?? { daily: [], weekly: [] }
   const regions = regionsState.data ?? []
   const rdsReports = rdsState.data ?? []
 
@@ -157,9 +142,9 @@ export default function OperacionPage() {
 
   return (
     <>
+      {/* 1. Cabecera y alertas iniciales */}
       <Header lastDate={latest?.fecha} freshness={freshness} />
       <AlertBanner alerts={linepackAlerts(latest)} />
-      {/* <TomorrowCard /> */}
       {smnState.data && smnState.data.length > 0 && (
         <div style={{
           marginTop: space.md,
@@ -174,82 +159,22 @@ export default function OperacionPage() {
           ⚠ {smnState.data.length} alerta{smnState.data.length === 1 ? '' : 's'} meteorológica{smnState.data.length === 1 ? '' : 's'} activa{smnState.data.length === 1 ? '' : 's'} del SMN — ver pestaña Fuentes para detalle.
         </div>
       )}
-      {/* <KPICards latest={latest} /> */}
 
-      {/* PASADO DE ESTADOS A PULSECARD */}
+      {/* 2. Tarjeta principal de estado */}
       <PulseCard
         rows={rdsReports as never}
         estadoTgn={estadosSysState.data?.estado_tgn}
         estadoTgs={estadosSysState.data?.estado_tgs}
       />
 
-      {/* Comentarios Operativos ocultados */}
-      {/* 
-      <div style={{ ...card, marginTop: space.xl }}>
-        <CommentsSection comments={comments} />
-      </div> 
-      */}
-
+      {/* 3. Paneles de sistemas intermedios */}
       {rdsReports.length > 0 && (
         <div style={{ ...card, marginTop: space.xl }}>
           <SystemFlowPanel latest={rdsReports[rdsReports.length - 1] as never} generatedAt={rdsState.meta.generated_at} />
         </div>
       )}
 
-      <TGSPanel estByDate={tgsEstByDate} />
-
-      <TGNSystemStatePanel
-        rows={tgnSystemState.data}
-        generatedAt={tgnSystemState.meta.generated_at}
-        estByDate={tgnEstByDate}
-      />
-
-      {megsaState.data && megsaState.data.benchmarks?.length > 0 && (
-        <div style={{ ...card, marginTop: space.xl, borderTop: `3px solid ${colors.accent.green}` }}>
-          <MEGSAPanel data={megsaState.data} />
-        </div>
-      )}
-
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: space.lg,
-          marginTop: space.xl,
-        }}
-      >
-        <SystemPanel
-          title="Sistema TGS"
-          color={colors.accent.green}
-          data={valid}
-          linepackKey="linepack_tgs"
-          varKey="var_linepack_tgs"
-          limInfKey="lim_inf_tgs"
-          limSupKey="lim_sup_tgs"
-          estadoKey="estado"
-          estByDate={tgsEstByDate}
-        />
-        <SystemPanel
-          title="Sistema TGN"
-          color={colors.accent.blue}
-          data={valid}
-          linepackKey="linepack_tgn"
-          varKey="var_linepack_tgn"
-          limInfKey="lim_inf_tgn"
-          limSupKey="lim_sup_tgn"
-          estadoKey="estado_tgn"
-          estByDate={tgnEstByDate}
-        />
-        <div style={{ ...card, borderTop: `3px solid ${colors.accent.orange}` }}>
-          <WeeklyComparison data={valid} />
-        </div>
-        {regions.length > 0 && (
-          <div style={{ ...card, borderTop: `3px solid ${colors.accent.purple}` }}>
-            <ColdRanking cities={regions} />
-          </div>
-        )}
-      </div>
-
+      {/* 4. Selector de escala temporal */}
       <ScaleSelector
         value={scale}
         onChange={setScale}
@@ -260,6 +185,7 @@ export default function OperacionPage() {
         ]}
       />
 
+      {/* 5. Grupos de gráficos de datos */}
       <ChartGroup title="Drivers — clima y generación eléctrica">
         <div style={card}>
           <h3 style={sectionTitle}>Temperatura (real + forecast)</h3>
@@ -335,6 +261,62 @@ export default function OperacionPage() {
           </div>
         )}
       </ChartGroup>
+
+      {/* 6. Paneles de sistemas intermedios (TGS, TGN State, MEGSA) */}
+      <TGSPanel estByDate={tgsEstByDate} />
+
+      <TGNSystemStatePanel
+        rows={tgnSystemState.data}
+        generatedAt={tgnSystemState.meta.generated_at}
+        estByDate={tgnEstByDate}
+      />
+
+      {megsaState.data && megsaState.data.benchmarks?.length > 0 && (
+        <div style={{ ...card, marginTop: space.xl, borderTop: `3px solid ${colors.accent.green}` }}>
+          <MEGSAPanel data={megsaState.data} />
+        </div>
+      )}
+
+      {/* 7. Grillas de paneles de resumen (TGS, TGN, Comp. Semanal, Ranking de frío) */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          gap: space.lg,
+          marginTop: space.xl,
+        }}
+      >
+        <SystemPanel
+          title="Sistema TGS"
+          color={colors.accent.green}
+          data={valid}
+          linepackKey="linepack_tgs"
+          varKey="var_linepack_tgs"
+          limInfKey="lim_inf_tgs"
+          limSupKey="lim_sup_tgs"
+          estadoKey="estado"
+          estByDate={tgsEstByDate}
+        />
+        <SystemPanel
+          title="Sistema TGN"
+          color={colors.accent.blue}
+          data={valid}
+          linepackKey="linepack_tgn"
+          varKey="var_linepack_tgn"
+          limInfKey="lim_inf_tgn"
+          limSupKey="lim_sup_tgn"
+          estadoKey="estado_tgn"
+          estByDate={tgnEstByDate}
+        />
+        <div style={{ ...card, borderTop: `3px solid ${colors.accent.orange}` }}>
+          <WeeklyComparison data={valid} />
+        </div>
+        {regions.length > 0 && (
+          <div style={{ ...card, borderTop: `3px solid ${colors.accent.purple}` }}>
+            <ColdRanking cities={regions} />
+          </div>
+        )}
+      </div>
     </>
   )
 }
