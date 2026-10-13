@@ -1,1 +1,2 @@
-﻿# sin datos
+﻿currency,currencyName,currentPrice,currentPeriod,previousPrice,previousPeriod,nominalDifference,percentageDifference,lastUpdated,marketType,displayName
+USD,Dolar U.S.A,1535.0,2026-10-13T15:03:00,1535.0,2026-10-13T09:55:00,0.0,0.0,2026-10-13T15:30:02.0139866,Dollar,DOLAR
