@@ -1,5 +1,1 @@
-﻿product,productName,series,seriesDescription,units,currentPrice,currentPeriod,previousPrice,previousPeriod,nominalDifference,percentageDifference,lastUpdated,marketType,displayName
-NAT_GAS,Natural Gas,NATURAL_GAS_USD,spot_price,USD/MMbtu,3.13,2026-10-12T00:00:00,3.22,,-0.09,-2.8,2026-10-12T11:20:07.9558378,Gas,NAT GAS
-DUTCH_TTF_EUR,TTF GAS Fut,DUTCH_TTF_EUR,spot_price,€/MWh,82.88,2026-10-12T00:00:00,81.34,,1.54,1.89,2026-10-12T11:20:08.3464857,Gas,TTF GAS Fut
-BRENT,UK Brent Crude Oil,BRENT_CRUDE_USD,spot_price,USD/bbl,106.79,2026-10-12T00:00:00,104.54,,2.25,2.15,2026-10-12T11:20:07.2800967,Oil,BRENT
-WTI,WTI Crude Oil,WTI_USD,spot_price,USD/bbl,93.72,2026-10-12T00:00:00,91.85,,1.87,2.04,2026-10-12T11:20:06.7166946,Oil,WTI
+﻿# sin datos

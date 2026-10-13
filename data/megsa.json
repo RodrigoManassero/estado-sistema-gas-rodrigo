@@ -1,89 +1,16 @@
 {
-  "generated_at": "2026-10-12T21:38:08+00:00",
+  "generated_at": "2026-10-13T12:17:19+00:00",
   "source": "MEGSA public API (megsa.ar/api)",
   "source_date": null,
   "data": {
-    "benchmarks": [
-      {
-        "product": "NAT_GAS",
-        "productName": "Natural Gas",
-        "series": "NATURAL_GAS_USD",
-        "seriesDescription": "spot_price",
-        "units": "USD/MMbtu",
-        "currentPrice": 3.13,
-        "currentPeriod": "2026-10-12T00:00:00",
-        "previousPrice": 3.22,
-        "previousPeriod": null,
-        "nominalDifference": -0.09,
-        "percentageDifference": -2.8,
-        "lastUpdated": "2026-10-12T11:20:07.9558378",
-        "marketType": "Gas",
-        "displayName": "NAT GAS"
-      },
-      {
-        "product": "DUTCH_TTF_EUR",
-        "productName": "TTF GAS Fut",
-        "series": "DUTCH_TTF_EUR",
-        "seriesDescription": "spot_price",
-        "units": "€/MWh",
-        "currentPrice": 82.88,
-        "currentPeriod": "2026-10-12T00:00:00",
-        "previousPrice": 81.34,
-        "previousPeriod": null,
-        "nominalDifference": 1.54,
-        "percentageDifference": 1.89,
-        "lastUpdated": "2026-10-12T11:20:08.3464857",
-        "marketType": "Gas",
-        "displayName": "TTF GAS Fut"
-      },
-      {
-        "product": "BRENT",
-        "productName": "UK Brent Crude Oil",
-        "series": "BRENT_CRUDE_USD",
-        "seriesDescription": "spot_price",
-        "units": "USD/bbl",
-        "currentPrice": 106.79,
-        "currentPeriod": "2026-10-12T00:00:00",
-        "previousPrice": 104.54,
-        "previousPeriod": null,
-        "nominalDifference": 2.25,
-        "percentageDifference": 2.15,
-        "lastUpdated": "2026-10-12T11:20:07.2800967",
-        "marketType": "Oil",
-        "displayName": "BRENT"
-      },
-      {
-        "product": "WTI",
-        "productName": "WTI Crude Oil",
-        "series": "WTI_USD",
-        "seriesDescription": "spot_price",
-        "units": "USD/bbl",
-        "currentPrice": 93.72,
-        "currentPeriod": "2026-10-12T00:00:00",
-        "previousPrice": 91.85,
-        "previousPeriod": null,
-        "nominalDifference": 1.87,
-        "percentageDifference": 2.04,
-        "lastUpdated": "2026-10-12T11:20:06.7166946",
-        "marketType": "Oil",
-        "displayName": "WTI"
-      }
-    ],
-    "dolar": {
-      "currency": "USD",
-      "currencyName": "Dolar U.S.A",
-      "currentPrice": 1535.0,
-      "currentPeriod": "2026-10-09T17:00:00",
-      "previousPrice": 1535.0,
-      "previousPeriod": "2026-10-09T15:03:00",
-      "nominalDifference": 0.0,
-      "percentageDifference": 0.0,
-      "lastUpdated": "2026-10-09T17:30:11.7381064",
-      "marketType": "Dollar",
-      "displayName": "DOLAR"
-    },
+    "benchmarks": [],
+    "dolar": null,
     "rondas": [],
-    "fetched_at": "2026-10-12T21:38:08+00:00"
+    "fetched_at": "2026-10-13T12:17:19+00:00"
   },
-  "errors": null
+  "errors": [
+    "hidrocarburos: HTTPSConnectionPool(host='www.megsa.ar', port=443): Max retries exceeded with url: /api/hidrocarburos (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)')))",
+    "dolar: HTTPSConnectionPool(host='www.megsa.ar', port=443): Max retries exceeded with url: /api/dolar (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)')))",
+    "rondas: HTTPSConnectionPool(host='www.megsa.ar', port=443): Max retries exceeded with url: /api/rondas/publicadas (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)')))"
+  ]
 }
