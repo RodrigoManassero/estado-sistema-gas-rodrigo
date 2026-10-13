@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-13T12:28:51+00:00",
+  "generated_at": "2026-10-13T12:40:50+00:00",
   "source": "MEGSA public API (megsa.ar/api)",
   "source_date": null,
   "data": {
     "benchmarks": [],
     "dolar": null,
     "rondas": [],
-    "fetched_at": "2026-10-13T12:28:51+00:00"
+    "fetched_at": "2026-10-13T12:40:50+00:00"
   },
   "errors": [
     "hidrocarburos: HTTPSConnectionPool(host='www.megsa.ar', port=443): Max retries exceeded with url: /api/hidrocarburos (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1010)')))",
