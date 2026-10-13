@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12T21:43:02+00:00",
+  "generated_at": "2026-10-13T12:21:19+00:00",
   "source": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
   "source_date": "2026-09",
   "data": [
@@ -37834,7 +37834,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "La Pampa",
       "prod_gas_mm3": 0.0,
-      "prod_pet_m3": 111.34,
+      "prod_pet_m3": 111.33,
       "prod_agua_m3": 221.35,
       "pozos_activos": 4,
       "pozos_no_conv": 0
@@ -45153,7 +45153,7 @@
       "empresa": "YPF S.A.",
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
-      "prod_gas_mm3": 6.52,
+      "prod_gas_mm3": 6.51,
       "prod_pet_m3": 39540.08,
       "prod_agua_m3": 55624.95,
       "pozos_activos": 22,
@@ -45358,7 +45358,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 3.6,
-      "prod_pet_m3": 81035.21,
+      "prod_pet_m3": 81035.22,
       "prod_agua_m3": 8859.08,
       "pozos_activos": 33,
       "pozos_no_conv": 42
@@ -47126,6 +47126,18 @@
       "prod_agua_m3": 0.0,
       "pozos_activos": 0,
       "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-09",
+      "area": "LOS TOLDOS II OESTE",
+      "empresa": "CONTINENTAL RESOURCES ARGENTINA SAU.",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 0,
+      "pozos_no_conv": 4
     },
     {
       "mes": "2026-09",
