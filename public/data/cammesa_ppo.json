@@ -2577,34 +2577,34 @@
     },
     {
       "fecha": "2026-10-09",
-      "gas_mmm3": 0.0,
+      "gas_mmm3": 29.553,
       "carbon_tn": 0.0,
       "fueloil_tn": 0.0,
-      "gasoil_m3": 0.0,
+      "gasoil_m3": 22.0,
       "plants_counted": 1,
       "source": "Parte_091026.xlsx"
     },
     {
       "fecha": "2026-10-10",
-      "gas_mmm3": 0.0,
+      "gas_mmm3": 26.931,
       "carbon_tn": 0.0,
       "fueloil_tn": 0.0,
-      "gasoil_m3": 0.0,
+      "gasoil_m3": 22.0,
       "plants_counted": 1,
       "source": "Parte_101026.xlsx"
     },
     {
       "fecha": "2026-10-11",
-      "gas_mmm3": 0.0,
+      "gas_mmm3": 22.673,
       "carbon_tn": 0.0,
       "fueloil_tn": 0.0,
-      "gasoil_m3": 0.0,
+      "gasoil_m3": 7.0,
       "plants_counted": 1,
       "source": "Parte_111026.xlsx"
     },
     {
       "fecha": "2026-10-12",
-      "gas_mmm3": 0.0,
+      "gas_mmm3": 25.542,
       "carbon_tn": 0.0,
       "fueloil_tn": 0.0,
       "gasoil_m3": 0.0,
@@ -2613,10 +2613,10 @@
     },
     {
       "fecha": "2026-10-13",
-      "gas_mmm3": 0.0,
+      "gas_mmm3": 29.776,
       "carbon_tn": 0.0,
       "fueloil_tn": 0.0,
-      "gasoil_m3": 0.0,
+      "gasoil_m3": 24.0,
       "plants_counted": 1,
       "source": "Parte_131026.xlsx"
     }
