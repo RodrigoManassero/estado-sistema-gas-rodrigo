@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-15T17:32:53+00:00",
+  "generated_at": "2026-10-15T17:44:20+00:00",
   "source": "rolling train/predict on ENARGAS RDS",
   "source_date": null,
   "data": {
@@ -8,8 +8,8 @@
     "segments": {
       "prioritaria": {
         "metrics": {
-          "mae": 11.67,
-          "mape": 24.98,
+          "mae": 11.78,
+          "mape": 25.19,
           "n": 37
         },
         "series": [
@@ -256,12 +256,12 @@
           {
             "fecha": "2026-10-04",
             "actual": 37.9,
-            "predicted": 29.53
+            "predicted": 29.65
           },
           {
             "fecha": "2026-10-05",
             "actual": 43.0,
-            "predicted": 32.04
+            "predicted": 32.1
           },
           {
             "fecha": "2026-10-06",
@@ -271,47 +271,47 @@
           {
             "fecha": "2026-10-07",
             "actual": 43.8,
-            "predicted": 28.49
+            "predicted": 28.55
           },
           {
             "fecha": "2026-10-08",
             "actual": 44.7,
-            "predicted": 43.83
+            "predicted": 43.58
           },
           {
             "fecha": "2026-10-09",
             "actual": 46.5,
-            "predicted": 53.13
+            "predicted": 52.82
           },
           {
             "fecha": "2026-10-10",
             "actual": 47.7,
-            "predicted": 50.46
+            "predicted": 50.34
           },
           {
             "fecha": "2026-10-11",
             "actual": 49.2,
-            "predicted": 45.15
+            "predicted": 45.14
           },
           {
             "fecha": "2026-10-12",
             "actual": 48.5,
-            "predicted": 44.1
+            "predicted": 43.92
           },
           {
             "fecha": "2026-10-13",
             "actual": 49.8,
-            "predicted": 41.43
+            "predicted": 41.18
           },
           {
             "fecha": "2026-10-14",
             "actual": 48.1,
-            "predicted": 46.46
+            "predicted": 42.67
           },
           {
             "fecha": "2026-10-15",
             "actual": 50.0,
-            "predicted": 30.95
+            "predicted": 30.96
           }
         ]
       },
