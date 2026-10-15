@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-14T17:54:08+00:00",
+  "generated_at": "2026-10-15T14:55:06+00:00",
   "source": "Secretaría de Energía — Capítulo IV (datos.energia.gob.ar)",
   "source_date": "2026-09",
   "data": [
@@ -30599,7 +30599,7 @@
       "provincia": "Mendoza",
       "prod_gas_mm3": 0.0,
       "prod_pet_m3": 5366.61,
-      "prod_agua_m3": 16795.9,
+      "prod_agua_m3": 16795.91,
       "pozos_activos": 20,
       "pozos_no_conv": 0
     },
@@ -31115,7 +31115,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 30.16,
       "prod_pet_m3": 253233.36,
-      "prod_agua_m3": 159456.62,
+      "prod_agua_m3": 159456.61,
       "pozos_activos": 167,
       "pozos_no_conv": 173
     },
@@ -34570,7 +34570,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "La Pampa",
       "prod_gas_mm3": 0.29,
-      "prod_pet_m3": 18971.23,
+      "prod_pet_m3": 18971.24,
       "prod_agua_m3": 309791.03,
       "pozos_activos": 205,
       "pozos_no_conv": 42
@@ -34594,7 +34594,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Mendoza",
       "prod_gas_mm3": 0.25,
-      "prod_pet_m3": 2905.05,
+      "prod_pet_m3": 2905.06,
       "prod_agua_m3": 8530.8,
       "pozos_activos": 12,
       "pozos_no_conv": 1
@@ -37906,7 +37906,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 416.29,
-      "prod_pet_m3": 142413.92,
+      "prod_pet_m3": 142413.93,
       "prod_agua_m3": 153982.81,
       "pozos_activos": 107,
       "pozos_no_conv": 134
@@ -38758,7 +38758,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 1.99,
-      "prod_pet_m3": 5269.64,
+      "prod_pet_m3": 5269.63,
       "prod_agua_m3": 21910.31,
       "pozos_activos": 45,
       "pozos_no_conv": 0
@@ -38891,7 +38891,7 @@
       "provincia": "Rio Negro",
       "prod_gas_mm3": 1.27,
       "prod_pet_m3": 2232.92,
-      "prod_agua_m3": 28855.3,
+      "prod_agua_m3": 28855.29,
       "pozos_activos": 42,
       "pozos_no_conv": 43
     },
@@ -41027,7 +41027,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 2.33,
       "prod_pet_m3": 5117.8,
-      "prod_agua_m3": 19807.86,
+      "prod_agua_m3": 19807.85,
       "pozos_activos": 41,
       "pozos_no_conv": 0
     },
@@ -41254,7 +41254,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Rio Negro",
       "prod_gas_mm3": 0.97,
-      "prod_pet_m3": 13980.23,
+      "prod_pet_m3": 13980.24,
       "prod_agua_m3": 69.29,
       "pozos_activos": 4,
       "pozos_no_conv": 4
@@ -41326,7 +41326,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Rio Negro",
       "prod_gas_mm3": 0.68,
-      "prod_pet_m3": 10425.34,
+      "prod_pet_m3": 10425.33,
       "prod_agua_m3": 126.44,
       "pozos_activos": 3,
       "pozos_no_conv": 4
@@ -41362,7 +41362,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Mendoza",
       "prod_gas_mm3": 0.6,
-      "prod_pet_m3": 18901.51,
+      "prod_pet_m3": 18901.52,
       "prod_agua_m3": 190786.25,
       "pozos_activos": 107,
       "pozos_no_conv": 43
@@ -43942,7 +43942,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Rio Negro",
       "prod_gas_mm3": 0.06,
-      "prod_pet_m3": 1197.14,
+      "prod_pet_m3": 1197.15,
       "prod_agua_m3": 38998.86,
       "pozos_activos": 20,
       "pozos_no_conv": 0
@@ -44507,7 +44507,7 @@
       "provincia": "Neuquén",
       "prod_gas_mm3": 0.0,
       "prod_pet_m3": 316.09,
-      "prod_agua_m3": 16576.5,
+      "prod_agua_m3": 16576.51,
       "pozos_activos": 6,
       "pozos_no_conv": 0
     },
@@ -45153,7 +45153,7 @@
       "empresa": "YPF S.A.",
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
-      "prod_gas_mm3": 6.51,
+      "prod_gas_mm3": 6.52,
       "prod_pet_m3": 39540.08,
       "prod_agua_m3": 55624.95,
       "pozos_activos": 22,
@@ -45358,7 +45358,7 @@
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
       "prod_gas_mm3": 3.6,
-      "prod_pet_m3": 81035.22,
+      "prod_pet_m3": 81035.21,
       "prod_agua_m3": 8859.08,
       "pozos_activos": 33,
       "pozos_no_conv": 42
@@ -45707,7 +45707,7 @@
       "provincia": "Rio Negro",
       "prod_gas_mm3": 1.19,
       "prod_pet_m3": 2171.89,
-      "prod_agua_m3": 31664.67,
+      "prod_agua_m3": 31664.68,
       "pozos_activos": 43,
       "pozos_no_conv": 43
     },
@@ -46937,6 +46937,18 @@
     },
     {
       "mes": "2026-09",
+      "area": "AGUADA PICHANA OESTE",
+      "empresa": "PAN AMERICAN ENERGY SL",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 257.67,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 30737.37,
+      "pozos_activos": 55,
+      "pozos_no_conv": 60
+    },
+    {
+      "mes": "2026-09",
       "area": "BAJO DEL CHOIQUE - LA INVERNADA",
       "empresa": "PLUSPETROL CUENCA NEUQUINA S.R.L.",
       "cuenca": "NEUQUINA",
@@ -46949,6 +46961,18 @@
     },
     {
       "mes": "2026-09",
+      "area": "LINDERO ATRAVESADO",
+      "empresa": "PAN AMERICAN ENERGY SL",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 31.83,
+      "prod_pet_m3": 79817.42,
+      "prod_agua_m3": 9051.18,
+      "pozos_activos": 206,
+      "pozos_no_conv": 178
+    },
+    {
+      "mes": "2026-09",
       "area": "CENTENARIO CENTRO",
       "empresa": "FLXS OGE S.A",
       "cuenca": "NEUQUINA",
@@ -46958,6 +46982,18 @@
       "prod_agua_m3": 10097.71,
       "pozos_activos": 287,
       "pozos_no_conv": 138
+    },
+    {
+      "mes": "2026-09",
+      "area": "AGUADA DE CASTRO",
+      "empresa": "PAN AMERICAN ENERGY SL",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 11.64,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 9,
+      "pozos_no_conv": 10
     },
     {
       "mes": "2026-09",
@@ -46982,6 +47018,18 @@
       "prod_agua_m3": 821.88,
       "pozos_activos": 4,
       "pozos_no_conv": 5
+    },
+    {
+      "mes": "2026-09",
+      "area": "COIRON AMARGO SUR ESTE",
+      "empresa": "PAN AMERICAN ENERGY SL",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 4.15,
+      "prod_pet_m3": 70476.55,
+      "prod_agua_m3": 31523.75,
+      "pozos_activos": 39,
+      "pozos_no_conv": 49
     },
     {
       "mes": "2026-09",
@@ -47045,6 +47093,18 @@
     },
     {
       "mes": "2026-09",
+      "area": "BANDURRIA CENTRO",
+      "empresa": "PAN AMERICAN ENERGY SL",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 1.1,
+      "prod_pet_m3": 4272.61,
+      "prod_agua_m3": 6278.49,
+      "pozos_activos": 25,
+      "pozos_no_conv": 25
+    },
+    {
+      "mes": "2026-09",
       "area": "LOMA JARILLOSA ESTE",
       "empresa": "GEOPARK ARGENTINA S.A.",
       "cuenca": "NEUQUINA",
@@ -47066,6 +47126,18 @@
       "prod_agua_m3": 1261.86,
       "pozos_activos": 31,
       "pozos_no_conv": 2
+    },
+    {
+      "mes": "2026-09",
+      "area": "AGUADA CÁNEPA",
+      "empresa": "PAN AMERICAN ENERGY SL",
+      "cuenca": "NEUQUINA",
+      "provincia": "Neuquén",
+      "prod_gas_mm3": 0.97,
+      "prod_pet_m3": 17228.62,
+      "prod_agua_m3": 3950.75,
+      "pozos_activos": 12,
+      "pozos_no_conv": 12
     },
     {
       "mes": "2026-09",
@@ -47165,6 +47237,18 @@
     },
     {
       "mes": "2026-09",
+      "area": "LOMA DE LA MINA",
+      "empresa": "E.M.E.S.A",
+      "cuenca": "NEUQUINA",
+      "provincia": "Mendoza",
+      "prod_gas_mm3": 0.05,
+      "prod_pet_m3": 741.1,
+      "prod_agua_m3": 1852.0,
+      "pozos_activos": 18,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-09",
       "area": "PUESTO MORALES ESTE",
       "empresa": "GEOPETROL DRILLING S.A.",
       "cuenca": "NEUQUINA",
@@ -47241,6 +47325,18 @@
       "empresa": "PLUSPETROL S.A.",
       "cuenca": "NEUQUINA",
       "provincia": "Neuquén",
+      "prod_gas_mm3": 0.0,
+      "prod_pet_m3": 0.0,
+      "prod_agua_m3": 0.0,
+      "pozos_activos": 0,
+      "pozos_no_conv": 0
+    },
+    {
+      "mes": "2026-09",
+      "area": "LOMA GUADALOSA",
+      "empresa": "PAN AMERICAN ENERGY SL",
+      "cuenca": "NEUQUINA",
+      "provincia": "Rio Negro",
       "prod_gas_mm3": 0.0,
       "prod_pet_m3": 0.0,
       "prod_agua_m3": 0.0,
