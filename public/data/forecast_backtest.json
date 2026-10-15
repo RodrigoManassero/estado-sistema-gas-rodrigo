@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-15T14:55:34+00:00",
+  "generated_at": "2026-10-15T17:32:53+00:00",
   "source": "rolling train/predict on ENARGAS RDS",
   "source_date": null,
   "data": {
@@ -9,7 +9,7 @@
       "prioritaria": {
         "metrics": {
           "mae": 11.67,
-          "mape": 24.99,
+          "mape": 24.98,
           "n": 37
         },
         "series": [
@@ -256,7 +256,7 @@
           {
             "fecha": "2026-10-04",
             "actual": 37.9,
-            "predicted": 29.47
+            "predicted": 29.53
           },
           {
             "fecha": "2026-10-05",
