@@ -271,7 +271,7 @@ export default function OperacionPage() {
         estByDate={tgnEstByDate}
       />
 
-      {megsaState.data && megsaState.data.benchmarks?.length > 0 && (
+      {megsaState.data && (megsaState.data.benchmarks?.length > 0 || megsaState.data.rondas?.length > 0) && (
         <div style={{ ...card, marginTop: space.xl, borderTop: `3px solid ${colors.accent.green}` }}>
           <MEGSAPanel data={megsaState.data} />
         </div>
