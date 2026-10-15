@@ -80,29 +80,14 @@ def download_and_decrypt(doc_id: str, attachment_id: str, session: requests.Sess
     print("CONTENT TYPE:", r.headers.get("content-type"))
     print("SIZE:", len(r.content))
     print("FIRST BYTES:", r.content[:16])
+    
     # XLSX moderno (OpenXML)
     if r.content[:4] == b'PK\x03\x04':
-
-        with open(
-            os.path.join(
-                os.path.dirname(__file__),
-                '..',
-                'raw',
-                'cammesa_test.xlsx'
-            ),
-            'wb'
-        ) as f:
-            f.write(r.content)
-
-        print("CAMMESA XLSX guardado en raw/cammesa_test.xlsx")
-
         return r.content
 
     # XLS clásico protegido
     if r.content[:4] == b'\xd0\xcf\x11\xe0':
-
         office = msoffcrypto.OfficeFile(io.BytesIO(r.content))
-
         try:
             office.load_key(password=DEFAULT_PW)
         except Exception as e:
@@ -111,19 +96,18 @@ def download_and_decrypt(doc_id: str, attachment_id: str, session: requests.Sess
         out = io.BytesIO()
         office.decrypt(out)
         out.seek(0)
-
         return out.read()
 
     raise ValueError(
         f'unsupported file type (first bytes {r.content[:8]!r})'
     )
 
+
 def aggregate_fuel_sheet(xls_bytes: bytes):
     """Sum every plant row in Consumo Combustibles, return totals + metadata."""
 
     # XLSX moderno
     if xls_bytes[:4] == b'PK\x03\x04':
-
         from openpyxl import load_workbook
 
         wb = load_workbook(
@@ -131,26 +115,74 @@ def aggregate_fuel_sheet(xls_bytes: bytes):
             data_only=True
         )
 
-        print("XLSX detectado")
-        print("HOJAS:", wb.sheetnames)
+        if "Consumo Combustibles" not in wb.sheetnames:
+            return None
 
         ws = wb["Consumo Combustibles"]
 
-        for row in ws.iter_rows(values_only=True):
-            if len(row) > 1 and str(row[1]).strip() == "Total":
+        totals = {
+            'gas_dam3': 0.0,
+            'carbon_tn': 0.0,
+            'fueloil_tn': 0.0,
+            'gasoil_m3': 0.0,
+            'gen_gas_mwh': 0.0,
+            'gen_carbon_mwh': 0.0,
+            'gen_fueloil_mwh': 0.0,
+            'gen_gasoil_mwh': 0.0,
+        }
+        plants_counted = 0
 
-                print("FILA TOTAL:")
-                print(row)
+        # Sumar desde la fila 5 hasta la 299 (o max_row)
+        max_r = min(299, ws.max_row)
+        for r in range(5, max_r + 1):
+            code = str(ws.cell(row=r, column=2).value or '').strip()
+            if not code or code.lower().startswith('total'):
+                continue
+            def num(col_idx):
+                v = ws.cell(row=r, column=col_idx).value
+                try:
+                    return float(v or 0)
+                except (TypeError, ValueError):
+                    return 0.0
 
-                return {
-                    "fecha": None,
-                    "gas_mmm3": round(float(row[2]) / 1000, 3),
-                    "carbon_tn": round(float(row[5]), 1),
-                    "fueloil_tn": round(float(row[8]), 1),
-                    "gasoil_m3": round(float(row[11]), 1),
-                    "plants_counted": 1,
-                }
+            totals['gas_dam3'] += num(3)          # Columna C
+            totals['gen_gas_mwh'] += num(4)       # Columna D
+            totals['carbon_tn'] += num(6)         # Columna F
+            totals['gen_carbon_mwh'] += num(7)    # Columna G
+            totals['fueloil_tn'] += num(9)        # Columna I
+            totals['gen_fueloil_mwh'] += num(10)  # Columna J
+            totals['gasoil_m3'] += num(12)        # Columna L
+            totals['gen_gasoil_mwh'] += num(13)   # Columna M
+            plants_counted += 1
 
+        # Intentar extraer la fecha de la hoja (ej. fila 2)
+        fecha_iso = None
+        for r in range(1, 4):
+            for c in range(1, ws.max_column + 1):
+                v = ws.cell(row=r, column=c).value
+                if isinstance(v, str) and 'Día' in v:
+                    try:
+                        fecha_iso = datetime.strptime(v.split(':', 1)[1].strip(), '%d/%m/%Y').date().isoformat()
+                    except ValueError:
+                        pass
+                    break
+            if fecha_iso:
+                break
+
+        return {
+            'fecha': fecha_iso,
+            'gas_mmm3': round(totals['gas_dam3'] / 1000, 3),  # dam³ -> MMm³
+            'carbon_tn': round(totals['carbon_tn'], 1),
+            'fueloil_tn': round(totals['fueloil_tn'], 1),
+            'gasoil_m3': round(totals['gasoil_m3'], 1),
+            'gen_gas_mwh': round(totals['gen_gas_mwh'], 1),
+            'gen_carbon_mwh': round(totals['gen_carbon_mwh'], 1),
+            'gen_fueloil_mwh': round(totals['gen_fueloil_mwh'], 1),
+            'gen_gasoil_mwh': round(totals['gen_gasoil_mwh'], 1),
+            'plants_counted': plants_counted,
+        }
+
+    # XLS clásico
     wb = xlrd.open_workbook(
         file_contents=xls_bytes,
         on_demand=True
@@ -160,7 +192,6 @@ def aggregate_fuel_sheet(xls_bytes: bytes):
         return None
 
     s = wb.sheet_by_name('Consumo Combustibles')
-    # Parse "Día: 01/04/2026" from row 1 (col 5 in the samples we inspected).
     fecha_iso = None
     for r in range(3):
         for c in range(s.ncols):
@@ -174,12 +205,6 @@ def aggregate_fuel_sheet(xls_bytes: bytes):
         if fecha_iso:
             break
 
-    # Columns per fuel group, based on the inspected header:
-    #  B(1)     C(2)=consumo gas   D(3)=e.gen gas    E(4)=pot gas
-    #  F(5)=consumo carbón         G(6)=e.gen carbón  H(7)=pot carbón
-    #  I(8)=consumo fueloil        J(9)=e.gen fueloil K(10)=pot fueloil
-    #  L(11)=consumo gasoil        M(12)=e.gen gasoil N(13)=pot gasoil
-    # Data rows start at 4; they continue until an empty plant code or summary.
     totals = {
         'gas_dam3': 0.0,
         'carbon_tn': 0.0,
@@ -191,7 +216,8 @@ def aggregate_fuel_sheet(xls_bytes: bytes):
         'gen_gasoil_mwh': 0.0,
     }
     plants_counted = 0
-    for r in range(4, s.nrows):
+    max_r = min(299, s.nrows)
+    for r in range(4, max_r):
         code = str(s.cell_value(r, 1) or '').strip()
         if not code or code.lower().startswith('total'):
             continue
@@ -252,7 +278,6 @@ def main():
     added = 0
     failures = []
     for doc in docs:
-        # fecha comes as "DD/MM/YYYY" — reparse to ISO
         try:
             fecha_iso = datetime.strptime(doc['fecha'], '%d/%m/%Y').date().isoformat()
         except (KeyError, ValueError):
@@ -283,14 +308,13 @@ def main():
         if not aggregated:
             failures.append(f"{fecha_iso}: no Consumo Combustibles sheet")
             continue
-        # Prefer the date from the sheet header if parsable, else fall back to doc date.
+            
         aggregated['fecha'] = aggregated.get('fecha') or fecha_iso
         aggregated['source'] = attachment_id
         existing[aggregated['fecha']] = aggregated
         added += 1
         if added % 5 == 0:
-            print(f"  +{added} gas={aggregated['gas_mmm3']} MMm³"
-            )
+            print(f"  +{added} gas={aggregated['gas_mmm3']} MMm³")
         if args.sleep_ms:
             import time as _t
             _t.sleep(args.sleep_ms / 1000)
