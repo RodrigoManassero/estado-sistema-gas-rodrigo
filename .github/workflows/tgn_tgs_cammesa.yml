@@ -2,8 +2,8 @@ name: TGN_TGS_Cammesa
 
 on:
   schedule:
-    # 09:45 ART equivale a 12:45 UTC
-    - cron: '45 12 * * *'  # 09:45 ART
+    # 09:30 ART equivale a 12:30 UTC
+    - cron: '30 12 * * *'  # 09:30 ART
   workflow_dispatch:
 
 permissions:
