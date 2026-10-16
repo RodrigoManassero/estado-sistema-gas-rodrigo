@@ -1,4 +1,4 @@
-name: Update_TGN_TGS
+name: TGN_TGS_Cammesa
 
 on:
   schedule:
@@ -52,11 +52,15 @@ jobs:
           TGN_PASSWORD: ${{ secrets.TGN_PASSWORD }}
         run: python scripts/fetch_tgn.py
 
-      # --- PASO 3: Reconstruir JSON diario unificado ---
+      # --- PASO 3: Procesar CAMMESA Weekly Fetcher ---
+      - name: Run CAMMESA Weekly Fetcher
+        run: python scripts/fetch_cammesa_weekly.py
+
+      # --- PASO 4: Reconstruir JSON diario unificado ---
       - name: Rebuild daily.json
         run: python scripts/build_daily.py
 
-      # --- PASO 4: Chequeo de tipos y Build del Frontend ---
+      # --- PASO 5: Chequeo de tipos y Build del Frontend ---
       - name: Type check
         run: npx tsc --noEmit
 
@@ -76,7 +80,7 @@ jobs:
           mkdir -p dist/curso
           cp -r curso/dist/. dist/curso/
 
-      # --- PASO 5: Commit y Deploy unificado ---
+      # --- PASO 6: Commit y Deploy unificado (incluyendo Cammesa y datos generales) ---
       - name: Commit data
         run: |
           git config user.name "github-actions[bot]"
@@ -85,7 +89,7 @@ jobs:
           if git diff --staged --quiet; then
             echo "No data changes to commit"
           else
-            git commit -m "TGN & TGS auto-update $(date -u +%Y-%m-%dT%H:%MZ)"
+            git commit -m "TGN, TGS & Cammesa auto-update $(date -u +%Y-%m-%dT%H:%MZ)"
             git pull --rebase origin main || git rebase --abort
             git push
           fi
