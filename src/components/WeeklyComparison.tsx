@@ -6,22 +6,13 @@ function avg(arr: (number | null)[]): number | null {
 }
 
 export default function WeeklyComparison({ data }: { data: DailyRow[] }) {
-  if (!data || data.length === 0) return null
+  const valid = data.filter(d => d.demanda_total != null)
+  // Requerimos al menos 15 días válidos para poder excluir el actual y armar los dos bloques de 7
+  if (valid.length < 15) return null
 
-  // Ordenar los datos por fecha de forma ascendente por seguridad
-  const sortedData = [...data].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-
-  // Tomar el último registro disponible como referencia o calcular en base al día anterior
-  // Asumiendo que d.date viene en formato 'YYYY-MM-DD' o similar compatible con Date
-  const lastValidIndex = sortedData.findLastIndex(d => d.demanda_total != null)
-  if (lastValidIndex < 13) return null
-
-  // Excluimos el día de hoy / último día parcial si corresponde, tomando los 14 días anteriores cerrados
-  // O cortando exactamente desde el día anterior hacia atrás:
-  const historicalWindow = sortedData.slice(0, lastValidIndex + 1)
-  
-  const thisWeek = historicalWindow.slice(-8, -1)     // 7 días de la Semana N (excluyendo el actual)
-  const lastWeek = historicalWindow.slice(-15, -8)    // 7 días de la Semana N-1
+  // Excluimos el día actual (último elemento) y tomamos los 7 días anteriores para Sem N, y 7 anteriores para Sem N-1
+  const thisWeek = valid.slice(-8, -1)
+  const lastWeek = valid.slice(-15, -8)
 
   const metrics = [
     { label: 'Demanda Total', unit: 'MMm3/d', cur: avg(thisWeek.map(d => d.demanda_total)), prev: avg(lastWeek.map(d => d.demanda_total)) },
@@ -55,7 +46,7 @@ export default function WeeklyComparison({ data }: { data: DailyRow[] }) {
                 <td style={{ ...td, color: '#e2e8f0' }}>{m.label}</td>
                 <td style={{ ...td, textAlign: 'right', color: '#94a3b8' }}>{m.prev?.toFixed(1) ?? '-'}</td>
                 <td style={{ ...td, textAlign: 'right', color: '#f1f5f9', fontWeight: 600 }}>{m.cur?.toFixed(1) ?? '-'}</td>
-                <td style={{ ...td, textAlign: 'right', color: delta != long ? (delta >= 0 ? '#10b981' : '#ef4444') : '#64748b', fontWeight: 600 }}>
+                <td style={{ ...td, textAlign: 'right', color: delta != null ? (delta >= 0 ? '#10b981' : '#ef4444') : '#64748b', fontWeight: 600 }}>
                   {delta != null ? `${delta >= 0 ? '+' : ''}${delta.toFixed(1)} ${m.unit}` : '-'}
                 </td>
               </tr>
