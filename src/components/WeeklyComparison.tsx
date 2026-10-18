@@ -7,14 +7,11 @@ function avg(arr: (number | null)[]): number | null {
 
 export default function WeeklyComparison({ data }: { data: DailyRow[] }) {
   const valid = data.filter(d => d.demanda_total != null)
-  // Requerimos al menos 15 registros válidos para poder descartar el actual y armar ambos bloques de 7
-  if (valid.length < 15) return null
+  if (valid.length < 14) return null
 
-  // Excluimos el último elemento (el día actual/parcial) para trabajar con bloques cerrados
-  const closedData = valid.slice(0, -1)
-
-  const thisWeek = closedData.slice(-7)
-  const lastWeek = closedData.slice(-14, -7)
+  // Tomamos los últimos 7 días exactos para la Semana N y los 7 previos para la Semana N-1
+  const thisWeek = valid.slice(-7)
+  const lastWeek = valid.slice(-14, -7)
 
   const metrics = [
     { label: 'Demanda Total', unit: 'MMm3/d', cur: avg(thisWeek.map(d => d.demanda_total)), prev: avg(lastWeek.map(d => d.demanda_total)) },
