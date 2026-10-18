@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-17T23:17:27+00:00",
+  "generated_at": "2026-10-18T13:06:28+00:00",
   "source": "TGS — Síntesis del Estado Operativo (ETGS)",
-  "source_date": "2026-10-16",
+  "source_date": "2026-10-17",
   "data": [
     {
       "generado_at": "2026-04-03T08:17:23",
@@ -3101,6 +3101,21 @@
       "pcs_troncal": 9532,
       "pcs_paralelo": 9460,
       "source": "ETGS_20261016.pdf"
+    },
+    {
+      "generado_at": "2026-10-18T08:45:15",
+      "fecha": "2026-10-17",
+      "linepack_tgs_dia_anterior": 223.68,
+      "linepack_tgs_dia_actual": 224.61,
+      "linepack_tgs_variacion": 0.93,
+      "estado": "Alerta",
+      "motivo": "Por desvios en entrega en zonas",
+      "pcs_san_martin": 9515,
+      "pcs_neuba_1": 10121,
+      "pcs_neuba_2": 10609,
+      "pcs_troncal": 9647,
+      "pcs_paralelo": 9636,
+      "source": "ETGS_20261017.pdf"
     }
   ],
   "issues": []
