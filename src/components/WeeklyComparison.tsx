@@ -1,24 +1,40 @@
 import type { DailyRow } from '../types'
 
 function avg(arr: (number | null)[]): number | null {
-  const valid = arr.filter((v): v is number => v != null)
+  const valid = arr.filter((v): v is number => v != null && v > 0)
   return valid.length ? valid.reduce((a, b) => a + b, 0) / valid.length : null
 }
 
 export default function WeeklyComparison({ data }: { data: DailyRow[] }) {
-  const valid = data.filter(d => d.demanda_total != null)
-  if (valid.length < 14) return null
+  if (!data || data.length === 0) return null
 
-  // Tomamos los últimos 7 días exactos para la Semana N y los 7 previos para la Semana N-1
-  const thisWeek = valid.slice(-7)
-  const lastWeek = valid.slice(-14, -7)
+  // 1. Tomar la fecha de hoy o usar el último registro disponible como referencia "hoy" si no estamos en entorno con fecha del sistema
+  // Ordenamos cronológicamente por la propiedad "fecha"
+  const sortedData = [...data].sort((a: any, b: any) => new Date(a.fecha).getTime() - new Date(b.fecha).getTime())
+
+  // Filtrar solo filas con demanda válida
+  const validRows = sortedData.filter((d: any) => d.demanda_total != null && d.demanda_total > 0)
+  if (validRows.length === 0) return null
+
+  // 2. Definir "ayer" basado en el último registro disponible o en la fecha actual real
+  // Usamos el penúltimo elemento si el último es el día de hoy en curso, o filtramos estrictamente por fecha < "hoy"
+  const todayStr = new Date().toISOString().split('T')[0] // '2026-10-18' (o la fecha actual)
+  
+  // Filtramos para ignorar cualquier dato que sea igual o mayor al día de hoy (descartando fechas futuras o el día corriente incompleto)
+  const pastRows = validRows.filter((d: any) => d.fecha < todayStr)
+
+  if (pastRows.length < 14) return null
+
+  // 3. Tomar exactamente los 7 días anteriores a ayer para Semana N, y los 7 anteriores para Semana N-1
+  const thisWeek = pastRows.slice(-7)
+  const lastWeek = pastRows.slice(-14, -7)
 
   const metrics = [
-    { label: 'Demanda Total', unit: 'MMm3/d', cur: avg(thisWeek.map(d => d.demanda_total)), prev: avg(lastWeek.map(d => d.demanda_total)) },
-    { label: 'Prioritaria', unit: 'MMm3/d', cur: avg(thisWeek.map(d => d.prioritaria)), prev: avg(lastWeek.map(d => d.prioritaria)) },
-    { label: 'Usinas', unit: 'MMm3/d', cur: avg(thisWeek.map(d => d.usinas)), prev: avg(lastWeek.map(d => d.usinas)) },
-    { label: 'Temp. Prom BA', unit: '°C', cur: avg(thisWeek.map(d => d.temp_prom_ba)), prev: avg(lastWeek.map(d => d.temp_prom_ba)) },
-    { label: 'Iny. Total', unit: 'MMm3/d', cur: avg(thisWeek.map(d => d.iny_total)), prev: avg(lastWeek.map(d => d.iny_total)) },
+    { label: 'Demanda Total', unit: 'MMm3/d', cur: avg(thisWeek.map((d: any) => d.demanda_total)), prev: avg(lastWeek.map((d: any) => d.demanda_total)) },
+    { label: 'Prioritaria', unit: 'MMm3/d', cur: avg(thisWeek.map((d: any) => d.prioritaria)), prev: avg(lastWeek.map((d: any) => d.prioritaria)) },
+    { label: 'Usinas', unit: 'MMm3/d', cur: avg(thisWeek.map((d: any) => d.usinas)), prev: avg(lastWeek.map((d: any) => d.usinas)) },
+    { label: 'Temp. Prom BA', unit: '°C', cur: avg(thisWeek.map((d: any) => d.temp_prom_ba)), prev: avg(lastWeek.map((d: any) => d.temp_prom_ba)) },
+    { label: 'Iny. Total', unit: 'MMm3/d', cur: avg(thisWeek.map((d: any) => d.iny_total)), prev: avg(lastWeek.map((d: any) => d.iny_total)) },
   ]
 
   const td: React.CSSProperties = { padding: '6px 10px', borderBottom: '1px solid #334155', fontSize: 13 }
