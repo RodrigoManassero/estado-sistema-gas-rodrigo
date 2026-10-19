@@ -131,7 +131,6 @@ def main():
     # Cap IV (Secretaría de Energía) — monthly upstream production by block.
     # Streams current + previous year CSVs and skips download if Last-Modified
     # hasn't changed, so daily runs are cheap.
-    errors += run('fetch_capiv.py')
     # Pozos terminados (Secretaría de Energía) — monthly completed-well counts
     # per block, the public proxy for drilling activity. Single all-history CSV;
     # skips the ~190 MB download when the resource's Last-Modified is unchanged.
