@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-20T14:29:02+00:00",
+  "generated_at": "2026-10-20T14:52:22+00:00",
   "source": "ENARGAS RDS regression (temp + day-of-week)",
   "source_date": "2026-10-20",
   "data": {
@@ -204,15 +204,15 @@
         "r2_temp_only": 0.818,
         "n_points": 841,
         "dow_offsets": {
-          "0": -0.02,
-          "1": 1.49,
+          "0": -0.0,
+          "1": 1.48,
           "2": 2.66,
           "3": 1.65,
           "4": 1.36,
           "5": -2.45,
-          "6": -4.62
+          "6": -4.63
         },
-        "mean_abs_residual": 7.91,
+        "mean_abs_residual": 7.92,
         "x_feature": "HDD(18°C · media 10 ciudades)"
       },
       "usinas": {
