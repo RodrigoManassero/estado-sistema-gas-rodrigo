@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-10-20T19:59:21.031656",
+  "generated_at": "2026-10-20T20:08:02.919436",
   "source": "Minuta CCO Octubre 2026.docx",
   "data": [
     {
       "cuenca_zona": "Cuenca Sur",
-      "empresa": "General",
-      "instalacion": "General",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Fallas (Revisión y Reparación)",
       "fecha_texto": "Fallas (Revisión y Reparación)",
       "mes_evento": "2026-10",
@@ -14,8 +14,8 @@
     },
     {
       "cuenca_zona": "Cuenca Sur",
-      "empresa": "General",
-      "instalacion": "General",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Campaña verificación de defectos gasoducto Austral y GGSM",
       "fecha_texto": "Campaña verificación de defectos gasoducto Austral y GGSM",
       "mes_evento": "2026-10",
@@ -24,8 +24,8 @@
     },
     {
       "cuenca_zona": "Cuenca Sur",
-      "empresa": "General",
-      "instalacion": "General",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Tarea: Verificación de 7 fallas sobre loop de dn Ø 24” entre PK 136 y 223",
       "fecha_texto": "Tarea: Verificación de 7 fallas sobre loop de dn Ø 24” entre PK 136 y 223",
       "mes_evento": "2026-10",
@@ -34,8 +34,8 @@
     },
     {
       "cuenca_zona": "Cuenca Sur",
-      "empresa": "General",
-      "instalacion": "General",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Recobertura entre VS 31 a VS 33 – 6.8 km",
       "fecha_texto": "Obra: Recobertura entre VS 31 a VS 33 – 6.8 km",
       "mes_evento": "2026-10",
@@ -43,9 +43,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Cambio de Niple",
       "fecha_texto": "Obra: Cambio de Niple",
       "mes_evento": "2026-10",
@@ -53,9 +53,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Cambio de Niple",
       "fecha_texto": "Obra: Cambio de Niple",
       "mes_evento": "2026-10",
@@ -63,9 +63,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Cambio de Niple",
       "fecha_texto": "Obra: Cambio de Niple",
       "mes_evento": "2026-10",
@@ -73,9 +73,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Cambio de Modulo – TC2",
       "fecha_texto": "Obra: Cambio de Modulo – TC2",
       "mes_evento": "2026-10",
@@ -83,9 +83,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Paro Anual – Planta",
       "fecha_texto": "Obra: Paro Anual – Planta",
       "mes_evento": "2026-10",
@@ -93,9 +93,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Prueba de PJ1+Mttos. Asociados",
       "fecha_texto": "Obra: Prueba de PJ1+Mttos. Asociados",
       "mes_evento": "2026-10",
@@ -103,9 +103,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Mantenimientos Varios",
       "fecha_texto": "Obra: Mantenimientos Varios",
       "mes_evento": "2026-10",
@@ -113,9 +113,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Instalación Tableros de Válvulas Lado Succión y Descarga",
       "fecha_texto": "Obra: Instalación Tableros de Válvulas Lado Succión y Descarga",
       "mes_evento": "2026-10",
@@ -123,9 +123,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Actualización de Válvulas por nueva lógica de Planta",
       "fecha_texto": "Obra: Actualización de Válvulas por nueva lógica de Planta",
       "mes_evento": "2026-10",
@@ -133,9 +133,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "fecha_texto": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "mes_evento": "2026-10",
@@ -143,9 +143,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Corridas de scrapper",
       "fecha_texto": "Obra: Corridas de scrapper",
       "mes_evento": "2026-10",
@@ -153,9 +153,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Pasajes de Scraper Limpieza",
       "fecha_texto": "Obra: Pasajes de Scraper Limpieza",
       "mes_evento": "2026-10",
@@ -163,9 +163,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Pasajes de Scraper Instrumentados (TFI y MFL)",
       "fecha_texto": "Obra: Pasajes de Scraper Instrumentados (TFI y MFL)",
       "mes_evento": "2026-10",
@@ -173,9 +173,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Fecha: A confirmar fecha (2 corridas)",
       "fecha_texto": "Fecha: A confirmar fecha (2 corridas)",
       "mes_evento": "2026-10",
@@ -183,9 +183,9 @@
       "estado": "A confirmar"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Pasajes de Scraper Limpieza",
       "fecha_texto": "Obra: Pasajes de Scraper Limpieza",
       "mes_evento": "2026-10",
@@ -193,9 +193,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Pasajes de Scraper Instrumentados (TFI y MFL)",
       "fecha_texto": "Obra: Pasajes de Scraper Instrumentados (TFI y MFL)",
       "mes_evento": "2026-10",
@@ -203,9 +203,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Fecha: A confirmar fecha (2 corridas)",
       "fecha_texto": "Fecha: A confirmar fecha (2 corridas)",
       "mes_evento": "2026-10",
@@ -213,9 +213,9 @@
       "estado": "A confirmar"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Pasajes de Scraper Limpieza",
       "fecha_texto": "Obra: Pasajes de Scraper Limpieza",
       "mes_evento": "2026-10",
@@ -223,9 +223,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Pasajes de Scraper Instrumentados (TFI y MFL)",
       "fecha_texto": "Obra: Pasajes de Scraper Instrumentados (TFI y MFL)",
       "mes_evento": "2026-10",
@@ -233,9 +233,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Fecha: A confirmar fecha (2 corridas)",
       "fecha_texto": "Fecha: A confirmar fecha (2 corridas)",
       "mes_evento": "2026-10",
@@ -243,9 +243,9 @@
       "estado": "A confirmar"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Pasajes de Scraper Limpieza",
       "fecha_texto": "Obra: Pasajes de Scraper Limpieza",
       "mes_evento": "2026-10",
@@ -253,9 +253,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Pasajes de Scraper Instrumentados (TFI y MFL)",
       "fecha_texto": "Obra: Pasajes de Scraper Instrumentados (TFI y MFL)",
       "mes_evento": "2026-10",
@@ -263,9 +263,9 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Obras en Gasoducto",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Fecha: A confirmar fecha (2 corridas)",
       "fecha_texto": "Fecha: A confirmar fecha (2 corridas)",
       "mes_evento": "2026-10",
@@ -274,8 +274,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Prueba de PJ1",
       "fecha_texto": "Obra: Prueba de PJ1",
       "mes_evento": "2026-10",
@@ -284,8 +284,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Prueba de PJ1 – Intención de hacerlo en simultaneo con Tratayén",
       "fecha_texto": "Obra: Prueba de PJ1 – Intención de hacerlo en simultaneo con Tratayén",
       "mes_evento": "2026-10",
@@ -294,8 +294,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Cambio de Sello",
       "fecha_texto": "Obra: Cambio de Sello",
       "mes_evento": "2026-10",
@@ -304,8 +304,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Verificación de defectos",
       "fecha_texto": "Verificación de defectos",
       "mes_evento": "2026-10",
@@ -314,8 +314,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Corrida de scrapper Tramo 701: LLL – PC San Jose Añelo (67,5 km)",
       "fecha_texto": "Corrida de scrapper Tramo 701: LLL – PC San Jose Añelo (67,5 km)",
       "mes_evento": "2026-10",
@@ -324,8 +324,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Corridas CLP – 1 MFL",
       "fecha_texto": "Corridas CLP – 1 MFL",
       "mes_evento": "2026-10",
@@ -334,8 +334,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Corrida de scraper Tramo 711: PC San Jose Añelo – VALB 6 (70 km)",
       "fecha_texto": "Corrida de scraper Tramo 711: PC San Jose Añelo – VALB 6 (70 km)",
       "mes_evento": "2026-10",
@@ -344,8 +344,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Corridas CLP – 1 MFL",
       "fecha_texto": "Corridas CLP – 1 MFL",
       "mes_evento": "2026-10",
@@ -354,8 +354,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Adecuación cruce rio Curi Leuvu - Pk 215- Tramo 702",
       "fecha_texto": "Adecuación cruce rio Curi Leuvu - Pk 215- Tramo 702",
       "mes_evento": "2026-10",
@@ -364,8 +364,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Fecha propuesta: Se corrieron 4 equipos de limpieza; no se pudo continuar con la campaña por requerimiento del sistema. Se continuará desde noviembre, se informan fechas tentativas. Se están programando 5 corridas de limpiezas + 1 CLP y 1 MFL.",
       "fecha_texto": "Fecha propuesta: Se corrieron 4 equipos de limpieza; no se pudo continuar con la campaña por requerimiento del sistema. Se continuará desde noviembre, se informan fechas tentativas. Se están programando 5 corridas de limpiezas + 1 CLP y 1 MFL.",
       "mes_evento": "2026-11",
@@ -374,8 +374,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Durante la corrida puntuales de 18 MM m3/d",
       "fecha_texto": "Durante la corrida puntuales de 18 MM m3/d",
       "mes_evento": "2026-10",
@@ -384,8 +384,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Verificación de defectos gto troncal y paralelo – LLL - Puelen",
       "fecha_texto": "Verificación de defectos gto troncal y paralelo – LLL - Puelen",
       "mes_evento": "2026-10",
@@ -394,8 +394,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Adecuación de aislación de PC",
       "fecha_texto": "Adecuación de aislación de PC",
       "mes_evento": "2026-10",
@@ -404,8 +404,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Cambio de modulo + escape TC03",
       "fecha_texto": "Cambio de modulo + escape TC03",
       "mes_evento": "2026-10",
@@ -414,8 +414,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Duración: 3 dias con PC F/S – Se solapa con cambio de modulo TC04",
       "fecha_texto": "Duración: 3 dias con PC F/S – Se solapa con cambio de modulo TC04",
       "mes_evento": "2026-10",
@@ -424,8 +424,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Adecuación de aislación de planta",
       "fecha_texto": "Adecuación de aislación de planta",
       "mes_evento": "2026-10",
@@ -434,8 +434,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Cambio de modulo TC04",
       "fecha_texto": "Cambio de modulo TC04",
       "mes_evento": "2026-10",
@@ -444,8 +444,8 @@
     },
     {
       "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TOTAL",
-      "instalacion": "TOTAL",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Cambio de modulo Taurus + adecuación Aeroenfriador de aceite",
       "fecha_texto": "Cambio de modulo Taurus + adecuación Aeroenfriador de aceite",
       "mes_evento": "2026-10",
@@ -464,8 +464,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "CAMMESA",
-      "instalacion": "CAMMESA",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Campaña de verificación de defectos en curso. Sin impacto potencial",
       "fecha_texto": "Campaña de verificación de defectos en curso. Sin impacto potencial",
       "mes_evento": "2026-10",
@@ -474,8 +474,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "CAMMESA",
-      "instalacion": "CAMMESA",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Prueba hidráulica gto troncal – Segundo segmento (Pk 1180 a 1210) – Tio Pujio – Ferreyra (tramo 10)",
       "fecha_texto": "Prueba hidráulica gto troncal – Segundo segmento (Pk 1180 a 1210) – Tio Pujio – Ferreyra (tramo 10)",
       "mes_evento": "2026-10",
@@ -484,8 +484,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "CAMMESA",
-      "instalacion": "CAMMESA",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Prueba hidráulica gto troncal – Segmento Pk 1246 a 1311 entre PC Tio Pujio –PC Leones (tramo 10)",
       "fecha_texto": "Prueba hidráulica gto troncal – Segmento Pk 1246 a 1311 entre PC Tio Pujio –PC Leones (tramo 10)",
       "mes_evento": "2026-10",
@@ -494,8 +494,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "CAMMESA",
-      "instalacion": "CAMMESA",
+      "empresa": "TGN",
+      "instalacion": "TGN",
       "obra_tarea": "Cambios de cañerías por adecuación de clase de trazado + reemplazo de válvulas de línea",
       "fecha_texto": "Cambios de cañerías por adecuación de clase de trazado + reemplazo de válvulas de línea",
       "mes_evento": "2026-10",
@@ -504,8 +504,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Fallas (Revisión y Reparación)",
       "fecha_texto": "Fallas (Revisión y Reparación)",
       "mes_evento": "2026-10",
@@ -514,8 +514,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Verificación de falla en PK 710,224",
       "fecha_texto": "Obra: Verificación de falla en PK 710,224",
       "mes_evento": "2026-10",
@@ -524,8 +524,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Verificación de falla en PK 784.123",
       "fecha_texto": "Obra: Verificación de falla en PK 784.123",
       "mes_evento": "2026-10",
@@ -534,8 +534,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Tie-In Loop NII a la descarga de Saturno para nueva planta",
       "fecha_texto": "Obra: Tie-In Loop NII a la descarga de Saturno para nueva planta",
       "mes_evento": "2026-10",
@@ -544,8 +544,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Tie-In Loop NII a la succión de Ordoqui para nueva planta",
       "fecha_texto": "Obra: Tie-In Loop NII a la succión de Ordoqui para nueva planta",
       "mes_evento": "2026-10",
@@ -554,8 +554,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Tie-In NII a la succión de Ordoqui para nueva planta",
       "fecha_texto": "Obra: Tie-In NII a la succión de Ordoqui para nueva planta",
       "mes_evento": "2026-10",
@@ -564,8 +564,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Tie-In Loop NII a la descarga de Ordoqui para nueva planta",
       "fecha_texto": "Obra: Tie-In Loop NII a la descarga de Ordoqui para nueva planta",
       "mes_evento": "2026-10",
@@ -574,8 +574,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Tie-In NII a la descarga de Ordoqui para nueva planta",
       "fecha_texto": "Obra: Tie-In NII a la descarga de Ordoqui para nueva planta",
       "mes_evento": "2026-10",
@@ -584,8 +584,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Cambio de niple Pk 1169",
       "fecha_texto": "Obra: Cambio de niple Pk 1169",
       "mes_evento": "2026-10",
@@ -594,8 +594,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Reparación de fallas en descarga de Planta Barker, altura CT Barker",
       "fecha_texto": "Obra: Reparación de fallas en descarga de Planta Barker, altura CT Barker",
       "mes_evento": "2026-10",
@@ -604,8 +604,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Verificación y Reparación de falla PK 1271, limita presión a 58.7 Kg/cm²",
       "fecha_texto": "Obra: Verificación y Reparación de falla PK 1271, limita presión a 58.7 Kg/cm²",
       "mes_evento": "2026-10",
@@ -614,8 +614,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Reparación de falla PK 1651, limita presión a 56,9 Kg/cm²",
       "fecha_texto": "Obra: Reparación de falla PK 1651, limita presión a 56,9 Kg/cm²",
       "mes_evento": "2026-10",
@@ -624,8 +624,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Fecha: Cambio de niple - a programar 2026.",
       "fecha_texto": "Fecha: Cambio de niple - a programar 2026.",
       "mes_evento": "2026-10",
@@ -634,8 +634,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Cambio de 10 Niples",
       "fecha_texto": "Obra: Cambio de 10 Niples",
       "mes_evento": "2026-10",
@@ -644,8 +644,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Test de Fluencia a la descarga de Planta Barker",
       "fecha_texto": "Obra: Test de Fluencia a la descarga de Planta Barker",
       "mes_evento": "2026-10",
@@ -654,8 +654,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Reparación de pérdida en VLS-66. (El Mauleon)",
       "fecha_texto": "Obra: Reparación de pérdida en VLS-66. (El Mauleon)",
       "mes_evento": "2026-10",
@@ -664,8 +664,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Cambios de Niple entre TANB-2 – TANB-3 (2)",
       "fecha_texto": "Obra: Cambios de Niple entre TANB-2 – TANB-3 (2)",
       "mes_evento": "2026-10",
@@ -674,8 +674,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Fecha: A programar un cambio de niple",
       "fecha_texto": "Fecha: A programar un cambio de niple",
       "mes_evento": "2026-10",
@@ -684,8 +684,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: PM 227 – Buchanan I – Actualización de Válvulas",
       "fecha_texto": "Obra: PM 227 – Buchanan I – Actualización de Válvulas",
       "mes_evento": "2026-10",
@@ -694,8 +694,8 @@
     },
     {
       "cuenca_zona": "Cuenca Norte",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Reparación de falla PK 1672 – Se va a instalar con Stoppler",
       "fecha_texto": "Obra: Reparación de falla PK 1672 – Se va a instalar con Stoppler",
       "mes_evento": "2026-10",
@@ -704,8 +704,8 @@
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: TC3 - Cambio de Cableado Sensores Pick Up de Velocidad",
       "fecha_texto": "Obra: TC3 - Cambio de Cableado Sensores Pick Up de Velocidad",
       "mes_evento": "2026-10",
@@ -714,8 +714,8 @@
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: TC1 -TC2 -TC3 – Retrofit de sistema de protección de Sobrevelocidad",
       "fecha_texto": "Obra: TC1 -TC2 -TC3 – Retrofit de sistema de protección de Sobrevelocidad",
       "mes_evento": "2026-10",
@@ -724,8 +724,8 @@
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Instalación sistema Fire&Gas",
       "fecha_texto": "Obra: Instalación sistema Fire&Gas",
       "mes_evento": "2026-10",
@@ -734,8 +734,8 @@
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Reparación de válvula de reciclo en las TC2 y TC3",
       "fecha_texto": "Obra: Reparación de válvula de reciclo en las TC2 y TC3",
       "mes_evento": "2026-10",
@@ -744,8 +744,8 @@
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Planta – Puesta en servicio de separador N°3 + Paro anual PJ1",
       "fecha_texto": "Obra: Planta – Puesta en servicio de separador N°3 + Paro anual PJ1",
       "mes_evento": "2026-10",
@@ -754,8 +754,8 @@
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
-      "empresa": "ENARSA",
-      "instalacion": "ENARSA",
+      "empresa": "TGS",
+      "instalacion": "TGS",
       "obra_tarea": "Obra: Planta – Instalación de válvula de descarga de dn Ø 30”",
       "fecha_texto": "Obra: Planta – Instalación de válvula de descarga de dn Ø 30”",
       "mes_evento": "2026-10",
@@ -763,7 +763,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto Mercedes - Cardales",
+      "cuenca_zona": "Corridas de scrapper en Tramos Finales",
       "empresa": "CAMMESA",
       "instalacion": "CAMMESA",
       "obra_tarea": "Sigue en curso el mantenimiento en Atucha I por 3 años. Resta aprox 1 año.",
@@ -773,43 +773,43 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto Mercedes - Cardales",
+      "cuenca_zona": "Corridas de scrapper en Tramos Finales",
       "empresa": "CAMMESA",
       "instalacion": "Casa de Piedra",
       "obra_tarea": "Casa de Piedra | 28/10 – 1 día | 2MM/día",
       "fecha_texto": "28/10 – 1 día",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 2.0,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto Mercedes - Cardales",
+      "cuenca_zona": "Corridas de scrapper en Tramos Finales",
       "empresa": "CAMMESA",
       "instalacion": "Doblas",
       "obra_tarea": "Doblas | 11/11 – 1 día | 2MM/día",
       "fecha_texto": "11/11 – 1 día",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 2.0,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto Mercedes - Cardales",
+      "cuenca_zona": "Corridas de scrapper en Tramos Finales",
       "empresa": "CAMMESA",
       "instalacion": "Tratayén",
       "obra_tarea": "Tratayén | 24/11 – 1 día | 8MM/día",
       "fecha_texto": "24/11 – 1 día",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 8.0,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto Mercedes - Cardales",
+      "cuenca_zona": "Corridas de scrapper en Tramos Finales",
       "empresa": "CAMMESA",
       "instalacion": "Chacharramendi",
       "obra_tarea": "Chacharramendi | 8/12 – 1 día | 2MM/día",
       "fecha_texto": "8/12 – 1 día",
       "mes_evento": "2026-12",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 2.0,
       "estado": "Confirmado"
     }
   ]
