@@ -18,20 +18,21 @@ def clean_text(text: str) -> str:
 
 
 def extract_impact(text: str) -> float | None:
-    # Busca patrones como "4MM/día", "8 MM m3/d", "10MM/día", "-1,5 MM"
-    match = re.search(r'(?:impacto|afectación|in y máx|inyección máx)[^\d]*([-\d,\.]+)\s*MM', text, re.IGNORECASE)
+    # Busca de forma más flexible patrones de impacto: "9,5MM", "4 MM/día", "2MM/día", "-1,5 MM m3/d"
+    match = re.search(r'(?:impacto|afectación|in[y|yección]\s*má[x|g]|\bde\b)[^\d]*([-\d,\.]+)\s*MM', text, re.IGNORECASE)
     if not match:
-        match = re.search(r'([-\d,\.]+)\s*MM\s*m[³3]', text, re.IGNORECASE)
+        match = re.search(r'([-\d,\.]+)\s*MM\s*(?:m[³3]/d|m[³3]|/d|día)?', text, re.IGNORECASE)
     if match:
         try:
-            return float(match.group(1).replace(',', '.'))
+            val = float(match.group(1).replace(',', '.'))
+            if val < 100:  # Evita capturar valores de progresivas (PK) grandes como PK 1271
+                return val
         except ValueError:
             pass
     return None
 
 
 def extract_month(text: str) -> str:
-    # Si encuentra una fecha con formato DD/MM o DD/MM/YYYY
     date_match = re.search(r'(\d{1,2})/(\d{1,2})(?:/(\d{2,4}))?', text)
     if date_match:
         month = int(date_match.group(2))
@@ -44,16 +45,14 @@ def extract_month(text: str) -> str:
         elif month <= 9:
             return f"2026-{month:02d}"
             
-    # Si menciona explícitamente el mes en texto
     text_lower = text.lower()
-    if 'octubre' in text_lower:
+    if 'octubre' in text_lower or '10/' in text_lower:
         return "2026-10"
-    if 'noviembre' in text_lower:
+    if 'noviembre' in text_lower or '11/' in text_lower:
         return "2026-11"
-    if 'diciembre' in text_lower:
+    if 'diciembre' in text_lower or '12/' in text_lower:
         return "2026-12"
         
-    # Por defecto, si no especifica mes exacto, lo ubicamos en el mes en curso (Octubre)
     return "2026-10"
 
 
@@ -62,41 +61,41 @@ def parse_cco_docx(file_path: str) -> list[dict]:
     records = []
     
     current_cuenca = "General"
-    current_empresa = "General"
+    current_empresa = "TGS"  # Por defecto
     current_instalacion = ""
     
-    # Términos que indican que NO hay que registrar nada
     ignore_phrases = [
         "no tiene mantenimientos", "sin novedades", "no participó", 
         "no realizó comentarios", "se continuará con las reuniones",
         "los mantenimientos previstos fueron realizados"
     ]
 
-    # 1. Procesamiento de Párrafos
+    empresas_conocidas = ["TGS", "TGN", "YPF", "PAE", "TECPETROL", "TOTAL", "CAMMESA", "MEGA", "GPM", "CGC", "ROCH", "VISTA", "CAPEX", "ENARSA", "ENARGAS"]
+
     for p in doc.paragraphs:
         text = clean_text(p.text)
-        if not text or len(text) < 5:
+        if not text or len(text) < 3:
             continue
             
         text_lower = text.lower()
         
-        # Ignorar párrafos de relleno, negativos o introductorios
         if any(phrase in text_lower for phrase in ignore_phrases) or "se llevó a cabo" in text_lower or "participantes:" in text_lower:
             continue
             
-        # Detectar Cuencas o Secciones Principales
-        if "Cuenca" in text or "Tramos Finales" in text or "Gasoducto" in text:
+        # Detectar Cuencas o Secciones
+        if "Cuenca" in text or "Tramos Finales" in text or "Gasoducto GPM" in text:
             if len(text) < 40:
                 current_cuenca = text
                 continue
                 
-        # Detectar Empresas
-        empresas = ["TGS", "TGN", "YPF", "PAE", "TECPETROL", "TOTAL", "CAMMESA", "MEGA", "GPM", "CGC", "ROCH", "VISTA", "CAPEX", "ENARSA"]
-        if text.upper() in empresas or any(text.upper().startswith(e + " ") for e in empresas):
-            current_empresa = text.split()[0]
+        # Detectar Empresa activa
+        text_upper = text.upper()
+        found_empresa = next((e for e in empresas_conocidas if text_upper == e or text_upper.startswith(e + " ")), None)
+        if found_empresa:
+            current_empresa = found_empresa
             continue
 
-        # Si el texto describe una obra, tarea o mantenimiento real
+        # Detectar tareas u obras
         if any(kw in text_lower for kw in ['obra:', 'tarea:', 'cambio de', 'reparación', 'prueba', 'corrida', 'paro', 'mantenimiento', 'verificación', 'adecuación', 'tie-in', 'recobertura']):
             impacto = extract_impact(text)
             mes = extract_month(text)
@@ -112,7 +111,7 @@ def parse_cco_docx(file_path: str) -> list[dict]:
                 "estado": "A confirmar" if "a confirmar" in text_lower else "Confirmado"
             })
 
-    # 2. Procesamiento de Tablas (ej: planillas de GPM y plantas)
+    # Procesar Tablas (ej: GPM y plantas)
     for table in doc.tables:
         for row in table.rows:
             cells = [clean_text(cell.text) for cell in row.cells]
