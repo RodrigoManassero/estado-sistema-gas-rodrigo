@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-20T20:08:02.919436",
+  "generated_at": "2026-10-20T20:15:12.022293",
   "source": "Minuta CCO Octubre 2026.docx",
   "data": [
     {
@@ -43,107 +43,97 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Obras en Gasoducto",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Cambio de Niple",
+      "obra_tarea": "Obra: Cambio de Niple | Afectación: 9,5MM/día",
       "fecha_texto": "Obra: Cambio de Niple",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 9.5,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Obras en Gasoducto",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Cambio de Niple",
+      "obra_tarea": "Obra: Cambio de Niple | Afectación: 9,5MM/día",
       "fecha_texto": "Obra: Cambio de Niple",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 9.5,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Obras en Gasoducto",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Cambio de Niple",
+      "obra_tarea": "Obra: Cambio de Niple | Afectación: 7MM/día",
       "fecha_texto": "Obra: Cambio de Niple",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 7.0,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Obras en Gasoducto",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Cambio de Modulo – TC2",
+      "obra_tarea": "Obra: Cambio de Modulo – TC2 | Impacto: 4MM/día",
       "fecha_texto": "Obra: Cambio de Modulo – TC2",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 4.0,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Obras en Gasoducto",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Paro Anual – Planta",
+      "obra_tarea": "Obra: Paro Anual – Planta | Impacto: 4MM/día",
       "fecha_texto": "Obra: Paro Anual – Planta",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 4.0,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Obras en Gasoducto",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Prueba de PJ1+Mttos. Asociados",
+      "obra_tarea": "Obra: Prueba de PJ1+Mttos. Asociados | Impacto: 6MM/día",
       "fecha_texto": "Obra: Prueba de PJ1+Mttos. Asociados",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 6.0,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Obras en Gasoducto",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Mantenimientos Varios",
+      "obra_tarea": "Obra: Mantenimientos Varios | Impacto: 3,8MM/día",
       "fecha_texto": "Obra: Mantenimientos Varios",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 3.8,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Obras en Gasoducto",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Instalación Tableros de Válvulas Lado Succión y Descarga",
+      "obra_tarea": "Obra: Instalación Tableros de Válvulas Lado Succión y Descarga | Impacto: 2 MM/día",
       "fecha_texto": "Obra: Instalación Tableros de Válvulas Lado Succión y Descarga",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 2.0,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Obras en Gasoducto",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Actualización de Válvulas por nueva lógica de Planta",
+      "obra_tarea": "Obra: Actualización de Válvulas por nueva lógica de Planta | Impacto: 2 MM/día",
       "fecha_texto": "Obra: Actualización de Válvulas por nueva lógica de Planta",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 2.0,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
-      "empresa": "TGS",
-      "instalacion": "TGS",
-      "obra_tarea": "Corridas de Scrapper en Gasoductos Neuba I y II",
-      "fecha_texto": "Corridas de Scrapper en Gasoductos Neuba I y II",
-      "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
-      "estado": "Confirmado"
-    },
-    {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "empresa": "TGS",
       "instalacion": "TGS",
       "obra_tarea": "Obra: Corridas de scrapper",
@@ -153,17 +143,17 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Pasajes de Scraper Limpieza",
+      "obra_tarea": "Obra: Pasajes de Scraper Limpieza | Afectación: 3,1MM/día",
       "fecha_texto": "Obra: Pasajes de Scraper Limpieza",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 3.1,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "empresa": "TGS",
       "instalacion": "TGS",
       "obra_tarea": "Obra: Pasajes de Scraper Instrumentados (TFI y MFL)",
@@ -173,27 +163,27 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Fecha: A confirmar fecha (2 corridas)",
+      "obra_tarea": "Fecha: A confirmar fecha (2 corridas) | Afectación: 5,6MM/día",
       "fecha_texto": "Fecha: A confirmar fecha (2 corridas)",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 5.6,
       "estado": "A confirmar"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Pasajes de Scraper Limpieza",
+      "obra_tarea": "Obra: Pasajes de Scraper Limpieza | Afectación: 2,9MM/día",
       "fecha_texto": "Obra: Pasajes de Scraper Limpieza",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 2.9,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "empresa": "TGS",
       "instalacion": "TGS",
       "obra_tarea": "Obra: Pasajes de Scraper Instrumentados (TFI y MFL)",
@@ -203,27 +193,27 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Fecha: A confirmar fecha (2 corridas)",
+      "obra_tarea": "Fecha: A confirmar fecha (2 corridas) | Afectación: 4,5MM/día",
       "fecha_texto": "Fecha: A confirmar fecha (2 corridas)",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 4.5,
       "estado": "A confirmar"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Pasajes de Scraper Limpieza",
+      "obra_tarea": "Obra: Pasajes de Scraper Limpieza | Afectación: 3MM/día",
       "fecha_texto": "Obra: Pasajes de Scraper Limpieza",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 3.0,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "empresa": "TGS",
       "instalacion": "TGS",
       "obra_tarea": "Obra: Pasajes de Scraper Instrumentados (TFI y MFL)",
@@ -233,27 +223,27 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Fecha: A confirmar fecha (2 corridas)",
+      "obra_tarea": "Fecha: A confirmar fecha (2 corridas) | Afectación: 5,5MM/día",
       "fecha_texto": "Fecha: A confirmar fecha (2 corridas)",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 5.5,
       "estado": "A confirmar"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Pasajes de Scraper Limpieza",
+      "obra_tarea": "Obra: Pasajes de Scraper Limpieza | Afectación: 2MM/día",
       "fecha_texto": "Obra: Pasajes de Scraper Limpieza",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 2.0,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "empresa": "TGS",
       "instalacion": "TGS",
       "obra_tarea": "Obra: Pasajes de Scraper Instrumentados (TFI y MFL)",
@@ -263,43 +253,43 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Cuenca Neuquina",
+      "cuenca_zona": "Corridas de Scrapper en Gasoductos Neuba I y II",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Fecha: A confirmar fecha (2 corridas)",
+      "obra_tarea": "Fecha: A confirmar fecha (2 corridas) | Afectación: 5MM/día",
       "fecha_texto": "Fecha: A confirmar fecha (2 corridas)",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 5.0,
       "estado": "A confirmar"
     },
     {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Prueba de PJ1",
+      "obra_tarea": "Obra: Prueba de PJ1 | Impacto: 8 MM/día",
       "fecha_texto": "Obra: Prueba de PJ1",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 8.0,
       "estado": "Confirmado"
     },
     {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Prueba de PJ1 – Intención de hacerlo en simultaneo con Tratayén",
+      "obra_tarea": "Obra: Prueba de PJ1 – Intención de hacerlo en simultaneo con Tratayén | Impacto: 8 MM/día(el de Tratayén)",
       "fecha_texto": "Obra: Prueba de PJ1 – Intención de hacerlo en simultaneo con Tratayén",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 8.0,
       "estado": "Confirmado"
     },
     {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Cambio de Sello",
+      "obra_tarea": "Obra: Cambio de Sello | Impacto: 3MM/día",
       "fecha_texto": "Obra: Cambio de Sello",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 3.0,
       "estado": "Confirmado"
     },
     {
@@ -363,7 +353,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto GPM",
+      "cuenca_zona": "Sección Neuquén/Puelen:",
       "empresa": "TGN",
       "instalacion": "TGN",
       "obra_tarea": "Fecha propuesta: Se corrieron 4 equipos de limpieza; no se pudo continuar con la campaña por requerimiento del sistema. Se continuará desde noviembre, se informan fechas tentativas. Se están programando 5 corridas de limpiezas + 1 CLP y 1 MFL.",
@@ -373,7 +363,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto GPM",
+      "cuenca_zona": "Sección Neuquén/Puelen:",
       "empresa": "TGN",
       "instalacion": "TGN",
       "obra_tarea": "Durante la corrida puntuales de 18 MM m3/d",
@@ -383,7 +373,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto GPM",
+      "cuenca_zona": "Sección Neuquén/Puelen:",
       "empresa": "TGN",
       "instalacion": "TGN",
       "obra_tarea": "Verificación de defectos gto troncal y paralelo – LLL - Puelen",
@@ -393,7 +383,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto GPM",
+      "cuenca_zona": "Sección Cochico:",
       "empresa": "TGN",
       "instalacion": "TGN",
       "obra_tarea": "Adecuación de aislación de PC",
@@ -403,7 +393,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto GPM",
+      "cuenca_zona": "Sección La Mora:",
       "empresa": "TGN",
       "instalacion": "TGN",
       "obra_tarea": "Cambio de modulo + escape TC03",
@@ -413,7 +403,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto GPM",
+      "cuenca_zona": "Sección Beazley:",
       "empresa": "TGN",
       "instalacion": "TGN",
       "obra_tarea": "Duración: 3 dias con PC F/S – Se solapa con cambio de modulo TC04",
@@ -423,7 +413,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto GPM",
+      "cuenca_zona": "Sección Beazley:",
       "empresa": "TGN",
       "instalacion": "TGN",
       "obra_tarea": "Adecuación de aislación de planta",
@@ -433,7 +423,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto GPM",
+      "cuenca_zona": "Sección Beazley:",
       "empresa": "TGN",
       "instalacion": "TGN",
       "obra_tarea": "Cambio de modulo TC04",
@@ -443,7 +433,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto GPM",
+      "cuenca_zona": "Sección La Carlota:",
       "empresa": "TGN",
       "instalacion": "TGN",
       "obra_tarea": "Cambio de modulo Taurus + adecuación Aeroenfriador de aceite",
@@ -453,7 +443,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Gasoducto GPM",
+      "cuenca_zona": "Sección La Carlota:",
       "empresa": "TOTAL",
       "instalacion": "TOTAL",
       "obra_tarea": "Se actualizó su plan de mantenimientos en la cuenca.",
@@ -476,10 +466,10 @@
       "cuenca_zona": "Cuenca Norte",
       "empresa": "TGN",
       "instalacion": "TGN",
-      "obra_tarea": "Prueba hidráulica gto troncal – Segundo segmento (Pk 1180 a 1210) – Tio Pujio – Ferreyra (tramo 10)",
+      "obra_tarea": "Prueba hidráulica gto troncal – Segundo segmento (Pk 1180 a 1210) – Tio Pujio – Ferreyra (tramo 10) | Impacto: máximo transporte desde Tio Pujio: aprox. 15 MM m3/d.",
       "fecha_texto": "Prueba hidráulica gto troncal – Segundo segmento (Pk 1180 a 1210) – Tio Pujio – Ferreyra (tramo 10)",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 15.0,
       "estado": "Confirmado"
     },
     {
@@ -516,70 +506,70 @@
       "cuenca_zona": "Cuenca Norte",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Verificación de falla en PK 710,224",
+      "obra_tarea": "Obra: Verificación de falla en PK 710,224 | Impacto: 3MM/día",
       "fecha_texto": "Obra: Verificación de falla en PK 710,224",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 3.0,
       "estado": "Confirmado"
     },
     {
       "cuenca_zona": "Cuenca Norte",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Verificación de falla en PK 784.123",
+      "obra_tarea": "Obra: Verificación de falla en PK 784.123 | Impacto: 4MM/día",
       "fecha_texto": "Obra: Verificación de falla en PK 784.123",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 4.0,
       "estado": "Confirmado"
     },
     {
       "cuenca_zona": "Cuenca Norte",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Tie-In Loop NII a la descarga de Saturno para nueva planta",
+      "obra_tarea": "Obra: Tie-In Loop NII a la descarga de Saturno para nueva planta | Impacto: 8MM/día",
       "fecha_texto": "Obra: Tie-In Loop NII a la descarga de Saturno para nueva planta",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 8.0,
       "estado": "Confirmado"
     },
     {
       "cuenca_zona": "Cuenca Norte",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Tie-In Loop NII a la succión de Ordoqui para nueva planta",
+      "obra_tarea": "Obra: Tie-In Loop NII a la succión de Ordoqui para nueva planta | Impacto: 7MM/día",
       "fecha_texto": "Obra: Tie-In Loop NII a la succión de Ordoqui para nueva planta",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 7.0,
       "estado": "Confirmado"
     },
     {
       "cuenca_zona": "Cuenca Norte",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Tie-In NII a la succión de Ordoqui para nueva planta",
+      "obra_tarea": "Obra: Tie-In NII a la succión de Ordoqui para nueva planta | Impacto: 4MM/día",
       "fecha_texto": "Obra: Tie-In NII a la succión de Ordoqui para nueva planta",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 4.0,
       "estado": "Confirmado"
     },
     {
       "cuenca_zona": "Cuenca Norte",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Tie-In Loop NII a la descarga de Ordoqui para nueva planta",
+      "obra_tarea": "Obra: Tie-In Loop NII a la descarga de Ordoqui para nueva planta | Impacto: 10MM/día",
       "fecha_texto": "Obra: Tie-In Loop NII a la descarga de Ordoqui para nueva planta",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 10.0,
       "estado": "Confirmado"
     },
     {
       "cuenca_zona": "Cuenca Norte",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Tie-In NII a la descarga de Ordoqui para nueva planta",
+      "obra_tarea": "Obra: Tie-In NII a la descarga de Ordoqui para nueva planta | Impacto: 5MM/día",
       "fecha_texto": "Obra: Tie-In NII a la descarga de Ordoqui para nueva planta",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 5.0,
       "estado": "Confirmado"
     },
     {
@@ -596,10 +586,10 @@
       "cuenca_zona": "Cuenca Norte",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Reparación de fallas en descarga de Planta Barker, altura CT Barker",
+      "obra_tarea": "Obra: Reparación de fallas en descarga de Planta Barker, altura CT Barker | Impacto: 11 MM m³/día (Salida a TF: 52MM)",
       "fecha_texto": "Obra: Reparación de fallas en descarga de Planta Barker, altura CT Barker",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 11.0,
       "estado": "Confirmado"
     },
     {
@@ -746,24 +736,24 @@
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Planta – Puesta en servicio de separador N°3 + Paro anual PJ1",
+      "obra_tarea": "Obra: Planta – Puesta en servicio de separador N°3 + Paro anual PJ1 | Impacto: 10MM/día",
       "fecha_texto": "Obra: Planta – Puesta en servicio de separador N°3 + Paro anual PJ1",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 10.0,
       "estado": "Confirmado"
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
       "empresa": "TGS",
       "instalacion": "TGS",
-      "obra_tarea": "Obra: Planta – Instalación de válvula de descarga de dn Ø 30”",
+      "obra_tarea": "Obra: Planta – Instalación de válvula de descarga de dn Ø 30” | Impacto: 10MM/día",
       "fecha_texto": "Obra: Planta – Instalación de válvula de descarga de dn Ø 30”",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": null,
+      "impacto_mmm3d": 10.0,
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Corridas de scrapper en Tramos Finales",
+      "cuenca_zona": "Gasoducto Mercedes - Cardales",
       "empresa": "CAMMESA",
       "instalacion": "CAMMESA",
       "obra_tarea": "Sigue en curso el mantenimiento en Atucha I por 3 años. Resta aprox 1 año.",
@@ -773,7 +763,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Corridas de scrapper en Tramos Finales",
+      "cuenca_zona": "Gasoducto Mercedes - Cardales",
       "empresa": "CAMMESA",
       "instalacion": "Casa de Piedra",
       "obra_tarea": "Casa de Piedra | 28/10 – 1 día | 2MM/día",
@@ -783,7 +773,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Corridas de scrapper en Tramos Finales",
+      "cuenca_zona": "Gasoducto Mercedes - Cardales",
       "empresa": "CAMMESA",
       "instalacion": "Doblas",
       "obra_tarea": "Doblas | 11/11 – 1 día | 2MM/día",
@@ -793,7 +783,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Corridas de scrapper en Tramos Finales",
+      "cuenca_zona": "Gasoducto Mercedes - Cardales",
       "empresa": "CAMMESA",
       "instalacion": "Tratayén",
       "obra_tarea": "Tratayén | 24/11 – 1 día | 8MM/día",
@@ -803,7 +793,7 @@
       "estado": "Confirmado"
     },
     {
-      "cuenca_zona": "Corridas de scrapper en Tramos Finales",
+      "cuenca_zona": "Gasoducto Mercedes - Cardales",
       "empresa": "CAMMESA",
       "instalacion": "Chacharramendi",
       "obra_tarea": "Chacharramendi | 8/12 – 1 día | 2MM/día",
