@@ -1,16 +1,21 @@
-name: Actualizar Producción Neuquina (Cap IV)
+name: Actualizar Datos de Pozos (Cap IV y Pozos Terminados)
 
 on:
-  workflow_dispatch: # Permite ejecución manual desde la pestaña Actions en GitHub
+  workflow_dispatch: # Permite disparar la ejecución manualmente desde la pestaña Actions
     inputs:
       years:
-        description: 'Años hacia atrás a procesar (ej: 2)'
+        description: 'Años hacia atrás a procesar para Cap IV (ej: 2)'
         required: true
         default: '2'
         type: string
+      force:
+        description: 'Ignorar cache y forzar la descarga completa'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
-  run-capiv:
+  run-pozos:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -27,12 +32,23 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Run Cap IV fetch script
-        run: python scripts/fetch_capiv.py --years ${{ github.event.inputs.years }}
+      - name: Run Cap IV fetch script (Producción Neuquina)
+        run: |
+          FLAGS="--years ${{ github.event.inputs.years }}"
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then FLAGS="$FLAGS --force"; fi
+          python scripts/fetch_capiv.py $FLAGS
 
-      - name: Commit and push updated production data
+      - name: Run Pozos Terminados fetch script
+        run: |
+          FLAGS=""
+          if [ "${{ github.event.inputs.force }}" = "true" ]; then FLAGS="--force"; fi
+          python scripts/fetch_pozos_terminados.py $FLAGS
+
+      - name: Commit and push updated production & well data
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add public/data/produccion_neuquina.json public/data/produccion_neuquina.csv
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: actualiza produccion neuquina cap iv [skip ci]" && git push)
+          git add public/data/pozos_terminados.json public/data/pozos_terminados.csv
+          git add scripts/.capiv_cache.json scripts/.pozos_terminados_cache.json || true
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: actualiza datos de pozos y produccion cap iv [skip ci]" && git push)
