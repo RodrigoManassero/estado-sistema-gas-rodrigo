@@ -128,13 +128,6 @@ def main():
     # Keep the PPO fetcher to a short window on daily runs; backfills are
     # done manually via `fetch_cammesa_ppo.py --days N --force`.
     errors += run('fetch_cammesa_ppo.py')
-    # Cap IV (Secretaría de Energía) — monthly upstream production by block.
-    # Streams current + previous year CSVs and skips download if Last-Modified
-    # hasn't changed, so daily runs are cheap.
-    # Pozos terminados (Secretaría de Energía) — monthly completed-well counts
-    # per block, the public proxy for drilling activity. Single all-history CSV;
-    # skips the ~190 MB download when the resource's Last-Modified is unchanged.
-    errors += run('fetch_pozos_terminados.py')
 
     # Phase 2: Parse all sources.
     # The manual Excel (parse_base_excel.py) is retired: daily.json is now built
