@@ -18,14 +18,14 @@ def clean_text(text: str) -> str:
 
 
 def extract_impact(text: str) -> float | None:
-    # Busca de forma más flexible patrones de impacto: "9,5MM", "4 MM/día", "2MM/día", "-1,5 MM m3/d"
-    match = re.search(r'(?:impacto|afectación|in[y|yección]\s*má[x|g]|\bde\b)[^\d]*([-\d,\.]+)\s*MM', text, re.IGNORECASE)
+    # Busca de forma exhaustiva patrones de impacto o afectación numérica
+    match = re.search(r'(?:impacto|afectación|in[y|yección]\s*má[x|g])[^\d]*([-\d,\.]+)\s*MM', text, re.IGNORECASE)
     if not match:
         match = re.search(r'([-\d,\.]+)\s*MM\s*(?:m[³3]/d|m[³3]|/d|día)?', text, re.IGNORECASE)
     if match:
         try:
             val = float(match.group(1).replace(',', '.'))
-            if val < 100:  # Evita capturar valores de progresivas (PK) grandes como PK 1271
+            if val < 100:  # Evita capturar progresivas grandes (PK)
                 return val
         except ValueError:
             pass
@@ -36,13 +36,7 @@ def extract_month(text: str) -> str:
     date_match = re.search(r'(\d{1,2})/(\d{1,2})(?:/(\d{2,4}))?', text)
     if date_match:
         month = int(date_match.group(2))
-        if month == 10:
-            return "2026-10"
-        elif month == 11:
-            return "2026-11"
-        elif month == 12:
-            return "2026-12"
-        elif month <= 9:
+        if 1 <= month <= 12:
             return f"2026-{month:02d}"
             
     text_lower = text.lower()
@@ -61,16 +55,19 @@ def parse_cco_docx(file_path: str) -> list[dict]:
     records = []
     
     current_cuenca = "General"
-    current_empresa = "TGS"  # Por defecto
+    current_empresa = "TGS"
     current_instalacion = ""
     
     ignore_phrases = [
         "no tiene mantenimientos", "sin novedades", "no participó", 
         "no realizó comentarios", "se continuará con las reuniones",
-        "los mantenimientos previstos fueron realizados"
+        "los mantenimientos previstos fueron realizados", "se finalizaron todas las tareas"
     ]
 
     empresas_conocidas = ["TGS", "TGN", "YPF", "PAE", "TECPETROL", "TOTAL", "CAMMESA", "MEGA", "GPM", "CGC", "ROCH", "VISTA", "CAPEX", "ENARSA", "ENARGAS"]
+
+    # Almacenaremos temporalmente el texto acumulado de una obra para buscar su impacto en líneas subsiguientes
+    last_record = None
 
     for p in doc.paragraphs:
         text = clean_text(p.text)
@@ -82,17 +79,24 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         if any(phrase in text_lower for phrase in ignore_phrases) or "se llevó a cabo" in text_lower or "participantes:" in text_lower:
             continue
             
-        # Detectar Cuencas o Secciones
-        if "Cuenca" in text or "Tramos Finales" in text or "Gasoducto GPM" in text:
-            if len(text) < 40:
+        # Detectar Cuencas o Zonas
+        if any(c in text for c in ["Cuenca", "Tramos Finales", "Gasoducto", "Sección"]):
+            if len(text) < 50:
                 current_cuenca = text
                 continue
                 
-        # Detectar Empresa activa
-        text_upper = text.upper()
-        found_empresa = next((e for e in empresas_conocidas if text_upper == e or text_upper.startswith(e + " ")), None)
-        if found_empresa:
-            current_empresa = found_empresa
+        # Detectar Empresa si la línea es exactamente el nombre de la empresa
+        text_upper = text.upper().strip()
+        if text_upper in empresas_conocidas:
+            current_empresa = text_upper
+            continue
+
+        # Si la línea contiene información de afectación y tenemos un registro anterior, se lo sumamos
+        if ('afectación:' in text_lower or 'impacto:' in text_lower) and last_record:
+            imp = extract_impact(text)
+            if imp:
+                last_record["impacto_mmm3d"] = imp
+                last_record["obra_tarea"] += f" | {text}"
             continue
 
         # Detectar tareas u obras
@@ -100,7 +104,13 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             impacto = extract_impact(text)
             mes = extract_month(text)
             
-            records.append({
+            # Detectar si en el texto de la empresa viene implícita (ej: "YPF Informa...")
+            for e in empresas_conocidas:
+                if text_upper.startswith(e + " "):
+                    current_empresa = e
+                    break
+
+            new_record = {
                 "cuenca_zona": current_cuenca,
                 "empresa": current_empresa,
                 "instalacion": current_instalacion or current_empresa,
@@ -109,7 +119,9 @@ def parse_cco_docx(file_path: str) -> list[dict]:
                 "mes_evento": mes,
                 "impacto_mmm3d": impacto,
                 "estado": "A confirmar" if "a confirmar" in text_lower else "Confirmado"
-            })
+            }
+            records.append(new_record)
+            last_record = new_record
 
     # Procesar Tablas (ej: GPM y plantas)
     for table in doc.tables:
