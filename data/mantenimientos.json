@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-21T12:41:57.541553",
+  "generated_at": "2026-10-21T13:03:25.224184",
   "source": "Minuta CCO Octubre 2026.docx",
   "data": [
     {
@@ -9,7 +9,7 @@
       "obra_tarea": "Verificación de 7 fallas sobre loop de dn Ø 24” entre PK 136 y 223",
       "fecha_texto": "A programar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "sin impacto"
+      "impacto_mmm3d": "0 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Sur",
@@ -18,7 +18,7 @@
       "obra_tarea": "Recobertura entre VS 31 a VS 33 – 6.8 km",
       "fecha_texto": "En ejecución",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "Sin impacto al transporte actual."
+      "impacto_mmm3d": "0 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -27,7 +27,7 @@
       "obra_tarea": "Cambio de Niple",
       "fecha_texto": "A programar Noviembre 2026 – 1 Día",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "Sin impacto al transporte actual."
+      "impacto_mmm3d": "0 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -297,7 +297,7 @@
       "obra_tarea": "PM 227 – Buchanan I – Actualización de Válvulas",
       "fecha_texto": "25 y 26/10 – A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "0 MM m³/d"
+      "impacto_mmm3d": "0 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Norte",
@@ -306,7 +306,7 @@
       "obra_tarea": "Reparación de falla PK 1672 – Se va a instalar con Stoppler",
       "fecha_texto": "Fin de Semana de Noviembre que no coincida con Obras IP– A confirmar",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "No"
+      "impacto_mmm3d": "0 MM³/día"
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
@@ -315,7 +315,7 @@
       "obra_tarea": "TC3 - Cambio de Cableado Sensores Pick Up de Velocidad",
       "fecha_texto": "A confirmar – 12 hs",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "No"
+      "impacto_mmm3d": "0 MM³/día"
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
@@ -333,7 +333,7 @@
       "obra_tarea": "Instalación sistema Fire&Gas",
       "fecha_texto": "Finales de noviembre - A confirmar – 2 meses",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "sin impacto."
+      "impacto_mmm3d": "0 MM³/día"
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
@@ -351,7 +351,7 @@
       "obra_tarea": "Planta – Puesta en servicio de separador N°3 + Paro anual PJ1",
       "fecha_texto": "25/10 - A confirmar – 36 hs",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "sin impacto"
+      "impacto_mmm3d": "0 MM³/día"
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
