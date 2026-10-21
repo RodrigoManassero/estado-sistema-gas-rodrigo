@@ -18,12 +18,22 @@ def clean_text(text: str) -> str:
 
 
 def extract_impact_text(text: str) -> str:
-    # Extrae el texto limpio de impacto/afectación si existe, ej: "9,5 MM/día", "sin impacto"
-    match = re.search(r'(?:afectación|impacto|impacto potencial)[:\s]*(.*)', text, re.IGNORECASE)
+    # Captura tanto si dice "Impacto", "Afectación", "Impacto potencial" o "Impacto estimado"
+    match = re.search(r'(?:afectación|impacto|impacto potencial|impacto estimado)[:\s]*(.*)', text, re.IGNORECASE)
     if match:
-        return clean_text(match.group(1))
-    if 'sin impacto' in text.lower():
-        return "sin impacto"
+        val_str = clean_text(match.group(1))
+        val_lower = val_str.lower()
+        
+        # Si el texto indica que no hay impacto, unificamos a "0 MM³/día"
+        if any(kw in val_lower for kw in ['sin impacto', 'no', 'sin restricción', 'sin afectación', 'no hay']):
+            return "0 MM³/día"
+            
+        return val_str
+        
+    text_lower = text.lower()
+    if any(kw in text_lower for kw in ['sin impacto', 'sin restricción', 'sin afectación']):
+        return "0 MM³/día"
+        
     return "A confirmar"
 
 
@@ -61,7 +71,7 @@ def parse_cco_docx(file_path: str) -> list[dict]:
 
     current_obra = None
     current_fecha = "A programar"
-    current_impacto = "sin impacto"
+    current_impacto = "0 MM³/día"
 
     for p in doc.paragraphs:
         text = clean_text(p.text)
@@ -114,12 +124,13 @@ def parse_cco_docx(file_path: str) -> list[dict]:
                     "impacto_mmm3d": current_impacto
                 })
                 current_obra = None # Reset
+                current_impacto = "0 MM³/día" # Reset por defecto a 0
 
         # Capturar Afectación / Impacto
-        if text.startswith("Afectación:") or text.startswith("Impacto:"):
+        if text.startswith("Afectación:") or text.startswith("Impacto:") or text.startswith("Impacto potencial:") or text.startswith("Impacto estimado:"):
             current_impacto = extract_impact_text(text)
 
-    # Procesar también las tablas (como GPM) para matchear el mismo formato
+    # Procesar tablas (ej: GPM y plantas)
     for table in doc.tables:
         for row in table.rows:
             cells = [clean_text(cell.text) for cell in row.cells]
