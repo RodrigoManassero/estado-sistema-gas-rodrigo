@@ -18,23 +18,19 @@ def clean_text(text: str) -> str:
 
 
 def extract_impact_text(text: str) -> str:
-    # Captura tanto si dice "Impacto", "Afectación", "Impacto potencial" o "Impacto estimado"
     match = re.search(r'(?:afectación|impacto|impacto potencial|impacto estimado)[:\s]*(.*)', text, re.IGNORECASE)
     if match:
         val_str = clean_text(match.group(1))
         val_lower = val_str.lower()
-        
-        # Si el texto indica que no hay impacto, unificamos a "0 MM³/día"
         if any(kw in val_lower for kw in ['sin impacto', 'no', 'sin restricción', 'sin afectación', 'no hay']):
             return "0 MM³/día"
-            
         return val_str
         
     text_lower = text.lower()
     if any(kw in text_lower for kw in ['sin impacto', 'sin restricción', 'sin afectación']):
         return "0 MM³/día"
         
-    return "A confirmar"
+    return "0 MM³/día"
 
 
 def extract_month(text: str) -> str:
@@ -69,9 +65,7 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         "los mantenimientos previstos fueron realizados", "se finalizaron todas las tareas"
     ]
 
-    current_obra = None
-    current_fecha = "A programar"
-    current_impacto = "0 MM³/día"
+    current_item = None
 
     for p in doc.paragraphs:
         text = clean_text(p.text)
@@ -94,41 +88,52 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             current_empresa = text.upper()
             continue
 
-        # Detectar Tramos o Plantas (Instalación)
+        # Detectar Tramos, Plantas o Secciones (Inicia un nuevo bloque de instalación)
         if text.startswith("Tramo ") or text.startswith("Planta ") or text.startswith("Sección "):
+            if current_item and current_item.get("obra_tarea"):
+                records.append(current_item)
             current_instalacion = text
+            current_item = {
+                "cuenca_zona": current_cuenca,
+                "empresa": current_empresa,
+                "instalacion": current_instalacion,
+                "obra_tarea": "",
+                "fecha_texto": "A programar",
+                "mes_evento": "2026-10",
+                "impacto_mmm3d": "0 MM³/día"
+            }
             continue
+
+        if not current_item:
+            current_item = {
+                "cuenca_zona": current_cuenca,
+                "empresa": current_empresa,
+                "instalacion": current_instalacion,
+                "obra_tarea": "",
+                "fecha_texto": "A programar",
+                "mes_evento": "2026-10",
+                "impacto_mmm3d": "0 MM³/día"
+            }
 
         # Capturar Obra o Tarea
         if text.startswith("Obra:") or text.startswith("Tarea:"):
-            current_obra = text.split(":", 1)[1].strip()
-            continue
-        elif any(kw in text_lower for kw in ['cambio de', 'reparación', 'prueba', 'corrida', 'paro', 'mantenimiento', 'verificación', 'adecuación', 'tie-in', 'recobertura']):
-            current_obra = text
-            continue
+            current_item["obra_tarea"] = text.split(":", 1)[1].strip()
+        elif any(kw in text_lower for kw in ['cambio de', 'reparación', 'prueba', 'corrida', 'paro', 'mantenimiento', 'verificación', 'adecuación', 'tie-in', 'recobertura']) and not current_item["obra_tarea"]:
+            current_item["obra_tarea"] = text
 
         # Capturar Fecha / Periodo
         if text.startswith("Fecha:") or text.startswith("Periodo:"):
-            current_fecha = text.split(":", 1)[1].strip()
-            mes = extract_month(current_fecha)
-            
-            # Si ya tenemos obra detectada, armar el registro
-            if current_obra:
-                records.append({
-                    "cuenca_zona": current_cuenca,
-                    "empresa": current_empresa,
-                    "instalacion": current_instalacion,
-                    "obra_tarea": current_obra,
-                    "fecha_texto": current_fecha,
-                    "mes_evento": mes,
-                    "impacto_mmm3d": current_impacto
-                })
-                current_obra = None # Reset
-                current_impacto = "0 MM³/día" # Reset por defecto a 0
+            fecha_val = text.split(":", 1)[1].strip()
+            current_item["fecha_texto"] = fecha_val
+            current_item["mes_evento"] = extract_month(fecha_val)
 
-        # Capturar Afectación / Impacto
+        # Capturar Afectación / Impacto de forma estricta para el item actual
         if text.startswith("Afectación:") or text.startswith("Impacto:") or text.startswith("Impacto potencial:") or text.startswith("Impacto estimado:"):
-            current_impacto = extract_impact_text(text)
+            current_item["impacto_mmm3d"] = extract_impact_text(text)
+
+    # Agregar el último ítem procesado
+    if current_item and current_item.get("obra_tarea"):
+        records.append(current_item)
 
     # Procesar tablas (ej: GPM y plantas)
     for table in doc.tables:
