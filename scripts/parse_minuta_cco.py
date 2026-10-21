@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Parse CCO Word minutas (.docx) from raw/ and generate a clean public/data/mantenimientos.json."""
+"""Parse CCO Word minutas (.docx) from raw/ and generate clean public/data/mantenimientos.json."""
 
 import json
 import os
@@ -17,36 +17,31 @@ def clean_text(text: str) -> str:
     return ' '.join(text.split())
 
 
-def extract_impact(text: str) -> float | None:
-    # Busca de forma exhaustiva patrones de impacto o afectación numérica
-    match = re.search(r'(?:impacto|afectación|in[y|yección]\s*má[x|g])[^\d]*([-\d,\.]+)\s*MM', text, re.IGNORECASE)
-    if not match:
-        match = re.search(r'([-\d,\.]+)\s*MM\s*(?:m[³3]/d|m[³3]|/d|día)?', text, re.IGNORECASE)
+def extract_impact_text(text: str) -> str:
+    # Extrae el texto limpio de impacto/afectación si existe, ej: "9,5 MM/día", "sin impacto"
+    match = re.search(r'(?:afectación|impacto|impacto potencial)[:\s]*(.*)', text, re.IGNORECASE)
     if match:
-        try:
-            val = float(match.group(1).replace(',', '.'))
-            if val < 100:  # Evita capturar progresivas grandes (PK)
-                return val
-        except ValueError:
-            pass
-    return None
+        return clean_text(match.group(1))
+    if 'sin impacto' in text.lower():
+        return "sin impacto"
+    return "A confirmar"
 
 
 def extract_month(text: str) -> str:
-    date_match = re.search(r'(\d{1,2})/(\d{1,2})(?:/(\d{2,4}))?', text)
-    if date_match:
-        month = int(date_match.group(2))
-        if 1 <= month <= 12:
-            return f"2026-{month:02d}"
-            
     text_lower = text.lower()
-    if 'octubre' in text_lower or '10/' in text_lower:
+    if 'octubre' in text_lower or '10/' in text_lower or '28/10' in text_lower:
         return "2026-10"
     if 'noviembre' in text_lower or '11/' in text_lower:
         return "2026-11"
     if 'diciembre' in text_lower or '12/' in text_lower:
         return "2026-12"
-        
+    
+    date_match = re.search(r'(\d{1,2})/(\d{1,2})', text)
+    if date_match:
+        m = int(date_match.group(2))
+        if 1 <= m <= 12:
+            return f"2026-{m:02d}"
+            
     return "2026-10"
 
 
@@ -54,9 +49,9 @@ def parse_cco_docx(file_path: str) -> list[dict]:
     doc = docx.Document(file_path)
     records = []
     
-    current_cuenca = "General"
+    current_cuenca = "Cuenca Neuquina"
     current_empresa = "TGS"
-    current_instalacion = ""
+    current_instalacion = "General"
     
     ignore_phrases = [
         "no tiene mantenimientos", "sin novedades", "no participó", 
@@ -64,10 +59,9 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         "los mantenimientos previstos fueron realizados", "se finalizaron todas las tareas"
     ]
 
-    empresas_conocidas = ["TGS", "TGN", "YPF", "PAE", "TECPETROL", "TOTAL", "CAMMESA", "MEGA", "GPM", "CGC", "ROCH", "VISTA", "CAPEX", "ENARSA", "ENARGAS"]
-
-    # Almacenaremos temporalmente el texto acumulado de una obra para buscar su impacto en líneas subsiguientes
-    last_record = None
+    current_obra = None
+    current_fecha = "A programar"
+    current_impacto = "sin impacto"
 
     for p in doc.paragraphs:
         text = clean_text(p.text)
@@ -79,74 +73,67 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         if any(phrase in text_lower for phrase in ignore_phrases) or "se llevó a cabo" in text_lower or "participantes:" in text_lower:
             continue
             
-        # Detectar Cuencas o Zonas
-        if any(c in text for c in ["Cuenca", "Tramos Finales", "Gasoducto", "Sección"]):
-            if len(text) < 50:
+        # Detectar Cuencas
+        if "Cuenca" in text or "Tramos Finales" in text:
+            if len(text) < 40:
                 current_cuenca = text
                 continue
                 
-        # Detectar Empresa si la línea es exactamente el nombre de la empresa
-        text_upper = text.upper().strip()
-        if text_upper in empresas_conocidas:
-            current_empresa = text_upper
+        # Detectar Empresa
+        if text.upper() in ["TGS", "TGN"]:
+            current_empresa = text.upper()
             continue
 
-        # Si la línea contiene información de afectación y tenemos un registro anterior, se lo sumamos
-        if ('afectación:' in text_lower or 'impacto:' in text_lower) and last_record:
-            imp = extract_impact(text)
-            if imp:
-                last_record["impacto_mmm3d"] = imp
-                last_record["obra_tarea"] += f" | {text}"
+        # Detectar Tramos o Plantas (Instalación)
+        if text.startswith("Tramo ") or text.startswith("Planta ") or text.startswith("Sección "):
+            current_instalacion = text
             continue
 
-        # Detectar tareas u obras
-        if any(kw in text_lower for kw in ['obra:', 'tarea:', 'cambio de', 'reparación', 'prueba', 'corrida', 'paro', 'mantenimiento', 'verificación', 'adecuación', 'tie-in', 'recobertura']):
-            impacto = extract_impact(text)
-            mes = extract_month(text)
+        # Capturar Obra o Tarea
+        if text.startswith("Obra:") or text.startswith("Tarea:"):
+            current_obra = text.split(":", 1)[1].strip()
+            continue
+        elif any(kw in text_lower for kw in ['cambio de', 'reparación', 'prueba', 'corrida', 'paro', 'mantenimiento', 'verificación', 'adecuación', 'tie-in', 'recobertura']):
+            current_obra = text
+            continue
+
+        # Capturar Fecha / Periodo
+        if text.startswith("Fecha:") or text.startswith("Periodo:"):
+            current_fecha = text.split(":", 1)[1].strip()
+            mes = extract_month(current_fecha)
             
-            # Detectar si en el texto de la empresa viene implícita (ej: "YPF Informa...")
-            for e in empresas_conocidas:
-                if text_upper.startswith(e + " "):
-                    current_empresa = e
-                    break
+            # Si ya tenemos obra detectada, armar el registro
+            if current_obra:
+                records.append({
+                    "cuenca_zona": current_cuenca,
+                    "empresa": current_empresa,
+                    "instalacion": current_instalacion,
+                    "obra_tarea": current_obra,
+                    "fecha_texto": current_fecha,
+                    "mes_evento": mes,
+                    "impacto_mmm3d": current_impacto
+                })
+                current_obra = None # Reset
 
-            new_record = {
-                "cuenca_zona": current_cuenca,
-                "empresa": current_empresa,
-                "instalacion": current_instalacion or current_empresa,
-                "obra_tarea": text,
-                "fecha_texto": text,
-                "mes_evento": mes,
-                "impacto_mmm3d": impacto,
-                "estado": "A confirmar" if "a confirmar" in text_lower else "Confirmado"
-            }
-            records.append(new_record)
-            last_record = new_record
+        # Capturar Afectación / Impacto
+        if text.startswith("Afectación:") or text.startswith("Impacto:"):
+            current_impacto = extract_impact_text(text)
 
-    # Procesar Tablas (ej: GPM y plantas)
+    # Procesar también las tablas (como GPM) para matchear el mismo formato
     for table in doc.tables:
         for row in table.rows:
             cells = [clean_text(cell.text) for cell in row.cells]
-            if len(cells) >= 2:
-                fila_texto = " | ".join([c for c in cells if c])
-                if len(fila_texto) > 10 and not any(h in fila_texto.lower() for h in ['empresa', 'apellido', 'nombre', 'contacto', 'planta']):
-                    impacto = None
-                    for cell in cells:
-                        imp = extract_impact(cell)
-                        if imp:
-                            impacto = imp
-                            
-                    mes = extract_month(fila_texto)
-                    
+            if len(cells) >= 3:
+                inst, fecha, imp = cells[0], cells[1], cells[2]
+                if inst and fecha and not any(h in inst.lower() for h in ['planta', 'empresa']):
                     records.append({
-                        "cuenca_zona": current_cuenca,
-                        "empresa": current_empresa,
-                        "instalacion": cells[0] if cells else "Planta",
-                        "obra_tarea": fila_texto,
-                        "fecha_texto": cells[1] if len(cells) > 1 else "A confirmar",
-                        "mes_evento": mes,
-                        "impacto_mmm3d": impacto,
-                        "estado": "Confirmado"
+                        "cuenca_zona": "Gasoducto GPM",
+                        "empresa": "TGS",
+                        "instalacion": inst,
+                        "obra_tarea": "Mantenimiento / Adecuación de Planta",
+                        "fecha_texto": fecha,
+                        "mes_evento": extract_month(fecha),
+                        "impacto_mmm3d": imp
                     })
 
     return records
@@ -178,7 +165,7 @@ def main():
     with open(OUT_JSON, 'w', encoding='utf-8') as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
         
-    print(f"ÉXITO: Generado {OUT_JSON} con {len(data)} registros de mantenimientos limpios.")
+    print(f"ÉXITO: Generado {OUT_JSON} con {len(data)} registros estructurados.")
 
 
 if __name__ == '__main__':
