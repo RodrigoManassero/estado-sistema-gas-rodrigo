@@ -1,7 +1,16 @@
 {
-  "generated_at": "2026-10-21T13:03:25.224184",
+  "generated_at": "2026-10-21T13:17:27.908342",
   "source": "Minuta CCO Octubre 2026.docx",
   "data": [
+    {
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "General",
+      "obra_tarea": "Fallas (Revisión y Reparación)",
+      "fecha_texto": "miércoles 07 de Octubre de 2026",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "0 MM³/día"
+    },
     {
       "cuenca_zona": "Cuenca Sur",
       "empresa": "TGS",
@@ -27,7 +36,7 @@
       "obra_tarea": "Cambio de Niple",
       "fecha_texto": "A programar Noviembre 2026 – 1 Día",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "0 MM³/día"
+      "impacto_mmm3d": "9,5MM/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -45,7 +54,7 @@
       "obra_tarea": "Cambio de Niple",
       "fecha_texto": "A programar Noviembre 2026 – 2 dias",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "9,5MM/día"
+      "impacto_mmm3d": "7MM/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -54,7 +63,7 @@
       "obra_tarea": "Cambio de Modulo – TC2",
       "fecha_texto": "30/11 -A confirmar – 3 días",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "7MM/día"
+      "impacto_mmm3d": "4MM/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -69,19 +78,10 @@
       "cuenca_zona": "Cuenca Neuquina",
       "empresa": "TGS",
       "instalacion": "Planta La Adela",
-      "obra_tarea": "Prueba de PJ1+Mttos. Asociados",
-      "fecha_texto": "7/11 - A confirmar – 3 días",
-      "mes_evento": "2026-11",
-      "impacto_mmm3d": "4MM/día"
-    },
-    {
-      "cuenca_zona": "Cuenca Neuquina",
-      "empresa": "TGS",
-      "instalacion": "Planta La Adela",
       "obra_tarea": "Mantenimientos Varios",
       "fecha_texto": "23/11 - A confirmar – 2 días",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "6MM/día"
+      "impacto_mmm3d": "3,8MM/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -90,7 +90,7 @@
       "obra_tarea": "Instalación Tableros de Válvulas Lado Succión y Descarga",
       "fecha_texto": "14/10 -2 días",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "3,8MM/día"
+      "impacto_mmm3d": "2 MM/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -104,38 +104,47 @@
     {
       "cuenca_zona": "Cuenca Neuquina",
       "empresa": "TGS",
-      "instalacion": "Tramo Loma La Lata – Cervantes",
-      "obra_tarea": "Pasajes de Scraper Limpieza",
-      "fecha_texto": "A confirmar fecha (más de una limpieza)",
+      "instalacion": "Tramo Gasoducto Cordillerano (Loops – Solo falta el 3er tramo) 1 limpieza TGS + 3 de rosen",
+      "obra_tarea": "Corridas de scrapper",
+      "fecha_texto": "A programar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "2 MM/día"
+      "impacto_mmm3d": "0 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
       "empresa": "TGS",
-      "instalacion": "Tramo Cervantes – Belisle",
-      "obra_tarea": "Pasajes de Scraper Limpieza",
-      "fecha_texto": "A confirmar fecha (más de una limpieza)",
+      "instalacion": "Tramo Loma La Lata – Cervantes",
+      "obra_tarea": "Pasajes de Scraper Instrumentados (TFI y MFL)",
+      "fecha_texto": "A confirmar fecha (2 corridas)",
       "mes_evento": "2026-10",
       "impacto_mmm3d": "5,6MM/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
       "empresa": "TGS",
-      "instalacion": "Tramo Belisle - Adela",
-      "obra_tarea": "Pasajes de Scraper Limpieza",
-      "fecha_texto": "A partir fecha (más de una limpieza)",
+      "instalacion": "Tramo Cervantes – Belisle",
+      "obra_tarea": "Pasajes de Scraper Instrumentados (TFI y MFL)",
+      "fecha_texto": "A confirmar fecha (2 corridas)",
       "mes_evento": "2026-10",
       "impacto_mmm3d": "4,5MM/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
       "empresa": "TGS",
-      "instalacion": "Tramo La Adela – Cerri",
-      "obra_tarea": "Pasajes de Scraper Limpieza",
-      "fecha_texto": "A partir del 16/10(más de una limpieza)",
+      "instalacion": "Tramo Belisle - Adela",
+      "obra_tarea": "Pasajes de Scraper Instrumentados (TFI y MFL)",
+      "fecha_texto": "A confirmar fecha (2 corridas)",
       "mes_evento": "2026-10",
       "impacto_mmm3d": "5,5MM/día"
+    },
+    {
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGS",
+      "instalacion": "Tramo La Adela – Cerri",
+      "obra_tarea": "Pasajes de Scraper Instrumentados (TFI y MFL)",
+      "fecha_texto": "A confirmar fecha (2 corridas)",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "5MM/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -144,7 +153,7 @@
       "obra_tarea": "Prueba de PJ1",
       "fecha_texto": "24/11 -3 días",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "5MM/día"
+      "impacto_mmm3d": "8 MM/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -153,7 +162,7 @@
       "obra_tarea": "Prueba de PJ1 – Intención de hacerlo en simultaneo con Tratayén",
       "fecha_texto": "24/11 -3 días",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "8 MM/día"
+      "impacto_mmm3d": "8 MM/día(el de Tratayén)"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -162,7 +171,52 @@
       "obra_tarea": "Cambio de Sello",
       "fecha_texto": "2/11 -3 días",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "8 MM/día(el de Tratayén)"
+      "impacto_mmm3d": "potencial: Se prevé un bloqueo para los empalmes de 2 días. Sin expo por Guañaco."
+    },
+    {
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGN",
+      "instalacion": "Sección Neuquén/Puelen:",
+      "obra_tarea": "Fecha propuesta: Se corrieron 4 equipos de limpieza; no se pudo continuar con la campaña por requerimiento del sistema. Se continuará desde noviembre, se informan fechas tentativas. Se están programando 5 corridas de limpiezas + 1 CLP y 1 MFL.",
+      "fecha_texto": "A programar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "0 MM³/día"
+    },
+    {
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGN",
+      "instalacion": "Sección Cochico:",
+      "obra_tarea": "Adecuación de aislación de PC",
+      "fecha_texto": "A programar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "potencial: Iny máx = 29 MMm3/d (3 dias). Maximo GA: 6 MM m3/d"
+    },
+    {
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGN",
+      "instalacion": "Sección La Mora:",
+      "obra_tarea": "Cambio de modulo + escape TC03",
+      "fecha_texto": "A programar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "potencial: Iny máx = 29 MMm3/d (3 dias). Maximo GA: 5 MM m3/d"
+    },
+    {
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGN",
+      "instalacion": "Sección Beazley:",
+      "obra_tarea": "Duración: 3 dias con PC F/S – Se solapa con cambio de modulo TC04",
+      "fecha_texto": "A programar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "0 MM³/día"
+    },
+    {
+      "cuenca_zona": "Cuenca Neuquina",
+      "empresa": "TGN",
+      "instalacion": "Sección La Carlota:",
+      "obra_tarea": "Cambio de modulo Taurus + adecuación Aeroenfriador de aceite",
+      "fecha_texto": "A programar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "máximo transporte desde Tio Pujio: aprox. 15 MM m3/d."
     },
     {
       "cuenca_zona": "Cuenca Norte",
@@ -171,7 +225,7 @@
       "obra_tarea": "Verificación de falla en PK 710,224",
       "fecha_texto": "A programar.",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "máximo transporte desde Tio Pujio: aprox. 15 MM m3/d."
+      "impacto_mmm3d": "3MM/día"
     },
     {
       "cuenca_zona": "Cuenca Norte",
@@ -180,25 +234,7 @@
       "obra_tarea": "Verificación de falla en PK 784.123",
       "fecha_texto": "A programar.",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "3MM/día"
-    },
-    {
-      "cuenca_zona": "Cuenca Norte",
-      "empresa": "TGS",
-      "instalacion": "Tramo Saturno - Ordoqui",
-      "obra_tarea": "Tie-In Loop NII a la descarga de Saturno para nueva planta",
-      "fecha_texto": "22/11 – A confirmar.",
-      "mes_evento": "2026-11",
       "impacto_mmm3d": "4MM/día"
-    },
-    {
-      "cuenca_zona": "Cuenca Norte",
-      "empresa": "TGS",
-      "instalacion": "Tramo Saturno - Ordoqui",
-      "obra_tarea": "Tie-In Loop NII a la succión de Ordoqui para nueva planta",
-      "fecha_texto": "8/11 – A confirmar.",
-      "mes_evento": "2026-11",
-      "impacto_mmm3d": "8MM/día"
     },
     {
       "cuenca_zona": "Cuenca Norte",
@@ -207,15 +243,6 @@
       "obra_tarea": "Tie-In NII a la succión de Ordoqui para nueva planta",
       "fecha_texto": "15/11 – A confirmar.",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "7MM/día"
-    },
-    {
-      "cuenca_zona": "Cuenca Norte",
-      "empresa": "TGS",
-      "instalacion": "Tramo Ordoqui – Las Heras",
-      "obra_tarea": "Tie-In Loop NII a la descarga de Ordoqui para nueva planta",
-      "fecha_texto": "25/10 – A confirmar.",
-      "mes_evento": "2026-10",
       "impacto_mmm3d": "4MM/día"
     },
     {
@@ -225,7 +252,7 @@
       "obra_tarea": "Tie-In NII a la descarga de Ordoqui para nueva planta",
       "fecha_texto": "1/11 – A confirmar.",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "10MM/día"
+      "impacto_mmm3d": "5MM/día"
     },
     {
       "cuenca_zona": "Cuenca Norte",
@@ -233,33 +260,6 @@
       "instalacion": "Tramo Cerri - Indio Rico Troncal",
       "obra_tarea": "Cambio de niple Pk 1169",
       "fecha_texto": "A programar – 1 día.",
-      "mes_evento": "2026-10",
-      "impacto_mmm3d": "5MM/día"
-    },
-    {
-      "cuenca_zona": "Cuenca Norte",
-      "empresa": "TGS",
-      "instalacion": "Tramo Barker - Buchanan",
-      "obra_tarea": "Reparación de fallas en descarga de Planta Barker, altura CT Barker",
-      "fecha_texto": "18/10/2026",
-      "mes_evento": "2026-10",
-      "impacto_mmm3d": "0 MM m³/d"
-    },
-    {
-      "cuenca_zona": "Cuenca Norte",
-      "empresa": "TGS",
-      "instalacion": "Tramo Barker - Buchanan",
-      "obra_tarea": "Verificación y Reparación de falla PK 1271, limita presión a 58.7 Kg/cm²",
-      "fecha_texto": "A evaluar en 2026 - A confirmar",
-      "mes_evento": "2026-10",
-      "impacto_mmm3d": "11 MM m³/día (Salida a TF: 52MM)"
-    },
-    {
-      "cuenca_zona": "Cuenca Norte",
-      "empresa": "TGS",
-      "instalacion": "Tramo Barker - Buchanan",
-      "obra_tarea": "Cambio de 10 Niples",
-      "fecha_texto": "Octubre/Noviembre 2026",
       "mes_evento": "2026-10",
       "impacto_mmm3d": "0 MM m³/d"
     },
@@ -286,16 +286,7 @@
       "empresa": "TGS",
       "instalacion": "Tramo Cañuelas - Buchanan",
       "obra_tarea": "Cambios de Niple entre TANB-2 – TANB-3 (2)",
-      "fecha_texto": "Diciembre 2026 - A confirmar - 1 día",
-      "mes_evento": "2026-12",
-      "impacto_mmm3d": "0 MM m³/d"
-    },
-    {
-      "cuenca_zona": "Cuenca Norte",
-      "empresa": "TGS",
-      "instalacion": "Tramo Buchanan – Gutierrez",
-      "obra_tarea": "PM 227 – Buchanan I – Actualización de Válvulas",
-      "fecha_texto": "25 y 26/10 – A confirmar",
+      "fecha_texto": "A programar un cambio de niple",
       "mes_evento": "2026-10",
       "impacto_mmm3d": "0 MM³/día"
     },
@@ -315,7 +306,7 @@
       "obra_tarea": "TC3 - Cambio de Cableado Sensores Pick Up de Velocidad",
       "fecha_texto": "A confirmar – 12 hs",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "0 MM³/día"
+      "impacto_mmm3d": "0 MM m³/d"
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
@@ -324,7 +315,7 @@
       "obra_tarea": "TC1 -TC2 -TC3 – Retrofit de sistema de protección de Sobrevelocidad",
       "fecha_texto": "Pasa a segundo semestre – 3 dias x TC",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "0 MM m³/d"
+      "impacto_mmm3d": "0 MM³/día"
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
@@ -333,7 +324,7 @@
       "obra_tarea": "Instalación sistema Fire&Gas",
       "fecha_texto": "Finales de noviembre - A confirmar – 2 meses",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "0 MM³/día"
+      "impacto_mmm3d": "0 MM m³/d."
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
@@ -341,15 +332,6 @@
       "instalacion": "Planta Ordoqui",
       "obra_tarea": "Reparación de válvula de reciclo en las TC2 y TC3",
       "fecha_texto": "A confirmar junto a obras de IP después de Octubre – 36 hs",
-      "mes_evento": "2026-10",
-      "impacto_mmm3d": "0 MM m³/d."
-    },
-    {
-      "cuenca_zona": "Corridas de scrapper en Tramos Finales",
-      "empresa": "TGS",
-      "instalacion": "Planta Ordoqui",
-      "obra_tarea": "Planta – Puesta en servicio de separador N°3 + Paro anual PJ1",
-      "fecha_texto": "25/10 - A confirmar – 36 hs",
       "mes_evento": "2026-10",
       "impacto_mmm3d": "0 MM³/día"
     },
