@@ -51,6 +51,17 @@ def extract_month(text: str) -> str:
     return "2026-10"
 
 
+def simplify_obra_tarea(text: str) -> str:
+    text_lower = text.lower()
+    if 'limpieza' in text_lower and not ('instrumentado' in text_lower or 'tfi' in text_lower or 'mfl' in text_lower):
+        return "Scraper Limpieza"
+    elif any(kw in text_lower for kw in ['instrumentado', 'tfi', 'mfl', 'clp']):
+        return "Scraper instrumentado"
+    elif any(kw in text_lower for kw in ['corridas', 'corrida de scrapper', 'corrida de scraper', 'corridas de scrapper']):
+        return "Scraper limpieza + instrumentado"
+    return text
+
+
 def parse_cco_docx(file_path: str) -> list[dict]:
     doc = docx.Document(file_path)
     records = []
@@ -88,16 +99,22 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             current_empresa = text.upper()
             continue
 
-        # Detectar Tramos, Plantas o Secciones (Inicia un nuevo bloque de instalación)
+        # Detectar Tramos, Plantas o Secciones
         if text.startswith("Tramo ") or text.startswith("Planta ") or text.startswith("Sección "):
+            current_instalacion = text
+            continue
+
+        # Cada vez que inicia una nueva Obra o Tarea, guardamos la anterior y abrimos un bloque independiente
+        if text.startswith("Obra:") or text.startswith("Tarea:"):
             if current_item and current_item.get("obra_tarea"):
                 records.append(current_item)
-            current_instalacion = text
+            
+            raw_obra = text.split(":", 1)[1].strip()
             current_item = {
                 "cuenca_zona": current_cuenca,
                 "empresa": current_empresa,
                 "instalacion": current_instalacion,
-                "obra_tarea": "",
+                "obra_tarea": simplify_obra_tarea(raw_obra),
                 "fecha_texto": "A programar",
                 "mes_evento": "2026-10",
                 "impacto_mmm3d": "0 MM³/día"
@@ -115,11 +132,8 @@ def parse_cco_docx(file_path: str) -> list[dict]:
                 "impacto_mmm3d": "0 MM³/día"
             }
 
-        # Capturar Obra o Tarea
-        if text.startswith("Obra:") or text.startswith("Tarea:"):
-            current_item["obra_tarea"] = text.split(":", 1)[1].strip()
-        elif any(kw in text_lower for kw in ['cambio de', 'reparación', 'prueba', 'corrida', 'paro', 'mantenimiento', 'verificación', 'adecuación', 'tie-in', 'recobertura']) and not current_item["obra_tarea"]:
-            current_item["obra_tarea"] = text
+        if any(kw in text_lower for kw in ['cambio de', 'reparación', 'prueba', 'corrida', 'paro', 'mantenimiento', 'verificación', 'adecuación', 'tie-in', 'recobertura', 'pasajes de scraper']) and not current_item["obra_tarea"]:
+            current_item["obra_tarea"] = simplify_obra_tarea(text)
 
         # Capturar Fecha / Periodo
         if text.startswith("Fecha:") or text.startswith("Periodo:"):
@@ -127,7 +141,7 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             current_item["fecha_texto"] = fecha_val
             current_item["mes_evento"] = extract_month(fecha_val)
 
-        # Capturar Afectación / Impacto de forma estricta para el item actual
+        # Capturar Afectación / Impacto
         if text.startswith("Afectación:") or text.startswith("Impacto:") or text.startswith("Impacto potencial:") or text.startswith("Impacto estimado:"):
             current_item["impacto_mmm3d"] = extract_impact_text(text)
 
