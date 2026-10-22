@@ -116,15 +116,20 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         if any(phrase in text_lower for phrase in ignore_phrases):
             continue
             
-        # Detectar Secciones / Cuencas / Gasoductos
-        if "Cuenca" in text or "Tramos Finales" in text or "Gasoducto" in text or "Gto " in text:
+        # Detectar Secciones / Cuencas / Gasoductos / Secciones TGN (Centro Oeste)
+        if "Cuenca" in text or "Tramos Finales" in text or "Gasoducto" in text or "Gto " in text or "Sección " in text:
             if len(text) < 40:
                 if current_item and current_item.get("obra_tarea"):
                     records.append(current_item)
                     current_item = None
                     
-                current_cuenca = text.rstrip(":")
-                current_instalacion = current_cuenca  # Por defecto asigna el gasoducto/zona actual
+                text_clean = text.rstrip(":")
+                if text_clean.lower().startswith("sección "):
+                    current_cuenca = "Gasoducto Centro Oeste"
+                    current_instalacion = re.sub(r'^sección\s*', '', text_clean, flags=re.IGNORECASE).strip()
+                else:
+                    current_cuenca = text_clean
+                    current_instalacion = current_cuenca
                 in_operational_data = True
                 continue
                 
@@ -164,7 +169,12 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             if current_item and current_item.get("obra_tarea"):
                 records.append(current_item)
                 current_item = None
-            current_instalacion = text.rstrip(":")
+            text_clean = text.rstrip(":")
+            if text_clean.lower().startswith("sección "):
+                current_cuenca = "Gasoducto Centro Oeste"
+                current_instalacion = re.sub(r'^sección\s*', '', text_clean, flags=re.IGNORECASE).strip()
+            else:
+                current_instalacion = text_clean
             continue
 
         if text.startswith("Obra:") or text.startswith("Tarea:") or text.startswith("• "):
