@@ -18,16 +18,27 @@ def clean_text(text: str) -> str:
 
 
 def extract_impact_text(text: str) -> str:
-    match = re.search(r'(?:afectación|impacto|impacto potencial|impacto estimado)[:\s]*(.*)', text, re.IGNORECASE)
-    if match:
-        val_str = clean_text(match.group(1))
-        val_lower = val_str.lower()
-        if any(kw in val_lower for kw in ['sin impacto', 'no', 'sin restricción', 'sin afectación', 'no hay']):
-            return "0 MM³/día"
-        return val_str
+    text_clean = clean_text(text)
+    text_lower = text_clean.lower()
+    
+    # Si indica "en estudio", "sin impacto", o no tiene un número claro, devolvemos 0 MM³/día
+    if any(kw in text_lower for kw in ['en estudio', 'sin impacto', 'no', 'sin restricción', 'sin afectación', 'no hay', 'a coordinar']):
+        return "0 MM³/día"
         
-    text_lower = text.lower()
-    if any(kw in text_lower for kw in ['sin impacto', 'sin restricción', 'sin afectación']):
+    # Buscar si hay un número explícito de MM³/día o MM m3/d
+    match = re.search(r'(?:afectación|impacto|impacto potencial|impacto estimado)[:\s]*([-\d,\.]+)\s*MM', text_clean, re.IGNORECASE)
+    if not match:
+        match = re.search(r'([-\d,\.]+)\s*MM\s*(?:m[³3]/d|m[³3]|/d|día)?', text_clean, re.IGNORECASE)
+        
+    if match:
+        try:
+            val = float(match.group(1).replace(',', '.'))
+            return f"{val} MM³/día"
+        except ValueError:
+            pass
+            
+    # Si tiene texto descriptivo largo sin número operativo claro, forzar 0 MM³/día
+    if len(text_clean) > 30 and not re.search(r'\d', text_clean):
         return "0 MM³/día"
         
     return "0 MM³/día"
@@ -68,7 +79,7 @@ def parse_fecha_y_duracion(text: str) -> tuple[str, str]:
 
 def simplify_obra_tarea(text: str) -> str:
     text_lower = text.lower()
-    if 'limpieza' in text_lower and not ('instrumentado' in text_lower or 'tfi' in text_lower or 'mfl' in text_lower):
+    if 'limpieza' in text_lower and not ('instrumentado' in text_lower or 'tfi' in text_lower or 'mfl' in text_lower or 'clp' in text_lower):
         return "Scraper Limpieza"
     elif any(kw in text_lower for kw in ['instrumentado', 'tfi', 'mfl', 'clp']):
         return "Scraper instrumentado"
@@ -105,14 +116,12 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             
         text_lower = text.lower()
         
-        # Ignorar encabezados y títulos de categoría
         if any(phrase in text_lower for phrase in ignore_phrases):
             continue
             
-        # Detectar Secciones / Cuencas
-        if "Cuenca" in text or "Tramos Finales" in text or "Gasoducto" in text:
+        # Detectar Secciones / Cuencas / Gasoductos específicos (ej: Gto Gas Pacifico)
+        if "Cuenca" in text or "Tramos Finales" in text or "Gasoducto" in text or "Gto " in text:
             if len(text) < 40:
-                # Si teníamos un item previo en curso, guardarlo
                 if current_item and current_item.get("obra_tarea"):
                     records.append(current_item)
                     current_item = None
@@ -124,7 +133,6 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         if not in_operational_data and not any(e in text.upper() for e in ["TGS", "TGN"]):
             continue
 
-        # Cambiar de Empresa (Cierra el item actual para no contaminar valores)
         if text.upper() in ["TGS", "TGN"]:
             if current_item and current_item.get("obra_tarea"):
                 records.append(current_item)
@@ -132,17 +140,37 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             current_empresa = text.upper()
             continue
 
-        # Detectar nueva instalación (Tramo o Planta)
-        if text.startswith("Tramo ") or text.startswith("Planta ") or text.startswith("Sección "):
+        # Detectar formato especial de TGN: "Corrida de scrapper Tramo 701: ..."
+        if "corrida de " in text_lower and ("tramo" in text_lower or "pc " in text_lower):
             if current_item and current_item.get("obra_tarea"):
                 records.append(current_item)
                 current_item = None
                 
-            # Limpiar dos puntos al final si los tiene (ej: "Planta Mercedes:")
+            # Extraer el nombre del tramo limpio como instalación
+            parts = text.split(":", 1)
+            tramo_nombre = parts[1].strip() if len(parts) > 1 else text
+            # Quitar métricas de km si están al final entre paréntesis para limpieza opcional o conservarlas
+            current_instalacion = f"Tramo {tramo_nombre}" if not tramo_nombre.lower().startswith("tramo") else tramo_nombre
+            
+            current_item = {
+                "cuenca_zona": current_cuenca,
+                "empresa": current_empresa,
+                "instalacion": current_instalacion,
+                "obra_tarea": "Scraper limpieza + instrumentado",
+                "fecha": "A programar",
+                "duracion": "A confirmar",
+                "mes_evento": "2026-10",
+                "impacto_mmm3d": "0 MM³/día"
+            }
+            continue
+
+        if text.startswith("Tramo ") or text.startswith("Planta ") or text.startswith("Sección "):
+            if current_item and current_item.get("obra_tarea"):
+                records.append(current_item)
+                current_item = None
             current_instalacion = text.rstrip(":")
             continue
 
-        # Iniciar bloque independiente por Obra o Tarea
         if text.startswith("Obra:") or text.startswith("Tarea:"):
             if current_item and current_item.get("obra_tarea"):
                 records.append(current_item)
@@ -172,28 +200,23 @@ def parse_cco_docx(file_path: str) -> list[dict]:
                 "impacto_mmm3d": "0 MM³/día"
             }
 
-        if any(kw in text_lower for kw in ['cambio de', 'reparación', 'prueba', 'corrida', 'paro', 'mantenimiento', 'verificación', 'adecuación', 'tie-in', 'recobertura', 'pasajes de scraper']) and not current_item["obra_tarea"]:
+        if any(kw in text_lower for kw in ['cambio de', 'reparación', 'prueba', 'corrida', 'paro', 'mantenimiento', 'verificación', 'adecuación', 'tie-in', 'recobertura', 'pasajes de scraper', 'clp']) and not current_item["obra_tarea"]:
             current_item["obra_tarea"] = simplify_obra_tarea(text)
 
-        # Capturar Fecha / Periodo
-        if text.startswith("Fecha:") or text.startswith("Periodo:"):
-            fecha_val = text.split(":", 1)[1].strip()
+        if text.startswith("Fecha:") or text.startswith("Periodo:") or "fecha estimada" in text_lower:
+            fecha_val = text.split(":", 1)[1].strip() if ":" in text else text
             f_ext, d_ext = parse_fecha_y_duracion(fecha_val)
             current_item["fecha"] = f_ext
             current_item["duracion"] = d_ext
             current_item["mes_evento"] = extract_month(fecha_val)
 
-        # Capturar Afectación / Impacto
-        if text.startswith("Afectación:") or text.startswith("Impacto:") or text.startswith("Impacto potencial:") or text.startswith("Impacto estimado:"):
+        if text.startswith("Afectación:") or text.startswith("Impacto:") or text.startswith("Impacto potencial:") or text.startswith("Impacto estimado:") or "impacto potencial" in text_lower:
             current_item["impacto_mmm3d"] = extract_impact_text(text)
 
-    # Cierre del último item del bucle de párrafos
     if current_item and current_item.get("obra_tarea"):
         records.append(current_item)
 
-    # ------------------------------------------------------------------------
-    # Procesamiento de Tablas (GPM y acometidas) + Deduplicación Inteligente
-    # ------------------------------------------------------------------------
+    # Procesamiento de Tablas + Deduplicación
     existing_plants = {r["instalacion"].lower() for r in records}
 
     for table in doc.tables:
@@ -201,14 +224,8 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             cells = [clean_text(cell.text) for cell in row.cells]
             if len(cells) >= 3:
                 inst_raw, fecha_raw, imp_raw = cells[0], cells[1], cells[2]
-                
-                # Omitir cabecera de la tabla
                 if inst_raw and fecha_raw and not any(h in inst_raw.lower() for h in ['planta', 'empresa', 'apellido', 'instalación']):
-                    
-                    # Normalizar nombre de planta (ej. "Casa de Piedra" -> "Planta Casa de Piedra")
                     inst_name = inst_raw if inst_raw.startswith("Planta ") else f"Planta {inst_raw}"
-                    
-                    # Deduplicación: Si la planta ya fue parseada detalladamente en los párrafos, la salteamos
                     if any(inst_raw.lower() in existing_p or existing_p in inst_raw.lower() for existing_p in existing_plants):
                         continue
                         
