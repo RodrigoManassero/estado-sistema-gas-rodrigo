@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22T20:08:12.173842",
+  "generated_at": "2026-10-22T20:25:11.208538",
   "source": "Minuta CCO Octubre 2026.docx",
   "data": [
     {
@@ -205,7 +205,7 @@
     {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
-      "instalacion": "Planta Tratayén:",
+      "instalacion": "Planta Tratayén",
       "obra_tarea": "Prueba de PJ1",
       "fecha": "24/11",
       "duracion": "3 días",
@@ -215,7 +215,7 @@
     {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
-      "instalacion": "Planta Salliquelo:",
+      "instalacion": "Planta Salliquelo",
       "obra_tarea": "Prueba de PJ1 – Intención de hacerlo en simultaneo con Tratayén",
       "fecha": "24/11",
       "duracion": "3 días",
@@ -225,11 +225,81 @@
     {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
-      "instalacion": "Planta Mercedes:",
+      "instalacion": "Planta Mercedes",
       "obra_tarea": "Cambio de Sello",
       "fecha": "2/11",
       "duracion": "3 días",
       "mes_evento": "2026-11",
+      "impacto_mmm3d": "3MM/día"
+    },
+    {
+      "cuenca_zona": "Gasoducto GPM",
+      "empresa": "TGN",
+      "instalacion": "Planta Mercedes",
+      "obra_tarea": "Verificación de defectos",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "potencial: Se prevé un bloqueo para los empalmes de 2 días. Sin expo por Guañaco."
+    },
+    {
+      "cuenca_zona": "Gasoducto GPM",
+      "empresa": "TGN",
+      "instalacion": "Sección Neuquén/Puelen",
+      "obra_tarea": "Scraper instrumentado",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "0 MM³/día"
+    },
+    {
+      "cuenca_zona": "Gasoducto GPM",
+      "empresa": "TGN",
+      "instalacion": "Sección Cochico",
+      "obra_tarea": "Adecuación de aislación de PC",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "potencial: Iny máx = 29 MMm3/d (3 dias). Maximo GA: 6 MM m3/d"
+    },
+    {
+      "cuenca_zona": "Gasoducto GPM",
+      "empresa": "TGN",
+      "instalacion": "Sección La Mora",
+      "obra_tarea": "Cambio de modulo + escape TC03",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "potencial: Iny máx = 29 MMm3/d (3 dias). Maximo GA: 5 MM m3/d"
+    },
+    {
+      "cuenca_zona": "Gasoducto GPM",
+      "empresa": "TGN",
+      "instalacion": "Sección Beazley",
+      "obra_tarea": "Duración: 3 dias con PC F/S – Se solapa con cambio de modulo TC04",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "0 MM³/día"
+    },
+    {
+      "cuenca_zona": "Gasoducto GPM",
+      "empresa": "TGN",
+      "instalacion": "Sección La Carlota",
+      "obra_tarea": "Cambio de modulo Taurus + adecuación Aeroenfriador de aceite",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "0 MM³/día"
+    },
+    {
+      "cuenca_zona": "Cuenca Norte",
+      "empresa": "TGN",
+      "instalacion": "Sección La Carlota",
+      "obra_tarea": "Campaña de verificación de defectos en curso. Sin impacto potencial",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
       "impacto_mmm3d": "máximo transporte desde Tio Pujio: aprox. 15 MM m3/d."
     },
     {
@@ -463,10 +533,20 @@
       "impacto_mmm3d": "10MM/día"
     },
     {
+      "cuenca_zona": "Gasoducto Mercedes - Cardales",
+      "empresa": "TGS",
+      "instalacion": "Planta Ordoqui",
+      "obra_tarea": "Sigue en curso el mantenimiento en Atucha I por 3 años. Resta aprox 1 año.",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "0 MM³/día"
+    },
+    {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
-      "instalacion": "Casa de Piedra",
-      "obra_tarea": "Mantenimiento / Adecuación de Planta",
+      "instalacion": "Planta Casa de Piedra",
+      "obra_tarea": "Acometidas para futuras plantas compresoras",
       "fecha": "28/10",
       "duracion": "1 día",
       "mes_evento": "2026-10",
@@ -475,8 +555,8 @@
     {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
-      "instalacion": "Doblas",
-      "obra_tarea": "Mantenimiento / Adecuación de Planta",
+      "instalacion": "Planta Doblas",
+      "obra_tarea": "Acometidas para futuras plantas compresoras",
       "fecha": "11/11",
       "duracion": "1 día",
       "mes_evento": "2026-11",
@@ -485,18 +565,8 @@
     {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
-      "instalacion": "Tratayén",
-      "obra_tarea": "Mantenimiento / Adecuación de Planta",
-      "fecha": "24/11",
-      "duracion": "1 día",
-      "mes_evento": "2026-11",
-      "impacto_mmm3d": "8MM/día"
-    },
-    {
-      "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TGS",
-      "instalacion": "Chacharramendi",
-      "obra_tarea": "Mantenimiento / Adecuación de Planta",
+      "instalacion": "Planta Chacharramendi",
+      "obra_tarea": "Acometidas para futuras plantas compresoras",
       "fecha": "8/12",
       "duracion": "1 día",
       "mes_evento": "2026-12",
