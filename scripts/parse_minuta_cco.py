@@ -51,6 +51,23 @@ def extract_month(text: str) -> str:
     return "2026-10"
 
 
+def parse_fecha_y_duracion(text: str) -> tuple[str, str]:
+    text_clean = clean_text(text)
+    
+    # Extraer fecha exacta si existe formato DD/MM (ej: 30/11, 7/11)
+    date_match = re.search(r'(\d{1,2}/\d{1,2})', text_clean)
+    if date_match and not "2026" in text_clean[:5]: # Evitar confundir con años si aparecen al inicio
+        fecha = date_match.group(1)
+    else:
+        fecha = "A programar"
+        
+    # Extraer duración (ej: 1 día, 3 días, 12 hs)
+    dur_match = re.search(r'(\d+\s*(?:días?|hs?|horas?))', text_clean, re.IGNORECASE)
+    duracion = dur_match.group(1) if dur_match else "A confirmar"
+    
+    return fecha, duracion
+
+
 def simplify_obra_tarea(text: str) -> str:
     text_lower = text.lower()
     if 'limpieza' in text_lower and not ('instrumentado' in text_lower or 'tfi' in text_lower or 'mfl' in text_lower):
@@ -71,12 +88,15 @@ def parse_cco_docx(file_path: str) -> list[dict]:
     current_instalacion = "General"
     
     ignore_phrases = [
-        "no tiene mantenimientos", "sin novedades", "no participó", 
-        "no realizó comentarios", "se continuará con las reuniones",
-        "los mantenimientos previstos fueron realizados", "se finalizaron todas las tareas"
+        "comité de coordinación", "minuta reunión", "lugar:", "participantes:", 
+        "se llevó a cabo", "reunión mensual", "no tiene mantenimientos", 
+        "sin novedades", "no participó", "no realizó comentarios", 
+        "se continuará con las reuniones", "los mantenimientos previstos fueron realizados", 
+        "se finalizaron todas las tareas"
     ]
 
     current_item = None
+    in_operational_data = False
 
     for p in doc.paragraphs:
         text = clean_text(p.text)
@@ -85,15 +105,21 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             
         text_lower = text.lower()
         
-        if any(phrase in text_lower for phrase in ignore_phrases) or "se llevó a cabo" in text_lower or "participantes:" in text_lower:
+        # Ignorar encabezados e introducción general del documento
+        if any(phrase in text_lower for phrase in ignore_phrases):
             continue
             
-        # Detectar Cuencas
-        if "Cuenca" in text or "Tramos Finales" in text:
+        # Detectar inicio de secciones operativas (Cuencas o Tramos Finales)
+        if "Cuenca" in text or "Tramos Finales" in text or "Gasoducto" in text:
             if len(text) < 40:
                 current_cuenca = text
+                in_operational_data = True
                 continue
                 
+        # Si todavía estamos en la carátula o introducción antes de la primera cuenca, saltar
+        if not in_operational_data and not any(e in text.upper() for e in ["TGS", "TGN"]):
+            continue
+
         # Detectar Empresa
         if text.upper() in ["TGS", "TGN"]:
             current_empresa = text.upper()
@@ -104,7 +130,7 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             current_instalacion = text
             continue
 
-        # Cada vez que inicia una nueva Obra o Tarea, guardamos la anterior y abrimos un bloque independiente
+        # Iniciar bloque independiente por Obra o Tarea
         if text.startswith("Obra:") or text.startswith("Tarea:"):
             if current_item and current_item.get("obra_tarea"):
                 records.append(current_item)
@@ -115,7 +141,8 @@ def parse_cco_docx(file_path: str) -> list[dict]:
                 "empresa": current_empresa,
                 "instalacion": current_instalacion,
                 "obra_tarea": simplify_obra_tarea(raw_obra),
-                "fecha_texto": "A programar",
+                "fecha": "A programar",
+                "duracion": "A confirmar",
                 "mes_evento": "2026-10",
                 "impacto_mmm3d": "0 MM³/día"
             }
@@ -127,7 +154,8 @@ def parse_cco_docx(file_path: str) -> list[dict]:
                 "empresa": current_empresa,
                 "instalacion": current_instalacion,
                 "obra_tarea": "",
-                "fecha_texto": "A programar",
+                "fecha": "A programar",
+                "duracion": "A confirmar",
                 "mes_evento": "2026-10",
                 "impacto_mmm3d": "0 MM³/día"
             }
@@ -135,10 +163,12 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         if any(kw in text_lower for kw in ['cambio de', 'reparación', 'prueba', 'corrida', 'paro', 'mantenimiento', 'verificación', 'adecuación', 'tie-in', 'recobertura', 'pasajes de scraper']) and not current_item["obra_tarea"]:
             current_item["obra_tarea"] = simplify_obra_tarea(text)
 
-        # Capturar Fecha / Periodo
+        # Capturar Fecha / Periodo y separar fecha y duración
         if text.startswith("Fecha:") or text.startswith("Periodo:"):
             fecha_val = text.split(":", 1)[1].strip()
-            current_item["fecha_texto"] = fecha_val
+            f_ext, d_ext = parse_fecha_y_duracion(fecha_val)
+            current_item["fecha"] = f_ext
+            current_item["duracion"] = d_ext
             current_item["mes_evento"] = extract_month(fecha_val)
 
         # Capturar Afectación / Impacto
@@ -154,15 +184,17 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         for row in table.rows:
             cells = [clean_text(cell.text) for cell in row.cells]
             if len(cells) >= 3:
-                inst, fecha, imp = cells[0], cells[1], cells[2]
-                if inst and fecha and not any(h in inst.lower() for h in ['planta', 'empresa']):
+                inst, fecha_raw, imp = cells[0], cells[1], cells[2]
+                if inst and fecha_raw and not any(h in inst.lower() for h in ['planta', 'empresa', 'apellido']):
+                    f_ext, d_ext = parse_fecha_y_duracion(fecha_raw)
                     records.append({
                         "cuenca_zona": "Gasoducto GPM",
                         "empresa": "TGS",
                         "instalacion": inst,
                         "obra_tarea": "Mantenimiento / Adecuación de Planta",
-                        "fecha_texto": fecha,
-                        "mes_evento": extract_month(fecha),
+                        "fecha": f_ext,
+                        "duracion": d_ext,
+                        "mes_evento": extract_month(fecha_raw),
                         "impacto_mmm3d": imp
                     })
 
