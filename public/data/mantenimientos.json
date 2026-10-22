@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22T20:01:15.672999",
+  "generated_at": "2026-10-22T20:08:12.173842",
   "source": "Minuta CCO Octubre 2026.docx",
   "data": [
     {
@@ -38,7 +38,7 @@
       "instalacion": "Tramo Fortín Uno – Gaviotas",
       "obra_tarea": "Cambio de Niple",
       "fecha": "A programar",
-      "duracion": "A confirmar",
+      "duracion": "2 dias",
       "mes_evento": "2026-11",
       "impacto_mmm3d": "9,5MM/día"
     },
@@ -48,7 +48,7 @@
       "instalacion": "Tramo Gaviotas -- Cerri",
       "obra_tarea": "Cambio de Niple",
       "fecha": "A programar",
-      "duracion": "A confirmar",
+      "duracion": "2 dias",
       "mes_evento": "2026-11",
       "impacto_mmm3d": "7MM/día"
     },
@@ -358,7 +358,7 @@
       "instalacion": "Tramo Barker - Buchanan",
       "obra_tarea": "Test de Fluencia a la descarga de Planta Barker",
       "fecha": "A programar",
-      "duracion": "A confirmar",
+      "duracion": "20 dias",
       "mes_evento": "2026-10",
       "impacto_mmm3d": "0 MM m³/d"
     },
@@ -418,7 +418,7 @@
       "instalacion": "Planta Barker",
       "obra_tarea": "TC1 -TC2 -TC3 – Retrofit de sistema de protección de Sobrevelocidad",
       "fecha": "A programar",
-      "duracion": "A confirmar",
+      "duracion": "3 dias",
       "mes_evento": "2026-10",
       "impacto_mmm3d": "0 MM³/día"
     },
