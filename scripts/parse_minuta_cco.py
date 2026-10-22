@@ -54,14 +54,12 @@ def extract_month(text: str) -> str:
 def parse_fecha_y_duracion(text: str) -> tuple[str, str]:
     text_clean = clean_text(text)
     
-    # Extraer fecha exacta si existe formato DD/MM (ej: 30/11, 7/11)
     date_match = re.search(r'(\d{1,2}/\d{1,2})', text_clean)
-    if date_match and not "2026" in text_clean[:5]: # Evitar confundir con años si aparecen al inicio
+    if date_match and not "2026" in text_clean[:5]:
         fecha = date_match.group(1)
     else:
         fecha = "A programar"
         
-    # Extraer duración (ej: 1 día, 3 días, 12 hs)
     dur_match = re.search(r'(\d+\s*(?:días?|hs?|horas?))', text_clean, re.IGNORECASE)
     duracion = dur_match.group(1) if dur_match else "A confirmar"
     
@@ -87,12 +85,14 @@ def parse_cco_docx(file_path: str) -> list[dict]:
     current_empresa = "TGS"
     current_instalacion = "General"
     
+    # Frases e introducción a ignorar (incluyendo subtítulos de categoría)
     ignore_phrases = [
         "comité de coordinación", "minuta reunión", "lugar:", "participantes:", 
         "se llevó a cabo", "reunión mensual", "no tiene mantenimientos", 
         "sin novedades", "no participó", "no realizó comentarios", 
         "se continuará con las reuniones", "los mantenimientos previstos fueron realizados", 
-        "se finalizaron todas las tareas"
+        "se finalizaron todas las tareas", "fallas (revisión y reparación)", 
+        "campaña verificación de defectos", "obras en gasoducto", "obras en plantas"
     ]
 
     current_item = None
@@ -105,7 +105,7 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             
         text_lower = text.lower()
         
-        # Ignorar encabezados e introducción general del documento
+        # Ignorar encabezados, introducción y títulos de categoría
         if any(phrase in text_lower for phrase in ignore_phrases):
             continue
             
@@ -116,7 +116,6 @@ def parse_cco_docx(file_path: str) -> list[dict]:
                 in_operational_data = True
                 continue
                 
-        # Si todavía estamos en la carátula o introducción antes de la primera cuenca, saltar
         if not in_operational_data and not any(e in text.upper() for e in ["TGS", "TGN"]):
             continue
 
@@ -163,7 +162,7 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         if any(kw in text_lower for kw in ['cambio de', 'reparación', 'prueba', 'corrida', 'paro', 'mantenimiento', 'verificación', 'adecuación', 'tie-in', 'recobertura', 'pasajes de scraper']) and not current_item["obra_tarea"]:
             current_item["obra_tarea"] = simplify_obra_tarea(text)
 
-        # Capturar Fecha / Periodo y separar fecha y duración
+        # Capturar Fecha / Periodo
         if text.startswith("Fecha:") or text.startswith("Periodo:"):
             fecha_val = text.split(":", 1)[1].strip()
             f_ext, d_ext = parse_fecha_y_duracion(fecha_val)
