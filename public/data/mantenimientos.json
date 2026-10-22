@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22T20:41:00.062592",
+  "generated_at": "2026-10-22T20:48:55.445677",
   "source": "Minuta CCO Octubre 2026.docx",
   "data": [
     {
@@ -233,9 +233,9 @@
       "impacto_mmm3d": "3.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Gas Pacifico:",
+      "cuenca_zona": "Gto Gas Pacifico",
       "empresa": "TGN",
-      "instalacion": "Planta Mercedes",
+      "instalacion": "Gto Gas Pacifico",
       "obra_tarea": "Verificación de defectos",
       "fecha": "A programar",
       "duracion": "A confirmar",
@@ -243,7 +243,7 @@
       "impacto_mmm3d": "0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Gas Pacifico:",
+      "cuenca_zona": "Gto Gas Pacifico",
       "empresa": "TGN",
       "instalacion": "Tramo LLL – PC San Jose Añelo (67,5 km)",
       "obra_tarea": "Scraper limpieza + instrumentado",
@@ -253,7 +253,7 @@
       "impacto_mmm3d": "0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Gas Pacifico:",
+      "cuenca_zona": "Gto Gas Pacifico",
       "empresa": "TGN",
       "instalacion": "Tramo PC San Jose Añelo – VALB 6 (70 km)",
       "obra_tarea": "Scraper limpieza + instrumentado",
@@ -263,7 +263,7 @@
       "impacto_mmm3d": "0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Gas Pacifico:",
+      "cuenca_zona": "Gto Gas Pacifico",
       "empresa": "TGN",
       "instalacion": "Sección Neuquén/Puelen",
       "obra_tarea": "Scraper instrumentado",
@@ -273,7 +273,7 @@
       "impacto_mmm3d": "0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Gas Pacifico:",
+      "cuenca_zona": "Gto Gas Pacifico",
       "empresa": "TGN",
       "instalacion": "Sección Cochico",
       "obra_tarea": "Adecuación de aislación de PC",
@@ -283,7 +283,7 @@
       "impacto_mmm3d": "29.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Gas Pacifico:",
+      "cuenca_zona": "Gto Gas Pacifico",
       "empresa": "TGN",
       "instalacion": "Sección La Mora",
       "obra_tarea": "Cambio de modulo + escape TC03",
@@ -293,7 +293,7 @@
       "impacto_mmm3d": "29.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Gas Pacifico:",
+      "cuenca_zona": "Gto Gas Pacifico",
       "empresa": "TGN",
       "instalacion": "Sección Beazley",
       "obra_tarea": "Duración: 3 dias con PC F/S – Se solapa con cambio de modulo TC04",
@@ -303,7 +303,7 @@
       "impacto_mmm3d": "0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Gas Pacifico:",
+      "cuenca_zona": "Gto Gas Pacifico",
       "empresa": "TGN",
       "instalacion": "Sección La Carlota",
       "obra_tarea": "Cambio de modulo Taurus + adecuación Aeroenfriador de aceite",
@@ -313,9 +313,9 @@
       "impacto_mmm3d": "0.5 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGN",
-      "instalacion": "Sección La Carlota",
+      "instalacion": "Gto Norte",
       "obra_tarea": "Campaña de verificación de defectos en curso. Sin impacto potencial",
       "fecha": "A programar",
       "duracion": "A confirmar",
@@ -323,7 +323,7 @@
       "impacto_mmm3d": "15.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Cerri – Saturno",
       "obra_tarea": "Verificación de falla en PK 710,224",
@@ -333,7 +333,7 @@
       "impacto_mmm3d": "3.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Cerri – Saturno",
       "obra_tarea": "Verificación de falla en PK 784.123",
@@ -343,7 +343,7 @@
       "impacto_mmm3d": "4.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Saturno - Ordoqui",
       "obra_tarea": "Tie-In Loop NII a la descarga de Saturno para nueva planta",
@@ -353,7 +353,7 @@
       "impacto_mmm3d": "8.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Saturno - Ordoqui",
       "obra_tarea": "Tie-In Loop NII a la succión de Ordoqui para nueva planta",
@@ -363,7 +363,7 @@
       "impacto_mmm3d": "7.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Saturno - Ordoqui",
       "obra_tarea": "Tie-In NII a la succión de Ordoqui para nueva planta",
@@ -373,7 +373,7 @@
       "impacto_mmm3d": "4.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Ordoqui – Las Heras",
       "obra_tarea": "Tie-In Loop NII a la descarga de Ordoqui para nueva planta",
@@ -383,7 +383,7 @@
       "impacto_mmm3d": "10.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Ordoqui – Las Heras",
       "obra_tarea": "Tie-In NII a la descarga de Ordoqui para nueva planta",
@@ -393,7 +393,7 @@
       "impacto_mmm3d": "5.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Cerri - Indio Rico Troncal",
       "obra_tarea": "Cambio de niple Pk 1169",
@@ -403,7 +403,7 @@
       "impacto_mmm3d": "0.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Barker - Buchanan",
       "obra_tarea": "Reparación de fallas en descarga de Planta Barker, altura CT Barker",
@@ -413,7 +413,7 @@
       "impacto_mmm3d": "11.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Barker - Buchanan",
       "obra_tarea": "Verificación y Reparación de falla PK 1271, limita presión a 58.7 Kg/cm²",
@@ -423,7 +423,7 @@
       "impacto_mmm3d": "0.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Barker - Buchanan",
       "obra_tarea": "Reparación de falla PK 1651, limita presión a 56,9 Kg/cm²",
@@ -433,7 +433,7 @@
       "impacto_mmm3d": "0.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Barker - Buchanan",
       "obra_tarea": "Cambio de 10 Niples",
@@ -443,7 +443,7 @@
       "impacto_mmm3d": "0.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Barker - Buchanan",
       "obra_tarea": "Test de Fluencia a la descarga de Planta Barker",
@@ -453,7 +453,7 @@
       "impacto_mmm3d": "0.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Indio Rico - Olavarría",
       "obra_tarea": "Reparación de pérdida en VLS-66. (El Mauleon)",
@@ -463,7 +463,7 @@
       "impacto_mmm3d": "0.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Cañuelas - Buchanan",
       "obra_tarea": "Cambios de Niple entre TANB-2 – TANB-3 (2)",
@@ -473,7 +473,7 @@
       "impacto_mmm3d": "0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Buchanan – Gutierrez",
       "obra_tarea": "PM 227 – Buchanan I – Actualización de Válvulas",
@@ -483,7 +483,7 @@
       "impacto_mmm3d": "0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Norte:",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Buchanan – Gutierrez",
       "obra_tarea": "Reparación de falla PK 1672 – Se va a instalar con Stoppler",
@@ -555,7 +555,7 @@
     {
       "cuenca_zona": "Gasoducto Mercedes - Cardales",
       "empresa": "TGS",
-      "instalacion": "Planta Ordoqui",
+      "instalacion": "Gasoducto Mercedes - Cardales",
       "obra_tarea": "Sigue en curso el mantenimiento en Atucha I por 3 años. Resta aprox 1 año.",
       "fecha": "A programar",
       "duracion": "A confirmar",
