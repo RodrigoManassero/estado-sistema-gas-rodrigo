@@ -21,11 +21,9 @@ def extract_impact_text(text: str) -> str:
     text_clean = clean_text(text)
     text_lower = text_clean.lower()
     
-    # Si indica "en estudio", "sin impacto", o no tiene un número claro, devolvemos 0 MM³/día
-    if any(kw in text_lower for kw in ['en estudio', 'sin impacto', 'no', 'sin restricción', 'sin afectación', 'no hay', 'a coordinar']):
+    if any(kw in text_lower for kw in ['en estudio', 'sin impacto', 'no', 'sin restricción', 'sin afectación', 'no hay', 'a coordinar', 'manejable']):
         return "0 MM³/día"
         
-    # Buscar si hay un número explícito de MM³/día o MM m3/d
     match = re.search(r'(?:afectación|impacto|impacto potencial|impacto estimado)[:\s]*([-\d,\.]+)\s*MM', text_clean, re.IGNORECASE)
     if not match:
         match = re.search(r'([-\d,\.]+)\s*MM\s*(?:m[³3]/d|m[³3]|/d|día)?', text_clean, re.IGNORECASE)
@@ -37,7 +35,6 @@ def extract_impact_text(text: str) -> str:
         except ValueError:
             pass
             
-    # Si tiene texto descriptivo largo sin número operativo claro, forzar 0 MM³/día
     if len(text_clean) > 30 and not re.search(r'\d', text_clean):
         return "0 MM³/día"
         
@@ -94,7 +91,7 @@ def parse_cco_docx(file_path: str) -> list[dict]:
     
     current_cuenca = "Cuenca Neuquina"
     current_empresa = "TGS"
-    current_instalacion = "General"
+    current_instalacion = "Cuenca Neuquina"
     
     ignore_phrases = [
         "comité de coordinación", "minuta reunión", "lugar:", "participantes:", 
@@ -119,14 +116,15 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         if any(phrase in text_lower for phrase in ignore_phrases):
             continue
             
-        # Detectar Secciones / Cuencas / Gasoductos específicos (ej: Gto Gas Pacifico)
+        # Detectar Secciones / Cuencas / Gasoductos
         if "Cuenca" in text or "Tramos Finales" in text or "Gasoducto" in text or "Gto " in text:
             if len(text) < 40:
                 if current_item and current_item.get("obra_tarea"):
                     records.append(current_item)
                     current_item = None
                     
-                current_cuenca = text
+                current_cuenca = text.rstrip(":")
+                current_instalacion = current_cuenca  # Por defecto asigna el gasoducto/zona actual
                 in_operational_data = True
                 continue
                 
@@ -146,10 +144,8 @@ def parse_cco_docx(file_path: str) -> list[dict]:
                 records.append(current_item)
                 current_item = None
                 
-            # Extraer el nombre del tramo limpio como instalación
             parts = text.split(":", 1)
             tramo_nombre = parts[1].strip() if len(parts) > 1 else text
-            # Quitar métricas de km si están al final entre paréntesis para limpieza opcional o conservarlas
             current_instalacion = f"Tramo {tramo_nombre}" if not tramo_nombre.lower().startswith("tramo") else tramo_nombre
             
             current_item = {
@@ -171,11 +167,11 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             current_instalacion = text.rstrip(":")
             continue
 
-        if text.startswith("Obra:") or text.startswith("Tarea:"):
+        if text.startswith("Obra:") or text.startswith("Tarea:") or text.startswith("• "):
             if current_item and current_item.get("obra_tarea"):
                 records.append(current_item)
             
-            raw_obra = text.split(":", 1)[1].strip()
+            raw_obra = text.split(":", 1)[1].strip() if ":" in text else text.lstrip("• ").strip()
             current_item = {
                 "cuenca_zona": current_cuenca,
                 "empresa": current_empresa,
