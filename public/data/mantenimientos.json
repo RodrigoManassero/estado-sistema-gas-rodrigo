@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22T20:49:39.429847",
+  "generated_at": "2026-10-22T21:05:33.763382",
   "source": "Minuta CCO Octubre 2026.docx",
   "data": [
     {
@@ -263,9 +263,9 @@
       "impacto_mmm3d": "0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Gas Pacifico",
+      "cuenca_zona": "Gasoducto Centro Oeste",
       "empresa": "TGN",
-      "instalacion": "Sección Neuquén/Puelen",
+      "instalacion": "Neuquén/Puelen",
       "obra_tarea": "Scraper instrumentado",
       "fecha": "A programar",
       "duracion": "A confirmar",
@@ -273,9 +273,9 @@
       "impacto_mmm3d": "0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Gas Pacifico",
+      "cuenca_zona": "Gasoducto Centro Oeste",
       "empresa": "TGN",
-      "instalacion": "Sección Cochico",
+      "instalacion": "Cochico",
       "obra_tarea": "Adecuación de aislación de PC",
       "fecha": "A programar",
       "duracion": "A confirmar",
@@ -283,9 +283,9 @@
       "impacto_mmm3d": "29.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Gas Pacifico",
+      "cuenca_zona": "Gasoducto Centro Oeste",
       "empresa": "TGN",
-      "instalacion": "Sección La Mora",
+      "instalacion": "La Mora",
       "obra_tarea": "Cambio de modulo + escape TC03",
       "fecha": "A programar",
       "duracion": "A confirmar",
@@ -293,9 +293,9 @@
       "impacto_mmm3d": "29.0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Gas Pacifico",
+      "cuenca_zona": "Gasoducto Centro Oeste",
       "empresa": "TGN",
-      "instalacion": "Sección Beazley",
+      "instalacion": "Beazley",
       "obra_tarea": "Duración: 3 dias con PC F/S – Se solapa con cambio de modulo TC04",
       "fecha": "A programar",
       "duracion": "A confirmar",
@@ -303,9 +303,9 @@
       "impacto_mmm3d": "0 MM³/día"
     },
     {
-      "cuenca_zona": "Gto Gas Pacifico",
+      "cuenca_zona": "Gasoducto Centro Oeste",
       "empresa": "TGN",
-      "instalacion": "Sección La Carlota",
+      "instalacion": "La Carlota",
       "obra_tarea": "Cambio de modulo Taurus + adecuación Aeroenfriador de aceite",
       "fecha": "A programar",
       "duracion": "A confirmar",
