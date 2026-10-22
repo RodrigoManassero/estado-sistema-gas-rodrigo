@@ -60,7 +60,7 @@ def parse_fecha_y_duracion(text: str) -> tuple[str, str]:
     else:
         fecha = "A programar"
         
-    dur_match = re.search(r'(\d+\s*(?:días?|hs?|horas?))', text_clean, re.IGNORECASE)
+    dur_match = re.search(r'(\d+\s*(?:d[ií]as?|hs?|horas?))', text_clean, re.IGNORECASE)
     duracion = dur_match.group(1) if dur_match else "A confirmar"
     
     return fecha, duracion
@@ -85,7 +85,6 @@ def parse_cco_docx(file_path: str) -> list[dict]:
     current_empresa = "TGS"
     current_instalacion = "General"
     
-    # Frases e introducción a ignorar (incluyendo subtítulos de categoría)
     ignore_phrases = [
         "comité de coordinación", "minuta reunión", "lugar:", "participantes:", 
         "se llevó a cabo", "reunión mensual", "no tiene mantenimientos", 
@@ -105,11 +104,9 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             
         text_lower = text.lower()
         
-        # Ignorar encabezados, introducción y títulos de categoría
         if any(phrase in text_lower for phrase in ignore_phrases):
             continue
             
-        # Detectar inicio de secciones operativas (Cuencas o Tramos Finales)
         if "Cuenca" in text or "Tramos Finales" in text or "Gasoducto" in text:
             if len(text) < 40:
                 current_cuenca = text
@@ -119,17 +116,14 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         if not in_operational_data and not any(e in text.upper() for e in ["TGS", "TGN"]):
             continue
 
-        # Detectar Empresa
         if text.upper() in ["TGS", "TGN"]:
             current_empresa = text.upper()
             continue
 
-        # Detectar Tramos, Plantas o Secciones
         if text.startswith("Tramo ") or text.startswith("Planta ") or text.startswith("Sección "):
             current_instalacion = text
             continue
 
-        # Iniciar bloque independiente por Obra o Tarea
         if text.startswith("Obra:") or text.startswith("Tarea:"):
             if current_item and current_item.get("obra_tarea"):
                 records.append(current_item)
@@ -162,7 +156,6 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         if any(kw in text_lower for kw in ['cambio de', 'reparación', 'prueba', 'corrida', 'paro', 'mantenimiento', 'verificación', 'adecuación', 'tie-in', 'recobertura', 'pasajes de scraper']) and not current_item["obra_tarea"]:
             current_item["obra_tarea"] = simplify_obra_tarea(text)
 
-        # Capturar Fecha / Periodo
         if text.startswith("Fecha:") or text.startswith("Periodo:"):
             fecha_val = text.split(":", 1)[1].strip()
             f_ext, d_ext = parse_fecha_y_duracion(fecha_val)
@@ -170,15 +163,12 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             current_item["duracion"] = d_ext
             current_item["mes_evento"] = extract_month(fecha_val)
 
-        # Capturar Afectación / Impacto
         if text.startswith("Afectación:") or text.startswith("Impacto:") or text.startswith("Impacto potencial:") or text.startswith("Impacto estimado:"):
             current_item["impacto_mmm3d"] = extract_impact_text(text)
 
-    # Agregar el último ítem procesado
     if current_item and current_item.get("obra_tarea"):
         records.append(current_item)
 
-    # Procesar tablas (ej: GPM y plantas)
     for table in doc.tables:
         for row in table.rows:
             cells = [clean_text(cell.text) for cell in row.cells]
