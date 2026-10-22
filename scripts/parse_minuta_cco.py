@@ -91,7 +91,8 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         "sin novedades", "no participó", "no realizó comentarios", 
         "se continuará con las reuniones", "los mantenimientos previstos fueron realizados", 
         "se finalizaron todas las tareas", "fallas (revisión y reparación)", 
-        "campaña verificación de defectos", "obras en gasoducto", "obras en plantas"
+        "campaña verificación de defectos", "obras en gasoducto", "obras en plantas",
+        "trabajos en plantas"
     ]
 
     current_item = None
@@ -104,11 +105,18 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             
         text_lower = text.lower()
         
+        # Ignorar encabezados y títulos de categoría
         if any(phrase in text_lower for phrase in ignore_phrases):
             continue
             
+        # Detectar Secciones / Cuencas
         if "Cuenca" in text or "Tramos Finales" in text or "Gasoducto" in text:
             if len(text) < 40:
+                # Si teníamos un item previo en curso, guardarlo
+                if current_item and current_item.get("obra_tarea"):
+                    records.append(current_item)
+                    current_item = None
+                    
                 current_cuenca = text
                 in_operational_data = True
                 continue
@@ -116,14 +124,25 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         if not in_operational_data and not any(e in text.upper() for e in ["TGS", "TGN"]):
             continue
 
+        # Cambiar de Empresa (Cierra el item actual para no contaminar valores)
         if text.upper() in ["TGS", "TGN"]:
+            if current_item and current_item.get("obra_tarea"):
+                records.append(current_item)
+                current_item = None
             current_empresa = text.upper()
             continue
 
+        # Detectar nueva instalación (Tramo o Planta)
         if text.startswith("Tramo ") or text.startswith("Planta ") or text.startswith("Sección "):
-            current_instalacion = text
+            if current_item and current_item.get("obra_tarea"):
+                records.append(current_item)
+                current_item = None
+                
+            # Limpiar dos puntos al final si los tiene (ej: "Planta Mercedes:")
+            current_instalacion = text.rstrip(":")
             continue
 
+        # Iniciar bloque independiente por Obra o Tarea
         if text.startswith("Obra:") or text.startswith("Tarea:"):
             if current_item and current_item.get("obra_tarea"):
                 records.append(current_item)
@@ -156,6 +175,7 @@ def parse_cco_docx(file_path: str) -> list[dict]:
         if any(kw in text_lower for kw in ['cambio de', 'reparación', 'prueba', 'corrida', 'paro', 'mantenimiento', 'verificación', 'adecuación', 'tie-in', 'recobertura', 'pasajes de scraper']) and not current_item["obra_tarea"]:
             current_item["obra_tarea"] = simplify_obra_tarea(text)
 
+        # Capturar Fecha / Periodo
         if text.startswith("Fecha:") or text.startswith("Periodo:"):
             fecha_val = text.split(":", 1)[1].strip()
             f_ext, d_ext = parse_fecha_y_duracion(fecha_val)
@@ -163,28 +183,45 @@ def parse_cco_docx(file_path: str) -> list[dict]:
             current_item["duracion"] = d_ext
             current_item["mes_evento"] = extract_month(fecha_val)
 
+        # Capturar Afectación / Impacto
         if text.startswith("Afectación:") or text.startswith("Impacto:") or text.startswith("Impacto potencial:") or text.startswith("Impacto estimado:"):
             current_item["impacto_mmm3d"] = extract_impact_text(text)
 
+    # Cierre del último item del bucle de párrafos
     if current_item and current_item.get("obra_tarea"):
         records.append(current_item)
+
+    # ------------------------------------------------------------------------
+    # Procesamiento de Tablas (GPM y acometidas) + Deduplicación Inteligente
+    # ------------------------------------------------------------------------
+    existing_plants = {r["instalacion"].lower() for r in records}
 
     for table in doc.tables:
         for row in table.rows:
             cells = [clean_text(cell.text) for cell in row.cells]
             if len(cells) >= 3:
-                inst, fecha_raw, imp = cells[0], cells[1], cells[2]
-                if inst and fecha_raw and not any(h in inst.lower() for h in ['planta', 'empresa', 'apellido']):
+                inst_raw, fecha_raw, imp_raw = cells[0], cells[1], cells[2]
+                
+                # Omitir cabecera de la tabla
+                if inst_raw and fecha_raw and not any(h in inst_raw.lower() for h in ['planta', 'empresa', 'apellido', 'instalación']):
+                    
+                    # Normalizar nombre de planta (ej. "Casa de Piedra" -> "Planta Casa de Piedra")
+                    inst_name = inst_raw if inst_raw.startswith("Planta ") else f"Planta {inst_raw}"
+                    
+                    # Deduplicación: Si la planta ya fue parseada detalladamente en los párrafos, la salteamos
+                    if any(inst_raw.lower() in existing_p or existing_p in inst_raw.lower() for existing_p in existing_plants):
+                        continue
+                        
                     f_ext, d_ext = parse_fecha_y_duracion(fecha_raw)
                     records.append({
                         "cuenca_zona": "Gasoducto GPM",
                         "empresa": "TGS",
-                        "instalacion": inst,
-                        "obra_tarea": "Mantenimiento / Adecuación de Planta",
+                        "instalacion": inst_name,
+                        "obra_tarea": "Acometidas para futuras plantas compresoras",
                         "fecha": f_ext,
                         "duracion": d_ext,
                         "mes_evento": extract_month(fecha_raw),
-                        "impacto_mmm3d": imp
+                        "impacto_mmm3d": extract_impact_text(f"Impacto: {imp_raw}")
                     })
 
     return records
