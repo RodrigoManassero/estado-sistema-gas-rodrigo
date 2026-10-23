@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-23T12:51:25+00:00",
+  "generated_at": "2026-10-23T17:47:23+00:00",
   "source": "ENARGAS RDS regression (temp + day-of-week)",
   "source_date": "2026-10-23",
   "data": {
@@ -22,26 +22,26 @@
         "temp_prom": 15.2,
         "temp_max": 17.6,
         "temp_min": 12.7,
-        "prioritaria_est": 41.2,
+        "prioritaria_est": 41.1,
         "usinas_est": 31.0,
         "industria_est": 33.0,
         "gnc_est": 5.6,
         "combustible_est": 3.8,
         "exportaciones_est": 6.9,
-        "demanda_total_est": 121.5
+        "demanda_total_est": 121.4
       },
       {
         "fecha": "2026-10-25",
         "temp_prom": 13.2,
         "temp_max": 15.8,
         "temp_min": 10.7,
-        "prioritaria_est": 44.3,
+        "prioritaria_est": 44.2,
         "usinas_est": 26.6,
         "industria_est": 32.4,
         "gnc_est": 4.9,
         "combustible_est": 3.8,
         "exportaciones_est": 6.9,
-        "demanda_total_est": 118.9
+        "demanda_total_est": 118.8
       },
       {
         "fecha": "2026-10-26",
@@ -198,21 +198,21 @@
       "baseline_exportaciones": 6.9,
       "prioritaria": {
         "label": "Prioritaria",
-        "slope": 5.928,
+        "slope": 5.923,
         "intercept": 22.8,
-        "r2": 0.828,
+        "r2": 0.827,
         "r2_temp_only": 0.816,
         "n_points": 844,
         "dow_offsets": {
-          "0": -0.07,
-          "1": 1.45,
+          "0": -0.08,
+          "1": 1.44,
           "2": 2.7,
-          "3": 1.68,
-          "4": 1.44,
-          "5": -2.5,
-          "6": -4.68
+          "3": 1.73,
+          "4": 1.43,
+          "5": -2.52,
+          "6": -4.69
         },
-        "mean_abs_residual": 7.95,
+        "mean_abs_residual": 7.97,
         "x_feature": "HDD(18°C · media 10 ciudades)"
       },
       "usinas": {
@@ -294,7 +294,7 @@
       "demanda_total": {
         "slope": null,
         "intercept": null,
-        "r2": 0.662,
+        "r2": 0.661,
         "method": "suma de segmentos"
       }
     }
