@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22T17:42:02.366077",
+  "generated_at": "2026-10-22T21:08:14.242877",
   "source": "Minuta CCO Octubre 2026.docx",
   "data": [
     {
@@ -30,7 +30,7 @@
       "fecha": "A programar",
       "duracion": "1 Día",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "9,5MM/día"
+      "impacto_mmm3d": "9.5 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -38,9 +38,9 @@
       "instalacion": "Tramo Fortín Uno – Gaviotas",
       "obra_tarea": "Cambio de Niple",
       "fecha": "A programar",
-      "duracion": "A confirmar",
+      "duracion": "2 dias",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "9,5MM/día"
+      "impacto_mmm3d": "9.5 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -48,9 +48,9 @@
       "instalacion": "Tramo Gaviotas -- Cerri",
       "obra_tarea": "Cambio de Niple",
       "fecha": "A programar",
-      "duracion": "A confirmar",
+      "duracion": "2 dias",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "7MM/día"
+      "impacto_mmm3d": "7.0 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -60,7 +60,7 @@
       "fecha": "30/11",
       "duracion": "3 días",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "4MM/día"
+      "impacto_mmm3d": "4.0 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -70,7 +70,7 @@
       "fecha": "16/11",
       "duracion": "3 días",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "4MM/día"
+      "impacto_mmm3d": "4.0 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -80,7 +80,7 @@
       "fecha": "7/11",
       "duracion": "3 días",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "6MM/día"
+      "impacto_mmm3d": "6.0 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -90,7 +90,7 @@
       "fecha": "23/11",
       "duracion": "2 días",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "3,8MM/día"
+      "impacto_mmm3d": "3.8 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -100,7 +100,7 @@
       "fecha": "14/10",
       "duracion": "2 días",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "2 MM/día"
+      "impacto_mmm3d": "2.0 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -110,7 +110,7 @@
       "fecha": "26/10",
       "duracion": "6 días",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "2 MM/día"
+      "impacto_mmm3d": "2.0 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -130,7 +130,7 @@
       "fecha": "A programar",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "3,1MM/día"
+      "impacto_mmm3d": "3.1 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -140,7 +140,7 @@
       "fecha": "A programar",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "5,6MM/día"
+      "impacto_mmm3d": "5.6 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -150,7 +150,7 @@
       "fecha": "A programar",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "2,9MM/día"
+      "impacto_mmm3d": "2.9 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -160,7 +160,7 @@
       "fecha": "A programar",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "4,5MM/día"
+      "impacto_mmm3d": "4.5 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -170,7 +170,7 @@
       "fecha": "A programar",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "3MM/día"
+      "impacto_mmm3d": "3.0 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -180,7 +180,7 @@
       "fecha": "A programar",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "5,5MM/día"
+      "impacto_mmm3d": "5.5 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -190,7 +190,7 @@
       "fecha": "16/10",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "2MM/día"
+      "impacto_mmm3d": "2.0 MM³/día"
     },
     {
       "cuenca_zona": "Cuenca Neuquina",
@@ -200,180 +200,270 @@
       "fecha": "A programar",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "5MM/día"
+      "impacto_mmm3d": "5.0 MM³/día"
     },
     {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
-      "instalacion": "Planta Tratayén:",
+      "instalacion": "Planta Tratayén",
       "obra_tarea": "Prueba de PJ1",
       "fecha": "24/11",
       "duracion": "3 días",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "8 MM/día"
+      "impacto_mmm3d": "8.0 MM³/día"
     },
     {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
-      "instalacion": "Planta Salliquelo:",
+      "instalacion": "Planta Salliquelo",
       "obra_tarea": "Prueba de PJ1 – Intención de hacerlo en simultaneo con Tratayén",
       "fecha": "24/11",
       "duracion": "3 días",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "8 MM/día(el de Tratayén)"
+      "impacto_mmm3d": "8.0 MM³/día"
     },
     {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
-      "instalacion": "Planta Mercedes:",
+      "instalacion": "Planta Mercedes",
       "obra_tarea": "Cambio de Sello",
       "fecha": "2/11",
       "duracion": "3 días",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "máximo transporte desde Tio Pujio: aprox. 15 MM m3/d."
+      "impacto_mmm3d": "3.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Gas Pacifico",
+      "empresa": "TGN",
+      "instalacion": "Gto Gas Pacifico",
+      "obra_tarea": "Verificación de defectos",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "0 MM³/día"
+    },
+    {
+      "cuenca_zona": "Gto Gas Pacifico",
+      "empresa": "TGN",
+      "instalacion": "Tramo LLL – PC San Jose Añelo (67,5 km)",
+      "obra_tarea": "Scraper limpieza + instrumentado",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "0 MM³/día"
+    },
+    {
+      "cuenca_zona": "Gto Gas Pacifico",
+      "empresa": "TGN",
+      "instalacion": "Tramo PC San Jose Añelo – VALB 6 (70 km)",
+      "obra_tarea": "Scraper limpieza + instrumentado",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "0 MM³/día"
+    },
+    {
+      "cuenca_zona": "Gasoducto Centro Oeste",
+      "empresa": "TGN",
+      "instalacion": "Neuquén/Puelen",
+      "obra_tarea": "Scraper instrumentado",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "0 MM³/día"
+    },
+    {
+      "cuenca_zona": "Gasoducto Centro Oeste",
+      "empresa": "TGN",
+      "instalacion": "Cochico",
+      "obra_tarea": "Adecuación de aislación de PC",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "29.0 MM³/día"
+    },
+    {
+      "cuenca_zona": "Gasoducto Centro Oeste",
+      "empresa": "TGN",
+      "instalacion": "La Mora",
+      "obra_tarea": "Cambio de modulo + escape TC03",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "29.0 MM³/día"
+    },
+    {
+      "cuenca_zona": "Gasoducto Centro Oeste",
+      "empresa": "TGN",
+      "instalacion": "Beazley",
+      "obra_tarea": "Duración: 3 dias con PC F/S – Se solapa con cambio de modulo TC04",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "0 MM³/día"
+    },
+    {
+      "cuenca_zona": "Gasoducto Centro Oeste",
+      "empresa": "TGN",
+      "instalacion": "La Carlota",
+      "obra_tarea": "Cambio de modulo Taurus + adecuación Aeroenfriador de aceite",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "0.5 MM³/día"
+    },
+    {
+      "cuenca_zona": "Gto Norte",
+      "empresa": "TGN",
+      "instalacion": "Gto Norte",
+      "obra_tarea": "Campaña de verificación de defectos en curso. Sin impacto potencial",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "15.0 MM³/día"
+    },
+    {
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Cerri – Saturno",
       "obra_tarea": "Verificación de falla en PK 710,224",
       "fecha": "A programar",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "3MM/día"
+      "impacto_mmm3d": "3.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Cerri – Saturno",
       "obra_tarea": "Verificación de falla en PK 784.123",
       "fecha": "A programar",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "4MM/día"
+      "impacto_mmm3d": "4.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Saturno - Ordoqui",
       "obra_tarea": "Tie-In Loop NII a la descarga de Saturno para nueva planta",
       "fecha": "22/11",
       "duracion": "A confirmar",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "8MM/día"
+      "impacto_mmm3d": "8.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Saturno - Ordoqui",
       "obra_tarea": "Tie-In Loop NII a la succión de Ordoqui para nueva planta",
       "fecha": "8/11",
       "duracion": "A confirmar",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "7MM/día"
+      "impacto_mmm3d": "7.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Saturno - Ordoqui",
       "obra_tarea": "Tie-In NII a la succión de Ordoqui para nueva planta",
       "fecha": "15/11",
       "duracion": "A confirmar",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "4MM/día"
+      "impacto_mmm3d": "4.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Ordoqui – Las Heras",
       "obra_tarea": "Tie-In Loop NII a la descarga de Ordoqui para nueva planta",
       "fecha": "25/10",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "10MM/día"
+      "impacto_mmm3d": "10.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Ordoqui – Las Heras",
       "obra_tarea": "Tie-In NII a la descarga de Ordoqui para nueva planta",
       "fecha": "1/11",
       "duracion": "A confirmar",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "5MM/día"
+      "impacto_mmm3d": "5.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Cerri - Indio Rico Troncal",
       "obra_tarea": "Cambio de niple Pk 1169",
       "fecha": "A programar",
       "duracion": "1 día",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "0 MM m³/d"
+      "impacto_mmm3d": "0.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Barker - Buchanan",
       "obra_tarea": "Reparación de fallas en descarga de Planta Barker, altura CT Barker",
       "fecha": "18/10",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "11 MM m³/día (Salida a TF: 52MM)"
+      "impacto_mmm3d": "11.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Barker - Buchanan",
       "obra_tarea": "Verificación y Reparación de falla PK 1271, limita presión a 58.7 Kg/cm²",
       "fecha": "A programar",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "0 MM m³/d"
+      "impacto_mmm3d": "0.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Barker - Buchanan",
       "obra_tarea": "Reparación de falla PK 1651, limita presión a 56,9 Kg/cm²",
       "fecha": "A programar",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "0 MM m³/d"
+      "impacto_mmm3d": "0.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Barker - Buchanan",
       "obra_tarea": "Cambio de 10 Niples",
       "fecha": "A programar",
       "duracion": "A confirmar",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "0 MM m³/d"
+      "impacto_mmm3d": "0.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Barker - Buchanan",
       "obra_tarea": "Test de Fluencia a la descarga de Planta Barker",
       "fecha": "A programar",
-      "duracion": "A confirmar",
+      "duracion": "20 dias",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "0 MM m³/d"
+      "impacto_mmm3d": "0.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Indio Rico - Olavarría",
       "obra_tarea": "Reparación de pérdida en VLS-66. (El Mauleon)",
       "fecha": "A programar",
       "duracion": "1 día",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "0 MM m³/d"
+      "impacto_mmm3d": "0.0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Cañuelas - Buchanan",
       "obra_tarea": "Cambios de Niple entre TANB-2 – TANB-3 (2)",
@@ -383,7 +473,7 @@
       "impacto_mmm3d": "0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Buchanan – Gutierrez",
       "obra_tarea": "PM 227 – Buchanan I – Actualización de Válvulas",
@@ -393,7 +483,7 @@
       "impacto_mmm3d": "0 MM³/día"
     },
     {
-      "cuenca_zona": "Cuenca Norte",
+      "cuenca_zona": "Gto Norte",
       "empresa": "TGS",
       "instalacion": "Tramo Buchanan – Gutierrez",
       "obra_tarea": "Reparación de falla PK 1672 – Se va a instalar con Stoppler",
@@ -410,7 +500,7 @@
       "fecha": "A programar",
       "duracion": "12 hs",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "0 MM m³/d"
+      "impacto_mmm3d": "0.0 MM³/día"
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
@@ -418,7 +508,7 @@
       "instalacion": "Planta Barker",
       "obra_tarea": "TC1 -TC2 -TC3 – Retrofit de sistema de protección de Sobrevelocidad",
       "fecha": "A programar",
-      "duracion": "A confirmar",
+      "duracion": "3 dias",
       "mes_evento": "2026-10",
       "impacto_mmm3d": "0 MM³/día"
     },
@@ -430,7 +520,7 @@
       "fecha": "A programar",
       "duracion": "A confirmar",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "0 MM m³/d."
+      "impacto_mmm3d": "0.0 MM³/día"
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
@@ -450,7 +540,7 @@
       "fecha": "25/10",
       "duracion": "36 hs",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "10MM/día"
+      "impacto_mmm3d": "10.0 MM³/día"
     },
     {
       "cuenca_zona": "Corridas de scrapper en Tramos Finales",
@@ -460,47 +550,47 @@
       "fecha": "A programar",
       "duracion": "12 hs",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "10MM/día"
+      "impacto_mmm3d": "10.0 MM³/día"
+    },
+    {
+      "cuenca_zona": "Gasoducto Mercedes - Cardales",
+      "empresa": "TGS",
+      "instalacion": "Gasoducto Mercedes - Cardales",
+      "obra_tarea": "Sigue en curso el mantenimiento en Atucha I por 3 años. Resta aprox 1 año.",
+      "fecha": "A programar",
+      "duracion": "A confirmar",
+      "mes_evento": "2026-10",
+      "impacto_mmm3d": "0 MM³/día"
     },
     {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
-      "instalacion": "Casa de Piedra",
-      "obra_tarea": "Mantenimiento / Adecuación de Planta",
+      "instalacion": "Planta Casa de Piedra",
+      "obra_tarea": "Acometidas para futuras plantas compresoras",
       "fecha": "28/10",
       "duracion": "1 día",
       "mes_evento": "2026-10",
-      "impacto_mmm3d": "2MM/día"
+      "impacto_mmm3d": "2.0 MM³/día"
     },
     {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
-      "instalacion": "Doblas",
-      "obra_tarea": "Mantenimiento / Adecuación de Planta",
+      "instalacion": "Planta Doblas",
+      "obra_tarea": "Acometidas para futuras plantas compresoras",
       "fecha": "11/11",
       "duracion": "1 día",
       "mes_evento": "2026-11",
-      "impacto_mmm3d": "2MM/día"
+      "impacto_mmm3d": "2.0 MM³/día"
     },
     {
       "cuenca_zona": "Gasoducto GPM",
       "empresa": "TGS",
-      "instalacion": "Tratayén",
-      "obra_tarea": "Mantenimiento / Adecuación de Planta",
-      "fecha": "24/11",
-      "duracion": "1 día",
-      "mes_evento": "2026-11",
-      "impacto_mmm3d": "8MM/día"
-    },
-    {
-      "cuenca_zona": "Gasoducto GPM",
-      "empresa": "TGS",
-      "instalacion": "Chacharramendi",
-      "obra_tarea": "Mantenimiento / Adecuación de Planta",
+      "instalacion": "Planta Chacharramendi",
+      "obra_tarea": "Acometidas para futuras plantas compresoras",
       "fecha": "8/12",
       "duracion": "1 día",
       "mes_evento": "2026-12",
-      "impacto_mmm3d": "2MM/día"
+      "impacto_mmm3d": "2.0 MM³/día"
     }
   ]
 }
