@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-25T17:02:02+00:00",
-  "source": "Open-Meteo API (window 2026-09-25 to 2026-10-24 merged with local history)",
-  "source_date": "2026-10-24",
+  "generated_at": "2026-10-26T12:44:36+00:00",
+  "source": "Open-Meteo API (window 2026-09-26 to 2026-10-25 merged with local history)",
+  "source_date": "2026-10-25",
   "data": [
     {
       "id": "ba",
@@ -4557,6 +4557,12 @@
           "temp_max": 17.4,
           "temp_min": 12.9,
           "temp_prom": 15.1
+        },
+        {
+          "fecha": "2026-10-25",
+          "temp_max": 16.7,
+          "temp_min": 10.9,
+          "temp_prom": 13.8
         }
       ]
     },
@@ -9057,9 +9063,9 @@
         },
         {
           "fecha": "2026-10-15",
-          "temp_max": 21.1,
-          "temp_min": 11.9,
-          "temp_prom": 16.5
+          "temp_max": 21.3,
+          "temp_min": 12.0,
+          "temp_prom": 16.6
         },
         {
           "fecha": "2026-10-16",
@@ -9114,6 +9120,12 @@
           "temp_max": 17.5,
           "temp_min": 13.9,
           "temp_prom": 15.7
+        },
+        {
+          "fecha": "2026-10-25",
+          "temp_max": 18.4,
+          "temp_min": 11.7,
+          "temp_prom": 15.0
         }
       ]
     },
@@ -13671,6 +13683,12 @@
           "temp_max": 19.2,
           "temp_min": 12.2,
           "temp_prom": 15.7
+        },
+        {
+          "fecha": "2026-10-25",
+          "temp_max": 19.7,
+          "temp_min": 10.0,
+          "temp_prom": 14.8
         }
       ]
     },
@@ -18834,6 +18852,12 @@
           "temp_max": 14.7,
           "temp_min": 9.6,
           "temp_prom": 12.1
+        },
+        {
+          "fecha": "2026-10-25",
+          "temp_max": 19.4,
+          "temp_min": 6.7,
+          "temp_prom": 13.0
         }
       ]
     },
@@ -23334,7 +23358,7 @@
         },
         {
           "fecha": "2026-10-15",
-          "temp_max": 14.1,
+          "temp_max": 14.0,
           "temp_min": 8.8,
           "temp_prom": 11.4
         },
@@ -23391,6 +23415,12 @@
           "temp_max": 13.7,
           "temp_min": 10.6,
           "temp_prom": 12.1
+        },
+        {
+          "fecha": "2026-10-25",
+          "temp_max": 15.0,
+          "temp_min": 8.4,
+          "temp_prom": 11.7
         }
       ]
     },
@@ -27879,19 +27909,19 @@
         },
         {
           "fecha": "2026-10-13",
-          "temp_max": 18.4,
+          "temp_max": 18.5,
           "temp_min": 5.3,
-          "temp_prom": 11.8
+          "temp_prom": 11.9
         },
         {
           "fecha": "2026-10-14",
-          "temp_max": 17.4,
+          "temp_max": 17.5,
           "temp_min": 8.2,
           "temp_prom": 12.8
         },
         {
           "fecha": "2026-10-15",
-          "temp_max": 17.6,
+          "temp_max": 17.7,
           "temp_min": 8.0,
           "temp_prom": 12.8
         },
@@ -27948,6 +27978,12 @@
           "temp_max": 17.3,
           "temp_min": 7.7,
           "temp_prom": 12.5
+        },
+        {
+          "fecha": "2026-10-25",
+          "temp_max": 19.6,
+          "temp_min": 7.9,
+          "temp_prom": 13.8
         }
       ]
     },
@@ -32443,12 +32479,12 @@
         {
           "fecha": "2026-10-14",
           "temp_max": 15.4,
-          "temp_min": 9.4,
+          "temp_min": 9.3,
           "temp_prom": 12.4
         },
         {
           "fecha": "2026-10-15",
-          "temp_max": 13.3,
+          "temp_max": 13.2,
           "temp_min": 9.9,
           "temp_prom": 11.6
         },
@@ -32505,6 +32541,12 @@
           "temp_max": 18.3,
           "temp_min": 10.5,
           "temp_prom": 14.4
+        },
+        {
+          "fecha": "2026-10-25",
+          "temp_max": 13.2,
+          "temp_min": 9.9,
+          "temp_prom": 11.6
         }
       ]
     },
@@ -37062,6 +37104,12 @@
           "temp_max": 18.9,
           "temp_min": 15.8,
           "temp_prom": 17.4
+        },
+        {
+          "fecha": "2026-10-25",
+          "temp_max": 18.9,
+          "temp_min": 13.8,
+          "temp_prom": 16.4
         }
       ]
     }
