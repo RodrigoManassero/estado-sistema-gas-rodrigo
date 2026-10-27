@@ -1,4 +1,4 @@
-import type { SignoImpacto } from '../../types/mantenimientos'
+import type { SignoImpacto } from '../../types'
 import { mt } from './tokens'
 
 interface Props {
