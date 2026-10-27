@@ -2,18 +2,23 @@ name: Update data and deploy
 
 on:
   schedule:
-    - cron: '0 13 * * *'  # 10:00 Argentina (UTC-3) — tras las 09:45 ya llegó el correo ETGS
-  workflow_dispatch:  # Manual trigger
+    - cron: '0 13 * * *'  # 10:00 Argentina (UTC-3)
+  workflow_dispatch:
 
 permissions:
   contents: write
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
   update-and-deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 22
+
     steps:
       - uses: actions/checkout@v4
 
@@ -71,17 +76,34 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git fetch origin main
           git add public/data/
+
           if ! git diff --staged --quiet; then
             git commit -m "Auto-update data $(date -u +%Y-%m-%d)"
-            # Intento de push seguro con rebase autoresuelto
             git pull --rebase -X ours origin main || (git rebase --abort && git pull --no-rebase origin main -s recursive -X ours)
             git push origin main
           else
             echo "No data changes to commit"
           fi
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          path: ./dist
+
+  deploy:
+    needs: update-and-deploy
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
