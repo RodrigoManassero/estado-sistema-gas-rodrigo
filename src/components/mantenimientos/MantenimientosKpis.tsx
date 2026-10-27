@@ -1,11 +1,11 @@
 import type { CSSProperties } from 'react'
-import type { ImpactoDia, MantenimientoFila } from '../../types'
+import type { MantenimientoImpactoDia, MantenimientoFila } from '../../types'
 import { mt } from './tokens'
 import { estadoDe, fmtDia, fmtMM, sumarDias, totalReduccion } from './utils'
 
 interface Props {
   filas: MantenimientoFila[]
-  impactoDiario: ImpactoDia[]
+  impactoDiario: MantenimientoImpactoDia[]
   hoy: string
 }
 
@@ -28,7 +28,7 @@ export function MantenimientosKpis({ filas, impactoDiario, hoy }: Props) {
   const dHoy = impactoDiario.find((d) => d.fecha === hoy)
   const limite = sumarDias(hoy, 30)
   const ventana = impactoDiario.filter((d) => d.fecha >= hoy && d.fecha <= limite)
-  const pico = ventana.reduce<ImpactoDia | null>(
+  const pico = ventana.reduce<MantenimientoImpactoDia | null>(
     (m, d) => (m === null || totalReduccion(d) > totalReduccion(m) ? d : m),
     null,
   )

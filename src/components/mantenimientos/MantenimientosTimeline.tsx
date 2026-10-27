@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import type { CategoriaKey, MantenimientoFila } from '../../types'
+import type { MantenimientoCategoria, MantenimientoFila } from '../../types'
 import { CATEGORIA_LABEL, mt } from './tokens'
 import { diasEntre, esFinDeSemana, fmtRango, nombreMes, ordenarPorFecha, sumarDias, tituloFila } from './utils'
 
@@ -58,7 +58,7 @@ export function MantenimientosTimeline({ filas, hoy, maxDias = 120 }: Props) {
   return (
     <div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, fontSize: 12, color: mt.muted, marginBottom: 8 }}>
-        {(Object.keys(CATEGORIA_LABEL) as CategoriaKey[]).map((k) => (
+        {(Object.keys(CATEGORIA_LABEL) as MantenimientoCategoria[]).map((k) => (
           <span key={k} style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
             <span style={{ width: 12, height: 8, borderRadius: 2, background: mt.categoria[k] }} />
             {CATEGORIA_LABEL[k]}

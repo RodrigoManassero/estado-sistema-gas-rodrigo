@@ -2,7 +2,7 @@
 // project's theme.ts. Alpha variants use the same `color + '22'` pattern as the rest of
 // the dashboard (see OperacionPage), so theme colors must stay 6-digit hex strings.
 import { colors, radius } from '../../theme'
-import type { CategoriaKey, SignoImpacto } from '../../types'
+import type { MantenimientoCategoria, MantenimientoSigno } from '../../types'
 import type { Estado } from './utils'
 
 export const mt = {
@@ -10,20 +10,21 @@ export const mt = {
   border: colors.border,
   band: 'rgba(128, 128, 128, 0.10)', // neutral overlay: weekend shading and expanded rows
   muted: colors.textDim,
+  text: colors.textPrimary,
   today: colors.status.err,
   radius: radius.sm,
   categoria: {
     transporte: colors.accent.blue,
     inyeccion: colors.accent.orange,
     otros: colors.accent.purple,
-  } as Record<CategoriaKey, string>,
+  } as Record<MantenimientoCategoria, string>,
   signo: {
     negativo: { bg: colors.status.err + '22', fg: colors.status.err },
     positivo: { bg: colors.accent.green + '22', fg: colors.accent.green },
     mixto: { bg: colors.accent.orange + '22', fg: colors.accent.orange },
     cero: { bg: colors.border, fg: colors.textDim },
     sin_dato: { bg: colors.border, fg: colors.textDim },
-  } as Record<SignoImpacto, { bg: string; fg: string }>,
+  } as Record<MantenimientoSigno, { bg: string; fg: string }>,
   estado: {
     en_curso: { bg: colors.status.err + '22', fg: colors.status.err },
     proximo: { bg: colors.accent.orange + '22', fg: colors.accent.orange },
@@ -32,7 +33,7 @@ export const mt = {
   } as Record<Estado, { bg: string; fg: string }>,
 }
 
-export const CATEGORIA_LABEL: Record<CategoriaKey, string> = {
+export const CATEGORIA_LABEL: Record<MantenimientoCategoria, string> = {
   transporte: 'Transporte',
   inyeccion: 'Inyección',
   otros: 'Demanda y otros',

@@ -1,4 +1,4 @@
-import type { ImpactoDia, MantenimientoFila } from '../../types'
+import type { MantenimientoImpactoDia, MantenimientoFila } from '../../types'
 
 export type Estado = 'en_curso' | 'proximo' | 'futuro' | 'finalizado'
 
@@ -65,7 +65,7 @@ export function fmtMM(x: number): string {
   return x.toFixed(2).replace(/\.?0+$/, '').replace('.', ',')
 }
 
-export function totalReduccion(d: ImpactoDia): number {
+export function totalReduccion(d: MantenimientoImpactoDia): number {
   return d.reduccion_transporte + d.reduccion_inyeccion + d.reduccion_otros
 }
 

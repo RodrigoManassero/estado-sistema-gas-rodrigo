@@ -1,9 +1,9 @@
-import type { SignoImpacto } from '../../types'
+import type { MantenimientoSigno } from '../../types'
 import { mt } from './tokens'
 
 interface Props {
   texto: string
-  signo: SignoImpacto
+  signo: MantenimientoSigno
 }
 
 export function ImpactoBadge({ texto, signo }: Props) {

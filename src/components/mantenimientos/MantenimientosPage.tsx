@@ -1,8 +1,10 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useMantenimientos } from '../../hooks/useData'
 import { card, colors, sectionTitle, space } from '../../theme'
 import type { MantenimientosData } from '../../types'
 import { ChartSkeleton, SkeletonBlock } from '../Skeleton'
+import { aplicarFiltros, FILTROS_INICIALES, type Filtros } from './filtros'
+import { MantenimientosFiltros } from './MantenimientosFiltros'
 import { MantenimientosKpis } from './MantenimientosKpis'
 import { MantenimientosTable } from './MantenimientosTable'
 import { MantenimientosTimeline } from './MantenimientosTimeline'
@@ -12,10 +14,14 @@ interface ViewProps {
   data: MantenimientosData
   hoy: string
   sourceDate?: string | null
+  filtrosIniciales?: Filtros // lets tests/previews start with filters applied
 }
 
 // Pure view (no data fetching): easy to reuse and to test with a fixture.
-export function MantenimientosView({ data, hoy, sourceDate }: ViewProps) {
+export function MantenimientosView({ data, hoy, sourceDate, filtrosIniciales }: ViewProps) {
+  const [filtros, setFiltros] = useState<Filtros>(filtrosIniciales ?? FILTROS_INICIALES)
+  const filas = aplicarFiltros(data.tabla, filtros, hoy)
+
   return (
     <>
       <p style={{ margin: `0 0 ${space.lg}px`, fontSize: 13, color: colors.textDim }}>
@@ -27,13 +33,21 @@ export function MantenimientosView({ data, hoy, sourceDate }: ViewProps) {
       <MantenimientosKpis filas={data.tabla} impactoDiario={data.impacto_diario} hoy={hoy} />
 
       <div style={{ ...card, marginTop: space.xl }}>
+        <h3 style={sectionTitle}>Filtrar mantenimientos</h3>
+        <MantenimientosFiltros filas={data.tabla} hoy={hoy} filtros={filtros} onChange={setFiltros} totalVisible={filas.length} />
+        <p style={{ margin: `${space.md}px 0 0`, fontSize: 11, color: colors.textDim }}>
+          Los filtros aplican al calendario y al detalle; las tarjetas de arriba muestran el total.
+        </p>
+      </div>
+
+      <div style={{ ...card, marginTop: space.xl }}>
         <h3 style={sectionTitle}>Calendario de mantenimientos</h3>
-        <MantenimientosTimeline filas={data.tabla} hoy={hoy} />
+        <MantenimientosTimeline filas={filas} hoy={hoy} />
       </div>
 
       <div style={{ ...card, marginTop: space.xl }}>
         <h3 style={sectionTitle}>Detalle por mantenimiento</h3>
-        <MantenimientosTable filas={data.tabla} hoy={hoy} />
+        <MantenimientosTable filas={filas} hoy={hoy} />
       </div>
 
       {data.advertencias.length > 0 && (
