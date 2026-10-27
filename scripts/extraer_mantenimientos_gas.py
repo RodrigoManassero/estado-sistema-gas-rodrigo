@@ -53,7 +53,7 @@ OUTPUT_FILENAME = "mantenimientos.json"
 
 # >>> MODIFICAR AQUI (opcional): CARPETA del JSON completo (series + eventos por cuenca). <<<
 # Poner None para no generarlo. NO apuntar a una carpeta que se publique.
-OUTPUT_DIR_COMPLETO = Path(r"C:\Mantenimientos\salida\completo")
+OUTPUT_DIR_COMPLETO = Path(__file__).resolve().parent.parent / "public" / "data"
 
 # Nombre del JSON completo (dentro de OUTPUT_DIR_COMPLETO).
 OUTPUT_FILENAME_COMPLETO = "mantenimientos_gas_completo.json"
