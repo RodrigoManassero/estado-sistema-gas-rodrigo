@@ -41,7 +41,7 @@ import openpyxl
 # =============================================================================
 
 # >>> MODIFICAR AQUI: ruta COMPLETA del Excel de entrada (carpeta + nombre). <<<
-EXCEL_PATH = Path(r"C:\Mantenimientos\entrada\CCO_Octubre_2026_.xlsx")
+EXCEL_PATH = Path(__file__).resolve().parent.parent / "raw" / "CCO.xlsx"
 
 # >>> MODIFICAR AQUI: CARPETA donde se guarda el JSON para el front end. <<<
 # En el repo de la pagina es la carpeta public/data. Si no existe se crea. El archivo se
