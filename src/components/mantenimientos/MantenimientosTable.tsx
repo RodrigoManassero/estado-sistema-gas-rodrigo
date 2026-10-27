@@ -1,5 +1,5 @@
 import { Fragment, useMemo, useState, type CSSProperties } from 'react'
-import type { CategoriaKey, MantenimientoFila } from '../../types/mantenimientos'
+import type { CategoriaKey, MantenimientoFila } from '../../types'
 import { CategoriaTag } from './CategoriaTag'
 import { EstadoChip } from './EstadoChip'
 import { ImpactoBadge } from './ImpactoBadge'
