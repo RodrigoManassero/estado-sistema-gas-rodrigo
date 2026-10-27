@@ -9,10 +9,10 @@ import type {
   ETGSRow,
   FetchState,
   LinepackForecast,
+  MantenimientosData,
   RegionCity,
   WeatherPayload,
 } from '../types'
-import type { MantenimientosData } from '../types'
 
 // Re-exported so components that historically imported from this file still work.
 export type { ForecastDay, DemandForecastDay, DemandForecast } from '../types'
