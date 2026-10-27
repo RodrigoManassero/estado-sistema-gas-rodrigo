@@ -12,6 +12,7 @@ import type {
   RegionCity,
   WeatherPayload,
 } from '../types'
+import type { MantenimientosData } from '../types/mantenimientos'
 
 // Re-exported so components that historically imported from this file still work.
 export type { ForecastDay, DemandForecastDay, DemandForecast } from '../types'
@@ -604,6 +605,9 @@ export interface TGNSystemStateRow {
 
 export const useTGNSystemState = () =>
   useJson<TGNSystemStateRow[]>('./data/tgn_system_state.json')
+
+// Programa de mantenimientos (Excel CCO -> scripts/extraer_mantenimientos_gas.py).
+export const useMantenimientos = () => useJson<MantenimientosData>('./data/mantenimientos.json')
 
 export function useDistribuidoras() {
   const [state, setState] = useState<{ data: DistribuidorasCollection | null; loading: boolean; error: Error | null }>({
