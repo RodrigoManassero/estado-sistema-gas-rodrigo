@@ -2,7 +2,7 @@
 // project's theme.ts. Alpha variants use the same `color + '22'` pattern as the rest of
 // the dashboard (see OperacionPage), so theme colors must stay 6-digit hex strings.
 import { colors, radius } from '../../theme'
-import type { CategoriaKey, SignoImpacto } from '../../types/mantenimientos'
+import type { CategoriaKey, SignoImpacto } from '../../types'
 import type { Estado } from './utils'
 
 export const mt = {
