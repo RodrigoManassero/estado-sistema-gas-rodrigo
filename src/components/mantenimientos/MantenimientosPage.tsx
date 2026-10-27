@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { useMantenimientos } from '../../hooks/useData'
 import { card, colors, sectionTitle, space } from '../../theme'
-import type { MantenimientosData } from '../../types/mantenimientos'
+import type { MantenimientosData } from '../../types'
 import { ChartSkeleton, SkeletonBlock } from '../Skeleton'
 import { MantenimientosKpis } from './MantenimientosKpis'
 import { MantenimientosTable } from './MantenimientosTable'
