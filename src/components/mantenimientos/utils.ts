@@ -1,4 +1,4 @@
-import type { ImpactoDia, MantenimientoFila } from '../../types/mantenimientos'
+import type { ImpactoDia, MantenimientoFila } from '../../types'
 
 export type Estado = 'en_curso' | 'proximo' | 'futuro' | 'finalizado'
 
