@@ -1,0 +1,121 @@
+# Extrae el Excel de mantenimientos (si está en el repo) y despliega la página en GitHub Pages.
+#
+# Dos modos, sin cambiar el workflow:
+#   A) Hay un .xlsx en raw/mantenimientos/  -> corre scripts/extraer_mantenimientos_gas.py,
+#      regenera public/data/mantenimientos.json, lo commitea y despliega.
+#   B) No hay Excel en el repo (recomendado si el repo es público) -> corrés el script en tu
+#      máquina, commiteás solo public/data/mantenimientos.json y este workflow lo despliega.
+name: Mantenimientos - extraer Excel y deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'raw/mantenimientos/**'
+      - 'public/data/mantenimientos.json'
+      - 'scripts/extraer_mantenimientos_gas.py'
+      - 'src/components/mantenimientos/**'
+      - '.github/workflows/mantenimientos-deploy.yml'
+  workflow_dispatch: # también se puede correr a mano desde la pestaña Actions
+
+permissions:
+  contents: write # commitear mantenimientos.json regenerado
+  pages: write
+  id-token: write
+
+# Misma cola para todos los deploys a Pages. Si tu workflow "Update data and deploy" define
+# otro nombre de grupo, usá ese mismo acá para que no se pisen.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependencias de Python
+        run: pip install "openpyxl>=3.1,<4"
+
+      - name: Extraer mantenimientos del Excel
+        id: extraer
+        shell: bash
+        run: |
+          files=()
+          for f in raw/mantenimientos/*.xlsx; do
+            [ -e "$f" ] || continue
+            case "$(basename "$f")" in '~$'*) continue ;; esac # ignora archivos temporales de Excel
+            files+=("$f")
+          done
+
+          if [ "${#files[@]}" -eq 0 ]; then
+            if [ ! -f public/data/mantenimientos.json ]; then
+              echo "::error::No hay Excel en raw/mantenimientos/ ni public/data/mantenimientos.json en el repo."
+              exit 1
+            fi
+            echo "No hay Excel en raw/mantenimientos/: se usa el public/data/mantenimientos.json ya commiteado."
+          elif [ "${#files[@]}" -gt 1 ]; then
+            echo "::error::Hay más de un Excel en raw/mantenimientos/: ${files[*]}. Dejar solo el vigente."
+            exit 1
+          else
+            echo "Excel: ${files[0]}"
+            python scripts/extraer_mantenimientos_gas.py --excel "${files[0]}" --salida public/data --sin-completo
+            echo "generated=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Sin este paso, el deploy nocturno ("Update data and deploy") reconstruiría la página con
+      # el mantenimientos.json viejo del repo. El push con GITHUB_TOKEN no dispara otros workflows.
+      - name: Commitear mantenimientos.json actualizado
+        if: steps.extraer.outputs.generated == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/mantenimientos.json
+          if git diff --cached --quiet; then
+            echo "Sin cambios para commitear."
+          else
+            git commit -m "data: actualizar mantenimientos.json"
+            git pull --rebase --autostash origin main
+            git push origin HEAD:main
+          fi
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependencias de Node
+        run: npm ci
+
+      # "npm run build" corre tsc + vite build (genera dist/). Si tu workflow actual define
+      # variables de entorno o argumentos para el build (por ejemplo la base de la URL), copialos acá.
+      - name: Build
+        run: npm run build
+
+      - uses: actions/configure-pages@v6
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
+
+# --- Alternativa si en Settings > Pages la fuente es "Deploy from a branch" (gh-pages) ---
+# Borrar configure-pages, upload-pages-artifact y el job "deploy", y al final del job "build" agregar:
+#   - uses: peaceiris/actions-gh-pages@v4
+#     with:
+#       github_token: ${{ secrets.GITHUB_TOKEN }}
+#       publish_dir: ./dist
