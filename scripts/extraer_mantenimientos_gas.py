@@ -90,6 +90,43 @@ SUMMARY_LABELS = {
 
 DIAS_SEMANA_OK = {"lun", "mar", "mie", "jue", "vie", "sab", "dom"}
 
+# =============================================================================
+# REGLAS DE SISTEMA Y GASODUCTO  -  EDITAR AQUI PARA AFINAR EL FILTRO DE LA TABLA
+# =============================================================================
+# El Excel no tiene una columna de gasoducto. Cada mantenimiento recibe:
+#   - "sistema":   se deduce de la fila del Excel: TGN, TGS, Enarsa (gasoducto tomado del
+#                  nombre de la fila, ej. "Enarsa - Gasoducto GPM" -> GPM), Productores
+#                  (filas de inyeccion) o Demanda y otros (CAMMESA, MEGA, etc.).
+#   - "gasoducto": solo para TGN y TGS, con las reglas de abajo (la primera que coincide gana).
+#                  Si ninguna coincide queda en null y el filtro lo muestra como "Sin especificar".
+#
+# Cada regla es (transportista, patron, gasoducto). El patron se busca en "instalacion + tarea".
+# Los patrones distinguen mayusculas, salvo los que empiezan con (?i).
+#
+# Origen de las reglas: el mapa "Gasoductos troncales de la Republica Argentina" (Energia Argentina),
+# donde cada planta compresora esta sobre la traza de su transportista (azul = TGN, rojo = TGS).
+# Para agregar una planta nueva, sumar su nombre al patron del gasoducto que corresponda.
+GASODUCTO_REGLAS = [
+    # --- TGS ---
+    # El Excel nombra "Gto NII", "Gtos NI y NII", "Loop NII" en filas de TGS.
+    ("TGS", r"\bNII?\b", "Neuba I/II"),
+    # Plantas sobre el corredor Neuba I y II (Neuquen -> Gral. Cerri -> Saturno/Ordoqui/Barker).
+    ("TGS", r"(?i)cervantes|chelfor[oó]|belisl[eé]|fort[ií]n|gaviotas|la adela|cerri|indio rico|barker"
+            r"|olavarr[ií]a|ordoqui|saturno|buchanan", "Neuba I/II"),
+    # Plantas del Gasoducto San Martin (Rio Colorado hacia el sur hasta Tierra del Fuego).
+    ("TGS", r"(?i)r[ií]o colorado|general conesa|san antonio oeste|bajo del gualicho|dolav[oó]n|garayalde"
+            r"|manantiales behr|pico truncado|bosque petrificado|r[ií]o seco|san juli[aá]n|piedrabuena"
+            r"|moy aike|magallanes|san sebasti[aá]n", "San Martín"),
+    # --- TGN ---
+    # Plantas del Gasoducto Centro Oeste segun el mapa. "LLL" (Loma La Lata) sale de textos del Excel
+    # como "Gto paralelo LLL - Catriel": ese caso NO figura en el mapa, queda como suposicion a confirmar.
+    ("TGN", r"(?i)cochic[oó]|beazley|la carlota|la mora|puel[eé]n|la paz|chaj[aá]n|baldiss?era|\blll\b",
+     "Centro Oeste"),
+    # Plantas del Gasoducto Norte segun el mapa (no aparecen en el Excel actual).
+    ("TGN", r"(?i)campo dur[aá]n|cornejo|pichanal|miraflores|lumbreras|candelaria|tucum[aá]n|lavalle|recreo"
+            r"|de[aá]n funes|ferreyra|t[ií]o pujio|leones|gasoducto norte|gto\.? norte", "Norte"),
+]
+
 
 # =============================================================================
 # Utilidades
@@ -543,6 +580,24 @@ def tarea_de(descripcion):
     return " / ".join(lineas) if lineas else None
 
 
+def clasificar_sistema(empresa, categoria_key, instalacion, tarea):
+    """(sistema, gasoducto) de un mantenimiento. Ver GASODUCTO_REGLAS."""
+    emp = (empresa or "").strip()
+    texto = " ".join(x for x in (instalacion, tarea) if x)
+    up = emp.upper()
+    if up in ("TGN", "TGS"):
+        for transportista, patron, gasoducto in GASODUCTO_REGLAS:
+            if transportista == up and re.search(patron, texto):
+                return up, gasoducto
+        return up, None
+    if up.startswith("ENARSA"):
+        m = re.search(r"gasoducto\s+(.+)$", emp, flags=re.I)
+        return "Enarsa", (m.group(1).strip() if m else None)
+    if categoria_key == "inyeccion":
+        return "Productores", None
+    return "Demanda y otros", None
+
+
 def construir_tabla(cuencas, solo_desde=None):
     """Lista plana: una fila por mantenimiento, ordenada por fecha. solo_desde: date o None."""
     filas = []
@@ -566,6 +621,8 @@ def construir_tabla(cuencas, solo_desde=None):
 
                 texto_imp, signo = describir_impacto(ev["impacto_min"], ev["impacto_max"])
                 detalle = ev["detalle_diario"]
+                cat_key = categoria_key_de(actor["tipo_fila"])
+                sistema, gasoducto = clasificar_sistema(actor["empresa"], cat_key, instalacion, tarea)
                 filas.append({
                     "id": "%s:%s" % (actor["id"], ev["fecha_desde"]),
                     "fecha_desde": ev["fecha_desde"],
@@ -574,7 +631,9 @@ def construir_tabla(cuencas, solo_desde=None):
                     "cuenca": cu["nombre"],
                     "empresa": actor["empresa"],
                     "categoria": categoria_de(actor["tipo_fila"]),
-                    "categoria_key": categoria_key_de(actor["tipo_fila"]),
+                    "categoria_key": cat_key,
+                    "sistema": sistema,
+                    "gasoducto": gasoducto,
                     "instalacion": instalacion,
                     "tarea": tarea,
                     "impacto_texto": texto_imp,
@@ -651,6 +710,7 @@ def escribir_json(carpeta, nombre, objeto):
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as f:
             json.dump(objeto, f, ensure_ascii=False, indent=2)
+        os.chmod(tmp, 0o644)  # mkstemp crea el archivo con permisos 0600
         os.replace(tmp, destino)
     except Exception:
         if os.path.exists(tmp):
@@ -741,6 +801,12 @@ def main():
         }
         destino_completo = escribir_json(carpeta_completo, OUTPUT_FILENAME_COMPLETO, completo)
 
+    sin_gto = sorted({(f["empresa"], f["instalacion"] or "(sin texto)") for f in tabla
+                      if f["sistema"] in ("TGN", "TGS") and not f["gasoducto"]})
+    if sin_gto:
+        print("TGN/TGS sin gasoducto asignado (editar GASODUCTO_REGLAS si corresponde): %d instalaciones" % len(sin_gto))
+        for emp, inst in sin_gto[:15]:
+            print("  - %s | %s" % (emp, inst[:70]))
     print("JSON para el front end: %s" % destino)
     if destino_completo:
         print("JSON completo:          %s" % destino_completo)
