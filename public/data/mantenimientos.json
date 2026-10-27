@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-27T23:57:55+00:00",
+  "generated_at": "2026-10-27T23:59:19+00:00",
   "source": "Programa de mantenimientos CCO (Excel manual)",
   "source_date": "2026-10-27",
   "data": {
     "metadata": {
       "archivo_origen": "CCO.xlsx",
       "hoja": "CCO - SE - Cammesa",
-      "generado_en": "2026-10-27T23:57:55+00:00",
+      "generado_en": "2026-10-27T23:59:19+00:00",
       "fecha_desde": "2026-10-01",
       "fecha_hasta": "2026-12-31",
       "cantidad_dias": 92,
