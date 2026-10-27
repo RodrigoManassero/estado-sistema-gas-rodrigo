@@ -8,10 +8,11 @@ import ProduccionPage from './components/ProduccionPage'
 import FuentesPage from './components/FuentesPage'
 import StatusPage from './components/StatusPage'
 import GuidePage from './components/GuidePage'
+import MantenimientosPage from './components/mantenimientos/MantenimientosPage'
 
-type Page = 'operacion' | 'mapa' | 'historico' | 'produccion' | 'guia' | 'fuentes' | 'status'
+type Page = 'operacion' | 'mantenimientos' | 'mapa' | 'historico' | 'produccion' | 'guia' | 'fuentes' | 'status'
 
-const VALID_PAGES: readonly Page[] = ['operacion', 'mapa', 'historico', 'produccion', 'guia', 'fuentes', 'status']
+const VALID_PAGES: readonly Page[] = ['operacion', 'mantenimientos', 'mapa', 'historico', 'produccion', 'guia', 'fuentes', 'status']
 
 // Read ?tab=... from URL on first render so links like ?tab=mapa land directly
 // on that page. Also keep the query string in sync as the user navigates so the
@@ -49,6 +50,7 @@ function useTabFromURL(): [Page, (p: Page) => void] {
 function Nav({ page, setPage }: { page: Page; setPage: (p: Page) => void }) {
   const tabs: { id: Page; label: string }[] = [
     { id: 'operacion', label: 'Operación' },
+    { id: 'mantenimientos', label: 'Mantenimientos' },
     { id: 'mapa', label: 'Mapa' },
     { id: 'historico', label: 'Histórico' },
     { id: 'produccion', label: 'Producción' },
@@ -168,6 +170,7 @@ export default function App() {
       <div style={{ maxWidth: 1400, margin: '0 auto', padding: `${space.xl}px ${space.lg}px` }}>
         <Nav page={page} setPage={setPage} />
         {page === 'operacion' && <OperacionPage />}
+        {page === 'mantenimientos' && <MantenimientosPage />}
         {page === 'mapa' && <MapaPage />}
         {page === 'historico' && <HistoricoPage />}
         {page === 'produccion' && <ProduccionPage />}
