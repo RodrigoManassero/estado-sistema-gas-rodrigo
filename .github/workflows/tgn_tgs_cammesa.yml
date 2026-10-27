@@ -3,7 +3,7 @@ name: TGN_TGS_Cammesa
 on:
   schedule:
     # 09:30 ART equivale a 12:30 UTC
-    - cron: '30 12 * * *'  # 09:30 ART
+    - cron: '30 12 * * *'
   workflow_dispatch:
 
 permissions:
@@ -11,10 +11,15 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
   fetch-and-build:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+
     steps:
       - uses: actions/checkout@v4
 
@@ -80,7 +85,7 @@ jobs:
           mkdir -p dist/curso
           cp -r curso/dist/. dist/curso/
 
-      # --- PASO 6: Commit y Deploy unificado ---
+      # --- PASO 6: Commit de datos ---
       - name: Commit data
         run: |
           git config user.name "github-actions[bot]"
@@ -94,8 +99,26 @@ jobs:
             git push
           fi
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      # --- PASO 7: Subir artefacto para GitHub Pages ---
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          path: ./dist
+
+  deploy:
+    needs: fetch-and-build
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
