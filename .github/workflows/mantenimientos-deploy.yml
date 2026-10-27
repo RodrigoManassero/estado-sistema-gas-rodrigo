@@ -47,7 +47,7 @@ jobs:
         shell: bash
         run: |
           files=()
-          for f in raw/*.xlsx; do
+          for f in raw/CCO*.xlsx; do
             [ -e "$f" ] || continue
             case "$(basename "$f")" in '~$'*) continue ;; esac # ignora archivos temporales de Excel
             files+=("$f")
