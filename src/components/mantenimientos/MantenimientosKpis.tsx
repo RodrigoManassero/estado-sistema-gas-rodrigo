@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import type { ImpactoDia, MantenimientoFila } from '../../types/mantenimientos'
+import type { ImpactoDia, MantenimientoFila } from '../../types'
 import { mt } from './tokens'
 import { estadoDe, fmtDia, fmtMM, sumarDias, totalReduccion } from './utils'
 
