@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import type { CategoriaKey, MantenimientoFila } from '../../types/mantenimientos'
+import type { CategoriaKey, MantenimientoFila } from '../../types'
 import { CATEGORIA_LABEL, mt } from './tokens'
 import { diasEntre, esFinDeSemana, fmtRango, nombreMes, ordenarPorFecha, sumarDias, tituloFila } from './utils'
 
