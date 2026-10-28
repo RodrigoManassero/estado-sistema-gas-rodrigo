@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-28T13:22:45+00:00",
+  "generated_at": "2026-10-28T13:47:37+00:00",
   "source": "rolling train/predict on ENARGAS RDS",
   "source_date": null,
   "data": {
@@ -246,7 +246,7 @@
           {
             "fecha": "2026-10-13",
             "actual": 49.8,
-            "predicted": 41.6
+            "predicted": 41.54
           },
           {
             "fecha": "2026-10-14",
@@ -256,7 +256,7 @@
           {
             "fecha": "2026-10-15",
             "actual": 50.0,
-            "predicted": 43.9
+            "predicted": 43.96
           },
           {
             "fecha": "2026-10-16",
@@ -266,7 +266,7 @@
           {
             "fecha": "2026-10-17",
             "actual": 46.3,
-            "predicted": 49.47
+            "predicted": 49.53
           },
           {
             "fecha": "2026-10-18",
@@ -286,7 +286,7 @@
           {
             "fecha": "2026-10-21",
             "actual": 42.6,
-            "predicted": 24.53
+            "predicted": 24.59
           },
           {
             "fecha": "2026-10-22",
