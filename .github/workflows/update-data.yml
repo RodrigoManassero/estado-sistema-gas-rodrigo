@@ -2,9 +2,11 @@ name: Update data and deploy
 
 on:
   schedule:
-    # 10:07 Argentina (UTC-3). Minuto "raro" a propósito: GitHub demora más los cron que caen
-    # justo en el inicio de la hora (:00).
-    - cron: '7 13 * * *'
+    # Horas de Argentina (UTC-3, sin horario de verano) -> UTC. Minutos "raros" a propósito:
+    # GitHub demora más los cron que caen justo en :00 o :30.
+    - cron: '7 13 * * *'   # 10:07 ART
+    - cron: '17 16 * * *'  # 13:17 ART
+    - cron: '17 19 * * *'  # 16:17 ART
   workflow_dispatch:
 
 permissions:
