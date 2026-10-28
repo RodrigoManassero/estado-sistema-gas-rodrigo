@@ -2,7 +2,9 @@ name: Update data and deploy
 
 on:
   schedule:
-    - cron: '0 13 * * *'  # 10:00 Argentina (UTC-3)
+    # 10:07 Argentina (UTC-3). Minuto "raro" a propósito: GitHub demora más los cron que caen
+    # justo en el inicio de la hora (:00).
+    - cron: '7 13 * * *'
   workflow_dispatch:
 
 permissions:
@@ -12,7 +14,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   update-and-deploy:
@@ -20,10 +22,10 @@ jobs:
     timeout-minutes: 22
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
@@ -31,9 +33,9 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install npm dependencies
         run: npm ci
@@ -70,23 +72,13 @@ jobs:
           mkdir -p dist/curso
           cp -r curso/dist/. dist/curso/
 
+      # Lógica en scripts/commit_data.sh: si otro workflow pushó mientras tanto, se reaplican los
+      # archivos generados por esta corrida (enteros) sobre lo último de main y se reintenta el push.
       - name: Commit updated data
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git add public/data/
-
-          if ! git diff --staged --quiet; then
-            git commit -m "Auto-update data $(date -u +%Y-%m-%d)"
-            git pull --rebase -X ours origin main || (git rebase --abort && git pull --no-rebase origin main -s recursive -X ours)
-            git push origin main
-          else
-            echo "No data changes to commit"
-          fi
+        run: bash scripts/commit_data.sh "Auto-update data $(date -u +%Y-%m-%d)"
 
       - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist
 
