@@ -11,7 +11,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'raw/**'
+      - 'raw/mantenimientos/**'
       - 'public/data/mantenimientos.json'
       - 'scripts/extraer_mantenimientos_gas.py'
       - 'src/components/mantenimientos/**'
@@ -47,7 +47,7 @@ jobs:
         shell: bash
         run: |
           files=()
-          for f in raw/CCO*.xlsx; do
+          for f in raw/mantenimientos/*.xlsx; do
             [ -e "$f" ] || continue
             case "$(basename "$f")" in '~$'*) continue ;; esac # ignora archivos temporales de Excel
             files+=("$f")
@@ -70,19 +70,11 @@ jobs:
 
       # Sin este paso, el deploy nocturno ("Update data and deploy") reconstruiría la página con
       # el mantenimientos.json viejo del repo. El push con GITHUB_TOKEN no dispara otros workflows.
+      # Lógica en scripts/commit_data.sh: solo toca este archivo y reintenta si otro workflow pushó en el medio.
       - name: Commitear mantenimientos.json actualizado
         if: steps.extraer.outputs.generated == 'true'
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/data/mantenimientos.json
-          if git diff --cached --quiet; then
-            echo "Sin cambios para commitear."
-          else
-            git commit -m "data: actualizar mantenimientos.json"
-            git pull --rebase --autostash origin main
-            git push origin HEAD:main
-          fi
+          bash scripts/commit_data.sh "data: actualizar mantenimientos.json" public/data/mantenimientos.json
 
       - uses: actions/setup-node@v6
         with:
