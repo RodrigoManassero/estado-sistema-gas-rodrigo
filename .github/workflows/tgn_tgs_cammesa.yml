@@ -87,18 +87,9 @@ jobs:
           cp -r curso/dist/. dist/curso/
 
       # --- PASO 6: Commit de datos ---
+      # Lógica en scripts/commit_data.sh (reaplica los archivos generados sobre lo último de main y reintenta el push).
       - name: Commit data
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/data/
-          if git diff --staged --quiet; then
-            echo "No data changes to commit"
-          else
-            git commit -m "TGN, TGS & Cammesa auto-update $(date -u +%Y-%m-%dT%H:%MZ)"
-            git pull --rebase origin main || git rebase --abort
-            git push
-          fi
+        run: bash scripts/commit_data.sh "TGN, TGS & Cammesa auto-update $(date -u +%Y-%m-%dT%H:%MZ)"
 
       # --- PASO 7: Subir artefacto para GitHub Pages ---
       - name: Upload Pages Artifact
