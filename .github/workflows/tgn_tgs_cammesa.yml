@@ -2,8 +2,9 @@ name: TGN_TGS_Cammesa
 
 on:
   schedule:
-    # 09:30 ART equivale a 12:30 UTC
-    - cron: '30 12 * * *'
+    # 09:37 ART equivale a 12:37 UTC (Argentina no tiene horario de verano).
+    # Minuto "raro" a propósito: GitHub demora más los cron de inicio de hora y de :30.
+    - cron: '37 12 * * *'
   workflow_dispatch:
 
 permissions:
@@ -13,7 +14,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   fetch-and-build:
@@ -21,10 +22,10 @@ jobs:
     timeout-minutes: 25
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
@@ -38,7 +39,7 @@ jobs:
         run: playwright install chromium
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: '22'
 
@@ -101,7 +102,7 @@ jobs:
 
       # --- PASO 7: Subir artefacto para GitHub Pages ---
       - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist
 
