@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-29T14:58:29+00:00",
+  "generated_at": "2026-10-29T18:59:28+00:00",
   "source": "Open-Meteo API (window 2026-09-29 to 2026-10-28 merged with local history)",
   "source_date": "2026-10-28",
   "data": [
@@ -18273,21 +18273,57 @@
         },
         {
           "fecha": "2026-10-20",
-          "temp_max": 22.7,
+          "temp_max": 22.6,
           "temp_min": 13.8,
           "temp_prom": 18.2
         },
         {
           "fecha": "2026-10-21",
           "temp_max": 26.3,
-          "temp_min": 17.0,
+          "temp_min": 16.9,
           "temp_prom": 21.6
         },
         {
           "fecha": "2026-10-22",
-          "temp_max": 24.2,
-          "temp_min": 18.8,
-          "temp_prom": 21.5
+          "temp_max": 24.6,
+          "temp_min": 18.7,
+          "temp_prom": 21.6
+        },
+        {
+          "fecha": "2026-10-23",
+          "temp_max": 22.5,
+          "temp_min": 19.2,
+          "temp_prom": 20.9
+        },
+        {
+          "fecha": "2026-10-24",
+          "temp_max": 19.1,
+          "temp_min": 15.3,
+          "temp_prom": 17.2
+        },
+        {
+          "fecha": "2026-10-25",
+          "temp_max": 19.6,
+          "temp_min": 13.1,
+          "temp_prom": 16.4
+        },
+        {
+          "fecha": "2026-10-26",
+          "temp_max": 20.0,
+          "temp_min": 11.5,
+          "temp_prom": 15.8
+        },
+        {
+          "fecha": "2026-10-27",
+          "temp_max": 22.5,
+          "temp_min": 13.1,
+          "temp_prom": 17.8
+        },
+        {
+          "fecha": "2026-10-28",
+          "temp_max": 23.9,
+          "temp_min": 13.8,
+          "temp_prom": 18.9
         }
       ]
     },
@@ -18564,31 +18600,31 @@
         },
         {
           "fecha": "2026-10-18",
-          "temp_max": 18.3,
-          "temp_min": 10.4,
-          "temp_prom": 14.4
+          "temp_max": 18.2,
+          "temp_min": 10.3,
+          "temp_prom": 14.2
         },
         {
           "fecha": "2026-10-19",
-          "temp_max": 19.8,
-          "temp_min": 12.0,
-          "temp_prom": 15.9
+          "temp_max": 19.6,
+          "temp_min": 11.9,
+          "temp_prom": 15.8
         },
         {
           "fecha": "2026-10-20",
-          "temp_max": 21.2,
+          "temp_max": 21.1,
           "temp_min": 12.2,
-          "temp_prom": 16.7
+          "temp_prom": 16.6
         },
         {
           "fecha": "2026-10-21",
-          "temp_max": 21.2,
-          "temp_min": 11.4,
+          "temp_max": 21.3,
+          "temp_min": 11.3,
           "temp_prom": 16.3
         },
         {
           "fecha": "2026-10-22",
-          "temp_max": 21.1,
+          "temp_max": 21.0,
           "temp_min": 12.5,
           "temp_prom": 16.8
         },
