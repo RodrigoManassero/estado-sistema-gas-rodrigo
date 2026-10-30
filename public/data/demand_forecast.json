@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T18:38:53+00:00",
+  "generated_at": "2026-10-30T18:57:26+00:00",
   "source": "ENARGAS RDS regression (temp + day-of-week)",
   "source_date": "2026-10-30",
   "data": {
@@ -74,26 +74,26 @@
         "temp_prom": 20.1,
         "temp_max": 24.0,
         "temp_min": 16.1,
-        "prioritaria_est": 25.6,
+        "prioritaria_est": 26.2,
         "usinas_est": 40.0,
         "industria_est": 34.9,
         "gnc_est": 5.5,
         "combustible_est": 3.7,
         "exportaciones_est": 6.9,
-        "demanda_total_est": 116.6
+        "demanda_total_est": 117.2
       },
       {
         "fecha": "2026-11-05",
         "temp_prom": 18.4,
         "temp_max": 23.6,
         "temp_min": 13.2,
-        "prioritaria_est": 26.3,
+        "prioritaria_est": 24.7,
         "usinas_est": 37.7,
         "industria_est": 34.6,
         "gnc_est": 5.6,
         "combustible_est": 3.7,
         "exportaciones_est": 6.9,
-        "demanda_total_est": 114.8
+        "demanda_total_est": 113.2
       },
       {
         "fecha": "2026-11-06",
@@ -113,13 +113,13 @@
         "temp_prom": 17.9,
         "temp_max": 21.7,
         "temp_min": 14.2,
-        "prioritaria_est": 23.0,
+        "prioritaria_est": 24.8,
         "usinas_est": 34.2,
         "industria_est": 33.5,
         "gnc_est": 5.6,
         "combustible_est": 3.7,
         "exportaciones_est": 6.9,
-        "demanda_total_est": 106.9
+        "demanda_total_est": 108.7
       },
       {
         "fecha": "2026-11-08",
