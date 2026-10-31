@@ -44,7 +44,8 @@ RAW_XLSX = BASE_DIR.parent / "raw" / "info_weekly.xlsx"      # respaldo manual (
 OUT_FILE = BASE_DIR.parent / "public" / "data" / "cammesa_weekly.json"
 
 PROGRAMAS_A_USAR = 2   # semanas que se incluyen en el JSON (las mas recientes)
-DIAS_ATRAS = 14        # cuantos dias hacia atras se buscan zips en CAMMESA
+DIAS_ATRAS = 7         # dias hacia atras que se consultan en CAMMESA (semana anterior)
+DIAS_ADELANTE = 7      # dias hacia adelante (el programa de la semana siguiente se publica el jueves anterior)
 
 # Filas de CONSUMO_COMB que se usan. Las demas se ignoran, pero si traen valores se avisa.
 FILAS_GAS = ("GasAcue", "GasProp")
@@ -220,7 +221,7 @@ def main():
     # 1) Sincronizar con CAMMESA. Si falla, se sigue con lo que ya hay en raw/.
     if not args.sin_descarga:
         try:
-            errores = psem.sincronizar(raw_dir, dias_atras=DIAS_ATRAS, extraer_zips=False)
+            errores = psem.sincronizar(raw_dir, dias_atras=DIAS_ATRAS, dias_adelante=DIAS_ADELANTE, extraer_zips=False)
             if errores:
                 aviso("%d archivo(s) de CAMMESA no se pudieron descargar; se usa lo que hay en raw/" % errores)
         except (psem.ErrorApi, psem.ErrorConfig) as e:
