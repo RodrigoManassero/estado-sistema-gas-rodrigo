@@ -63,6 +63,19 @@ def aviso(msg):
     psem.aviso(msg)
 
 
+def error(msg):
+    """Anotacion de error visible en el resumen de la corrida (no frena el workflow)."""
+    print(("::error::" if os.environ.get("GITHUB_ACTIONS") else "ERROR: ") + msg, flush=True)
+
+
+def resumen_de_corrida(lineas):
+    """Si corre en GitHub Actions, deja un resumen legible en la pagina de la corrida."""
+    ruta = os.environ.get("GITHUB_STEP_SUMMARY")
+    if ruta:
+        with open(ruta, "a", encoding="utf-8") as f:
+            f.write("\n".join(lineas) + "\n")
+
+
 # =============================================================================
 # Lectura de los programas (zip -> MDB)
 # =============================================================================
@@ -113,15 +126,25 @@ def leer_programa(zip_path):
 
 
 def leer_programas(raw_dir):
-    programas = []
+    """Devuelve (programas leidos, {nombre_del_zip: motivo} de los que no se pudieron leer)."""
+    programas, fallas = [], {}
     for z in sorted(Path(raw_dir).glob("*.zip")) if Path(raw_dir).is_dir() else []:
         if not RE_PSEM.match(z.name):
             continue
         try:
-            programas.append(leer_programa(z))
+            p = leer_programa(z)
+            programas.append(p)
+            log("  leido %s: semana %s, inicio %s" % (z.name, p.num_semana, p.inicio))
         except (MDBError, ValueError, zipfile.BadZipFile, OSError, KeyError) as e:
-            aviso("No se pudo leer %s: %s" % (z.name, e))
-    return programas
+            fallas[z.name] = "%s: %s" % (type(e).__name__, e)
+            aviso("No se pudo leer %s: %s" % (z.name, fallas[z.name]))
+    return programas, fallas
+
+
+def codigo_semana(nombre):
+    """(anio, semana) del nombre psemWWYY.zip, para saber cual es el mas nuevo."""
+    m = RE_PSEM.match(nombre)
+    return (int(m.group(2)), int(m.group(1))) if m else (0, 0)
 
 
 # =============================================================================
@@ -133,7 +156,7 @@ def elegir(programas, cantidad=PROGRAMAS_A_USAR):
     por_inicio = {}
     for p in programas:
         previo = por_inicio.get(p.inicio)
-        if previo is None or p.mtime > previo.mtime:
+        if previo is None or (codigo_semana(p.nombre), p.mtime) > (codigo_semana(previo.nombre), previo.mtime):
             por_inicio[p.inicio] = p
     return [por_inicio[k] for k in sorted(por_inicio)][-cantidad:]
 
@@ -228,7 +251,20 @@ def main():
             aviso("No se pudo sincronizar con CAMMESA (%s); se usa lo que hay en raw/" % e)
 
     # 2) Leer los programas disponibles y armar las filas
-    elegidos = elegir(leer_programas(raw_dir))
+    leidos, fallas = leer_programas(raw_dir)
+    elegidos = elegir(leidos)
+
+    # Control: el zip mas nuevo que haya en raw/ tiene que haber entrado al JSON.
+    nombres = [z.name for z in Path(raw_dir).glob("*.zip") if RE_PSEM.match(z.name)] if raw_dir.is_dir() else []
+    if nombres:
+        mas_nuevo = max(nombres, key=codigo_semana)
+        if mas_nuevo not in {p.nombre for p in elegidos}:
+            motivo = fallas.get(mas_nuevo, "otro zip tiene el mismo inicio de semana y se prefirio ese")
+            error("El programa mas reciente (%s) NO entro al JSON. Motivo: %s" % (mas_nuevo, motivo))
+            resumen_de_corrida(["### CAMMESA semanal: el zip mas reciente no se pudo usar",
+                                "- Archivo: `%s`" % mas_nuevo, "- Motivo: %s" % motivo,
+                                "- El JSON se armo con: " + (", ".join(p.nombre for p in elegidos) or "nada")])
+
     if elegidos:
         filas = construir_filas(elegidos)
         origen = ", ".join("%s (semana del %s)" % (p.nombre, p.inicio) for p in elegidos)
