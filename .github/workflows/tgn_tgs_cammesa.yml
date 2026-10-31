@@ -90,8 +90,10 @@ jobs:
 
       # --- PASO 6: Commit de datos ---
       # Lógica en scripts/commit_data.sh (reaplica los archivos generados sobre lo último de main y reintenta el push).
+      # Además de public/data/ se guarda raw/cammesa_psem/ (zips de CAMMESA ya descargados): así, la próxima
+      # corrida sabe que ya los tiene y no los vuelve a bajar.
       - name: Commit data
-        run: bash scripts/commit_data.sh "TGN, TGS & Cammesa auto-update $(date -u +%Y-%m-%dT%H:%MZ)"
+        run: bash scripts/commit_data.sh "TGN, TGS & Cammesa auto-update $(date -u +%Y-%m-%dT%H:%MZ)" public/data/ raw/cammesa_psem/
 
       # --- PASO 7: Subir artefacto para GitHub Pages ---
       - name: Upload Pages Artifact
