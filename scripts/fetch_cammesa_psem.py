@@ -3,7 +3,7 @@
 Descarga la Programación Semanal de CAMMESA (psemWWYY.zip) a raw/ y la descomprime.
 
 Que hace:
-  1. Consulta la API publica de CAMMESA (findDocumentosByNemoRango) por los ultimos N dias.
+  1. Consulta la API publica de CAMMESA (findDocumentosByNemoRango) para una semana hacia atras y una hacia adelante.
   2. Para cada zip de programacion semanal que figure y que todavia NO este en raw/, lo descarga.
      Si ya esta (y CAMMESA no lo republico), no vuelve a bajarlo.
   3. Descomprime cada zip en una carpeta propia (raw/cammesa_psem/extraido/<psemWWYY>/).
@@ -51,9 +51,14 @@ API_BASE = os.environ.get("CAMMESA_API_BASE", "https://api.cammesa.com/pub-svc/p
 # "nemo" que usa el calendario de la pagina: devuelve la programacion semanal y los redespachos.
 NEMO_CONSULTA = "PROGRAMACION_SEMANAL_UNIF"
 
-# Cuantos dias hacia atras se consultan. La API devuelve los documentos vigentes en el rango, asi
-# que un rango de ~2 semanas permite recuperar un zip que se haya perdido en una corrida anterior.
-DIAS_ATRAS = 14
+# Rango de fechas que se consulta: desde (hoy - DIAS_ATRAS) hasta (hoy + DIAS_ADELANTE).
+# La API devuelve los documentos VIGENTES en ese rango (no los publicados en el). Cada programa
+# semanal rige de lunes a domingo y se publica el jueves anterior, asi que:
+#   - DIAS_ADELANTE = 7 incluye la semana siguiente (sin esto, el programa nuevo no aparece hasta
+#     que empieza su semana);
+#   - DIAS_ATRAS = 7 incluye la semana anterior (para recuperar un zip perdido) sin bajar semanas viejas.
+DIAS_ATRAS = 7
+DIAS_ADELANTE = 7
 
 # Los "redespachos semanales" (redespacho.xls) tambien aparecen en la misma consulta.
 # Poner True para descargarlos tambien (se guardan con la fecha y hora de publicacion en el nombre,
@@ -141,8 +146,8 @@ def iso_z(d):
     return "%sT03:00:00.000Z" % d.isoformat()
 
 
-def listar_documentos(hoy, dias_atras):
-    desde, hasta = hoy - timedelta(days=dias_atras), hoy
+def listar_documentos(hoy, dias_atras, dias_adelante=0):
+    desde, hasta = hoy - timedelta(days=dias_atras), hoy + timedelta(days=dias_adelante)
     url = "%s/findDocumentosByNemoRango?fechadesde=%s&fechahasta=%s&nemo=%s" % (
         API_BASE, iso_z(desde), iso_z(hasta), urllib.parse.quote(NEMO_CONSULTA),
     )
@@ -342,11 +347,11 @@ def extraer(zip_path, carpeta):
 # Programa principal
 # =============================================================================
 def sincronizar(raw_dir, dias_atras=DIAS_ATRAS, incluir_redespacho=False, extraer_zips=True,
-                solo_listar=False, hoy=None):
+                solo_listar=False, hoy=None, dias_adelante=DIAS_ADELANTE):
     """Consulta CAMMESA y descarga lo que falta en raw_dir. Devuelve la cantidad de archivos con error.
     Lanza ErrorApi si no se puede consultar la API y ErrorConfig si falta configuracion."""
     hoy = hoy or datetime.now(ART).date()
-    desde, hasta, docs = listar_documentos(hoy, dias_atras)
+    desde, hasta, docs = listar_documentos(hoy, dias_atras, dias_adelante)
     cands = seleccionar(docs, raw_dir, incluir_redespacho)
     log("Consulta CAMMESA: %s -> %s (hora Argentina) | documentos: %d | archivos de interes: %d"
         % (desde, hasta, len(docs), len(cands)))
@@ -384,6 +389,7 @@ def main():
     ap = argparse.ArgumentParser(description="Descarga y descomprime la Programacion Semanal de CAMMESA.")
     ap.add_argument("--raw-dir", help="Carpeta de destino (por defecto RAW_DIR).")
     ap.add_argument("--dias-atras", type=int, default=DIAS_ATRAS, help="Dias a consultar hacia atras.")
+    ap.add_argument("--dias-adelante", type=int, default=DIAS_ADELANTE, help="Dias a consultar hacia adelante.")
     ap.add_argument("--listar", action="store_true", help="Solo mostrar que hay y que falta; no descarga.")
     ap.add_argument("--sin-extraer", action="store_true", help="No descomprimir los zips.")
     ap.add_argument("--redespacho", action="store_true", help="Incluir tambien los redespachos semanales (xls).")
@@ -393,7 +399,8 @@ def main():
     raw_dir = Path(args.raw_dir) if args.raw_dir else RAW_DIR
     try:
         errores = sincronizar(raw_dir, args.dias_atras, DESCARGAR_REDESPACHO or args.redespacho,
-                              extraer_zips=not args.sin_extraer, solo_listar=args.listar)
+                              extraer_zips=not args.sin_extraer, solo_listar=args.listar,
+                              dias_adelante=args.dias_adelante)
         return 1 if errores and not args.tolerante else 0
     except ErrorConfig as e:
         print("ERROR de configuracion: %s" % e, file=sys.stderr)
