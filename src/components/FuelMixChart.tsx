@@ -104,22 +104,6 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
   }
   for (const f of usinasByDate.keys()) fcDates.add(f)
 
-  // Ultima fecha con Weekly de CAMMESA
-  const lastWeeklyRow = [...data]
-    .map((d) => ({ ...d, fecha: clean(d.fecha) }))
-    .filter((d) => (!lastHistorical || d.fecha > lastHistorical) && d.cammesa_gas_est != null)
-    .pop()
-
-  const lastWeeklyDate = lastWeeklyRow?.fecha ?? ''
-  const lastWeeklyVal = lastWeeklyRow?.cammesa_gas_est ?? null
-
-  // Bias del modelo respecto al final del Weekly
-  const modelValAtWeeklyEnd = lastWeeklyDate ? usinasByDate.get(lastWeeklyDate) : null
-  const localGasBias =
-    lastWeeklyVal != null && modelValAtWeeklyEnd != null
-      ? lastWeeklyVal - modelValAtWeeklyEnd
-      : 0
-
   // Generación de filas separando Weekly (Sólido) y Modelo (Translúcido)
   const forecastRows = [...fcDates].sort().map((fecha) => {
     const d = dailyByDate.get(fecha)
@@ -131,7 +115,9 @@ export default function FuelMixChart({ data, ppoRows = [], demandForecast = [], 
     if (d?.cammesa_gas_est != null) {
       gasWeekly = d.cammesa_gas_est
     } else if (u != null) {
-      gasEstModel = Math.round((u + localGasBias) * 10) / 10
+      // usinas_est ya viene anclado al programa semanal de CAMMESA desde generate_forecast.py
+      // (el mismo valor que usa DemandChart), asi que no se vuelve a ajustar aca.
+      gasEstModel = u
     }
 
     return {
