@@ -19,6 +19,7 @@ Segments:
 """
 
 import json
+import math
 import os
 import sys
 from datetime import datetime
@@ -219,6 +220,72 @@ def predict(model, temp, fecha_iso, multi_city_temp=None):
     return round(model['slope'] * x + model['intercept'] + offset, 1)
 
 
+def clean_fecha(f):
+    """'2026-11-02T00:00:00' / '2026-11-02 00:00' -> '2026-11-02'."""
+    return str(f).strip().split(' ')[0].split('T')[0] if f else ''
+
+
+def js_round1(x):
+    """Redondeo a 1 decimal como Math.round de JavaScript (la mitad sube)."""
+    return math.floor(x * 10 + 0.5) / 10
+
+
+def weekly_gas_inputs(daily_rows):
+    """(ultimo_dia_con_despacho_real, {fecha: gas del programa semanal de CAMMESA}).
+
+    El programa semanal (`cammesa_gas_est` en daily.json) solo se considera para fechas posteriores
+    al ultimo dia con despacho real (`cammesa_gas`)."""
+    last_actual = max((clean_fecha(d.get('fecha')) for d in daily_rows if d.get('cammesa_gas') is not None),
+                      default=None)
+    weekly = {}
+    for d in daily_rows:
+        f = clean_fecha(d.get('fecha'))
+        if d.get('cammesa_gas_est') is not None and f and (last_actual is None or f > last_actual):
+            weekly[f] = float(d['cammesa_gas_est'])
+    return last_actual, weekly
+
+
+def anchor_usinas_to_weekly(forecast, last_actual, weekly):
+    """Deja UNA sola serie de gas para usinas, la que usan todos los graficos (Despacho electrico y
+    Demanda por sector):
+
+      - dias cubiertos por el programa semanal de CAMMESA -> el valor del programa;
+      - dias posteriores (solo modelo)                    -> modelo + sesgo, donde el sesgo es la
+        diferencia entre el programa y el modelo en el ULTIMO dia del programa (ancla);
+      - dias sin dato real ni programa y sin ancla         -> modelo sin ajustar.
+
+    Si cambia usinas, `demanda_total_est` cambia lo mismo (usinas es parte del total).
+    Cada fila conserva el valor del modelo (`usinas_est_modelo`) y de donde sale el final (`usinas_fuente`).
+    Todas las filas llevan las mismas claves (el CSV las exige)."""
+    modelo_por_fecha = {f['fecha']: f['usinas_est'] for f in forecast
+                        if f.get('usinas_est') is not None and (last_actual is None or f['fecha'] > last_actual)}
+    ancla = max(weekly) if weekly else None
+    sesgo = 0.0
+    if ancla is not None and ancla in modelo_por_fecha:
+        sesgo = weekly[ancla] - modelo_por_fecha[ancla]
+
+    for f in forecast:
+        modelo = f.get('usinas_est')
+        f['usinas_est_modelo'] = modelo
+        f['usinas_fuente'] = None
+        if modelo is None:
+            continue
+        despues_del_real = last_actual is None or f['fecha'] > last_actual
+        if despues_del_real and f['fecha'] in weekly:
+            final, fuente = weekly[f['fecha']], 'programa_semanal'
+        elif despues_del_real and ancla is not None:
+            final, fuente = js_round1(modelo + sesgo), 'modelo_ajustado'
+        else:
+            final, fuente = modelo, 'modelo'
+        delta = final - modelo
+        f['usinas_est'] = final
+        f['usinas_fuente'] = fuente
+        if f.get('demanda_total_est') is not None and delta:
+            f['demanda_total_est'] = round(f['demanda_total_est'] + delta, 1)
+    return {'ancla_fecha': ancla, 'sesgo': round(sesgo, 2), 'ultimo_dato_real': last_actual,
+            'dias_programa_semanal': len(weekly)}
+
+
 def main():
     daily_path = os.path.join(OUT_DIR, 'daily.json')
     weather_path = os.path.join(OUT_DIR, 'weather.json')
@@ -355,6 +422,15 @@ def main():
             'demanda_total_est': total,
         })
 
+    # Un solo valor de gas para usinas en todos los graficos: se ancla al programa semanal de CAMMESA.
+    daily = load_envelope(daily_path) if os.path.exists(daily_path) else None
+    if daily:
+        last_actual, weekly = weekly_gas_inputs(daily)
+        anchor = anchor_usinas_to_weekly(demand_forecast, last_actual, weekly)
+    else:
+        anchor = anchor_usinas_to_weekly(demand_forecast, None, {})
+    print(f"  Usinas ancladas al programa semanal: {anchor}")
+
     def model_payload(m):
         return {
             'label': m['label'],
@@ -374,6 +450,7 @@ def main():
         'training_source': 'ENARGAS RDS — 720 días backfilled',
         'total_method': total_method,
         'baseline_exportaciones': baseline_exports,
+        'usinas_anchor': anchor,
         'prioritaria': model_payload(models['prioritaria']),
         'usinas': model_payload(models['usinas']),
         'industria': model_payload(models['industria']),
@@ -399,8 +476,7 @@ def main():
 
     # Auto-comments use Excel's daily.json for "today" since the dashboard
     # still reads linepack TGS/TGN and CAMMESA mix from there.
-    if os.path.exists(daily_path):
-        daily = load_envelope(daily_path)
+    if daily:
         generate_comments(daily, demand_forecast, regression_out)
 
 
