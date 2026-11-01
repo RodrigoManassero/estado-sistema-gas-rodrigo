@@ -127,39 +127,52 @@ class MDB:
         return cols
 
     # ---- filas -----------------------------------------------------------
+    @staticmethod
+    def _limites(p):
+        """[(inicio, fin, banderas)] de cada fila de una pagina de datos.
+
+        Las filas no siempre estan ordenadas dentro de la pagina (por ejemplo si una fila se movio o se
+        reutilizo espacio), asi que el fin de una fila es el inicio mas cercano que sea mayor al suyo
+        entre TODAS las filas de la pagina (incluidas las borradas), o el final de la pagina."""
+        entradas = []
+        for i in range(_u16(p, 12)):
+            bruto = _u16(p, 14 + 2 * i)
+            entradas.append((bruto & 0x1FFF, bruto & 0xE000))
+        inicios = sorted({ini for ini, _ in entradas})
+        siguiente = {ini: (inicios[k + 1] if k + 1 < len(inicios) else PAGE_SIZE) for k, ini in enumerate(inicios)}
+        return [(ini, siguiente[ini], banderas) for ini, banderas in entradas]
+
     def _fila_bytes(self, pagina, fila):
-        """Bytes de la fila `fila` de una pagina de datos (los limites salen de la tabla de offsets)."""
+        """Bytes de la fila `fila` de una pagina de datos."""
         p = self._page(pagina)
         if p[0] != 0x01 or fila >= _u16(p, 12):
             raise MDBError("Puntero de fila invalido (pagina %d, fila %d)" % (pagina, fila))
-        fin = PAGE_SIZE
-        for i in range(fila):
-            fin = _u16(p, 14 + 2 * i) & 0x1FFF
-        return p[_u16(p, 14 + 2 * fila) & 0x1FFF:fin]
+        ini, fin, _ = self._limites(p)[fila]
+        return p[ini:fin]
 
     def _filas_crudas(self, tdef_pagina):
         """Genera los bytes de cada fila viva de las paginas de datos que pertenecen a la tabla.
 
         Banderas de la tabla de offsets de cada pagina:
           0x8000  fila borrada, o destino de una fila que se movio de pagina (se lee por su puntero)
-          0x4000  fila movida: ocupa 4 bytes y apunta a otra pagina (byte 0 = fila, bytes 1-3 = pagina)
+          0x4000  fila movida: sus primeros 4 bytes apuntan a otra pagina (byte 0 = fila, bytes 1-3 = pagina)
         """
         for n in range(1, len(self.data) // PAGE_SIZE):
             p = self._page(n)
             if p[0] != 0x01 or _u32(p, 4) != tdef_pagina:
                 continue
-            fin = PAGE_SIZE
-            for i in range(_u16(p, 12)):
-                bruto = _u16(p, 14 + 2 * i)
-                ini = bruto & 0x1FFF
-                if bruto & 0x4000:
-                    puntero = p[ini:fin]
-                    if len(puntero) != 4:
-                        raise MDBError("Puntero de fila con largo inesperado")
+            for ini, fin, banderas in self._limites(p):
+                if banderas & 0x8000:
+                    continue
+                if banderas & 0x4000:
+                    # El puntero ocupa los primeros 4 bytes del espacio de la fila; el resto puede ser
+                    # sobrante de la fila original (en algunos archivos el hueco conserva su largo viejo).
+                    if fin - ini < 4:
+                        raise MDBError("Puntero de fila con largo inesperado (%d bytes)" % (fin - ini))
+                    puntero = p[ini:ini + 4]
                     yield self._fila_bytes(int.from_bytes(puntero[1:4], "little"), puntero[0])
-                elif not bruto & 0x8000:
+                else:
                     yield p[ini:fin]
-                fin = ini
 
     def _decodificar(self, fila, cols):
         n = _u16(fila, 0)
