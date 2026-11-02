@@ -1,0 +1,40 @@
+# Arma (o completa) el historial de Programaciones Semanales de CAMMESA en raw/cammesa_psem_hist/.
+# Se lanza a mano: pestaña Actions > "Historial CAMMESA" > Run workflow. Es reanudable: si se corta o
+# alguna semana falla, se vuelve a lanzar y solo baja lo que falta. No despliega la pagina.
+name: Historial CAMMESA
+
+on:
+  workflow_dispatch:
+    inputs:
+      semanas:
+        description: 'Semanas hacia atrás (104 = 2 años)'
+        required: true
+        default: '104'
+
+permissions:
+  contents: write # commitear el CSV
+
+# Grupo propio: no compite con los deploys a Pages.
+concurrency:
+  group: historial-psem
+  cancel-in-progress: false
+
+jobs:
+  historial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Descargar y leer las programaciones semanales
+        env:
+          SEMANAS: ${{ inputs.semanas }}
+        run: python scripts/build_psem_history.py --semanas "$SEMANAS"
+
+      - name: Guardar el historial en el repo
+        run: |
+          bash scripts/commit_data.sh "data: historial CAMMESA (programaciones semanales)" raw/cammesa_psem_hist/
