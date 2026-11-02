@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-02T22:22:09+00:00",
+  "generated_at": "2026-11-02T23:34:40+00:00",
   "source": "MEGSA public API (megsa.ar/api)",
   "source_date": null,
   "data": {
@@ -16,7 +16,7 @@
         "previousPeriod": null,
         "nominalDifference": -0.04,
         "percentageDifference": -1.38,
-        "lastUpdated": "2026-11-02T19:20:02.3682917",
+        "lastUpdated": "2026-11-02T19:50:03.7176816",
         "marketType": "Gas",
         "displayName": "NAT GAS"
       },
@@ -32,7 +32,7 @@
         "previousPeriod": null,
         "nominalDifference": -6.83,
         "percentageDifference": -6.6,
-        "lastUpdated": "2026-11-02T19:20:03.0040379",
+        "lastUpdated": "2026-11-02T19:50:04.4546912",
         "marketType": "Gas",
         "displayName": "TTF GAS Fut"
       },
@@ -42,13 +42,13 @@
         "series": "BRENT_CRUDE_USD",
         "seriesDescription": "spot_price",
         "units": "USD/bbl",
-        "currentPrice": 104.3,
+        "currentPrice": 104.42,
         "currentPeriod": "2026-11-02T00:00:00",
         "previousPrice": 113.4,
         "previousPeriod": null,
-        "nominalDifference": -9.1,
-        "percentageDifference": -8.02,
-        "lastUpdated": "2026-11-02T19:20:01.7221655",
+        "nominalDifference": -8.98,
+        "percentageDifference": -7.92,
+        "lastUpdated": "2026-11-02T19:50:03.0874246",
         "marketType": "Oil",
         "displayName": "BRENT"
       },
@@ -64,7 +64,7 @@
         "previousPeriod": null,
         "nominalDifference": -6.62,
         "percentageDifference": -6.43,
-        "lastUpdated": "2026-11-02T19:20:01.1650833",
+        "lastUpdated": "2026-11-02T19:50:02.3817857",
         "marketType": "Oil",
         "displayName": "WTI"
       }
@@ -90,7 +90,7 @@
         "fechaUltimaModificacion": "2026-10-29T17:33:07"
       }
     ],
-    "fetched_at": "2026-11-02T22:22:09+00:00"
+    "fetched_at": "2026-11-02T23:34:40+00:00"
   },
   "errors": null
 }
