@@ -247,9 +247,17 @@ class MDB:
     def tables(self):
         return sorted(self._cargar_catalogo())
 
-    def read_table(self, nombre):
+    def read_table(self, nombre, estricto=False):
+        """Filas de una tabla como lista de dicts. Con estricto=True se verifica que la cantidad de
+        filas leidas coincida con la que declara la propia tabla; si no, falla en vez de devolver
+        datos incompletos."""
         cat = self._cargar_catalogo()
         clave = {k.lower(): k for k in cat}.get(nombre.lower())
         if clave is None:
             raise MDBError("La tabla %r no existe. Tablas: %s" % (nombre, ", ".join(sorted(cat))))
-        return self._leer(cat[clave])
+        filas = self._leer(cat[clave])
+        if estricto:
+            declaradas = struct.unpack_from("<I", self._tdef(cat[clave]), _TAB_NUM_ROWS)[0]
+            if declaradas != len(filas):
+                raise MDBError("La tabla %s declara %d filas y se leyeron %d" % (clave, declaradas, len(filas)))
+        return filas
