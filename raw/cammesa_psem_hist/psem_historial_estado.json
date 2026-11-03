@@ -1,282 +1,120 @@
 {
-  "generado_utc": "2026-11-03T09:47:13+00:00",
+  "generado_utc": "2026-11-03T19:51:32+00:00",
   "csv": "psem_historial.csv",
-  "dias": 287,
-  "desde": "2025-11-03",
-  "hasta": "2026-11-08",
-  "programas": 41,
+  "esquema": 2,
+  "dias": 755,
+  "desde": "2024-10-14",
+  "hasta": "2027-01-04",
+  "programas": 108,
   "programas_nuevos_en_esta_corrida": [
+    "psem0125.zip",
+    "psem0126.zip",
+    "psem0225.zip",
+    "psem0226.zip",
+    "psem0325.zip",
+    "psem0326.zip",
+    "psem0425.zip",
+    "psem0426.zip",
+    "psem0525.zip",
+    "psem0526.zip",
+    "psem0625.zip",
+    "psem0626.zip",
+    "psem0725.zip",
+    "psem0726.zip",
+    "psem0825.zip",
+    "psem0826.zip",
+    "psem0925.zip",
+    "psem0926.zip",
+    "psem1025.zip",
+    "psem1026.zip",
+    "psem1125.zip",
+    "psem1126.zip",
+    "psem1225.zip",
+    "psem1226.zip",
+    "psem1325.zip",
+    "psem1326.zip",
+    "psem1425.zip",
+    "psem1426.zip",
+    "psem1525.zip",
+    "psem1526.zip",
+    "psem1625.zip",
+    "psem1626.zip",
+    "psem1725.zip",
+    "psem1726.zip",
+    "psem1825.zip",
+    "psem1826.zip",
+    "psem1925.zip",
+    "psem1926.zip",
+    "psem2025.zip",
+    "psem2026.zip",
+    "psem2125.zip",
+    "psem2126.zip",
+    "psem2225.zip",
+    "psem2226.zip",
+    "psem2325.zip",
+    "psem2326.zip",
+    "psem2425.zip",
+    "psem2426.zip",
+    "psem2525.zip",
     "psem2526.zip",
-    "psem3126.zip"
+    "psem2625.zip",
+    "psem2626.zip",
+    "psem2725.zip",
+    "psem2726.zip",
+    "psem2825.zip",
+    "psem2826.zip",
+    "psem2925.zip",
+    "psem2926.zip",
+    "psem3025.zip",
+    "psem3026.zip",
+    "psem3125.zip",
+    "psem3126.zip",
+    "psem3225.zip",
+    "psem3226.zip",
+    "psem3325.zip",
+    "psem3326.zip",
+    "psem3425.zip",
+    "psem3426.zip",
+    "psem3525.zip",
+    "psem3526.zip",
+    "psem3625.zip",
+    "psem3626.zip",
+    "psem3725.zip",
+    "psem3726.zip",
+    "psem3825.zip",
+    "psem3826.zip",
+    "psem3925.zip",
+    "psem3926.zip",
+    "psem4025.zip",
+    "psem4026.zip",
+    "psem4125.zip",
+    "psem4126.zip",
+    "psem4224.zip",
+    "psem4225.zip",
+    "psem4226.zip",
+    "psem4324.zip",
+    "psem4325.zip",
+    "psem4326.zip",
+    "psem4424.zip",
+    "psem4425.zip",
+    "psem4426.zip",
+    "psem4524.zip",
+    "psem4525.zip",
+    "psem4526.zip",
+    "psem4624.zip",
+    "psem4625.zip",
+    "psem4724.zip",
+    "psem4725.zip",
+    "psem4824.zip",
+    "psem4825.zip",
+    "psem4924.zip",
+    "psem4925.zip",
+    "psem5024.zip",
+    "psem5025.zip",
+    "psem5124.zip",
+    "psem5125.zip",
+    "psem5224.zip",
+    "psem5225.zip"
   ],
-  "fallas": [
-    {
-      "programa": "psem5225.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasProp (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, GasAcue)"
-    },
-    {
-      "programa": "psem5224.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem5125.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasProp (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, GasAcue)"
-    },
-    {
-      "programa": "psem5124.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem5025.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasProp (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, GasAcue)"
-    },
-    {
-      "programa": "psem5024.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem4925.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasProp (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, GasAcue)"
-    },
-    {
-      "programa": "psem4924.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem4825.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasProp (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, GasAcue)"
-    },
-    {
-      "programa": "psem4824.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem4725.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasProp (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, GasAcue)"
-    },
-    {
-      "programa": "psem4724.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem4624.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem4524.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem4425.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem4424.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem4325.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem4324.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem4225.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem4224.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem4125.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem4025.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem3925.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem3825.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem3725.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem3625.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem3525.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas, GasCam, Gas_659, Gas_glo, Gas_p, Ur_atu, Ur_emb)"
-    },
-    {
-      "programa": "psem3425.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem3325.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem3225.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem3125.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem3025.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem2925.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem2825.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem2725.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem2625.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem2525.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem2425.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem2325.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem2225.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem2125.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem2025.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem1925.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem1825.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem1725.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem1625.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem1525.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem1425.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem1325.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem1225.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem1125.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem1025.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem0925.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem0825.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem0726.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasProp (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, GasAcue, GasProv)"
-    },
-    {
-      "programa": "psem0725.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem0625.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem0526.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasProp (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, GasAcue)"
-    },
-    {
-      "programa": "psem0525.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem0426.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasProp (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, GasAcue, GasProv, Gas_659, Gas_glo, Gas_p, Ur_atu, Ur_emb)"
-    },
-    {
-      "programa": "psem0425.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem0326.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasProp (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, GasAcue)"
-    },
-    {
-      "programa": "psem0325.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem0226.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasProp (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, GasAcue)"
-    },
-    {
-      "programa": "psem0225.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    },
-    {
-      "programa": "psem0126.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasProp (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, GasAcue, GasProv, Gas_659, Gas_glo, Gas_p, Ur_atu, Ur_emb)"
-    },
-    {
-      "programa": "psem0125.zip",
-      "motivo": "ValueError: CONSUMO_COMB no tiene la fila GasAcue (filas que si trae: Carbon, Dies_Oil, Fuel_Oil, Gas)"
-    }
-  ]
+  "fallas": []
 }
