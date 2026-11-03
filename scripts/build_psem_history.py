@@ -109,13 +109,16 @@ def filas_de_programa(datos_zip, nombre, publicado="", version=""):
                for r in db.read_table("RESUMEN", estricto=True)}
     faltan = [v for v in REQUERIDAS if v not in resumen]
     if faltan:
-        raise ValueError("RESUMEN no tiene las variables %s" % ", ".join(faltan))
+        raise ValueError("RESUMEN no tiene las variables %s (variables que si trae: %s)"
+                         % (", ".join(faltan), ", ".join(sorted(resumen)) or "ninguna"))
 
     comb = {str(r["Combustible"]).strip(): [_n(r.get("Dia%d" % i)) for i in range(1, 8)]
             for r in db.read_table("CONSUMO_COMB", estricto=True)}
     for n in (*GAS_PRINCIPAL, "Dies_Oil", "Fuel_Oil", "Carbon"):
         if n not in comb:
-            raise ValueError("CONSUMO_COMB no tiene la fila %s" % n)
+            # Se informan las filas que SI trae, para poder adaptar el lector sin tener que bajar el archivo.
+            raise ValueError("CONSUMO_COMB no tiene la fila %s (filas que si trae: %s)"
+                             % (n, ", ".join(sorted(comb)) or "ninguna"))
 
     temps = db.read_table("TEMPERATURAS", estricto=True)
     temp = [_n(temps[0].get("Dia%d" % i)) for i in range(1, 8)] if len(temps) == 1 else [None] * 7
