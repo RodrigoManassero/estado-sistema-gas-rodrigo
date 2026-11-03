@@ -10,6 +10,10 @@ on:
         description: 'Semanas hacia atrás (104 = 2 años)'
         required: true
         default: '104'
+      rehacer:
+        description: 'Rehacer todo el historial desde cero (necesario después de actualizar el lector)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write # commitear el CSV
@@ -33,7 +37,11 @@ jobs:
       - name: Descargar y leer las programaciones semanales
         env:
           SEMANAS: ${{ inputs.semanas }}
-        run: python scripts/build_psem_history.py --semanas "$SEMANAS"
+          REHACER: ${{ inputs.rehacer }}
+        run: |
+          EXTRA=""
+          if [ "$REHACER" = "true" ]; then EXTRA="--rehacer"; fi
+          python scripts/build_psem_history.py --semanas "$SEMANAS" $EXTRA
 
       - name: Guardar el historial en el repo
         run: |
