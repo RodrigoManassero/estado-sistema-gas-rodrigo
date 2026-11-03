@@ -1,0 +1,32 @@
+name: Validar Gas contra Cerrado
+
+on:
+  workflow_dispatch: # Permite correrlo manualmente desde la pestaña Actions en GitHub
+  schedule:
+    - cron: '0 8 * * 1' # Opcional: Se ejecuta todos los lunes a las 08:00 UTC (puedes quitarlo si solo lo quieres manual)
+
+permissions:
+  contents: write # Permite commitear resultados o reportes si el script los genera
+
+jobs:
+    validar:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Configurar Python
+              uses: actions/setup-python@v5
+              with:
+                  python-version: '3.12'
+
+            - name: Instalar dependencias
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install pandas openpyxl numpy
+
+            - name: Ejecutar script de validación
+              run: |
+                  python scripts/validar_contra_cerrado.py \
+                      --csv raw/cammesa_psem_hist/psem_historial.csv \
+                      --excel Resumen_combustibles_Cammesa_Real.xlsx \
+                      --ppo public/data/cammesa_ppo.json
