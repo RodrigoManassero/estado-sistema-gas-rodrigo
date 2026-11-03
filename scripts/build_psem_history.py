@@ -50,6 +50,7 @@ CSV_NAME = "psem_historial.csv"
 ESTADO_NAME = "psem_historial_estado.json"
 RAW_ZIPS = BASE_DIR.parent / "raw" / "cammesa_psem"   # zips de la corrida semanal (para --desde-raw)
 
+ESQUEMA = 2          # sube cuando cambia la forma de leer/guardar los datos: obliga a rehacer el CSV (--rehacer)
 SEMANAS = 104        # 2 anios: dos inviernos y dos veranos, y mas de un ciclo hidrologico
 BLOQUE_DIAS = 84     # la consulta a la API se hace de a 12 semanas
 PAUSA = 1.5          # segundos entre descargas (se baja de a uno, sin apuro)
@@ -64,13 +65,19 @@ TERMICAS = ["GEN_TV", "GEN_TG", "GEN_CC", "GEN_DI"]
 
 # Centrales nucleares (columna GENERACION.Generador). Una central nueva se suma en nuc_otros.
 NUCLEARES = {"EMBANUCL": "nuc_embalse", "ATUCNUCL": "nuc_atucha1", "ATU2NUCL": "nuc_atucha2"}
-GAS_PRINCIPAL = ("GasAcue", "GasProp")                  # lo que hoy se suma como "gas"
-GAS_OTROS = ("Gas_659", "Gas_glo", "Gas_p")             # solo aparecen en archivos viejos
+# El gas de CONSUMO_COMB viene en tres formatos segun la semana:
+#   - archivos viejos:  una sola fila "Gas" (el total)
+#   - archivos nuevos:  "GasAcue" + "GasProp" (o "GasProv", como figura en algunas semanas)
+#   - a veces solo "GasAcue" (no hay fila de gas propio)
+GAS_ACUE = "GasAcue"
+GAS_PROP = ("GasProp", "GasProv")
+GAS_TOTAL_VIEJO = "Gas"
+GAS_OTROS = ("Gas_659", "Gas_glo", "Gas_p")             # no se suman al gas total
 
 COLUMNAS = (["fecha", "programa", "semana", "publicado", "version", "temp_cammesa"]
             + [v.lower() for v in RESUMEN_VARS]
             + ["gen_termica", "cierre_pct", "nuc_embalse", "nuc_atucha1", "nuc_atucha2", "nuc_otros",
-               "gas_acue", "gas_prop", "gas_total", "gas_otros", "dies_oil", "fuel_oil", "carbon"])
+               "gas_acue", "gas_prop", "gas_total", "gas_otros", "gas_fuente", "dies_oil", "fuel_oil", "carbon"])
 
 ERRORES_LECTURA = (psem.ErrorApi, MDBError, ValueError, KeyError, OSError, zipfile.BadZipFile)
 
@@ -114,20 +121,31 @@ def filas_de_programa(datos_zip, nombre, publicado="", version=""):
 
     comb = {str(r["Combustible"]).strip(): [_n(r.get("Dia%d" % i)) for i in range(1, 8)]
             for r in db.read_table("CONSUMO_COMB", estricto=True)}
-    for n in (*GAS_PRINCIPAL, "Dies_Oil", "Fuel_Oil", "Carbon"):
+    for n in ("Dies_Oil", "Fuel_Oil", "Carbon"):
         if n not in comb:
             # Se informan las filas que SI trae, para poder adaptar el lector sin tener que bajar el archivo.
             raise ValueError("CONSUMO_COMB no tiene la fila %s (filas que si trae: %s)"
                              % (n, ", ".join(sorted(comb)) or "ninguna"))
+    nombre_prop = next((n for n in GAS_PROP if n in comb), None)
+    if GAS_TOTAL_VIEJO in comb and (GAS_ACUE in comb or nombre_prop):
+        raise ValueError("CONSUMO_COMB trae a la vez 'Gas' y 'GasAcue/GasProp': no se sabe cual es el total (filas: %s)"
+                         % ", ".join(sorted(comb)))
+    if GAS_TOTAL_VIEJO in comb:
+        gas_fuente = GAS_TOTAL_VIEJO
+    elif GAS_ACUE in comb:
+        gas_fuente = GAS_ACUE + ("+" + nombre_prop if nombre_prop else "")
+    else:
+        raise ValueError("CONSUMO_COMB no tiene ninguna fila de gas (filas que si trae: %s)" % ", ".join(sorted(comb)))
 
     temps = db.read_table("TEMPERATURAS", estricto=True)
     temp = [_n(temps[0].get("Dia%d" % i)) for i in range(1, 8)] if len(temps) == 1 else [None] * 7
 
     nuc = {c: [None] * 7 for c in (*NUCLEARES.values(), "nuc_otros")}
     for r in db.read_table("GENERACION", estricto=True):
-        if r.get("Var") != "GEN_NUC":
-            continue
-        col = NUCLEARES.get(str(r.get("Generador")).strip(), "nuc_otros")
+        generador = str(r.get("Generador") or "").strip()
+        if r.get("Var") != "GEN_NUC" or not generador:
+            continue          # sin Generador es un subtotal (total, region o empresa): no se suma
+        col = NUCLEARES.get(generador, "nuc_otros")
         for i in range(7):
             nuc[col][i] = _suma(nuc[col][i], _n(r.get("Dia%d" % (i + 1))))
 
@@ -146,8 +164,13 @@ def filas_de_programa(datos_zip, nombre, publicado="", version=""):
             f["cierre_pct"] = (dem - no_term - ter) / ter * 100.0   # calidad del balance: ~0
         for col, serie in nuc.items():
             f[col] = serie[i]
-        f["gas_acue"], f["gas_prop"] = comb["GasAcue"][i], comb["GasProp"][i]
-        f["gas_total"] = _suma(comb["GasAcue"][i], comb["GasProp"][i])
+        if gas_fuente == GAS_TOTAL_VIEJO:
+            f["gas_acue"], f["gas_prop"], f["gas_total"] = None, None, comb[GAS_TOTAL_VIEJO][i]
+        else:
+            f["gas_acue"] = comb[GAS_ACUE][i]
+            f["gas_prop"] = comb[nombre_prop][i] if nombre_prop else None
+            f["gas_total"] = _suma(f["gas_acue"], f["gas_prop"])
+        f["gas_fuente"] = gas_fuente
         f["gas_otros"] = _suma(*[comb[n][i] for n in GAS_OTROS if n in comb])
         f["dies_oil"], f["fuel_oil"], f["carbon"] = comb["Dies_Oil"][i], comb["Fuel_Oil"][i], comb["Carbon"][i]
         filas.append(f)
@@ -253,13 +276,29 @@ def main():
     ap.add_argument("--raw-zips", default=str(RAW_ZIPS))
     ap.add_argument("--guardar-zips", help="Carpeta donde conservar los zips descargados (por defecto no se guardan).")
     ap.add_argument("--tolerante", action="store_true", help="Si CAMMESA falla, avisar y salir con codigo 0.")
+    ap.add_argument("--rehacer", action="store_true",
+                    help="Volver a leer TODOS los programas y reconstruir el CSV (solo lo reemplaza si queda completo).")
     args = ap.parse_args()
 
     hist_dir = Path(args.hist_dir)
     csv_path, estado_path = hist_dir / CSV_NAME, hist_dir / ESTADO_NAME
     por_fecha = leer_csv(csv_path)
-    conocidos = {(r.get("programa", "").lower(), r.get("version", "")) for r in por_fecha.values()}
-    log("Historial actual: %d dias, %d programas (%s)" % (len(por_fecha), len(conocidos), csv_path))
+    previos = {r.get("programa", "").lower() for r in por_fecha.values()}
+    try:
+        esquema_csv = json.loads(estado_path.read_text(encoding="utf-8")).get("esquema")
+    except (OSError, ValueError):
+        esquema_csv = None
+    if por_fecha and esquema_csv != ESQUEMA and not args.rehacer:
+        psem.aviso("El CSV se genero con una version anterior del lector (esquema %s, actual %s): conviene correr con --rehacer"
+                   % (esquema_csv, ESQUEMA))
+    if args.rehacer:
+        conocidos = set()                  # todo vuelve a leerse; el CSV viejo se reemplaza solo si el nuevo queda completo
+        csv_viejo, por_fecha = por_fecha, {}
+    else:
+        csv_viejo = None
+        conocidos = {(r.get("programa", "").lower(), r.get("version", "")) for r in por_fecha.values()}
+    log("Historial actual: %d dias, %d programas (%s)%s" % (len(csv_viejo if csv_viejo is not None else por_fecha), len(previos), csv_path,
+                                                        " | MODO REHACER" if args.rehacer else ""))
 
     # 1) Que programas hay
     fallas = []
@@ -294,12 +333,25 @@ def main():
             time.sleep(args.pausa)
 
     # 3) Guardar CSV y estado
-    if nuevas:
+    rehacer_incompleto = bool(args.rehacer and len(nuevas) < len(previos))
+    if rehacer_incompleto:
+        psem.aviso("La reconstruccion quedo incompleta (%d programas leidos, antes habia %d): NO se reemplazo el CSV. "
+                   "Volve a correr con --rehacer." % (len(nuevas), len(previos)))
+        por_fecha = csv_viejo
+    elif nuevas:
         escribir_csv(csv_path, por_fecha)
+    # Version de esquema que queda marcada: un CSV viejo al que solo se le agregaron filas nuevas sigue siendo "viejo".
+    if args.rehacer and not rehacer_incompleto:
+        esquema_final = ESQUEMA
+    elif rehacer_incompleto or (previos and esquema_csv != ESQUEMA):
+        esquema_final = esquema_csv
+    else:
+        esquema_final = ESQUEMA
     fechas = sorted(por_fecha)
     estado = {
         "generado_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "csv": CSV_NAME, "dias": len(fechas), "desde": fechas[0] if fechas else None,
+        "csv": CSV_NAME, "esquema": esquema_final,
+        "dias": len(fechas), "desde": fechas[0] if fechas else None,
         "hasta": fechas[-1] if fechas else None,
         "programas": len({r.get("programa", "").lower() for r in por_fecha.values()}),
         "programas_nuevos_en_esta_corrida": sorted(nuevas),
@@ -311,6 +363,8 @@ def main():
 
     log("Resultado: %d programas nuevos | %d dias en el CSV (%s -> %s) | fallas: %d"
         % (len(nuevas), len(fechas), estado["desde"], estado["hasta"], len(fallas)))
+    if rehacer_incompleto and not args.tolerante:
+        return 1
     if fallas and not nuevas and pendientes and not args.tolerante:
         return 1
     if fallas and not items and not args.tolerante:
