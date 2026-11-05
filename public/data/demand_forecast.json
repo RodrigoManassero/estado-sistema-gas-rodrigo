@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T20:40:38+00:00",
+  "generated_at": "2026-11-05T22:03:36+00:00",
   "source": "ENARGAS RDS regression (temp + day-of-week)",
   "source_date": "2026-11-05",
   "data": {
@@ -243,7 +243,7 @@
           "2": 2.73,
           "3": 1.77,
           "4": 1.39,
-          "5": -2.54,
+          "5": -2.53,
           "6": -4.7
         },
         "mean_abs_residual": 7.93,
