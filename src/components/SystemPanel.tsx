@@ -38,27 +38,30 @@ function fmtDate(d: string) {
 }
 
 export default function SystemPanel({ title, color, data, linepackKey, varKey, limInfKey, limSupKey, estadoKey, estByDate }: Props) {
-  // 1. Filtrar únicamente filas que tengan valor real de linepack para la clave específica
+  // Obtener la fecha de hoy en formato YYYY-MM-DD para excluirla
+  const todayStr = new Date().toISOString().slice(0, 10)
+
+  // 1. Filtrar filas que tengan valor real de linepack y que sean estricta e históricamente menores a hoy (hasta ayer)
   const rowsWithRealLinepack = data.filter(d => {
     const val = (d as any)[linepackKey]
-    return val !== undefined && val !== null
+    return val !== undefined && val !== null && d.fecha < todayStr
   })
 
-  // 2. Determinar la última fecha con dato real efectivo
+  // 2. Determinar la última fecha con dato real efectivo (tope en ayer)
   const maxRealDate = rowsWithRealLinepack.length > 0
     ? rowsWithRealLinepack.reduce((max, d) => (d.fecha > max ? d.fecha : max), rowsWithRealLinepack[0].fecha)
-    : new Date().toISOString().slice(0, 10)
+    : todayStr
 
-  // 3. Quedarnos únicamente con datos hasta esa fecha máxima real
-  const validData = data.filter(d => d.fecha && d.fecha <= maxRealDate)
+  // 3. Quedarnos únicamente con datos hasta esa fecha máxima real (excluyendo hoy)
+  const validData = data.filter(d => d.fecha && d.fecha <= maxRealDate && d.fecha < todayStr)
 
   const byDate = new Map<string, any>()
   for (const d of validData) if (d.fecha) byDate.set(d.fecha, d)
 
   const realDates = rowsWithRealLinepack.map(d => d.fecha).filter(f => f <= maxRealDate)
-  const estDates = [...(estByDate?.keys() ?? [])].filter(f => f <= maxRealDate)
+  const estDates = [...(estByDate?.keys() ?? [])].filter(f => f <= maxRealDate && f < todayStr)
 
-  // Tomar los últimos 6 días con datos reales
+  // Tomar los últimos 6 días con datos reales (excluyendo el día de hoy)
   const last6 = [...new Set([...realDates, ...estDates])].sort().slice(-6)
 
   // Obtener límites estrictos según la clave enviada
