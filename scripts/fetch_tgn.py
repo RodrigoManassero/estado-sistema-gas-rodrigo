@@ -52,7 +52,9 @@ def _is_sentinel(rec):
 
 
 def scrape_system_state(page):
-    today = datetime.now(timezone.utc).date()
+    # Usar la zona horaria de Argentina (UTC-3) para alinear el día actual
+    argentina_tz = timezone(timedelta(hours=-3))
+    today = datetime.now(argentina_tz).date()
 
     all_rows = []
     headers = []
@@ -60,7 +62,7 @@ def scrape_system_state(page):
     desde_str = (today - timedelta(days=SYSTEM_STATE_DAYS_BACK)).strftime('%d/%m/%Y')
     hasta_str = today.strftime('%d/%m/%Y')
 
-    # Iterar día por día para forzar a PrimeFaces a cargar exactamente esa fila
+    # Iterar día por día desde hoy (n=0) hacia atrás para forzar a PrimeFaces a cargar exactamente esa fila
     for n in range(SYSTEM_STATE_DAYS_BACK + 1):
         day = today - timedelta(days=n)
         day_str = day.strftime('%d/%m/%Y')
@@ -296,8 +298,9 @@ def run():
             else:
                 print(f'fetch_tgn: existing session is valid (probe url={page.url})')
 
+            argentina_tz = timezone(timedelta(hours=-3))
             print(f'fetch_tgn: logged in, landing url={page.url}')
-            print(f'fetch_tgn: timestamp={datetime.now(timezone.utc).isoformat()}')
+            print(f'fetch_tgn: timestamp={datetime.now(argentina_tz).isoformat()}')
 
             scrape_system_state(page)
 
