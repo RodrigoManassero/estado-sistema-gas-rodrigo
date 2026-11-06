@@ -19,19 +19,29 @@ interface RDSRow {
   [k: string]: unknown
 }
 
+interface TGNRow {
+  fecha?: string
+  Estado?: string
+  [k: string]: unknown
+}
+
 interface Props {
   rows: RDSRow[]
-  estadoTgn?: string | null
+  tgnRows?: TGNRow[]
   estadoTgs?: string | null
 }
 
-export default function PulseCard({ rows, estadoTgn, estadoTgs }: Props) {
+export default function PulseCard({ rows, tgnRows = [], estadoTgs }: Props) {
   if (!rows || rows.length === 0) return null
   const today = rows[rows.length - 1]
   if (!today.fecha) return null
 
   const yesterday = rows.length > 1 ? rows[rows.length - 2] : null
   const mmdd = today.fecha.slice(5)
+
+  // Obtener el estado TGN correspondiente a la fecha de hoy desde tgn_system_state.json
+  const currentTgnRecord = tgnRows.find(r => r.fecha === today.fecha) || tgnRows[tgnRows.length - 1]
+  const estadoTgn = currentTgnRecord?.Estado || '-'
 
   // Recopilar valores históricos del mismo MMDD para el rango histórico
   const mmddPriorValues = { consumo: [] as number[], temp: [] as number[] }
@@ -57,7 +67,7 @@ export default function PulseCard({ rows, estadoTgn, estadoTgs }: Props) {
   // 1. ESTADO TGN
   bullets.push({
     label: 'Estado TGN',
-    value: estadoTgn || '-',
+    value: estadoTgn,
     color: getStatusColor(estadoTgn),
   })
 
@@ -82,7 +92,7 @@ export default function PulseCard({ rows, estadoTgn, estadoTgs }: Props) {
       label: 'Consumo total',
       value: `${today.consumo_total_estimado.toFixed(1)} MMm³/d`,
       sub: subConsumo,
-      color: colors.textPrimary, // Blanco
+      color: colors.textPrimary,
     })
   } else {
     bullets.push({
@@ -118,7 +128,7 @@ export default function PulseCard({ rows, estadoTgn, estadoTgs }: Props) {
       label: 'Temp BA',
       value: `${tempToday.toFixed(0)}°C`,
       sub: subTemp,
-      color: colors.textPrimary, // Blanco
+      color: colors.textPrimary,
     })
   } else {
     bullets.push({
@@ -144,7 +154,6 @@ export default function PulseCard({ rows, estadoTgn, estadoTgs }: Props) {
     })
   }
 
-  // Fecha actual calculada dinámicamente estilo HOY() de Excel
   const currentDateLabel = getTodayFormatted()
 
   return (
