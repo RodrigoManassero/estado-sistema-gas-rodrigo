@@ -20,7 +20,7 @@ interface RDSRow {
 }
 
 interface TGNRow {
-  fecha?: string
+  fecha?: string | null
   Estado?: string
   [k: string]: unknown
 }
