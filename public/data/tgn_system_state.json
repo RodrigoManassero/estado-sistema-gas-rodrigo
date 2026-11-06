@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T21:02:35+00:00",
+  "generated_at": "2026-11-06T21:23:53+00:00",
   "source": "TGN ABII — Estado del Sistema",
   "source_date": "06/11/2026",
   "data": [
@@ -1721,6 +1721,15 @@
       "Desbalance porcentual": "-12.77",
       "Estado": "NORMAL",
       "fecha": "2026-11-05"
+    },
+    {
+      "Día Operativo": "Fri Nov 06 00:00:00 ART 2026",
+      "Actual": "133000000",
+      "Equilibrio": "133000000",
+      "Desbalance del sistema": "0",
+      "Desbalance porcentual": "0.0",
+      "Estado": "NORMAL",
+      "fecha": "2026-11-06"
     }
   ],
   "query": {
