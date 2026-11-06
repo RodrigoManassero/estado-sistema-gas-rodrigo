@@ -19,15 +19,9 @@ interface RDSRow {
   [k: string]: unknown
 }
 
-interface TGNRow {
-  fecha?: string | null
-  Estado?: string
-  [k: string]: unknown
-}
-
 interface Props {
   rows: RDSRow[]
-  tgnRows?: TGNRow[]
+  tgnRows?: Array<Record<string, any>>
   estadoTgs?: string | null
 }
 
