@@ -148,7 +148,7 @@ def _scrape_system_state_day(page, day_str):
                 
                 const headers = matrix[0].map(x => x.toLowerCase());
 
-                # Al consultar 1 solo día, tomamos el Estado directamente de la fila 1
+                // Al consultar 1 solo día, tomamos el Estado directamente de la fila 1
                 if (headers.some(x => x.includes('estado'))) {
                     const statusIdx = headers.findIndex(x => x.includes('estado'));
                     if (matrix.length > 1 && matrix[1].length > statusIdx) {
@@ -239,7 +239,6 @@ def _save_system_state(rows, desde, hasta, headers):
         if f_iso and not _is_sentinel(r):
             merged[f_iso] = r
 
-    # Al estar _is_sentinel en False, incluirá y actualizará todos los días consultados (incluyendo hoy y los anteriores)
     for r in cleaned:
         f_iso = r.get('fecha')
         if f_iso and not _is_sentinel(r):
