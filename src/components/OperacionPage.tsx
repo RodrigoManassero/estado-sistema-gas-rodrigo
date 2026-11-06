@@ -163,7 +163,7 @@ export default function OperacionPage() {
       {/* 2. Tarjeta principal de estado */}
       <PulseCard
         rows={rdsReports as never}
-        estadoTgn={estadosSysState.data?.estado_tgn}
+        tgnRows={tgnSystemState.data ?? []}
         estadoTgs={estadosSysState.data?.estado_tgs}
       />
 
@@ -306,7 +306,7 @@ export default function OperacionPage() {
           limInfKey="lim_inf_tgn"
           limSupKey="lim_sup_tgn"
           estadoKey="estado_tgn"
-          estByDate={tgnEstByDate}
+          estByDate={tgsEstByDate}
         />
         <div style={{ ...card, borderTop: `3px solid ${colors.accent.orange}` }}>
           <WeeklyComparison data={valid} />
