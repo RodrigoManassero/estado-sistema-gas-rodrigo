@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-06T23:45:55+00:00",
+  "generated_at": "2026-11-07T18:02:48+00:00",
   "source": "MEGSA public API (megsa.ar/api)",
   "source_date": null,
   "data": {
@@ -82,15 +82,8 @@
       "marketType": "Dollar",
       "displayName": "DOLAR"
     },
-    "rondas": [
-      {
-        "id": 435.0,
-        "descripcion": "SUBASTA - PRODUCTORES EN GENERAL Y COMERCIALIZADORAS\r\nPERIODO DE ABASTECIMIENTO: 16/11/2026 al 29/11/2026\r\nFecha de Negociación: 05/11 de 10:00 a 10:30",
-        "publicaDesde": "2026-10-29T00:00:00",
-        "fechaUltimaModificacion": "2026-10-29T17:33:07"
-      }
-    ],
-    "fetched_at": "2026-11-06T23:45:55+00:00"
+    "rondas": [],
+    "fetched_at": "2026-11-07T18:02:48+00:00"
   },
   "errors": null
 }
