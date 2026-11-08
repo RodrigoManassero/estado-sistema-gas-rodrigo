@@ -112,24 +112,26 @@ export default function TGNSystemStatePanel({ rows, generatedAt }: Props) {
     )
   }
 
-  // Calcular la fecha de hoy y la de ayer en formato YYYY-MM-DD
+  // Calcular la fecha de ayer en formato YYYY-MM-DD
   const todayDate = new Date()
   const yesterdayDate = new Date(todayDate)
   yesterdayDate.setDate(todayDate.getDate() - 1)
-
-  const todayStr = todayDate.toISOString().split('T')[0]
   const yesterdayStr = yesterdayDate.toISOString().split('T')[0]
 
-  // Buscar el registro correspondiente a HOY (o usar el último disponible si no existe)
-  let latest = sorted.find(r => rowFecha(r) === todayStr)
-  if (!latest) {
+  // Forzar que el registro principal ("latest") sea estrictamente el de AYER
+  let latest = sorted.find(r => rowFecha(r) === yesterdayStr)
+  if (!latest && sorted.length >= 2) {
+    // Si no encuentra la fecha exacta de ayer, toma el anteúltimo de la lista
+    latest = sorted[sorted.length - 2]
+  } else if (!latest) {
     latest = sorted[sorted.length - 1]
   }
 
   const fecha = rowFecha(latest)
 
-  // Buscar específicamente el registro correspondiente a AYER en el JSON
-  const prev = sorted.find(r => rowFecha(r) === yesterdayStr) || (sorted.length >= 2 ? sorted[sorted.length - 2] : null)
+  // El día anterior al que estamos mostrando (para calcular la variación vs su propio día previo)
+  const latestIndex = sorted.findIndex(r => rowFecha(r) === fecha)
+  const prev = latestIndex > 0 ? sorted[latestIndex - 1] : null
 
   const actual = toNumber(latest['Actual'])
   const prevActual = prev ? toNumber(prev['Actual']) : null
