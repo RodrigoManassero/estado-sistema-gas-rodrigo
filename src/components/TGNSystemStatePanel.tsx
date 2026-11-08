@@ -100,9 +100,8 @@ function Metric({
 
 export default function TGNSystemStatePanel({ rows, generatedAt }: Props) {
   const sorted = (rows ?? []).slice().sort((a, b) => rowFecha(a).localeCompare(rowFecha(b)))
-  const latest = sorted[sorted.length - 1]
-
-  if (!latest) {
+  
+  if (sorted.length === 0) {
     return (
       <div style={{ ...card, marginTop: space.xl, borderTop: `3px solid ${colors.accent.blue}` }}>
         <h3 style={sectionTitle}>TGN — Estado del sistema</h3>
@@ -113,10 +112,26 @@ export default function TGNSystemStatePanel({ rows, generatedAt }: Props) {
     )
   }
 
+  // Calcular la fecha de hoy y la de ayer en formato YYYY-MM-DD
+  const todayDate = new Date()
+  const yesterdayDate = new Date(todayDate)
+  yesterdayDate.setDate(todayDate.getDate() - 1)
+
+  const todayStr = todayDate.toISOString().split('T')[0]
+  const yesterdayStr = yesterdayDate.toISOString().split('T')[0]
+
+  // Buscar el registro correspondiente a HOY (o usar el último disponible si no existe)
+  let latest = sorted.find(r => rowFecha(r) === todayStr)
+  if (!latest) {
+    latest = sorted[sorted.length - 1]
+  }
+
   const fecha = rowFecha(latest)
 
+  // Buscar específicamente el registro correspondiente a AYER en el JSON
+  const prev = sorted.find(r => rowFecha(r) === yesterdayStr) || (sorted.length >= 2 ? sorted[sorted.length - 2] : null)
+
   const actual = toNumber(latest['Actual'])
-  const prev = sorted[sorted.length - 2]
   const prevActual = prev ? toNumber(prev['Actual']) : null
   const varActual = actual != null && prevActual != null ? actual - prevActual : null
   const varHint = varActual != null
