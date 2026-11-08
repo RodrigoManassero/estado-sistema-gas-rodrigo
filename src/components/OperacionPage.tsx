@@ -164,7 +164,7 @@ export default function OperacionPage() {
       <PulseCard
         rows={rdsReports as never}
         tgnRows={tgnSystemState.data ?? []}
-        estadoTgs={estadosSysState.data?.estado_tgs}
+        tgsRows={estadosSysState.data ?? []}
       />
 
       {/* 3. Paneles de sistemas intermedios */}
