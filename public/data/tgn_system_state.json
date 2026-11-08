@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-11-07T22:15:42+00:00",
+  "generated_at": "2026-11-08T14:05:33+00:00",
   "source": "TGN ABII — Estado del Sistema",
-  "source_date": "07/11/2026",
+  "source_date": "08/11/2026",
   "data": [
     {
       "Día Operativo": "Wed Apr 29 00:00:00 ART 2026",
@@ -1733,17 +1733,26 @@
     },
     {
       "Día Operativo": "Sat Nov 07 00:00:00 ART 2026",
+      "Actual": "141737610",
+      "Equilibrio": "133000000",
+      "Desbalance del sistema": "-8737610",
+      "Desbalance porcentual": "-9.64",
+      "Estado": "NORMAL",
+      "fecha": "2026-11-07"
+    },
+    {
+      "Día Operativo": "Sun Nov 08 00:00:00 ART 2026",
       "Actual": "133000000",
       "Equilibrio": "133000000",
       "Desbalance del sistema": "0",
       "Desbalance porcentual": "0.0",
       "Estado": "NORMAL",
-      "fecha": "2026-11-07"
+      "fecha": "2026-11-08"
     }
   ],
   "query": {
-    "desde": "03/11/2026",
-    "hasta": "07/11/2026",
+    "desde": "04/11/2026",
+    "hasta": "08/11/2026",
     "gasoducto": "TODOS"
   },
   "headers": [
