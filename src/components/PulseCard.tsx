@@ -51,7 +51,10 @@ export default function PulseCard({ rows, tgnRows = [], tgsRows = [], estadoTgs 
       return false
     }) || tgsRows[tgsRows.length - 1]
   ) : null
-  const estadoTgsVal = currentTgsRecord?.estado_tgs || estadoTgs || '-'
+  
+  // Forzamos mayúsculas para que luzca igual a TGN
+  const rawEstadoTgs = currentTgsRecord?.estado_tgs || estadoTgs || '-'
+  const estadoTgsVal = rawEstadoTgs !== '-' ? rawEstadoTgs.toUpperCase() : '-'
 
   // Recopilar valores históricos del mismo MMDD para el rango histórico
   const mmddPriorValues = { consumo: [] as number[], temp: [] as number[] }
@@ -81,7 +84,7 @@ export default function PulseCard({ rows, tgnRows = [], tgsRows = [], estadoTgs 
     color: getStatusColor(estadoTgn),
   })
 
-  // 2. ESTADO TGS
+  // 2. ESTADO TGS (en mayúsculas igual que TGN)
   bullets.push({
     label: 'Estado TGS',
     value: estadoTgsVal,
