@@ -164,7 +164,7 @@ export default function OperacionPage() {
       <PulseCard
         rows={rdsReports as never}
         tgnRows={tgnSystemState.data ?? []}
-        tgsRows={estadosSysState.data ?? []}
+        tgsRows={(Array.isArray(estadosSysState.data) ? estadosSysState.data : (estadosSysState.data as any)?.estados ?? []) as Array<{ fecha?: string; estado_tgs?: string }>}
       />
 
       {/* 3. Paneles de sistemas intermedios */}
@@ -268,7 +268,7 @@ export default function OperacionPage() {
       <TGNSystemStatePanel
         rows={tgnSystemState.data}
         generatedAt={tgnSystemState.meta.generated_at}
-        estByDate={tgnEstByDate}
+        estByDate={tgsEstByDate}
       />
 
       {megsaState.data && (megsaState.data.benchmarks?.length > 0 || megsaState.data.rondas?.length > 0) && (
