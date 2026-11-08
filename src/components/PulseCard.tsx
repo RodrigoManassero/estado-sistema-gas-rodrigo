@@ -22,10 +22,11 @@ interface RDSRow {
 interface Props {
   rows: RDSRow[]
   tgnRows?: Array<Record<string, any>>
+  tgsRows?: Array<{ fecha?: string; estado_tgs?: string }>
   estadoTgs?: string | null
 }
 
-export default function PulseCard({ rows, tgnRows = [], estadoTgs }: Props) {
+export default function PulseCard({ rows, tgnRows = [], tgsRows = [], estadoTgs }: Props) {
   if (!rows || rows.length === 0) return null
   const today = rows[rows.length - 1]
   if (!today.fecha) return null
@@ -36,6 +37,21 @@ export default function PulseCard({ rows, tgnRows = [], estadoTgs }: Props) {
   // Obtener el estado TGN correspondiente a la fecha de hoy desde tgn_system_state.json
   const currentTgnRecord = tgnRows.find(r => r.fecha === today.fecha) || tgnRows[tgnRows.length - 1]
   const estadoTgn = currentTgnRecord?.Estado || '-'
+
+  // Obtener el estado TGS correspondiente a la fecha de hoy desde estados_sistemas.json
+  const currentTgsRecord = tgsRows && tgsRows.length > 0 ? (
+    tgsRows.find(r => {
+      if (!r.fecha) return false
+      if (r.fecha === today.fecha) return true
+      const parts = r.fecha.split('/')
+      if (parts.length === 3) {
+        const formatted = `${parts[2]}-${parts[1]}-${parts[0]}`
+        return formatted === today.fecha
+      }
+      return false
+    }) || tgsRows[tgsRows.length - 1]
+  ) : null
+  const estadoTgsVal = currentTgsRecord?.estado_tgs || estadoTgs || '-'
 
   // Recopilar valores históricos del mismo MMDD para el rango histórico
   const mmddPriorValues = { consumo: [] as number[], temp: [] as number[] }
@@ -68,8 +84,8 @@ export default function PulseCard({ rows, tgnRows = [], estadoTgs }: Props) {
   // 2. ESTADO TGS
   bullets.push({
     label: 'Estado TGS',
-    value: estadoTgs || '-',
-    color: getStatusColor(estadoTgs),
+    value: estadoTgsVal,
+    color: getStatusColor(estadoTgsVal),
   })
 
   // 3. CONSUMO TOTAL (vs día anterior)
