@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-09T23:00:52+00:00",
+  "generated_at": "2026-11-10T00:18:25+00:00",
   "source": "ENARGAS RDS regression (temp + day-of-week)",
   "source_date": "2026-11-09",
   "data": {
@@ -232,15 +232,15 @@
       },
       "prioritaria": {
         "label": "Prioritaria",
-        "slope": 5.91,
+        "slope": 5.911,
         "intercept": 22.9,
         "r2": 0.827,
         "r2_temp_only": 0.815,
         "n_points": 861,
         "dow_offsets": {
           "0": -0.07,
-          "1": 1.43,
-          "2": 2.73,
+          "1": 1.44,
+          "2": 2.74,
           "3": 1.77,
           "4": 1.44,
           "5": -2.58,
