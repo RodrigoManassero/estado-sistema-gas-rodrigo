@@ -1,18 +1,6 @@
 [
     {
-        "fecha": "08/11/2026",
-        "estado_tgs": "Normal"
-    },
-    {
-        "fecha": "09/11/2026",
-        "estado_tgs": "Normal"
-    },
-    {
-        "fecha": "10/11/2026",
-        "estado_tgs": "Alerta"
-    },
-    {
         "fecha": "11/11/2026",
-        "estado_tgs": "Alerta"
+        "estado_tgs": "Normal"
     }
 ]
