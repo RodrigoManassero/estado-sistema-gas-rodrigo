@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-11-11T00:05:02+00:00",
+  "generated_at": "2026-11-11T11:50:07+00:00",
   "source": "TGS — Síntesis del Estado Operativo (ETGS)",
-  "source_date": "2026-11-09",
+  "source_date": "2026-11-10",
   "data": [
     {
       "generado_at": "2026-04-03T08:17:23",
@@ -3461,6 +3461,21 @@
       "pcs_troncal": 9289,
       "pcs_paralelo": 9407,
       "source": "ETGS_20261109.pdf"
+    },
+    {
+      "generado_at": "2026-11-11T08:11:35",
+      "fecha": "2026-11-10",
+      "linepack_tgs_dia_anterior": 243.25,
+      "linepack_tgs_dia_actual": 235.32,
+      "linepack_tgs_variacion": -7.93,
+      "estado": "Alerta",
+      "motivo": "Sistema en alerta por alto line pack.-",
+      "pcs_san_martin": 9504,
+      "pcs_neuba_1": 9917,
+      "pcs_neuba_2": 10519,
+      "pcs_troncal": 9346,
+      "pcs_paralelo": 9344,
+      "source": "ETGS_20261110.pdf"
     }
   ],
   "issues": []
