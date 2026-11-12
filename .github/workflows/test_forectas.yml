@@ -27,4 +27,4 @@ jobs:
           python-version: '3.11'
 
       - name: 3. Ejecutar pruebas unitarias y de integración
-        run: python tests/test_generate_forecast.py
+        run: python scripts/test_generate_forecast.py
