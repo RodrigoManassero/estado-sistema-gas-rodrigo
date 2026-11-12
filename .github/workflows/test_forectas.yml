@@ -1,0 +1,30 @@
+name: Test Forecast Usinas
+
+on:
+  # Permite ejecutarlo manualmente desde la pestaña "Actions" en GitHub
+  workflow_dispatch:
+
+  # Se ejecuta automáticamente si modificás el modelo, los tests o este workflow
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/generate_forecast.py'
+      - 'tests/test_generate_forecast.py'
+      - '.github/workflows/test-forecast.yml'
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Descargar código del repositorio
+        uses: actions/checkout@v4
+
+      - name: 2. Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 3. Ejecutar pruebas unitarias y de integración
+        run: python tests/test_generate_forecast.py
