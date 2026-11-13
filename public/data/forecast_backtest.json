@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-13T00:29:56+00:00",
+  "generated_at": "2026-11-13T18:18:31+00:00",
   "source": "rolling train/predict on ENARGAS RDS",
   "source_date": null,
   "data": {
@@ -8,16 +8,11 @@
     "segments": {
       "prioritaria": {
         "metrics": {
-          "mae": 9.37,
-          "mape": 23.61,
+          "mae": 9.21,
+          "mape": 23.53,
           "n": 60
         },
         "series": [
-          {
-            "fecha": "2026-09-14",
-            "actual": 75.9,
-            "predicted": 63.91
-          },
           {
             "fecha": "2026-09-15",
             "actual": 66.5,
@@ -312,6 +307,11 @@
             "fecha": "2026-11-12",
             "actual": 17.2,
             "predicted": 22.85
+          },
+          {
+            "fecha": "2026-11-13",
+            "actual": 20.1,
+            "predicted": 22.26
           }
         ]
       },
@@ -322,11 +322,6 @@
           "n": 0
         },
         "series": [
-          {
-            "fecha": "2026-09-14",
-            "actual": null,
-            "predicted": 25.56
-          },
           {
             "fecha": "2026-09-15",
             "actual": null,
@@ -621,21 +616,21 @@
             "fecha": "2026-11-12",
             "actual": null,
             "predicted": 49.09
+          },
+          {
+            "fecha": "2026-11-13",
+            "actual": null,
+            "predicted": 49.43
           }
         ]
       },
       "demanda_total": {
         "metrics": {
-          "mae": 15.36,
-          "mape": 14.12,
+          "mae": 15.28,
+          "mape": 14.09,
           "n": 60
         },
         "series": [
-          {
-            "fecha": "2026-09-14",
-            "actual": 150.3,
-            "predicted": 140.27
-          },
           {
             "fecha": "2026-09-15",
             "actual": 132.8,
@@ -930,6 +925,11 @@
             "fecha": "2026-11-12",
             "actual": 106.1,
             "predicted": 116.72
+          },
+          {
+            "fecha": "2026-11-13",
+            "actual": 109.3,
+            "predicted": 114.62
           }
         ]
       }

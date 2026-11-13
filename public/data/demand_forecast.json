@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-13T00:29:55+00:00",
+  "generated_at": "2026-11-13T18:18:30+00:00",
   "source": "ENARGAS RDS regression (temp + day-of-week)",
   "source_date": "2026-11-12",
   "data": {
@@ -10,23 +10,23 @@
         "temp_max": 28.4,
         "temp_min": 20.4,
         "prioritaria_est": 24.6,
-        "usinas_est": 32.41,
+        "usinas_est": 44.9,
         "industria_est": 35.8,
         "gnc_est": 5.6,
         "combustible_est": 3.6,
         "exportaciones_est": 6.9,
-        "demanda_total_est": 108.9,
+        "demanda_total_est": 121.4,
         "usinas_est_modelo": 44.9,
-        "usinas_fuente": "programa_semanal"
+        "usinas_fuente": "modelo"
       },
       {
         "fecha": "2026-11-13",
         "temp_prom": 25.0,
         "temp_max": 28.6,
         "temp_min": 21.3,
-        "prioritaria_est": 24.4,
+        "prioritaria_est": 24.3,
         "usinas_est": 32.76,
-        "industria_est": 35.7,
+        "industria_est": 35.8,
         "gnc_est": 5.8,
         "combustible_est": 3.6,
         "exportaciones_est": 6.9,
@@ -129,13 +129,13 @@
         "temp_prom": 23.4,
         "temp_max": 28.4,
         "temp_min": 18.3,
-        "prioritaria_est": 24.4,
+        "prioritaria_est": 24.3,
         "usinas_est": 27.02,
         "industria_est": 35.4,
         "gnc_est": 5.8,
         "combustible_est": 3.6,
         "exportaciones_est": 6.9,
-        "demanda_total_est": 103.1,
+        "demanda_total_est": 103.0,
         "usinas_est_modelo": 43.3,
         "usinas_fuente": "programa_semanal"
       },
@@ -216,7 +216,7 @@
       }
     ],
     "regression": {
-      "n_points": 864,
+      "n_points": 865,
       "features": [
         "temp_BA",
         "day_of_week"
@@ -227,26 +227,26 @@
       "usinas_anchor": {
         "ancla_fecha": "2026-11-22",
         "sesgo": -15.39,
-        "ultimo_dato_real": "2026-11-11",
-        "dias_programa_semanal": 11
+        "ultimo_dato_real": "2026-11-12",
+        "dias_programa_semanal": 10
       },
       "prioritaria": {
         "label": "Prioritaria",
-        "slope": 5.915,
+        "slope": 5.916,
         "intercept": 22.9,
         "r2": 0.827,
         "r2_temp_only": 0.816,
-        "n_points": 864,
+        "n_points": 865,
         "dow_offsets": {
           "0": -0.05,
-          "1": 1.4,
+          "1": 1.41,
           "2": 2.7,
-          "3": 1.73,
-          "4": 1.46,
+          "3": 1.74,
+          "4": 1.43,
           "5": -2.56,
-          "6": -4.66
+          "6": -4.65
         },
-        "mean_abs_residual": 7.9,
+        "mean_abs_residual": 7.89,
         "x_feature": "HDD(18°C · media 10 ciudades)"
       },
       "usinas": {
@@ -273,16 +273,16 @@
         "slope": 0.2,
         "intercept": 30.6,
         "r2": 0.214,
-        "r2_temp_only": 0.185,
-        "n_points": 918,
+        "r2_temp_only": 0.186,
+        "n_points": 919,
         "dow_offsets": {
           "0": 0.35,
           "1": 0.33,
           "2": 0.32,
           "3": 0.3,
-          "4": 0.14,
+          "4": 0.15,
           "5": -0.62,
-          "6": -0.8
+          "6": -0.81
         },
         "mean_abs_residual": 1.9,
         "x_feature": "temp"
@@ -293,7 +293,7 @@
         "intercept": 5.6,
         "r2": 0.582,
         "r2_temp_only": 0.011,
-        "n_points": 918,
+        "n_points": 919,
         "dow_offsets": {
           "0": -0.01,
           "1": 0.02,
@@ -311,8 +311,8 @@
         "slope": -0.017,
         "intercept": 4.0,
         "r2": 0.046,
-        "r2_temp_only": 0.044,
-        "n_points": 918,
+        "r2_temp_only": 0.045,
+        "n_points": 919,
         "dow_offsets": {
           "0": -0.03,
           "1": -0.01,
@@ -328,7 +328,7 @@
       "demanda_total": {
         "slope": null,
         "intercept": null,
-        "r2": 0.663,
+        "r2": 0.662,
         "method": "suma de segmentos"
       }
     }
