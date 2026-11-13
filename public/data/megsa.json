@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-13T20:29:17+00:00",
+  "generated_at": "2026-11-13T22:00:27+00:00",
   "source": "MEGSA public API (megsa.ar/api)",
   "source_date": null,
   "data": {
@@ -12,11 +12,11 @@
         "units": "USD/MMbtu",
         "currentPrice": 3.24,
         "currentPeriod": "2026-11-13T00:00:00",
-        "previousPrice": 3.35,
+        "previousPrice": 3.36,
         "previousPeriod": null,
-        "nominalDifference": -0.11,
-        "percentageDifference": -3.28,
-        "lastUpdated": "2026-11-13T17:20:02.3952823",
+        "nominalDifference": -0.12,
+        "percentageDifference": -3.57,
+        "lastUpdated": "2026-11-13T19:00:07.0632933",
         "marketType": "Gas",
         "displayName": "NAT GAS"
       },
@@ -32,7 +32,7 @@
         "previousPeriod": null,
         "nominalDifference": -2.77,
         "percentageDifference": -3.0,
-        "lastUpdated": "2026-11-13T17:20:02.9684911",
+        "lastUpdated": "2026-11-13T19:00:08.1415122",
         "marketType": "Gas",
         "displayName": "TTF GAS Fut"
       },
@@ -42,13 +42,13 @@
         "series": "BRENT_CRUDE_USD",
         "seriesDescription": "spot_price",
         "units": "USD/bbl",
-        "currentPrice": 95.97,
+        "currentPrice": 96.3,
         "currentPeriod": "2026-11-13T00:00:00",
-        "previousPrice": 96.06,
+        "previousPrice": 95.81,
         "previousPeriod": null,
-        "nominalDifference": -0.09,
-        "percentageDifference": -0.09,
-        "lastUpdated": "2026-11-13T17:20:01.6970699",
+        "nominalDifference": 0.49,
+        "percentageDifference": 0.51,
+        "lastUpdated": "2026-11-13T19:00:06.2083767",
         "marketType": "Oil",
         "displayName": "BRENT"
       },
@@ -58,13 +58,13 @@
         "series": "WTI_USD",
         "seriesDescription": "spot_price",
         "units": "USD/bbl",
-        "currentPrice": 88.81,
+        "currentPrice": 89.21,
         "currentPeriod": "2026-11-13T00:00:00",
-        "previousPrice": 89.0,
+        "previousPrice": 88.73,
         "previousPeriod": null,
-        "nominalDifference": -0.19,
-        "percentageDifference": -0.21,
-        "lastUpdated": "2026-11-13T17:20:01.1134551",
+        "nominalDifference": 0.48,
+        "percentageDifference": 0.54,
+        "lastUpdated": "2026-11-13T19:00:05.3167278",
         "marketType": "Oil",
         "displayName": "WTI"
       }
@@ -73,17 +73,17 @@
       "currency": "USD",
       "currencyName": "Dolar U.S.A",
       "currentPrice": 1570.0,
-      "currentPeriod": "2026-11-13T15:02:00",
+      "currentPeriod": "2026-11-13T17:00:00",
       "previousPrice": 1570.0,
-      "previousPeriod": "2026-11-13T10:00:00",
+      "previousPeriod": "2026-11-13T15:02:00",
       "nominalDifference": 0.0,
       "percentageDifference": 0.0,
-      "lastUpdated": "2026-11-13T15:30:02.0673793",
+      "lastUpdated": "2026-11-13T17:30:02.4792256",
       "marketType": "Dollar",
       "displayName": "DOLAR"
     },
     "rondas": [],
-    "fetched_at": "2026-11-13T20:29:17+00:00"
+    "fetched_at": "2026-11-13T22:00:27+00:00"
   },
   "errors": null
 }
