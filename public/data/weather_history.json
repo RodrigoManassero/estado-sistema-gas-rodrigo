@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-15T19:21:21+00:00",
+  "generated_at": "2026-11-15T21:05:32+00:00",
   "source": "Open-Meteo API (window 2026-10-16 to 2026-11-14 merged with local history)",
   "source_date": "2026-11-14",
   "data": [
@@ -19557,20 +19557,20 @@
         },
         {
           "fecha": "2026-11-05",
-          "temp_max": 25.2,
-          "temp_min": 11.1,
+          "temp_max": 24.8,
+          "temp_min": 11.4,
           "temp_prom": 18.1
         },
         {
           "fecha": "2026-11-06",
           "temp_max": 17.9,
-          "temp_min": 9.9,
+          "temp_min": 10.0,
           "temp_prom": 13.9
         },
         {
           "fecha": "2026-11-07",
           "temp_max": 22.9,
-          "temp_min": 8.6,
+          "temp_min": 8.7,
           "temp_prom": 15.8
         },
         {
