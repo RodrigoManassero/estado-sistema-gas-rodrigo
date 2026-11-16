@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-16T12:06:42Z",
+  "generated_at": "2026-11-16T13:13:05Z",
   "source": "Injections Forecast Model",
   "last_ps_date": "2026-11-17",
   "historical_weights": {
@@ -92,14 +92,14 @@
       "origen": "MODELO_FORECAST",
       "tipo": "F",
       "temp_prom_ba": null,
-      "demanda_total": 99.3,
-      "iny_tgs": 56.34,
-      "iny_tgn": 25.81,
-      "iny_gpm": 17.15,
+      "demanda_total": 99.2,
+      "iny_tgs": 56.28,
+      "iny_tgn": 25.78,
+      "iny_gpm": 17.14,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 99.3,
+      "iny_total": 99.2,
       "linepack_total": null
     },
     {
@@ -167,14 +167,14 @@
       "origen": "MODELO_FORECAST",
       "tipo": "F",
       "temp_prom_ba": null,
-      "demanda_total": 99.3,
-      "iny_tgs": 56.34,
-      "iny_tgn": 25.81,
-      "iny_gpm": 17.15,
+      "demanda_total": 99.4,
+      "iny_tgs": 56.39,
+      "iny_tgn": 25.83,
+      "iny_gpm": 17.17,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
-      "iny_total": 99.3,
+      "iny_total": 99.39,
       "linepack_total": null
     },
     {
