@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-11-16T11:50:06+00:00",
+  "generated_at": "2026-11-16T12:02:00+00:00",
   "source": "TGS — Síntesis del Estado Operativo (ETGS)",
-  "source_date": "2026-11-11",
+  "source_date": "2026-11-15",
   "data": [
     {
       "generado_at": "2026-04-03T08:17:23",
@@ -3491,6 +3491,66 @@
       "pcs_troncal": 9598,
       "pcs_paralelo": 9629,
       "source": "ETGS_20261111.pdf"
+    },
+    {
+      "generado_at": "2026-11-13T10:03:56",
+      "fecha": "2026-11-12",
+      "linepack_tgs_dia_anterior": 233.95,
+      "linepack_tgs_dia_actual": 237.06,
+      "linepack_tgs_variacion": 3.11,
+      "estado": "Normal",
+      "motivo": null,
+      "pcs_san_martin": 9623,
+      "pcs_neuba_1": 9841,
+      "pcs_neuba_2": 10739,
+      "pcs_troncal": 9500,
+      "pcs_paralelo": 9676,
+      "source": "ETGS_20261112.pdf"
+    },
+    {
+      "generado_at": "2026-11-14T07:24:22",
+      "fecha": "2026-11-13",
+      "linepack_tgs_dia_anterior": 237.06,
+      "linepack_tgs_dia_actual": 233.15,
+      "linepack_tgs_variacion": -3.9,
+      "estado": "Normal",
+      "motivo": null,
+      "pcs_san_martin": 9492,
+      "pcs_neuba_1": 9905,
+      "pcs_neuba_2": 10519,
+      "pcs_troncal": 9244,
+      "pcs_paralelo": 9570,
+      "source": "ETGS_20261113.pdf"
+    },
+    {
+      "generado_at": "2026-11-15T07:06:28",
+      "fecha": "2026-11-14",
+      "linepack_tgs_dia_anterior": 233.15,
+      "linepack_tgs_dia_actual": 231.53,
+      "linepack_tgs_variacion": -1.63,
+      "estado": "Normal",
+      "motivo": null,
+      "pcs_san_martin": 9468,
+      "pcs_neuba_1": 9955,
+      "pcs_neuba_2": 10352,
+      "pcs_troncal": 9179,
+      "pcs_paralelo": 9337,
+      "source": "ETGS_20261114.pdf"
+    },
+    {
+      "generado_at": "2026-11-16T07:35:15",
+      "fecha": "2026-11-15",
+      "linepack_tgs_dia_anterior": 231.53,
+      "linepack_tgs_dia_actual": 230.9,
+      "linepack_tgs_variacion": -0.62,
+      "estado": "Normal",
+      "motivo": null,
+      "pcs_san_martin": 9389,
+      "pcs_neuba_1": 9899,
+      "pcs_neuba_2": 10461,
+      "pcs_troncal": 9243,
+      "pcs_paralelo": 9240,
+      "source": "ETGS_20261115.pdf"
     }
   ],
   "issues": []
