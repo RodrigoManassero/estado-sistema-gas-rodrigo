@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-17T02:29:13+00:00",
+  "generated_at": "2026-11-17T14:34:47+00:00",
   "source": "Open-Meteo API (window 2026-10-18 to 2026-11-16 merged with local history)",
   "source_date": "2026-11-16",
   "data": [
@@ -9328,8 +9328,8 @@
         {
           "fecha": "2026-11-06",
           "temp_max": 25.6,
-          "temp_min": 16.8,
-          "temp_prom": 21.2
+          "temp_min": 16.7,
+          "temp_prom": 21.1
         },
         {
           "fecha": "2026-11-07",
@@ -14022,8 +14022,8 @@
         },
         {
           "fecha": "2026-11-06",
-          "temp_max": 28.2,
-          "temp_min": 15.5,
+          "temp_max": 28.3,
+          "temp_min": 15.6,
           "temp_prom": 21.9
         },
         {
@@ -18717,15 +18717,15 @@
         },
         {
           "fecha": "2026-11-06",
-          "temp_max": 28.8,
-          "temp_min": 17.6,
-          "temp_prom": 23.2
+          "temp_max": 28.1,
+          "temp_min": 17.5,
+          "temp_prom": 22.8
         },
         {
           "fecha": "2026-11-07",
-          "temp_max": 20.0,
-          "temp_min": 14.4,
-          "temp_prom": 17.2
+          "temp_max": 19.9,
+          "temp_min": 14.3,
+          "temp_prom": 17.1
         },
         {
           "fecha": "2026-11-08",
@@ -18736,8 +18736,8 @@
         {
           "fecha": "2026-11-09",
           "temp_max": 25.6,
-          "temp_min": 14.3,
-          "temp_prom": 20.0
+          "temp_min": 14.2,
+          "temp_prom": 19.9
         },
         {
           "fecha": "2026-11-10",
@@ -29074,8 +29074,8 @@
         {
           "fecha": "2026-11-16",
           "temp_max": 17.8,
-          "temp_min": 12.2,
-          "temp_prom": 15.0
+          "temp_min": 12.3,
+          "temp_prom": 15.1
         }
       ]
     },
@@ -38403,9 +38403,9 @@
         },
         {
           "fecha": "2026-11-06",
-          "temp_max": 32.2,
+          "temp_max": 32.1,
           "temp_min": 16.1,
-          "temp_prom": 24.2
+          "temp_prom": 24.1
         },
         {
           "fecha": "2026-11-07",
