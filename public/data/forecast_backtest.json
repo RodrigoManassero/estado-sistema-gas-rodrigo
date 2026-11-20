@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T01:19:42+00:00",
+  "generated_at": "2026-11-20T21:03:17+00:00",
   "source": "rolling train/predict on ENARGAS RDS",
   "source_date": null,
   "data": {
@@ -9,15 +9,10 @@
       "prioritaria": {
         "metrics": {
           "mae": 7.51,
-          "mape": 20.1,
+          "mape": 20.12,
           "n": 60
         },
         "series": [
-          {
-            "fecha": "2026-09-21",
-            "actual": 44.3,
-            "predicted": 44.88
-          },
           {
             "fecha": "2026-09-22",
             "actual": 55.6,
@@ -312,6 +307,11 @@
             "fecha": "2026-11-19",
             "actual": 22.0,
             "predicted": 22.71
+          },
+          {
+            "fecha": "2026-11-20",
+            "actual": 21.8,
+            "predicted": 22.29
           }
         ]
       },
@@ -322,11 +322,6 @@
           "n": 0
         },
         "series": [
-          {
-            "fecha": "2026-09-21",
-            "actual": null,
-            "predicted": 31.84
-          },
           {
             "fecha": "2026-09-22",
             "actual": null,
@@ -621,21 +616,21 @@
             "fecha": "2026-11-19",
             "actual": null,
             "predicted": 45.63
+          },
+          {
+            "fecha": "2026-11-20",
+            "actual": null,
+            "predicted": 45.53
           }
         ]
       },
       "demanda_total": {
         "metrics": {
-          "mae": 15.61,
-          "mape": 14.47,
+          "mae": 15.51,
+          "mape": 14.4,
           "n": 60
         },
         "series": [
-          {
-            "fecha": "2026-09-21",
-            "actual": 111.0,
-            "predicted": 132.39
-          },
           {
             "fecha": "2026-09-22",
             "actual": 125.6,
@@ -930,6 +925,11 @@
             "fecha": "2026-11-19",
             "actual": 108.2,
             "predicted": 122.46
+          },
+          {
+            "fecha": "2026-11-20",
+            "actual": 105.8,
+            "predicted": 121.32
           }
         ]
       }

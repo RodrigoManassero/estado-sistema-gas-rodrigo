@@ -1,110 +1,109 @@
 {
-  "generated_at": "2026-11-20T01:19:42+00:00",
+  "generated_at": "2026-11-20T21:03:17+00:00",
   "source": "Reversión a la media del nivel (k por backtest)",
-  "source_date": "2026-11-18",
+  "source_date": "2026-11-19",
   "data": {
     "forecast": [
       {
-        "fecha": "2026-11-18",
-        "linepack_total_est": 365.38,
-        "linepack_tgs_est": 228.28
-      },
-      {
         "fecha": "2026-11-19",
-        "linepack_total_est": 367.52,
-        "temp_prom": 22.9,
-        "linepack_tgs_est": 229.04
+        "linepack_total_est": 362.79
       },
       {
         "fecha": "2026-11-20",
-        "linepack_total_est": 369.24,
-        "temp_prom": 22.4,
-        "linepack_tgn_est": 133.24,
-        "linepack_tgs_est": 229.72
+        "linepack_total_est": 364.65,
+        "temp_prom": 23.0,
+        "linepack_tgs_est": 215.31
       },
       {
         "fecha": "2026-11-21",
-        "linepack_total_est": 370.61,
-        "temp_prom": 20.9,
-        "linepack_tgn_est": 133.47,
-        "linepack_tgs_est": 230.34
+        "linepack_total_est": 366.23,
+        "temp_prom": 22.9,
+        "linepack_tgn_est": 133.17,
+        "linepack_tgs_est": 217.02
       },
       {
         "fecha": "2026-11-22",
-        "linepack_total_est": 371.71,
-        "temp_prom": 21.6,
-        "linepack_tgn_est": 133.69,
-        "linepack_tgs_est": 230.89
+        "linepack_total_est": 367.57,
+        "temp_prom": 22.7,
+        "linepack_tgn_est": 133.33,
+        "linepack_tgs_est": 218.56
       },
       {
         "fecha": "2026-11-23",
-        "linepack_total_est": 372.59,
-        "temp_prom": 23.1,
-        "linepack_tgn_est": 133.9,
-        "linepack_tgs_est": 231.39
+        "linepack_total_est": 368.71,
+        "temp_prom": 23.4,
+        "linepack_tgn_est": 133.49,
+        "linepack_tgs_est": 219.95
       },
       {
         "fecha": "2026-11-24",
-        "linepack_total_est": 373.29,
-        "temp_prom": 23.7,
-        "linepack_tgn_est": 134.1,
-        "linepack_tgs_est": 231.84
+        "linepack_total_est": 369.68,
+        "temp_prom": 23.5,
+        "linepack_tgn_est": 133.64,
+        "linepack_tgs_est": 221.2
       },
       {
         "fecha": "2026-11-25",
-        "linepack_total_est": 373.85,
-        "temp_prom": 21.2,
-        "linepack_tgn_est": 134.29,
-        "linepack_tgs_est": 232.24
+        "linepack_total_est": 370.51,
+        "temp_prom": 18.9,
+        "linepack_tgn_est": 133.78,
+        "linepack_tgs_est": 222.32
       },
       {
         "fecha": "2026-11-26",
-        "linepack_total_est": 374.3,
-        "temp_prom": 18.0,
-        "linepack_tgn_est": 134.47,
-        "linepack_tgs_est": 232.6
+        "linepack_total_est": 371.21,
+        "temp_prom": 19.6,
+        "linepack_tgn_est": 133.91,
+        "linepack_tgs_est": 223.33
       },
       {
         "fecha": "2026-11-27",
-        "linepack_total_est": 374.66,
-        "temp_prom": 21.1,
-        "linepack_tgn_est": 134.64,
-        "linepack_tgs_est": 232.93
+        "linepack_total_est": 371.81,
+        "temp_prom": 20.3,
+        "linepack_tgn_est": 134.04,
+        "linepack_tgs_est": 224.24
       },
       {
         "fecha": "2026-11-28",
-        "linepack_total_est": 374.95,
-        "temp_prom": 24.5,
-        "linepack_tgn_est": 134.8,
-        "linepack_tgs_est": 233.23
+        "linepack_total_est": 372.32,
+        "temp_prom": 23.4,
+        "linepack_tgn_est": 134.16,
+        "linepack_tgs_est": 225.06
       },
       {
         "fecha": "2026-11-29",
-        "linepack_total_est": 375.18,
-        "temp_prom": 26.6,
-        "linepack_tgn_est": 134.95,
-        "linepack_tgs_est": 233.5
+        "linepack_total_est": 372.75,
+        "temp_prom": 25.8,
+        "linepack_tgn_est": 134.27,
+        "linepack_tgs_est": 225.8
       },
       {
         "fecha": "2026-11-30",
-        "linepack_total_est": 375.36,
-        "temp_prom": 20.6,
-        "linepack_tgn_est": 135.1,
-        "linepack_tgs_est": 233.74
+        "linepack_total_est": 373.12,
+        "temp_prom": 28.1,
+        "linepack_tgn_est": 134.38,
+        "linepack_tgs_est": 226.46
       },
       {
         "fecha": "2026-12-01",
-        "linepack_total_est": 375.51,
-        "temp_prom": 19.8,
-        "linepack_tgn_est": 135.24,
-        "linepack_tgs_est": 233.95
+        "linepack_total_est": 373.43,
+        "temp_prom": 22.1,
+        "linepack_tgn_est": 134.48,
+        "linepack_tgs_est": 227.06
       },
       {
         "fecha": "2026-12-02",
-        "linepack_total_est": 375.63,
-        "temp_prom": 23.7,
-        "linepack_tgn_est": 135.37,
-        "linepack_tgs_est": 234.14
+        "linepack_total_est": 373.69,
+        "temp_prom": 16.9,
+        "linepack_tgn_est": 134.58,
+        "linepack_tgs_est": 227.6
+      },
+      {
+        "fecha": "2026-12-03",
+        "linepack_total_est": 373.91,
+        "temp_prom": 15.3,
+        "linepack_tgn_est": 134.67,
+        "linepack_tgs_est": 228.08
       }
     ],
     "model": {
@@ -113,78 +112,78 @@
       "target_window_days": 14,
       "note": "Δ linepack es muy ralo/ruidoso para una regresión temp→Δ; k se elige por backtest (k=0 = persistencia).",
       "k": {
-        "total": 0.2,
+        "total": 0.15,
         "tgn": 0.05,
         "tgs": 0.1
       },
       "target_recent_mean": {
-        "total": 376.1,
-        "tgn": 137.88,
-        "tgs": 235.88
+        "total": 375.19,
+        "tgn": 136.44,
+        "tgs": 232.44
       }
     },
     "backtest": {
       "total": {
-        "k": 0.2,
-        "score": 8.232,
+        "k": 0.15,
+        "score": 8.21,
         "mae_by_horizon": {
-          "1": 5.2,
-          "3": 9.34,
-          "7": 9.73,
-          "14": 8.66
+          "1": 5.19,
+          "3": 9.12,
+          "7": 9.59,
+          "14": 8.94
         },
         "persistence_mae": {
-          "1": 5.33,
-          "3": 9.59,
-          "7": 11.35,
-          "14": 14.16
+          "1": 5.35,
+          "3": 9.35,
+          "7": 11.09,
+          "14": 14.2
         }
       },
       "tgn": {
         "k": 0.05,
-        "score": 5.14,
+        "score": 5.367,
         "mae_by_horizon": {
-          "1": 2.42,
-          "3": 4.44,
-          "7": 5.89,
-          "14": 7.81
+          "1": 2.63,
+          "3": 4.64,
+          "7": 6.09,
+          "14": 8.11
         },
         "persistence_mae": {
-          "1": 2.43,
-          "3": 4.5,
-          "7": 5.8,
-          "14": 8.49
+          "1": 2.64,
+          "3": 4.68,
+          "7": 5.97,
+          "14": 8.82
         }
       },
       "tgs": {
         "k": 0.1,
-        "score": 4.912,
+        "score": 5.327,
         "mae_by_horizon": {
-          "1": 3.17,
-          "3": 5.42,
-          "7": 5.28,
-          "14": 5.78
+          "1": 3.3,
+          "3": 5.73,
+          "7": 5.85,
+          "14": 6.43
         },
         "persistence_mae": {
-          "1": 3.18,
-          "3": 5.66,
-          "7": 5.41,
-          "14": 6.88
+          "1": 3.25,
+          "3": 5.82,
+          "7": 6.04,
+          "14": 7.63
         }
       }
     },
     "anchor": {
       "total": {
-        "fecha": "2026-11-17",
-        "level": 362.7
+        "fecha": "2026-11-18",
+        "level": 360.6
       },
       "tgn": {
-        "fecha": "2026-11-19",
+        "fecha": "2026-11-20",
         "level": 133.0
       },
       "tgs": {
-        "fecha": "2026-11-17",
-        "level": 227.44
+        "fecha": "2026-11-19",
+        "level": 213.41
       }
     }
   }
