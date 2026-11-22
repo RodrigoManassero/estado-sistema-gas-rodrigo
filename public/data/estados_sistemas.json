@@ -1,10 +1,6 @@
 [
     {
-        "fecha": "17/11/2026",
-        "estado_tgs": "Normal"
-    },
-    {
-        "fecha": "18/11/2026",
-        "estado_tgs": "Normal"
+        "fecha": "22/11/2026",
+        "estado_tgs": "Alerta"
     }
 ]
