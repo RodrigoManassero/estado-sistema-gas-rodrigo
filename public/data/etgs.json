@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-11-21T23:50:23+00:00",
+  "generated_at": "2026-11-22T12:17:26+00:00",
   "source": "TGS — Síntesis del Estado Operativo (ETGS)",
-  "source_date": "2026-11-20",
+  "source_date": "2026-11-21",
   "data": [
     {
       "generado_at": "2026-04-03T08:17:23",
@@ -3626,6 +3626,21 @@
       "pcs_troncal": 9330,
       "pcs_paralelo": 9336,
       "source": "ETGS_20261120.pdf"
+    },
+    {
+      "generado_at": "2026-11-22T07:34:22",
+      "fecha": "2026-11-21",
+      "linepack_tgs_dia_anterior": 212.23,
+      "linepack_tgs_dia_actual": 217.56,
+      "linepack_tgs_variacion": 5.33,
+      "estado": "Alerta",
+      "motivo": "Por bajo linepack en el sistema.",
+      "pcs_san_martin": 9518,
+      "pcs_neuba_1": 9942,
+      "pcs_neuba_2": 10482,
+      "pcs_troncal": 9304,
+      "pcs_paralelo": 9360,
+      "source": "ETGS_20261121.pdf"
     }
   ],
   "issues": []
