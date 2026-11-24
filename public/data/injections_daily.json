@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-24T02:55:52Z",
+  "generated_at": "2026-11-24T04:18:42Z",
   "description": "Serie diaria unificada de inyecciones y demanda (Histórico ENARGAS + Proyección Modelada)",
   "last_ps_date": "2026-11-24",
-  "total_records": 198,
+  "total_records": 199,
   "data": [
     {
       "fecha": "2026-04-05",
@@ -3166,6 +3166,22 @@
       "iny_tgs": 47.94,
       "iny_tgn": 21.09,
       "iny_gpm": 14.38,
+      "iny_bolivia": 0.0,
+      "iny_chile": 0.0,
+      "iny_escobar": 0.0,
+      "linepack_total": null,
+      "source_file": "Injections Forecast Model"
+    },
+    {
+      "fecha": "2026-12-07",
+      "origen": "MODELO_FORECAST",
+      "tipo": "F",
+      "temp_prom_ba": null,
+      "demanda_total": 90.9,
+      "iny_total": 90.9,
+      "iny_tgs": 52.25,
+      "iny_tgn": 22.98,
+      "iny_gpm": 15.67,
       "iny_bolivia": 0.0,
       "iny_chile": 0.0,
       "iny_escobar": 0.0,

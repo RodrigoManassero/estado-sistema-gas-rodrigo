@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-24T02:55:52Z",
+  "generated_at": "2026-11-24T04:18:42Z",
   "source": "Injections Forecast Model",
   "last_ps_date": "2026-11-24",
   "historical_weights": {
@@ -10,7 +10,7 @@
     "chile": 0.0,
     "escobar": 0.0
   },
-  "total_records": 12,
+  "total_records": 13,
   "data": [
     {
       "fecha": "2026-11-25",
@@ -190,6 +190,21 @@
       "iny_chile": 0.0,
       "iny_escobar": 0.0,
       "iny_total": 83.41,
+      "linepack_total": null
+    },
+    {
+      "fecha": "2026-12-07",
+      "origen": "MODELO_FORECAST",
+      "tipo": "F",
+      "temp_prom_ba": null,
+      "demanda_total": 90.9,
+      "iny_tgs": 52.25,
+      "iny_tgn": 22.98,
+      "iny_gpm": 15.67,
+      "iny_bolivia": 0.0,
+      "iny_chile": 0.0,
+      "iny_escobar": 0.0,
+      "iny_total": 90.9,
       "linepack_total": null
     }
   ]
