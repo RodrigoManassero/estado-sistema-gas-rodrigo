@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-24T00:46:59+00:00",
+  "generated_at": "2026-11-24T02:55:37+00:00",
   "source": "Open-Meteo API (window 2026-10-25 to 2026-11-23 merged with local history)",
   "source_date": "2026-11-23",
   "data": [
@@ -14208,9 +14208,9 @@
         },
         {
           "fecha": "2026-11-23",
-          "temp_max": 22.2,
+          "temp_max": 23.1,
           "temp_min": 17.3,
-          "temp_prom": 19.8
+          "temp_prom": 20.2
         }
       ]
     },
@@ -18946,8 +18946,8 @@
         {
           "fecha": "2026-11-23",
           "temp_max": 25.7,
-          "temp_min": 18.6,
-          "temp_prom": 22.1
+          "temp_min": 18.4,
+          "temp_prom": 22.0
         }
       ]
     },
@@ -19440,9 +19440,9 @@
         },
         {
           "fecha": "2026-11-23",
-          "temp_max": 28.6,
+          "temp_max": 28.8,
           "temp_min": 17.3,
-          "temp_prom": 23.0
+          "temp_prom": 23.1
         }
       ]
     },
@@ -19935,9 +19935,9 @@
         },
         {
           "fecha": "2026-11-23",
-          "temp_max": 26.4,
+          "temp_max": 26.7,
           "temp_min": 15.3,
-          "temp_prom": 20.9
+          "temp_prom": 21.0
         }
       ]
     },
@@ -24673,7 +24673,7 @@
         {
           "fecha": "2026-11-23",
           "temp_max": 24.7,
-          "temp_min": 15.4,
+          "temp_min": 15.5,
           "temp_prom": 20.1
         }
       ]
@@ -29409,9 +29409,9 @@
         },
         {
           "fecha": "2026-11-23",
-          "temp_max": 13.8,
+          "temp_max": 14.1,
           "temp_min": 4.3,
-          "temp_prom": 9.1
+          "temp_prom": 9.2
         }
       ]
     },
@@ -34146,9 +34146,9 @@
         },
         {
           "fecha": "2026-11-23",
-          "temp_max": 27.2,
+          "temp_max": 27.6,
           "temp_min": 17.5,
-          "temp_prom": 22.4
+          "temp_prom": 22.6
         }
       ]
     },
@@ -38817,7 +38817,7 @@
         },
         {
           "fecha": "2026-11-12",
-          "temp_max": 35.8,
+          "temp_max": 35.7,
           "temp_min": 22.6,
           "temp_prom": 29.2
         },
