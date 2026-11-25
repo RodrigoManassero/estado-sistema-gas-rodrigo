@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T00:45:24+00:00",
+  "generated_at": "2026-11-25T03:03:37+00:00",
   "source": "Open-Meteo API (window 2026-10-26 to 2026-11-24 merged with local history)",
   "source_date": "2026-11-24",
   "data": [
@@ -4680,7 +4680,7 @@
         },
         {
           "fecha": "2026-11-14",
-          "temp_max": 28.6,
+          "temp_max": 28.7,
           "temp_min": 21.2,
           "temp_prom": 24.9
         },
@@ -9424,8 +9424,8 @@
         {
           "fecha": "2026-11-14",
           "temp_max": 29.4,
-          "temp_min": 20.1,
-          "temp_prom": 24.8
+          "temp_min": 20.0,
+          "temp_prom": 24.7
         },
         {
           "fecha": "2026-11-15",
@@ -14166,9 +14166,9 @@
         },
         {
           "fecha": "2026-11-14",
-          "temp_max": 26.4,
-          "temp_min": 18.8,
-          "temp_prom": 22.6
+          "temp_max": 25.8,
+          "temp_min": 18.7,
+          "temp_prom": 22.2
         },
         {
           "fecha": "2026-11-15",
@@ -18910,7 +18910,7 @@
         {
           "fecha": "2026-11-14",
           "temp_max": 29.1,
-          "temp_min": 21.7,
+          "temp_min": 21.6,
           "temp_prom": 25.4
         },
         {
@@ -19410,7 +19410,7 @@
         },
         {
           "fecha": "2026-11-14",
-          "temp_max": 27.7,
+          "temp_max": 27.6,
           "temp_min": 19.9,
           "temp_prom": 23.8
         },
@@ -24654,9 +24654,9 @@
         },
         {
           "fecha": "2026-11-14",
-          "temp_max": 19.6,
+          "temp_max": 19.5,
           "temp_min": 14.5,
-          "temp_prom": 17.1
+          "temp_prom": 17.0
         },
         {
           "fecha": "2026-11-15",
@@ -29398,8 +29398,8 @@
         {
           "fecha": "2026-11-14",
           "temp_max": 30.8,
-          "temp_min": 10.7,
-          "temp_prom": 20.8
+          "temp_min": 10.9,
+          "temp_prom": 20.9
         },
         {
           "fecha": "2026-11-15",
@@ -34140,9 +34140,9 @@
         },
         {
           "fecha": "2026-11-14",
-          "temp_max": 26.8,
-          "temp_min": 18.3,
-          "temp_prom": 22.6
+          "temp_max": 26.9,
+          "temp_min": 18.2,
+          "temp_prom": 22.5
         },
         {
           "fecha": "2026-11-15",
@@ -38883,9 +38883,9 @@
         },
         {
           "fecha": "2026-11-14",
-          "temp_max": 30.9,
+          "temp_max": 30.8,
           "temp_min": 20.5,
-          "temp_prom": 25.7
+          "temp_prom": 25.6
         },
         {
           "fecha": "2026-11-15",
