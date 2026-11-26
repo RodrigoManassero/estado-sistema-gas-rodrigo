@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T22:30:23+00:00",
+  "generated_at": "2026-11-26T00:24:36+00:00",
   "source": "MEGSA public API (megsa.ar/api)",
   "source_date": null,
   "data": {
@@ -12,11 +12,11 @@
         "units": "USD/MMbtu",
         "currentPrice": 3.27,
         "currentPeriod": "2026-11-25T00:00:00",
-        "previousPrice": 3.35,
+        "previousPrice": 3.33,
         "previousPeriod": null,
-        "nominalDifference": -0.08,
-        "percentageDifference": -2.39,
-        "lastUpdated": "2026-11-25T19:30:06.6005677",
+        "nominalDifference": -0.06,
+        "percentageDifference": -1.8,
+        "lastUpdated": "2026-11-25T19:50:07.2820002",
         "marketType": "Gas",
         "displayName": "NAT GAS"
       },
@@ -32,7 +32,7 @@
         "previousPeriod": null,
         "nominalDifference": -5.11,
         "percentageDifference": -5.57,
-        "lastUpdated": "2026-11-25T19:30:06.939379",
+        "lastUpdated": "2026-11-25T19:50:07.6941354",
         "marketType": "Gas",
         "displayName": "TTF GAS Fut"
       },
@@ -44,11 +44,11 @@
         "units": "USD/bbl",
         "currentPrice": 94.65,
         "currentPeriod": "2026-11-25T00:00:00",
-        "previousPrice": 90.81,
+        "previousPrice": 90.85,
         "previousPeriod": null,
-        "nominalDifference": 3.84,
-        "percentageDifference": 4.23,
-        "lastUpdated": "2026-11-25T19:30:06.2200767",
+        "nominalDifference": 3.8,
+        "percentageDifference": 4.18,
+        "lastUpdated": "2026-11-25T19:50:06.9069355",
         "marketType": "Oil",
         "displayName": "BRENT"
       },
@@ -64,7 +64,7 @@
         "previousPeriod": null,
         "nominalDifference": 2.48,
         "percentageDifference": 3.04,
-        "lastUpdated": "2026-11-25T19:30:05.8085525",
+        "lastUpdated": "2026-11-25T19:50:06.4027213",
         "marketType": "Oil",
         "displayName": "WTI"
       }
@@ -83,7 +83,7 @@
       "displayName": "DOLAR"
     },
     "rondas": [],
-    "fetched_at": "2026-11-25T22:30:23+00:00"
+    "fetched_at": "2026-11-26T00:24:36+00:00"
   },
   "errors": [
     "rondas: 500 Server Error: Internal Server Error for url: https://www.megsa.ar/api/rondas/publicadas"
