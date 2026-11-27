@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-27T00:41:07+00:00",
+  "generated_at": "2026-11-27T02:10:52+00:00",
   "source": "MEGSA public API (megsa.ar/api)",
   "source_date": null,
   "data": {
@@ -83,7 +83,7 @@
       "displayName": "DOLAR"
     },
     "rondas": [],
-    "fetched_at": "2026-11-27T00:41:07+00:00"
+    "fetched_at": "2026-11-27T02:10:52+00:00"
   },
   "errors": [
     "rondas: 500 Server Error: Internal Server Error for url: https://www.megsa.ar/api/rondas/publicadas"
