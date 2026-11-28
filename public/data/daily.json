@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-28T01:38:54+00:00",
+  "generated_at": "2026-11-28T01:58:44+00:00",
   "source": "Cascada 6 niveles: PS_REAL > RDS > PS_PROJ > CAMMESA_WEEKLY > MODELO > WEATHER_HISTORY",
   "source_date": "2026-12-06",
   "data": [
@@ -52517,8 +52517,8 @@
       "tf_lim_inf_tgn": null,
       "tf_lim_sup_tgn": null,
       "temp_min_ba": 19.5,
-      "temp_max_ba": 29.5,
-      "temp_prom_ba": 24.5,
+      "temp_max_ba": 29.8,
+      "temp_prom_ba": 24.6,
       "temp_min_esquel": null,
       "temp_max_esquel": null,
       "temp_prom_esquel": null,
