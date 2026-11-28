@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-11-27T21:56:01+00:00",
-  "source": "Open-Meteo API (window 2026-10-28 to 2026-11-26 merged with local history)",
-  "source_date": "2026-11-26",
+  "generated_at": "2026-11-28T00:04:16+00:00",
+  "source": "Open-Meteo API (window 2026-10-29 to 2026-11-27 merged with local history)",
+  "source_date": "2026-11-27",
   "data": [
     {
       "id": "ba",
@@ -4755,6 +4755,12 @@
           "temp_max": 25.2,
           "temp_min": 14.5,
           "temp_prom": 19.9
+        },
+        {
+          "fecha": "2026-11-27",
+          "temp_max": 29.5,
+          "temp_min": 19.5,
+          "temp_prom": 24.5
         }
       ]
     },
@@ -9510,6 +9516,12 @@
           "temp_max": 26.9,
           "temp_min": 17.6,
           "temp_prom": 22.2
+        },
+        {
+          "fecha": "2026-11-27",
+          "temp_max": 30.2,
+          "temp_min": 18.1,
+          "temp_prom": 24.1
         }
       ]
     },
@@ -14265,6 +14277,12 @@
           "temp_max": 25.7,
           "temp_min": 13.9,
           "temp_prom": 19.8
+        },
+        {
+          "fecha": "2026-11-27",
+          "temp_max": 27.6,
+          "temp_min": 15.4,
+          "temp_prom": 21.5
         }
       ]
     },
@@ -19020,6 +19038,12 @@
           "temp_max": 28.0,
           "temp_min": 18.3,
           "temp_prom": 23.1
+        },
+        {
+          "fecha": "2026-11-27",
+          "temp_max": 29.8,
+          "temp_min": 20.1,
+          "temp_prom": 25.0
         }
       ]
     },
@@ -19533,6 +19557,12 @@
           "temp_max": 27.4,
           "temp_min": 14.9,
           "temp_prom": 21.1
+        },
+        {
+          "fecha": "2026-11-27",
+          "temp_max": 31.9,
+          "temp_min": 18.2,
+          "temp_prom": 25.0
         }
       ]
     },
@@ -20046,6 +20076,12 @@
           "temp_max": 33.4,
           "temp_min": 16.0,
           "temp_prom": 24.7
+        },
+        {
+          "fecha": "2026-11-27",
+          "temp_max": 34.9,
+          "temp_min": 21.0,
+          "temp_prom": 27.9
         }
       ]
     },
@@ -24801,6 +24837,12 @@
           "temp_max": 30.2,
           "temp_min": 12.4,
           "temp_prom": 21.3
+        },
+        {
+          "fecha": "2026-11-27",
+          "temp_max": 35.7,
+          "temp_min": 21.2,
+          "temp_prom": 28.5
         }
       ]
     },
@@ -29556,6 +29598,12 @@
           "temp_max": 27.2,
           "temp_min": 7.4,
           "temp_prom": 17.3
+        },
+        {
+          "fecha": "2026-11-27",
+          "temp_max": 24.7,
+          "temp_min": 9.8,
+          "temp_prom": 17.2
         }
       ]
     },
@@ -34311,6 +34359,12 @@
           "temp_max": 19.5,
           "temp_min": 14.8,
           "temp_prom": 17.1
+        },
+        {
+          "fecha": "2026-11-27",
+          "temp_max": 24.3,
+          "temp_min": 14.7,
+          "temp_prom": 19.5
         }
       ]
     },
@@ -39066,6 +39120,12 @@
           "temp_max": 21.3,
           "temp_min": 18.4,
           "temp_prom": 19.9
+        },
+        {
+          "fecha": "2026-11-27",
+          "temp_max": 27.1,
+          "temp_min": 17.1,
+          "temp_prom": 22.1
         }
       ]
     }
